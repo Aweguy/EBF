@@ -1,0 +1,3 @@
+displayName = EBF Mod
+author = Aweguy
+version = 0.1
