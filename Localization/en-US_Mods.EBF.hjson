@@ -1,0 +1,85 @@
+Items: {
+	Avenger: {
+		DisplayName: Avenger
+		Tooltip: ""
+	}
+
+	BlackFang: {
+		DisplayName: Black Fang
+		Tooltip: ""
+	}
+
+	HeavensGate: {
+		DisplayName: Heavens Gate
+		Tooltip: ""
+	}
+
+	Inferno: {
+		DisplayName: Inferno
+		Tooltip: ""
+	}
+
+	SoulEater: {
+		DisplayName: Soul Eater
+		Tooltip: ""
+	}
+
+	UltraPro9000X: {
+		DisplayName: Ultra Pro9000 X
+		Tooltip: ""
+	}
+
+	AngryFaic: {
+		DisplayName: Angry Faic
+		Tooltip: ""
+	}
+
+	BalanceBadge: {
+		DisplayName: Balance Badge
+		Tooltip: ""
+	}
+
+	GreenCross: {
+		DisplayName: Green Cross
+		Tooltip: ""
+	}
+
+	IronCross: {
+		DisplayName: Iron Cross
+		Tooltip: ""
+	}
+
+	ShieldMedal: {
+		DisplayName: Shield Medal
+		Tooltip: ""
+	}
+
+	SwordMedal: {
+		DisplayName: Sword Medal
+		Tooltip: ""
+	}
+
+	TargetBadge: {
+		DisplayName: Target Badge
+		Tooltip: ""
+	}
+
+	DarkTooth: {
+		DisplayName: Dark Tooth
+		Tooltip: ""
+	}
+
+	Seraphim: {
+		DisplayName: Seraphim
+		Tooltip: ""
+	}
+}
+
+Projectiles: {
+	LightBlade.DisplayName: Light Blade
+	LightBlade_Mini.DisplayName: Light Blade_ Mini
+	HeavensGate_LightBlade.DisplayName: Heavens Gate_ Light Blade
+	HeavensGate_LightBlade_Mini.DisplayName: Heavens Gate_ Light Blade_ Mini
+	DarkTooth_BlackHole.DisplayName: Dark Tooth_ Black Hole
+	Seraphim_Judgement.DisplayName: Seraphim_ Judgement
+}
