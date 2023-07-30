@@ -29,6 +29,8 @@ namespace EBF.Items.Accessories.Flairs
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
+            
+
             player.GetCritChance(DamageClass.Generic) += 8;
             player.GetDamage(DamageClass.Generic) += 0.08f;
             player.aggro += 450;

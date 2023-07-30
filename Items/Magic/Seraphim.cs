@@ -21,7 +21,7 @@ namespace EBF.Items.Magic
 		public override void SetStaticDefaults()
 		{
 			base.DisplayName.WithFormatArgs("Seraphim");//Name of the Item
-			base.Tooltip.WithFormatArgs("");//Tooltip of the item
+			base.Tooltip.WithFormatArgs("A glorious staff used by gorgeous angels.");//Tooltip of the item
 		}
 
 		public override void SetDefaults()

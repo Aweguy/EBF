@@ -1,27 +1,197 @@
+EBFConfig: {
+	DisplayName: EBF Config
+
+	FlairSlotVerticalStack: {
+		Label: Flair Slot Vertical Stack
+		Tooltip: Orientates the flair slots either vertically or horizontally.
+	}
+
+	FlairSlotPosition: {
+		Label: Flair Slot Position
+		Tooltip: Changes the position of the flair slots on the screen
+	}
+}
+
+Buffs: {
+	BlessedBuff: {
+		DisplayName: Blessed Buff
+		Description: Mods.EBF.Buffs.BlessedBuff.Description
+	}
+
+	CooldownProtect: {
+		DisplayName: Cooldown Protect
+		Description: Mods.EBF.Buffs.CooldownProtect.Description
+	}
+
+	CooldownRegen: {
+		DisplayName: Cooldown Regen
+		Description: Mods.EBF.Buffs.CooldownRegen.Description
+	}
+
+	Protected: {
+		DisplayName: Protected
+		Description: Mods.EBF.Buffs.Protected.Description
+	}
+
+	Regeneration: {
+		DisplayName: Regeneration
+		Description: Mods.EBF.Buffs.Regeneration.Description
+	}
+}
+
 Items: {
+	AngryFaic: {
+		DisplayName: Angry Faic
+		Tooltip:
+			'''
+			Wearing this makes you so angry, you want something to be BLAMMED!
+			2 defense
+			Increases critical chance by 8% for all types of damage.
+			Increases damage by 8%.
+			Increases enemy aggression.
+			'''
+	}
+
+	BalanceBadge: {
+		DisplayName: Balance Badge
+		Tooltip:
+			'''
+			Represents pure equilibrium and bestows a wealth of boosts.
+			5 defense
+			5% increase to all damage types
+			Increases maximum health and mana by 10
+			Increases movement and attack speed by 5%
+			Increases max minion slots by 1
+			Increases critical rates by 5%
+			'''
+	}
+
+	GreenCross: {
+		DisplayName: Green Cross
+		Tooltip: A Geneva-Convention-friendly pin which boasts regenerative properties.\nRegenerates 5% of your maximum health every 10 seconds
+	}
+
+	IronCross: {
+		DisplayName: Iron Cross
+		Tooltip:
+			'''
+			A war medal which offers protection. Lance's favourite flair.
+			4 defense
+			Boosts ranged damage by 10%
+			'''
+	}
+
+	ShieldMedal: {
+		DisplayName: Shield Medal
+		Tooltip:
+			'''
+			Aid others where you can. Let all be helped and loved throughout the realm.
+			20 defense
+			'''
+	}
+
+	SwordMedal: {
+		DisplayName: Sword Medal
+		Tooltip:
+			'''
+			True might is the mark of discipline, honor and courage.
+			 Increases Ranged and Melee damage by 20%
+			'''
+	}
+
+	TargetBadge: {
+		DisplayName: Target Badge
+		Tooltip:
+			'''
+			Somehow putting a target on yourself makes you a better shot, who knew?
+			1 defense
+			Increases critical chance by 10% for all types of damage.
+			Increases enemy aggression.
+			'''
+	}
+
+	DarkTooth: {
+		DisplayName: Dark Tooth
+		Tooltip:
+			'''
+			Ancient black magic staff used for Dark elemental magic. Creates a slowly growing black hole that explodes afterwards.
+			Pulls everything towards it, even the player
+			'''
+	}
+
+	Flameheart: {
+		DisplayName: Flameheart
+		Tooltip:
+			'''
+			A common but powerful staff, used by mages to scorch foes.
+			Every 3 uses, it summons a firestorm
+			Consumes minor amounts of Limit Break
+			'''
+	}
+
+	Seraphim: {
+		DisplayName: Seraphim
+		Tooltip: A glorious staff used by gorgeous angels.
+	}
+
+	SpellProtect: {
+		DisplayName: Spell Protect
+		Tooltip:
+			'''
+			This spell vastly protects you from enemy attacks.
+			Blocks 25% of the damage received.
+			'''
+	}
+
+	SpellRegeneration: {
+		DisplayName: Spell Regeneration
+		Tooltip:
+			'''
+			This spell vastly increases your regeneration.
+			Costs a lot of mana and has a big cooldown.
+			'''
+	}
+
 	Avenger: {
 		DisplayName: Avenger
-		Tooltip: ""
+		Tooltip: For every scar, for every dishonor, the Avenger sharpens its edge. Grows stronger at low health.
 	}
 
 	BlackFang: {
 		DisplayName: Black Fang
-		Tooltip: ""
+		Tooltip: "'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt"
+	}
+
+	DragonsFeather: {
+		DisplayName: Dragons Feather
+		Tooltip:
+			'''
+			A blade that grants swiftness to its wielder.
+			It can send enemies flying far away.
+			'''
 	}
 
 	HeavensGate: {
 		DisplayName: Heavens Gate
-		Tooltip: ""
+		Tooltip: A legendary sword belonging to a line of famed corsairs.
 	}
 
 	Inferno: {
 		DisplayName: Inferno
-		Tooltip: ""
+		Tooltip:
+			'''
+			Wreathed in scorching flames.
+			Burns foes.
+			'''
 	}
 
 	SoulEater: {
 		DisplayName: Soul Eater
-		Tooltip: ""
+		Tooltip:
+			'''
+			Honestly, it could have been worse. It could kill you instantly.
+			When held, increases your damage by 80% but reduces your defenst by 50%.
+			'''
 	}
 
 	UltraPro9000X: {
@@ -29,57 +199,46 @@ Items: {
 		Tooltip: ""
 	}
 
-	AngryFaic: {
-		DisplayName: Angry Faic
-		Tooltip: ""
+	FusionBlade: {
+		DisplayName: Fusion Blade
+		Tooltip:
+			'''
+			Modeled after the weapons used by the MILITIA branch.
+			Shoots a big bullet.
+			'''
 	}
 
-	BalanceBadge: {
-		DisplayName: Balance Badge
-		Tooltip: ""
+	Airstrike_Remote: {
+		DisplayName: Airstrike Remote
+		Tooltip:
+			'''
+			Bombs away!!!!
+			Left click to quickly drop bombs down, right click to drop 3 weaker bombs at once.
+			'''
 	}
 
-	GreenCross: {
-		DisplayName: Green Cross
-		Tooltip: ""
-	}
-
-	IronCross: {
-		DisplayName: Iron Cross
-		Tooltip: ""
-	}
-
-	ShieldMedal: {
-		DisplayName: Shield Medal
-		Tooltip: ""
-	}
-
-	SwordMedal: {
-		DisplayName: Sword Medal
-		Tooltip: ""
-	}
-
-	TargetBadge: {
-		DisplayName: Target Badge
-		Tooltip: ""
-	}
-
-	DarkTooth: {
-		DisplayName: Dark Tooth
-		Tooltip: ""
-	}
-
-	Seraphim: {
-		DisplayName: Seraphim
-		Tooltip: ""
+	IceNeedle: {
+		DisplayName: Ice Needle
+		Tooltip:
+			'''
+			Cold to the tip
+			Shoots a javelin that spawns snowflakes at the impact position.
+			'''
 	}
 }
 
 Projectiles: {
-	LightBlade.DisplayName: Light Blade
-	LightBlade_Mini.DisplayName: Light Blade_ Mini
+	DarkTooth_BlackHole.DisplayName: Dark Tooth_ Black Hole
+	Flameheart_Fireball.DisplayName: Flameheart_ Fireball
+	Flameheart_FireballMed.DisplayName: Flameheart_ Fireball Med
+	Flameheart_FireballSmall.DisplayName: Flameheart_ Fireball Small
+	Flameheart_Firestorm.DisplayName: Flameheart_ Firestorm
+	Seraphim_Judgement.DisplayName: Seraphim_ Judgement
 	HeavensGate_LightBlade.DisplayName: Heavens Gate_ Light Blade
 	HeavensGate_LightBlade_Mini.DisplayName: Heavens Gate_ Light Blade_ Mini
-	DarkTooth_BlackHole.DisplayName: Dark Tooth_ Black Hole
-	Seraphim_Judgement.DisplayName: Seraphim_ Judgement
+	FusionBlade_BulletBob.DisplayName: Fusion Blade_ Bullet Bob
+	Airstrike_Bomb.DisplayName: Airstrike_ Bomb
+	Airstrike_SmallBomb.DisplayName: Airstrike_ Small Bomb
+	IceNeedle_Icicle.DisplayName: Ice Needle_ Icicle
+	IceNeedle_Proj.DisplayName: Ice Needle_ Proj
 }
