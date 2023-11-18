@@ -50,12 +50,21 @@ namespace EBF.Items.Melee.Throwable
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = -1;
             Projectile.timeLeft = 30;
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
             AIType = ProjectileID.JavelinFriendly;
+            Projectile.extraUpdates = 1;
         }
+
+        public override void AI()
+        {
+            float velRotation = Projectile.velocity.ToRotation();
+            Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
+            Projectile.spriteDirection = Projectile.direction;
+        }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
@@ -83,7 +92,7 @@ namespace EBF.Items.Melee.Throwable
             DustPosition += DustOldVelocity * 16f;
             for (int i = 0; i < 30; i++)
             {
-                int icy = Dust.NewDust(DustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 1f);
+                int icy = Dust.NewDust(DustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 2f);
                 Main.dust[icy].position = (Main.dust[icy].position + Projectile.Center) / 2f;
                 Dust dust = Main.dust[icy];
                 dust.velocity += Projectile.oldVelocity * 0.6f;

@@ -242,13 +242,13 @@ namespace EBF.Items.Magic.Flameheart
         }
 
         #region PreDraw
-        public override bool PreDrawExtras()
+        /*public override bool PreDrawExtras()
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 
             return true;
-        }
+        }*/
         #endregion PreDraw
     }
 
@@ -305,12 +305,17 @@ namespace EBF.Items.Magic.Flameheart
                 }
             }
         }
+
         public override bool PreDraw(ref Color lightColor)
+        {
+            return true;
+        }
+        /*public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 
             return true;
-        }
+        }*/
     }
 }

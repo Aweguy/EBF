@@ -69,7 +69,7 @@ namespace EBF.Items.Magic
 
 	public class Seraphim_Judgement : ModProjectile
 	{
-		public static readonly SoundStyle JudgementSound = new("EpicBattleFantasyUltimate/Assets/Sounds/Custom/Spells/Judgement")
+		public static readonly SoundStyle JudgementSound = new("EBF/Assets/Sounds/Custom/Judgement")
 		{
 			Volume = 2f,
 			PitchVariance = 1f
@@ -298,7 +298,7 @@ namespace EBF.Items.Magic
 			if (timer2 == 40)
 			{
 				if (!Main.dedServ)
-					//SoundEngine.PlaySound(JudgementSound, Projectile.Center);
+					SoundEngine.PlaySound(JudgementSound, Projectile.Center);
 
 				for (int i = 0; i < 85; ++i)
 				{

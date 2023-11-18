@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -38,15 +41,73 @@ namespace EBF.Items.Melee
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
+			for(int i = 0; i < 4; i++)
+			{
+				float randomRotation = Main.rand.NextFloat(0, 360);
+				Projectile.NewProjectile(Item.GetSource_FromThis(), target.Center, new Vector2(1f, 0).RotatedBy(randomRotation), ModContent.ProjectileType<Inferno_Fireball>(), Item.damage, 0f, player.whoAmI);
+			}
+
 			target.AddBuff(BuffID.OnFire, 60 * 2);
 		}
 
-		public override void MeleeEffects(Player player, Rectangle hitbox)
+        public override void MeleeEffects(Player player, Rectangle hitbox)
 		{
 			if (Main.rand.NextBool(3))
 			{
-				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Firefly);
+				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Torch);
 			}
 		}
 	}
+	public class Inferno_Fireball: ModProjectile
+	{
+		public override void SetDefaults()
+        {
+            Projectile.width = 16;
+            Projectile.height = 16;
+
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+
+            Projectile.light = 1f;
+            Projectile.tileCollide = true;
+
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 60 * 3;
+
+			Projectile.scale = 0.5f;
+
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+			target.AddBuff(BuffID.OnFire, 60 * 2);
+
+			if(hit.Damage >= target.life)
+			{
+                for (int i = 0; i < 4; i++)
+                {
+                    float randomRotation = Main.rand.NextFloat(0, 360);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, new Vector2(1f, 0).RotatedBy(randomRotation), ModContent.ProjectileType<Inferno_Fireball>(), Projectile.damage, 0f, Projectile.whoAmI);
+                }
+            }
+        }
+
+        public override bool PreAI()
+        {
+            int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 0, Color.Orange, 1f);
+			Main.dust[dustIndex].noGravity = true;
+            return false;
+        }
+
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 25; i++)
+            {
+                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 0, Color.Orange, 1f);
+                Main.dust[dustIndex].noGravity = true;
+            }
+        }
+    }
 }

@@ -21,6 +21,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             base.DisplayName.WithFormatArgs("Airstrike Remote");//Name of the Item
             base.Tooltip.WithFormatArgs("Bombs away!!!!\nLeft click to quickly drop bombs down, right click to drop 3 weaker bombs at once.");//Tooltip of the item
+            ItemID.Sets.ItemsThatAllowRepeatedRightClick[Item.type] = true;
         }
 
         public override void SetDefaults()
@@ -257,16 +258,16 @@ namespace EBF.Items.Magic.Airstrike
             for (int i = 0; i < 50; i++)
             {
                 int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
-                Main.dust[dustIndex].velocity *= 1.4f;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
             }
             // Fire Dust spawn
             for (int i = 0; i < 80; i++)
             {
                 int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 3f);
                 Main.dust[dustIndex].noGravity = true;
-                Main.dust[dustIndex].velocity *= 5f;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
                 dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 2f);
-                Main.dust[dustIndex].velocity *= 3f;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
             }
             // Large Smoke Gore spawn
             for (int g = 0; g < 2; g++)
@@ -422,16 +423,16 @@ namespace EBF.Items.Magic.Airstrike
             for (int i = 0; i < 25; i++)
             {
                 int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
-                Main.dust[dustIndex].velocity *= 1.4f;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
             }
             // Fire Dust spawn
             for (int i = 0; i < 40; i++)
             {
                 int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 3f);
                 Main.dust[dustIndex].noGravity = true;
-                Main.dust[dustIndex].velocity *= 5f;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
                 dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 2f);
-                Main.dust[dustIndex].velocity *= 3f;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
             }
             // Large Smoke Gore spawn
             for (int g = 0; g < 2; g++)
@@ -445,6 +446,7 @@ namespace EBF.Items.Magic.Airstrike
                 Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X - 1.5f;
                 Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y + 1.5f;
             }
+            Main.MouseWorld.ToScreenPosition();
             // reset size to normal width and height.
             Projectile.position.X = Projectile.position.X + Projectile.width / 2;
             Projectile.position.Y = Projectile.position.Y + Projectile.height / 2;

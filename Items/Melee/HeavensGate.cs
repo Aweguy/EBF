@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using EBF.Extensions;
 
 namespace EBF.Items.Melee
 {
@@ -43,7 +47,8 @@ namespace EBF.Items.Melee
         {
             if(Main.rand.NextFloat() <= 0.3f)
             {
-                Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.AncientLight);
+                int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.AncientLight);
+                Main.dust[dust].noGravity = true;
             }
         }
 
@@ -51,7 +56,7 @@ namespace EBF.Items.Melee
         {
             Vector2 VelocityManual = new Vector2(velocity.X, velocity.Y);//We store the velocity for later use
 
-            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X, velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
+            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X , velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
 
             return false;
         }
@@ -64,9 +69,14 @@ namespace EBF.Items.Melee
         bool Stop = false;
         Vector2 SpawnPosition;
         Vector2 OldMouseWorld;
+        int TrailSkip = 2;
+
+
         public override void SetStaticDefaults()//Mainly used for setting the frames of animations or things we don't want to change in the projectile
         {
             Main.projFrames[Projectile.type] = 11;
+            ProjectileID.Sets.TrailingMode[Type] = 2; // Creates a trail behind the golf ball.
+            ProjectileID.Sets.TrailCacheLength[Type] = 36; // Sets the length of the trail.
         }
 
         public override void SetDefaults()
@@ -142,6 +152,7 @@ namespace EBF.Items.Melee
             {
                 int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight);
                 Main.dust[dust].velocity.X *= 0.4f;
+                Main.dust[dust].noGravity = true;
             }
 
             #region animation and more
@@ -159,7 +170,7 @@ namespace EBF.Items.Melee
                     }
                     else if (Projectile.frame == 4)
                     {
-                        Projectile.velocity = MoveSpeed;
+                        Projectile.velocity = Vector2.Normalize(MoveSpeed) * 16f;
                         Stop = true;
                     }
 
@@ -188,6 +199,43 @@ namespace EBF.Items.Melee
             Projectile.spriteDirection = Projectile.direction;
             return false;
         }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+
+
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
+            Vector2 origin = frame.Size() / 2;
+            SpriteEffects effects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+
+            float initialOpacity = 0.8f;
+            float opacityDegrade = 0.08f;
+
+
+
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Projectile.type]; i += 1)
+            {
+                if(TrailSkip++ <= 0)
+                {
+                    float opacity = initialOpacity - opacityDegrade * i;
+                    Main.spriteBatch.Draw(texture, Projectile.oldPos[i] + Projectile.Hitbox.Size() / 2 - Main.screenPosition, frame, lightColor * opacity, Projectile.rotation, origin, Projectile.scale, effects, 0f);
+                    TrailSkip = 2;
+                }
+            }
+
+            #region Trailing
+
+            #endregion Trailing
+            //Main.spriteBatch.End();
+            //Main.spriteBatch.Begin();
+
+            return false;
+        }
+
+
+
     }
 
     public class HeavensGate_LightBlade_Mini : ModProjectile

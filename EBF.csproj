@@ -8,20 +8,55 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Items\BlitzNeedle.png" />
+    <None Remove="Items\BlitzNeedleProjectile.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_Bomb.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_Bomb_Glowmask.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_SmallBomb.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_SmallBomb_Glowmask.png" />
     <None Remove="Items\Magic\Airstrike_Remote.png" />
+    <None Remove="Items\Melee\Inferno_Fireball.png" />
     <None Remove="Items\Melee\Throwable\IceNeedle.png" />
     <None Remove="Items\Melee\Throwable\IceNeedle_Proj.png" />
-    <None Remove="Localization\en-US_Mods.EBF.Configs.hjson" />
+    <None Remove="Items\NeedleBoom.png" />
+    <None Remove="Items\NeedleShot.png" />
+    <None Remove="NPCs\Idols\IceIdols\IceIdol_1.png" />
+    <None Remove="NPCs\Idols\IceIdols\IceIdol_2.png" />
+    <None Remove="NPCs\Idols\IceIdols\IceIdol_3.png" />
+    <None Remove="NPCs\Idols\MarbleIdols\MarbleIdol_1.png" />
+    <None Remove="NPCs\Idols\MarbleIdols\MarbleIdol_2.png" />
+    <None Remove="NPCs\Idols\MarbleIdols\MarbleIdol_3.png" />
+    <None Remove="NPCs\Idols\ObsidianIdols\ObsidianIdol_1.png" />
+    <None Remove="NPCs\Idols\ObsidianIdols\ObsidianIdol_2.png" />
+    <None Remove="NPCs\Idols\ObsidianIdols\ObsidianIdol_3.png" />
+    <None Remove="NPCs\Idols\StoneIdols\StoneIdol_1.png" />
+    <None Remove="NPCs\Idols\StoneIdols\StoneIdol_2.png" />
+    <None Remove="NPCs\Idols\StoneIdols\StoneIdol_3.png" />
+    <None Remove="NPCs\Idols\WoodenIdol_1.png" />
+    <None Remove="NPCs\Idols\WoodenIdol_2.png" />
+    <None Remove="NPCs\Idols\WoodenIdol_3.png" />
+    <None Remove="NPCs\Ores\AmethystOre.png" />
+    <None Remove="NPCs\Ores\AmethystOre_AmethystExplosion.png" />
+    <None Remove="NPCs\Ores\AmethystOre_Dark.png" />
+    <None Remove="NPCs\Ores\PeridotOre.png" />
+    <None Remove="NPCs\Ores\PeridotOre_PeridotExplosion.png" />
+    <None Remove="NPCs\Ores\QuartzOre.png" />
+    <None Remove="NPCs\Ores\QuartzOre_QuartzExplosion.png" />
+    <None Remove="NPCs\Ores\RubyOre.png" />
+    <None Remove="NPCs\Ores\RubyOre_RubyExplosion.png" />
+    <None Remove="NPCs\Ores\SapphireOre.png" />
+    <None Remove="NPCs\Ores\SapphireOre_SapphireExplosion.png" />
+    <None Remove="NPCs\Ores\TopazOre.png" />
+    <None Remove="NPCs\Ores\TopazOre_TopazExplosion.png" />
+    <None Remove="NPCs\Ores\ZirconOre.png" />
+    <None Remove="NPCs\Ores\ZirconOre_ZirconExplosion.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Sounds\Custom\" />
     <Folder Include="Players\" />
-    <Folder Include="Projectiles\Melee\" />
+    <Folder Include="Projectiles\" />
   </ItemGroup>
 </Project>
