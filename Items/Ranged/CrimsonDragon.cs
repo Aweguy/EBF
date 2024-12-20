@@ -29,13 +29,13 @@ namespace EBF.Items.Ranged
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 20;//How fast the item is used
-            Item.useAnimation = 29;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 10f;
 
-            Item.value = Item.sellPrice(copper:, silver:, gold:, platinum:);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.DD2_BallistaTowerShot;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
@@ -46,7 +46,7 @@ namespace EBF.Items.Ranged
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<>();
+                type = ModContent.ProjectileType<CrimsonDragon_CrimsonArrow>();
             }
         }
     }
@@ -57,14 +57,14 @@ namespace EBF.Items.Ranged
         {
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.aiStyle = -1;
+            Projectile.aiStyle = 1;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.damage = 10;
             Projectile.knockBack = 1f;
             Projectile.tileCollide = true;
-            Projectile.hide = true;
+            Projectile.hide = false;
             Projectile.extraUpdates = 2;
             DrawOffsetX = -13;
             DrawOriginOffsetY = -4;
