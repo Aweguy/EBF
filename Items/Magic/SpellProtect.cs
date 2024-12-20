@@ -1,5 +1,4 @@
-﻿using EBF.Abstract_Classes;
-using EBF.Buffs;
+﻿using EBF.Buffs;
 using EBF.Buffs.Cooldowns;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class SpellProtect : Flair
+    public class SpellProtect : ModItem
     {
         /*public static readonly SoundStyle ProtectSound = new("EBF/Assets/Sounds/Item/Protect")
         {

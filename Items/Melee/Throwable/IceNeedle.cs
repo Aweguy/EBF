@@ -71,7 +71,7 @@ namespace EBF.Items.Melee.Throwable
             return true;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             int NumOfProjectiles = 9;
             float projRotation = 0f;
@@ -209,7 +209,7 @@ namespace EBF.Items.Melee.Throwable
             }
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
 

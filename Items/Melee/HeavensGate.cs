@@ -98,7 +98,7 @@ namespace EBF.Items.Melee
             Projectile.scale = 1.3f;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Vector2 DustPosition = Projectile.position;
             Vector2 DustOldVelocity = Projectile.oldVelocity;
@@ -287,7 +287,7 @@ namespace EBF.Items.Melee
             }
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Vector2 DustPosition = Projectile.position;
             Vector2 DustOldVelocity = Projectile.oldVelocity;

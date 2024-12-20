@@ -70,7 +70,7 @@ namespace EBF.Items.Melee
 			Projectile.usesLocalNPCImmunity = true;
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 		}

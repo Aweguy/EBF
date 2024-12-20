@@ -1,5 +1,4 @@
-﻿using EBF.Abstract_Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Accessories.Flairs
 {
-	public class IronCross : Flair
+	public class IronCross : ModItem
 	{
 		public override void SetStaticDefaults()
 		{

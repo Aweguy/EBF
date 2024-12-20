@@ -240,6 +240,11 @@ Items: {
 		DisplayName: Blitz Needle
 		Tooltip: ""
 	}
+
+	ShootingStar: {
+		DisplayName: Shooting Star
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -270,6 +275,7 @@ Projectiles: {
 	BlitzNeedleProjectile.DisplayName: Blitz Needle Projectile
 	NeedleShot.DisplayName: Needle Shot
 	NeedleBoom.DisplayName: Needle Boom
+	Star.DisplayName: Star
 }
 
 NPCs: {

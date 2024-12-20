@@ -170,7 +170,7 @@ namespace EBF.Items.Magic
 
                             Sucking(SuckRange);//Sucking enemy npcs (or friendly) not bosses
 
-                            PlayerSucking(player, SuckRange);//Sucking the player and damaging them if too close
+                            //PlayerSucking(player, SuckRange);//Sucking the player and damaging them if too close/ Was a test
 
                             GoreSucking(SuckRange);//Sucking gore
 
@@ -252,10 +252,15 @@ namespace EBF.Items.Magic
                 {
                     Projectile.scale += 0.05f;
                 }
-                else
+                else if (Projectile.width > 325 && Projectile.width <= 700)
                 {
                     Projectile.scale += 0.025f;
                 }
+                else
+                {
+                    Projectile.scale += 0;
+                }
+                
                 Projectile.width = (int)(baseWidth * Projectile.scale);
                 Projectile.height = (int)(baseHeight * Projectile.scale);
                 Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
@@ -284,8 +289,8 @@ namespace EBF.Items.Magic
                 }
             }
         }
-        //Player Sucking
-        private void PlayerSucking(Player player, float SuckingRange)
+        //Player Sucking Was just a test, not practical
+        /*private void PlayerSucking(Player player, float SuckingRange)
         {
             if (player.active)
             {
@@ -305,7 +310,8 @@ namespace EBF.Items.Magic
                     player.velocity += player.DirectionTo(Projectile.Center) * gravMagnitude;//Final calculation
                 }
             }
-        }
+        }*/
+
         //Gore Sucking
         private void GoreSucking(float SuckingRange)
         {
@@ -328,6 +334,7 @@ namespace EBF.Items.Magic
                 }
             }
         }
+
         //Dust Sucking
         private void DustSucking(float SuckingRange)
         {
@@ -382,7 +389,7 @@ namespace EBF.Items.Magic
             //Projectile.position.Y = Projectile.position.Y - (float)(Projectile.height / 2);
         }
         //The dust when the Projectile dies
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
             if (Projectile.width <= 150)
@@ -448,6 +455,11 @@ namespace EBF.Items.Magic
 
             // Do not allow vanilla drawing code to execute.
             return (false);
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCs.Add(index);
         }
     }
 }

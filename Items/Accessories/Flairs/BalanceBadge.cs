@@ -1,5 +1,4 @@
-﻿using EBF.Abstract_Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,7 @@ using Terraria;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class BalanceBadge  : Flair
+    public class BalanceBadge  : ModItem
     {
         public override void SetStaticDefaults()
         {

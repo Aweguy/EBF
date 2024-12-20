@@ -250,10 +250,10 @@ namespace EBF.Items.Magic.Airstrike
 
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             // Play explosion sound
-            SoundEngine.PlaySound(SoundID.Item15, Projectile.position);
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             // Smoke Dust spawn
             for (int i = 0; i < 50; i++)
             {
@@ -265,9 +265,9 @@ namespace EBF.Items.Magic.Airstrike
             {
                 int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 3f);
                 Main.dust[dustIndex].noGravity = true;
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
                 dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 2f);
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
             }
             // Large Smoke Gore spawn
             for (int g = 0; g < 2; g++)
@@ -290,6 +290,7 @@ namespace EBF.Items.Magic.Airstrike
                 Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y - 1.5f;
             }
         }
+
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindNPCsAndTiles.Add(index);
@@ -415,10 +416,10 @@ namespace EBF.Items.Magic.Airstrike
             }
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             // Play explosion sound
-            SoundEngine.PlaySound(SoundID.Item15, Projectile.position);
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             // Smoke Dust spawn
             for (int i = 0; i < 25; i++)
             {
@@ -430,9 +431,9 @@ namespace EBF.Items.Magic.Airstrike
             {
                 int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 3f);
                 Main.dust[dustIndex].noGravity = true;
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 3;
                 dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 2f);
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
+                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 3;
             }
             // Large Smoke Gore spawn
             for (int g = 0; g < 2; g++)
@@ -454,8 +455,8 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.height = 48;
             Projectile.position.X = Projectile.position.X - Projectile.width / 2;
             Projectile.position.Y = Projectile.position.Y - Projectile.height / 2;
-
         }
+
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindNPCsAndTiles.Add(index);
