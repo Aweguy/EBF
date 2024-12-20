@@ -245,6 +245,11 @@ Items: {
 		DisplayName: Shooting Star
 		Tooltip: ""
 	}
+
+	CrimsonDragon: {
+		DisplayName: Crimson Dragon
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -276,6 +281,7 @@ Projectiles: {
 	NeedleShot.DisplayName: Needle Shot
 	NeedleBoom.DisplayName: Needle Boom
 	Star.DisplayName: Star
+	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
 }
 
 NPCs: {
