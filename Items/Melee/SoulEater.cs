@@ -14,7 +14,7 @@ namespace EBF.Items.Melee
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Soul Eater");//Name of the Item
-            base.Tooltip.WithFormatArgs("Honestly, it could have been worse. It could kill you instantly.\nWhen held, increases your damage by 80% but reduces your defenst by 50%.");//Tooltip of the item
+            base.Tooltip.WithFormatArgs("Honestly, it could have been worse. It could kill you instantly.\nWhen held, increases your damage by 80% but reduces your defense by 50%.");//Tooltip of the item
         }
 
         public override void SetDefaults()
