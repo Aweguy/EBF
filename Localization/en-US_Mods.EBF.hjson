@@ -245,6 +245,41 @@ Items: {
 		DisplayName: Shooting Star
 		Tooltip: ""
 	}
+
+	CrimsonDragon: {
+		DisplayName: Crimson Dragon
+		Tooltip: ""
+	}
+
+	Berzerker: {
+		DisplayName: Berzerker
+		Tooltip: ""
+	}
+
+	LoveBlade: {
+		DisplayName: Love Blade
+		Tooltip: ""
+	}
+
+	SwiftBrand: {
+		DisplayName: Swift Brand
+		Tooltip: ""
+	}
+
+	SwordBreaker: {
+		DisplayName: Sword Breaker
+		Tooltip: ""
+	}
+
+	Anarchy: {
+		DisplayName: Anarchy
+		Tooltip: ""
+	}
+
+	Blizzard: {
+		DisplayName: Blizzard
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -276,6 +311,7 @@ Projectiles: {
 	NeedleShot.DisplayName: Needle Shot
 	NeedleBoom.DisplayName: Needle Boom
 	Star.DisplayName: Star
+	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
 }
 
 NPCs: {
