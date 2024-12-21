@@ -250,6 +250,26 @@ Items: {
 		DisplayName: Crimson Dragon
 		Tooltip: ""
 	}
+
+	Berzerker: {
+		DisplayName: Berzerker
+		Tooltip: ""
+	}
+
+	LoveBlade: {
+		DisplayName: Love Blade
+		Tooltip: ""
+	}
+
+	SwiftBrand: {
+		DisplayName: Swift Brand
+		Tooltip: ""
+	}
+
+	SwordBreaker: {
+		DisplayName: Sword Breaker
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
