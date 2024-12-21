@@ -270,6 +270,16 @@ Items: {
 		DisplayName: Sword Breaker
 		Tooltip: ""
 	}
+
+	Anarchy: {
+		DisplayName: Anarchy
+		Tooltip: ""
+	}
+
+	Blizzard: {
+		DisplayName: Blizzard
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
