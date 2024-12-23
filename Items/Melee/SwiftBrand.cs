@@ -14,7 +14,7 @@ namespace EBF.Items.Melee
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Swift Brand");//Name of the Item
-            base.Tooltip.WithFormatArgs("");//Tooltip of the item
+            base.Tooltip.WithFormatArgs("'It's so easy to swing around!' - Matt");//Tooltip of the item
         }
 
         public override void SetDefaults()
