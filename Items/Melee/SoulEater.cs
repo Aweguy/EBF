@@ -21,15 +21,16 @@ namespace EBF.Items.Melee
         {
             Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 62;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.scale = 1.4f;//The size multiplier of the item's sprite while it's being used. Also increases range for melee weapons
 
-            Item.damage = 30;//Item's base damage value
+            Item.damage = 300;//Item's base damage value
             Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 24;//How fast the item is used
+            Item.useAnimation = 24;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper:66, silver:66, gold:6, platinum:0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 66, silver: 66, gold: 6, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
