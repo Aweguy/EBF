@@ -35,5 +35,19 @@ namespace EBF.Items.Melee
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
+
+        /* TODO: Increase player movement speed while holding the weapon.
+         * also, make the crafting recipe work with silver bars, cuz right now it explicitly wants tungsten bars.
+         */
+
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.TungstenBar, 12)
+                .AddIngredient(ItemID.Feather, 8)
+                .AddIngredient(ItemID.Emerald, 4)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 }
