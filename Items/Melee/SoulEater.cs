@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,15 +34,55 @@ namespace EBF.Items.Melee
 
             Item.value = Item.sellPrice(copper: 66, silver: 66, gold: 6, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item1;//The item's sound when it's used
+            Item.UseSound = SoundID.Item103;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
 
-        public override void HoldItem(Player player)//Needs revision
+        public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            player.GetDamage(DamageClass.Generic) += 0.8f;
-            player.statDefense /= (int)2f;
+            if (Main.rand.NextBool(2)) //Spawning frequency
+            {
+                Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.CrimsonTorch);
+            }
+        }
+
+        public override bool? UseItem(Player player)
+        {
+            //Drain health every swing
+            if (player.itemAnimation == player.itemAnimationMax - 1) //Limit effect to once per attack.
+            {
+                int hpToDrain = 2;
+
+                //Drain or kill
+                if (player.statLife > hpToDrain)
+                {
+                    player.statLife -= hpToDrain;
+                    player.HealEffect(-hpToDrain); //Show the health reduction effect
+                }
+                else
+                {
+                    player.KillMe(PlayerDeathReason.ByCustomReason(player.name + " sold their soul."), 10.0, 0);
+                } 
+            }
+
+            return false;
+        }
+
+        public override void HoldItem(Player player)
+        {
+            //50% defense while held
+            player.statDefense *= 0.5f;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<Anarchy>(stack: 1)
+                .AddIngredient(ItemID.BrokenHeroSword, stack: 1)
+                .AddIngredient(ItemID.SpookyWood, stack: 80)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }
