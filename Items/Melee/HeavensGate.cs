@@ -56,12 +56,12 @@ namespace EBF.Items.Melee
 
     public class HeavensGate_LightBlade : ModProjectile
     {
-        float SpawnDistanceFromClick;
-        bool DistanceSet = false;
-        bool Stop = false;
-        Vector2 SpawnPosition;
-        Vector2 OldMouseWorld;
-        int TrailSkip = 2;
+        private float SpawnDistanceFromClick;
+        private bool DistanceSet = false;
+        private bool Stop = false;
+        private Vector2 SpawnPosition;
+        private Vector2 OldMouseWorld;
+        private int TrailSkip = 2;
 
 
         public override void SetStaticDefaults()//Mainly used for setting the frames of animations or things we don't want to change in the projectile
@@ -225,14 +225,14 @@ namespace EBF.Items.Melee
 
     public class HeavensGate_LightBlade_Mini : ModProjectile
     {
-        float SpawnDistanceFromTarget;
-        bool DistanceSet = false;
-        bool Stop = false;
-        Vector2 SpawnPosition;
-        Vector2 OldTargetPosition;
-        Vector2 MoveSpeed;
+        private float SpawnDistanceFromTarget;
+        private bool DistanceSet = false;
+        private bool Stop = false;
+        private Vector2 SpawnPosition;
+        private Vector2 OldTargetPosition;
+        private Vector2 MoveSpeed;
 
-        Projectile Father;
+        private Projectile Father;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 11;
