@@ -163,6 +163,8 @@ namespace EBF.Items.Melee.Throwable
             return false;
         }
 
+        /* TODO: Optimize npc search and decouple it from these snowflakes, so the mod is easier to scale
+         */
         private void FindTarget()
         {
             if (Projectile.localAI[0] == 0f)
