@@ -9,7 +9,7 @@ using Terraria.ID;
 
 namespace EBF.Items.Melee
 {
-    public class Avenger: ModItem
+    public class Avenger : ModItem
     {
         int missHP;//The missing health of the player
         public override void SetStaticDefaults()

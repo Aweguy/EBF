@@ -153,8 +153,8 @@ namespace EBF.Items.Magic
             if (Shrkinking)
             {
                 Projectile.scale -= 0.01f;
-                
-                if(Projectile.scale <= 0)
+
+                if (Projectile.scale <= 0)
                 {
                     Projectile.Kill();
                 }

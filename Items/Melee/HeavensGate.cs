@@ -45,7 +45,7 @@ namespace EBF.Items.Melee
         }
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            if(Main.rand.NextFloat() <= 0.3f)
+            if (Main.rand.NextFloat() <= 0.3f)
             {
                 int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.AncientLight);
                 Main.dust[dust].noGravity = true;
@@ -56,7 +56,7 @@ namespace EBF.Items.Melee
         {
             Vector2 VelocityManual = new Vector2(velocity.X, velocity.Y);//We store the velocity for later use
 
-            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X , velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
+            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X, velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
 
             return false;
         }
