@@ -1,17 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using EBF.Extensions;
 
 namespace EBF.Items.Melee
 {
@@ -127,14 +118,7 @@ namespace EBF.Items.Melee
 
         public override bool? CanDamage() //If it's not fully form, do not damage
         {
-            if (Projectile.frame == 4)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Projectile.frame == 4;
         }
         public override bool PreAI()//Use this to write the AI of the projectile. Its behaviour in other words. Updates every frame.
         {
@@ -325,7 +309,6 @@ namespace EBF.Items.Melee
             Father = Main.projectile[(int)Projectile.ai[1]];
             if (!DistanceSet)//Setting the distance of the Projectile from the cursor
             {
-
                 SpawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * 80f;
 
                 SpawnDistanceFromTarget = Vector2.Distance(SpawnPosition, target.Center);
@@ -334,8 +317,8 @@ namespace EBF.Items.Melee
                 MoveSpeed = Projectile.velocity;
             }
 
-            //Change the 5 to determine how much dust will spawn. lower for more, higher for less
-            if (Main.rand.Next(3) == 0)
+            //Change the number to determine how much dust will spawn. lower for more, higher for less
+            if (Main.rand.NextBool(3))
             {
                 int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight);
                 Main.dust[dust].velocity.X *= 0.4f;
