@@ -36,14 +36,14 @@ namespace EBF.Items.Magic
 			Item.useTime = 10;//How fast the item is used
 			Item.useAnimation = 10;//How long the animation lasts. For swords it should stay the same as UseTime
 
-			Item.shoot = ModContent.ProjectileType<Seraphim_Judgement>();
-			Item.shootSpeed = 0f;
-
 			Item.value = Item.sellPrice(copper:0, silver:0, gold: 0, platinum: 0);//Item's value when sold
 			Item.rare = ItemRarityID.Purple;//Item's name colour, this is hardcoded by the modder and should be based on progression
 			Item.UseSound = SoundID.Item1;//The item's sound when it's used
 			Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
 			Item.useTurn = true;//Boolean, if the player's direction can change while using the item
+
+			Item.shoot = ModContent.ProjectileType<Seraphim_Judgement>();
+			Item.shootSpeed = 0f;
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

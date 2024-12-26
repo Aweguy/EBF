@@ -34,14 +34,14 @@ namespace EBF.Items.Magic
             Item.useAnimation = 10;//How long the animation lasts. For swords it should stay the same as UseTime
             Item.channel = true;//Channeling the item when held
 
-            Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
-            Item.shootSpeed = 0f;
-
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Purple;//Item's name colour, this is hardcoded by the modder and should be based on 
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
             Item.noMelee = true;
+
+            Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
+            Item.shootSpeed = 0f;
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

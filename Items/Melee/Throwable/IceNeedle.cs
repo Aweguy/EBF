@@ -20,7 +20,8 @@ namespace EBF.Items.Melee.Throwable
 
         public override void SetDefaults()
         {
-            Item.width = Item.height = 72;
+            Item.width = 72;
+            Item.height = 72;
 
             Item.damage = 40;
             Item.knockBack = 1f;
@@ -32,11 +33,10 @@ namespace EBF.Items.Melee.Throwable
 
             Item.rare = ItemRarityID.LightPurple;
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
+            Item.useTurn = false;
 
             Item.shoot = ModContent.ProjectileType<IceNeedle_Proj>();
             Item.shootSpeed = 16f;
-
-            Item.useTurn = false;
 
             Item.noUseGraphic = true;
         }
