@@ -34,20 +34,40 @@ namespace EBF.Items.Melee
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
-            Item.shoot = ProjectileID.TerraBeam;
-            Item.shootSpeed = 10;
+            //Item.shoot = ProjectileID.TerraBeam;
+            //Item.shootSpeed = 10;
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            swings++;
-            if (swings >= 3)
-            {
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback);
-                swings = 0;
-            }
+        /* TODO: Find a good projectile for this weapon, something short range.
+         * Also, we need to find a way to increase player movement speed without giving a buff, otherwise it might cancel existing buffs when unheld.
+         */
 
-            return false;
+        //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        //{
+        //    swings++;
+        //    if (swings >= 3)
+        //    {
+        //        Projectile.NewProjectile(source, position, velocity, type, damage, knockback);
+        //        swings = 0;
+        //    }
+
+        //    return false;
+        //}
+
+        public override void HoldItem(Player player)
+        {
+            player.AddBuff(BuffID.Swiftness, 1);
+            player.AddBuff(BuffID.Sunflower, 1);
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<SwiftBrand>(stack: 1)
+                .AddIngredient(ItemID.SoulofFlight, stack: 20)
+                .AddIngredient(ItemID.HallowedBar, stack: 12)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }
