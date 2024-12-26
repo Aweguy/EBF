@@ -200,7 +200,7 @@ namespace EBF.Items.Melee
             return false;
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        /*public override bool PreDraw(ref Color lightColor)
         {
 
 
@@ -232,7 +232,7 @@ namespace EBF.Items.Melee
             //Main.spriteBatch.Begin();
 
             return false;
-        }
+        }*/
 
 
 
