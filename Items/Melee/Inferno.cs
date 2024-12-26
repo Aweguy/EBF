@@ -84,8 +84,8 @@ namespace EBF.Items.Melee
         {
 			target.AddBuff(BuffID.OnFire, 60 * 2);
 
-			if(hit.Damage >= target.life)
-			{
+            if (hit.Damage >= target.life)
+            {
                 for (int i = 0; i < 4; i++)
                 {
                     float randomRotation = Main.rand.NextFloat(0, 360);
