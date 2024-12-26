@@ -35,7 +35,7 @@ namespace EBF.Items.Magic.Flameheart
 
             Item.shoot = ModContent.ProjectileType<Flameheart_Fireball>();
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 3, platinum: 0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held

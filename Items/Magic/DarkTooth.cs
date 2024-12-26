@@ -37,7 +37,7 @@ namespace EBF.Items.Magic
             Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
             Item.shootSpeed = 0f;
 
-            Item.value = Item.sellPrice(copper:0, silver:0, gold:50, platinum:1);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Purple;//Item's name colour, this is hardcoded by the modder and should be based on 
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item

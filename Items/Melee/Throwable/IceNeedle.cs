@@ -31,6 +31,7 @@ namespace EBF.Items.Melee.Throwable
             Item.useStyle = ItemUseStyleID.Swing;
 
             Item.rare = ItemRarityID.LightPurple;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
 
             Item.shoot = ModContent.ProjectileType<IceNeedle_Proj>();
             Item.shootSpeed = 16f;

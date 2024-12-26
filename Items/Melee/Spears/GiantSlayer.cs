@@ -30,7 +30,7 @@ namespace EBF.Items.Melee.Spears
             Item.height = 32;
             Item.scale = 0.7f;
             Item.rare = ItemRarityID.Pink;
-            Item.value = Item.sellPrice(gold: 10);
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.DamageType = DamageClass.Melee; ;
             Item.noMelee = true; // Important because the spear is actually a projectile instead of an Item. This prevents the melee hitbox of this Item.
             Item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this Item.
