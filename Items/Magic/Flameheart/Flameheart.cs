@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,7 +38,7 @@ namespace EBF.Items.Magic.Flameheart
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if(++ChargeStacks >= 3)
+            if (++ChargeStacks >= 3)
             {
                 type = ModContent.ProjectileType<Flameheart_Firestorm>();
                 ChargeStacks = 0;
@@ -84,7 +78,7 @@ namespace EBF.Items.Magic.Flameheart
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextFloat() < 0.9f)
+            if (Main.rand.NextBool(10))
             {
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
@@ -98,24 +92,25 @@ namespace EBF.Items.Magic.Flameheart
 
             if (timer <= 0)
             {
-                int randomizer = Main.rand.Next(3);
+                //Randomize projectile
+                int chosenProjectile = 0;
+                switch (Main.rand.Next(3))
+                {
+                    case 0:
+                        chosenProjectile = ModContent.ProjectileType<Flameheart_FireballSmall>();
+                        break;
+                    case 1:
+                        chosenProjectile = ModContent.ProjectileType<Flameheart_FireballMed>();
+                        break;
+                    case 2:
+                        chosenProjectile = ModContent.ProjectileType<Flameheart_Fireball>();
+                        break;
+                }
 
+                //Spawn projectile
                 float X = Main.rand.NextFloat(-100f, 100f);
                 float Y = Main.rand.NextFloat(-100f, 100f);
-
-                if (randomizer == 0)
-                {
-                    int a = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + X, Projectile.Center.Y + Y, 0f, 0f, ModContent.ProjectileType<Flameheart_FireballSmall>(), 70, 0, Projectile.owner);
-                }
-                else if (randomizer == 2)
-                {
-                    int a = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + X, Projectile.Center.Y + Y, 0f, 0f, ModContent.ProjectileType<Flameheart_FireballMed>(), 70, 0, Projectile.owner);
-                }
-                else
-                {
-                    int a = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + X, Projectile.Center.Y + Y, 0f, 0f, ModContent.ProjectileType<Flameheart_Fireball>(), 70, 0, Projectile.owner);
-                }
-
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + X, Projectile.Center.Y + Y, 0f, 0f, chosenProjectile, 70, 0, Projectile.owner);
                 timer = 5;
             }
         }
@@ -151,12 +146,11 @@ namespace EBF.Items.Magic.Flameheart
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
-
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextFloat() < 0.4f)
+            if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
@@ -164,12 +158,11 @@ namespace EBF.Items.Magic.Flameheart
 
         public override void AI()
         {
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
-                Dust dust;
                 // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
                 Vector2 position = Projectile.position;
-                dust = Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Torch, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
+                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Torch, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
             }
 
             if (++Projectile.frameCounter > 3)
@@ -215,7 +208,7 @@ namespace EBF.Items.Magic.Flameheart
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextFloat() < 0.4f)
+            if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
@@ -223,12 +216,11 @@ namespace EBF.Items.Magic.Flameheart
 
         public override void AI()
         {
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
-                Dust dust;
                 // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
                 Vector2 position = Projectile.position;
-                dust = Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
+                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
             }
 
             if (++Projectile.frameCounter > 3)
@@ -275,12 +267,11 @@ namespace EBF.Items.Magic.Flameheart
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
-
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextFloat() < 0.4f)
+            if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
@@ -288,12 +279,11 @@ namespace EBF.Items.Magic.Flameheart
 
         public override void AI()
         {
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
-                Dust dust;
                 // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
                 Vector2 position = Projectile.position;
-                dust = Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
+                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
             }
 
             if (++Projectile.frameCounter > 3)
@@ -310,6 +300,7 @@ namespace EBF.Items.Magic.Flameheart
         {
             return true;
         }
+
         /*public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
