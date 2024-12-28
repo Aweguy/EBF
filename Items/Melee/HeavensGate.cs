@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -37,32 +38,32 @@ namespace EBF.Items.Melee
         }
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            if (Main.rand.NextFloat() <= 0.3f)
+            if (Main.rand.NextBool(3))
             {
                 int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.AncientLight);
                 Main.dust[dust].noGravity = true;
             }
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vector2 VelocityManual = new Vector2(velocity.X, velocity.Y);//We store the velocity for later use
+            //Spawn sword between cursor and player
+            position = Main.MouseWorld - (Vector2.Normalize(velocity) * 80f);
 
-            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X, velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
-
+            //Save velocities to be used by child swords
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X, velocity.Y);
             return false;
         }
     }
 
     public class HeavensGate_LightBlade : ModProjectile
     {
-        private float SpawnDistanceFromClick;
-        private bool DistanceSet = false;
-        private bool Stop = false;
-        private Vector2 SpawnPosition;
-        private Vector2 OldMouseWorld;
-        private int TrailSkip = 2;
-
+        private const float spawnDistanceFromClick = 80f;
+        private bool firstFrame = true;
+        private bool stop = false;
+        private Vector2 spawnPosition;
+        private Vector2 oldMouseWorld;
+        private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
+        private int trailSkip = 2;
 
         public override void SetStaticDefaults()//Mainly used for setting the frames of animations or things we don't want to change in the projectile
         {
@@ -70,7 +71,6 @@ namespace EBF.Items.Melee
             ProjectileID.Sets.TrailingMode[Type] = 2; // Creates a trail behind the golf ball.
             ProjectileID.Sets.TrailCacheLength[Type] = 36; // Sets the length of the trail.
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 14;
@@ -89,100 +89,102 @@ namespace EBF.Items.Melee
 
             Projectile.scale = 1.3f;
         }
-
         public override void OnKill(int timeLeft)
         {
-            Vector2 DustPosition = Projectile.position;
-            Vector2 DustOldVelocity = Projectile.oldVelocity;
-            DustOldVelocity.Normalize();
-            DustPosition += DustOldVelocity * 16f;
+            Vector2 dustPosition = Projectile.position;
+            Vector2 dustOldVelocity = Vector2.Normalize(Projectile.oldVelocity);
+            dustPosition += dustOldVelocity * 16f;
             for (int i = 0; i < 20; i++)
             {
-                int Light = Dust.NewDust(DustPosition, Projectile.width, Projectile.height, DustID.AncientLight, 0f, 0f, 0, default(Color), 1f);
-                Main.dust[Light].position = (Main.dust[Light].position + Projectile.Center) / 2f;
-                Dust dust = Main.dust[Light];
+                int light = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.AncientLight, 0f, 0f, 0, default(Color), 1f);
+                Main.dust[light].position = (Main.dust[light].position + Projectile.Center) / 2f;
+
+                Dust dust = Main.dust[light];
                 dust.velocity += Projectile.oldVelocity * 0.6f;
-                dust = Main.dust[Light];
+                dust = Main.dust[light];
                 dust.velocity *= 0.5f;
-                Main.dust[Light].noGravity = true;
-                DustPosition -= DustOldVelocity * 8f;
+
+                Main.dust[light].noGravity = true;
+                dustPosition -= dustOldVelocity * 8f;
             }
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            float rotation = Main.rand.NextFloat(360);
-            Vector2 Velocity = Projectile.velocity.RotatedBy(rotation * 0.0174533f);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center - (Vector2.Normalize(Velocity) * 80f), Velocity, ModContent.ProjectileType<HeavensGate_LightBlade_Mini>(), hit.Damage, Projectile.knockBack, Projectile.owner, target.whoAmI, Projectile.whoAmI);
-        }
+            //Randomize direction
+            float rotation = Main.rand.NextFloat((float)Math.Tau);
+            Vector2 velocity = Projectile.velocity.RotatedBy(rotation);
+            Vector2 position = target.Center - (Vector2.Normalize(velocity) * 80f);
 
+            //Spawn projectile
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<HeavensGate_LightBlade_Mini>(), hit.Damage, Projectile.knockBack, Projectile.owner, target.whoAmI, Projectile.whoAmI);
+        }
         public override bool? CanDamage() //If it's not fully form, do not damage
         {
             return Projectile.frame == 4;
         }
         public override bool PreAI()//Use this to write the AI of the projectile. Its behaviour in other words. Updates every frame.
         {
-            if (!DistanceSet)//Setting the distance of the Projectile from the cursor
+            if (firstFrame)//Setting the distance of the Projectile from the cursor
             {
-                SpawnPosition = Main.MouseWorld - Vector2.Normalize(new Vector2(Projectile.ai[0], Projectile.ai[1])) * 80f;
-
-                SpawnDistanceFromClick = Vector2.Distance(SpawnPosition, Main.MouseWorld);
-                OldMouseWorld = Main.MouseWorld;
-                DistanceSet = true;
+                spawnPosition = Main.MouseWorld - Vector2.Normalize(new Vector2(Projectile.ai[0], Projectile.ai[1])) * spawnDistanceFromClick;
+                oldMouseWorld = Main.MouseWorld;
+                moveSpeed = new Vector2(Projectile.ai[0], Projectile.ai[1]);
+                firstFrame = false;
             }
 
-            Vector2 MoveSpeed = new Vector2(Projectile.ai[0], Projectile.ai[1]);
-            //Change the 5 to determine how much dust will spawn. lower for more, higher for less
-            if (Main.rand.Next(3) == 0)
+            if (Main.rand.NextBool(3))
             {
                 int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight);
                 Main.dust[dust].velocity.X *= 0.4f;
                 Main.dust[dust].noGravity = true;
             }
 
-            #region animation and more
-            if (!Stop)
+            if (!stop)
             {
-
-                if (++Projectile.frameCounter > 2)
-                {
-                    Projectile.frameCounter = 0;
-
-                    if (++Projectile.frame <= 3)
-                    {
-                        Projectile.velocity = Vector2.Zero;
-                        Projectile.netUpdate = true;
-                    }
-                    else if (Projectile.frame == 4)
-                    {
-                        Projectile.velocity = Vector2.Normalize(MoveSpeed) * 16f;
-                        Stop = true;
-                    }
-
-                    else if (Projectile.frame > 4)
-                    {
-                        Projectile.velocity = Vector2.Zero;
-
-                        Projectile.netUpdate = true;
-
-                        if (Projectile.frame == 11)
-                        {
-                            Projectile.Kill();
-                        }
-                    }
-                }
+                HandleFrames();
+            }
+            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= spawnDistanceFromClick * 4f)
+            {
+                stop = false;
             }
 
-            if (Stop && Vector2.Distance(OldMouseWorld, Projectile.Center) >= SpawnDistanceFromClick * 2f)
-            {
-                Stop = false;
-            }
-            #endregion
-
-            float velRotation = MoveSpeed.ToRotation();
-            Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
+            float velRotation = moveSpeed.ToRotation();
+            Projectile.rotation = velRotation + MathHelper.ToRadians(90f); //necessary cuz sprite faces the wrong way
             Projectile.spriteDirection = Projectile.direction;
             return false;
+        }
+        private void HandleFrames()
+        {
+            //Advance frames every third tick
+            if (++Projectile.frameCounter < 3)
+            {
+                return;
+            }
+
+            Projectile.frame++;
+            Projectile.frameCounter = 0;
+
+            if (Projectile.frame <= 3)
+            {
+                Projectile.velocity = Vector2.Zero;
+                Projectile.netUpdate = true;
+            }
+            else if (Projectile.frame == 4)
+            {
+                Projectile.velocity = Vector2.Normalize(moveSpeed) * 16f;
+                stop = true;
+            }
+            else if (Projectile.frame > 4)
+            {
+                Projectile.velocity = Vector2.Zero;
+
+                Projectile.netUpdate = true;
+
+                if (Projectile.frame == 11)
+                {
+                    Projectile.Kill();
+                }
+            }
         }
 
         /*public override bool PreDraw(ref Color lightColor)
@@ -218,26 +220,22 @@ namespace EBF.Items.Melee
 
             return false;
         }*/
-
-
-
     }
 
     public class HeavensGate_LightBlade_Mini : ModProjectile
     {
-        private float SpawnDistanceFromTarget;
-        private bool DistanceSet = false;
-        private bool Stop = false;
-        private Vector2 SpawnPosition;
-        private Vector2 OldTargetPosition;
-        private Vector2 MoveSpeed;
-
-        private Projectile Father;
+        private const int copyLimit = 2; //How many times this projectile can be copied
+        private const float spawnDistanceFromTarget = 80f; //How far away new projectiles spawn from a target
+        private bool firstFrame = true;
+        private bool stop = false;
+        private Vector2 spawnPosition;
+        private Vector2 oldTargetPosition;
+        private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
+        private Projectile parent;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 11;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 14;
@@ -257,64 +255,56 @@ namespace EBF.Items.Melee
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Father.localAI[0] <= 3f)
+            if (parent.localAI[0] < copyLimit)
             {
+                Projectile.localAI[0] = parent.localAI[0] + 1;
 
-                Projectile.localAI[0] = Father.localAI[0];
-                Projectile.localAI[0]++;
-                Projectile.localAI[1]++;
-                if (Projectile.localAI[1] <= 1)
+                //Ensure only one projectile is spawned from this one
+                if (++Projectile.localAI[1] == 1)
                 {
-                    float rotation = Main.rand.NextFloat(360);
-                    Vector2 Velocity = Projectile.velocity.RotatedBy(rotation * 0.0174533f);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center - (Vector2.Normalize(Velocity) * 80f), Velocity, ModContent.ProjectileType<HeavensGate_LightBlade_Mini>(), hit.Damage, Projectile.knockBack, Projectile.owner, target.whoAmI, Projectile.whoAmI);
+                    //Randomize direction
+                    float rotation = Main.rand.NextFloat((float)Math.Tau);
+                    Vector2 velocity = Projectile.velocity.RotatedBy(rotation);
+                    Vector2 position = target.Center - (Vector2.Normalize(velocity) * 80f);
+
+                    //Spawn projectile
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<HeavensGate_LightBlade_Mini>(), hit.Damage, Projectile.knockBack, Projectile.owner, target.whoAmI, Projectile.whoAmI);
                 }
             }
         }
-
         public override void OnKill(int timeLeft)
         {
-            Vector2 DustPosition = Projectile.position;
-            Vector2 DustOldVelocity = Projectile.oldVelocity;
-            DustOldVelocity.Normalize();
-            DustPosition += DustOldVelocity * 16f;
+            Vector2 dustPosition = Projectile.position;
+            Vector2 dustOldVelocity = Vector2.Normalize(Projectile.oldVelocity);
+            dustPosition += dustOldVelocity * 16f;
             for (int i = 0; i < 20; i++)
             {
-                int Light = Dust.NewDust(DustPosition, Projectile.width, Projectile.height, DustID.AncientLight, 0f, 0f, 0, default(Color), 1f);
-                Main.dust[Light].position = (Main.dust[Light].position + Projectile.Center) / 2f;
-                Dust dust = Main.dust[Light];
+                int light = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.AncientLight, 0f, 0f, 0, default(Color), 1f);
+                Main.dust[light].position = (Main.dust[light].position + Projectile.Center) / 2f;
+
+                Dust dust = Main.dust[light];
                 dust.velocity += Projectile.oldVelocity * 0.6f;
-                dust = Main.dust[Light];
+                dust = Main.dust[light];
                 dust.velocity *= 0.5f;
-                Main.dust[Light].noGravity = true;
-                DustPosition -= DustOldVelocity * 8f;
+
+                Main.dust[light].noGravity = true;
+                dustPosition -= dustOldVelocity * 8f;
             }
         }
-
         public override bool? CanDamage() //If it's not fully form, do not damage
         {
-            if (Projectile.frame == 4)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Projectile.frame == 4;
         }
-
         public override bool PreAI()
         {
             NPC target = Main.npc[(int)Projectile.ai[0]];
-            Father = Main.projectile[(int)Projectile.ai[1]];
-            if (!DistanceSet)//Setting the distance of the Projectile from the cursor
+            parent = Main.projectile[(int)Projectile.ai[1]];
+            if (firstFrame)//Setting the distance of the Projectile from the cursor
             {
-                SpawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * 80f;
-
-                SpawnDistanceFromTarget = Vector2.Distance(SpawnPosition, target.Center);
-                OldTargetPosition = target.Center;
-                DistanceSet = true;
-                MoveSpeed = Projectile.velocity;
+                spawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * spawnDistanceFromTarget;
+                oldTargetPosition = target.Center;
+                moveSpeed = Projectile.velocity;
+                firstFrame = false;
             }
 
             //Change the number to determine how much dust will spawn. lower for more, higher for less
@@ -324,46 +314,50 @@ namespace EBF.Items.Melee
                 Main.dust[dust].velocity.X *= 0.4f;
             }
 
-            #region animation and more
-            if (!Stop)
+            if (!stop)
             {
-                if (++Projectile.frameCounter > 2)
-                {
-                    Projectile.frameCounter = 0;
-
-                    if (++Projectile.frame <= 3)
-                    {
-                        Projectile.velocity = Vector2.Zero;
-                    }
-                    else if (Projectile.frame == 4)
-                    {
-                        Projectile.velocity = MoveSpeed;
-                        Stop = true;
-                    }
-                    else if (Projectile.frame > 4)
-                    {
-                        Projectile.velocity = Vector2.Zero;
-
-                        if (Projectile.frame == 11)
-                        {
-                            Projectile.Kill();
-                        }
-                    }
-                }
-
+                HandleFrames();
+            }
+            else if (Vector2.Distance(oldTargetPosition, Projectile.Center) >= spawnDistanceFromTarget * 2f)
+            {
+                stop = false;
             }
 
-            if (Stop && Vector2.Distance(OldTargetPosition, Projectile.Center) >= SpawnDistanceFromTarget * 2f)
-            {
-                Stop = false;
-            }
-            #endregion
-
-            float velRotation = MoveSpeed.ToRotation();
-            Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
+            float velRotation = moveSpeed.ToRotation();
+            Projectile.rotation = velRotation + MathHelper.ToRadians(90f); //necessary cuz sprite faces the wrong way
             Projectile.spriteDirection = Projectile.direction;
 
             return false;
+        }
+        private void HandleFrames()
+        {
+            //Advance frames every third tick
+            if (++Projectile.frameCounter < 3)
+            {
+                return;
+            }
+
+            Projectile.frame++;
+            Projectile.frameCounter = 0;
+
+            if (Projectile.frame <= 3)
+            {
+                Projectile.velocity = Vector2.Zero;
+            }
+            else if (Projectile.frame == 4)
+            {
+                Projectile.velocity = moveSpeed;
+                stop = true;
+            }
+            else if (Projectile.frame > 4)
+            {
+                Projectile.velocity = Vector2.Zero;
+
+                if (Projectile.frame == 11)
+                {
+                    Projectile.Kill();
+                }
+            }
         }
     }
 }
