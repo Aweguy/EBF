@@ -14,21 +14,20 @@ namespace EBF.Items.Melee
             base.DisplayName.WithFormatArgs("Heaven's Gate");//Name of the Item
             base.Tooltip.WithFormatArgs("A legendary sword belonging to a line of famed corsairs.");//Tooltip of the item
         }
-
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 30;//Item's base damage value
+            Item.damage = 49;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 34;//How fast the item is used
+            Item.useAnimation = 34;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 50, gold: 9, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Yellow;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
@@ -52,6 +51,14 @@ namespace EBF.Items.Melee
             //Save velocities to be used by child swords
             Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X, velocity.Y);
             return false;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.Excalibur, stack: 1)
+                .AddIngredient(ItemID.Ectoplasm, stack: 12)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 
