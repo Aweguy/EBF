@@ -30,8 +30,8 @@ namespace EBF.Items.Melee
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper:0, silver:50, gold:1, platinum:0);//Item's value when sold
-            Item.rare = ItemRarityID.Cyan;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 30, silver: 85, gold: 2, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
@@ -46,6 +46,17 @@ namespace EBF.Items.Melee
             {
                 Item.damage = 1 + (int)(missHP / 2);
             }
+        }
+
+        /*TODO: Remove recipe and add this sword to the Matt NPC's shop
+         */
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.MeteoriteBar, stack: 18)
+                .AddIngredient(ItemID.Diamond, stack: 5)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 }
