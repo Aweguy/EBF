@@ -9,7 +9,7 @@ using Terraria.ID;
 
 namespace EBF.Items.Melee
 {
-    public class Avenger: ModItem
+    public class Avenger : ModItem
     {
         int missHP;//The missing health of the player
         public override void SetStaticDefaults()
@@ -30,7 +30,7 @@ namespace EBF.Items.Melee
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper:0, silver:50, gold:1, platinum:0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Cyan;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held

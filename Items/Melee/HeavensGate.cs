@@ -1,17 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using EBF.Extensions;
 
 namespace EBF.Items.Melee
 {
@@ -35,17 +26,18 @@ namespace EBF.Items.Melee
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper:0, silver:50, gold:1, platinum:0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
+
             Item.shoot = ModContent.ProjectileType<HeavensGate_LightBlade>();
             Item.shootSpeed = 5f;
         }
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            if(Main.rand.NextFloat() <= 0.3f)
+            if (Main.rand.NextFloat() <= 0.3f)
             {
                 int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.AncientLight);
                 Main.dust[dust].noGravity = true;
@@ -56,7 +48,7 @@ namespace EBF.Items.Melee
         {
             Vector2 VelocityManual = new Vector2(velocity.X, velocity.Y);//We store the velocity for later use
 
-            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X , velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
+            Projectile.NewProjectile(source, Main.MouseWorld - (Vector2.Normalize(VelocityManual) * 80f), Vector2.Zero, type, damage, knockback, player.whoAmI, velocity.X, velocity.Y);//We use VelocityManual to push the created sword towards the player in reference of the mouse
 
             return false;
         }
@@ -64,12 +56,12 @@ namespace EBF.Items.Melee
 
     public class HeavensGate_LightBlade : ModProjectile
     {
-        float SpawnDistanceFromClick;
-        bool DistanceSet = false;
-        bool Stop = false;
-        Vector2 SpawnPosition;
-        Vector2 OldMouseWorld;
-        int TrailSkip = 2;
+        private float SpawnDistanceFromClick;
+        private bool DistanceSet = false;
+        private bool Stop = false;
+        private Vector2 SpawnPosition;
+        private Vector2 OldMouseWorld;
+        private int TrailSkip = 2;
 
 
         public override void SetStaticDefaults()//Mainly used for setting the frames of animations or things we don't want to change in the projectile
@@ -126,14 +118,7 @@ namespace EBF.Items.Melee
 
         public override bool? CanDamage() //If it's not fully form, do not damage
         {
-            if (Projectile.frame == 4)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Projectile.frame == 4;
         }
         public override bool PreAI()//Use this to write the AI of the projectile. Its behaviour in other words. Updates every frame.
         {
@@ -240,14 +225,14 @@ namespace EBF.Items.Melee
 
     public class HeavensGate_LightBlade_Mini : ModProjectile
     {
-        float SpawnDistanceFromTarget;
-        bool DistanceSet = false;
-        bool Stop = false;
-        Vector2 SpawnPosition;
-        Vector2 OldTargetPosition;
-        Vector2 MoveSpeed;
+        private float SpawnDistanceFromTarget;
+        private bool DistanceSet = false;
+        private bool Stop = false;
+        private Vector2 SpawnPosition;
+        private Vector2 OldTargetPosition;
+        private Vector2 MoveSpeed;
 
-        Projectile Father;
+        private Projectile Father;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 11;
@@ -324,7 +309,6 @@ namespace EBF.Items.Melee
             Father = Main.projectile[(int)Projectile.ai[1]];
             if (!DistanceSet)//Setting the distance of the Projectile from the cursor
             {
-
                 SpawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * 80f;
 
                 SpawnDistanceFromTarget = Vector2.Distance(SpawnPosition, target.Center);
@@ -333,8 +317,8 @@ namespace EBF.Items.Melee
                 MoveSpeed = Projectile.velocity;
             }
 
-            //Change the 5 to determine how much dust will spawn. lower for more, higher for less
-            if (Main.rand.Next(3) == 0)
+            //Change the number to determine how much dust will spawn. lower for more, higher for less
+            if (Main.rand.NextBool(3))
             {
                 int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight);
                 Main.dust[dust].velocity.X *= 0.4f;

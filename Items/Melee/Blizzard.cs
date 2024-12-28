@@ -59,6 +59,6 @@ namespace EBF.Items.Melee
         }
 
         //It would be nice to move this method out of blizzard, but there's not enough vector logic to warrant an extension class.
-        private Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat() * 2 - 1, Main.rand.NextFloat() * 2 - 1);
+        private Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
     }
 }

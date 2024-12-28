@@ -34,14 +34,14 @@ namespace EBF.Items.Magic
             Item.useAnimation = 10;//How long the animation lasts. For swords it should stay the same as UseTime
             Item.channel = true;//Channeling the item when held
 
-            Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
-            Item.shootSpeed = 0f;
-
-            Item.value = Item.sellPrice(copper:0, silver:0, gold:50, platinum:1);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Purple;//Item's name colour, this is hardcoded by the modder and should be based on 
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
             Item.noMelee = true;
+
+            Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
+            Item.shootSpeed = 0f;
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -52,14 +52,14 @@ namespace EBF.Items.Magic
         public override void HoldItem(Player player)
         {
             Color drawColor = Color.Black;
-            if (Main.rand.Next(2) == 0)
+            if (Main.rand.NextBool(2))
             {
                 drawColor = Color.Red;
             }
 
             if (player.channel)
             {
-                Dust.NewDustDirect(player.position, player.width, player.height, 302, 0f, 0f, 0, drawColor, 1f);
+                Dust.NewDustDirect(player.position, player.width, player.height, DustID.Terragrim, 0f, 0f, 0, drawColor, 1f);
             }
         }
         public override bool CanUseItem(Player player)
@@ -141,7 +141,7 @@ namespace EBF.Items.Magic
                     #region Dust Spawning
 
                     Color drawColor = Color.Black;
-                    if (Main.rand.Next(2) == 0)
+                    if (Main.rand.NextBool(2))
                     {
                         drawColor = Color.Red;
                     }
@@ -224,47 +224,26 @@ namespace EBF.Items.Magic
         //The growth rate of the black hole
         private void Scaling(Player player, Vector2 oldSize)
         {
-            /*if (player.HasBuff(ModContent.BuffType<HasteBuff>()))
+            float change = 0;
+
+            if (Projectile.width <= 150)
             {
-                if (Projectile.width <= 150)
-                {
-                    Projectile.scale += 0.2f;
-                }
-                else if (Projectile.width <= 325 && Projectile.width > 150)
-                {
-                    Projectile.scale += 0.1f;
-                }
-                else
-                {
-                    Projectile.scale += 0.05f;
-                }
-                Projectile.width = (int)(baseWidth * Projectile.scale);
-                Projectile.height = (int)(baseHeight * Projectile.scale);
-                Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
-            }*/
-            //else
-            //{
-                if (Projectile.width <= 150)
-                {
-                    Projectile.scale += 0.1f;
-                }
-                else if (Projectile.width <= 325 && Projectile.width > 150)
-                {
-                    Projectile.scale += 0.05f;
-                }
-                else if (Projectile.width > 325 && Projectile.width <= 700)
-                {
-                    Projectile.scale += 0.025f;
-                }
-                else
-                {
-                    Projectile.scale += 0;
-                }
-                
-                Projectile.width = (int)(baseWidth * Projectile.scale);
-                Projectile.height = (int)(baseHeight * Projectile.scale);
-                Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
-            //}
+                change = 0.1f;
+            }
+            else if (Projectile.width <= 325 && Projectile.width > 150)
+            {
+                change = 0.05f;
+            }
+            else if (Projectile.width > 325 && Projectile.width <= 700)
+            {
+                change = 0.025f;
+            }
+
+            Projectile.scale += change; //multiplied by haste if you want to
+
+            Projectile.width = (int)(baseWidth * Projectile.scale);
+            Projectile.height = (int)(baseHeight * Projectile.scale);
+            Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
         }
         //NPC sucking
         private void Sucking(float SuckingRange)
