@@ -9,7 +9,7 @@ using Terraria.ID;
 
 namespace EBF.Items.Melee
 {
-    public class Avenger: ModItem
+    public class Avenger : ModItem
     {
         int missHP;//The missing health of the player
         public override void SetStaticDefaults()
@@ -32,6 +32,7 @@ namespace EBF.Items.Melee
 
             Item.value = Item.sellPrice(copper: 30, silver: 85, gold: 2, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item

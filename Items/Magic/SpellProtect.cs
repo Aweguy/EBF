@@ -35,7 +35,7 @@ namespace EBF.Items.Magic
             Item.useAnimation = 10;
             Item.mana = 5;
             Item.rare = ItemRarityID.Yellow;
-            Item.value = Item.sellPrice(silver: 50);
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
             Item.useTurn = true;
             /*if (!Main.dedServ)
             {

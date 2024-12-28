@@ -20,7 +20,8 @@ namespace EBF.Items.Melee.Throwable
 
         public override void SetDefaults()
         {
-            Item.width = Item.height = 72;
+            Item.width = 72;
+            Item.height = 72;
 
             Item.damage = 40;
             Item.knockBack = 1f;
@@ -31,11 +32,11 @@ namespace EBF.Items.Melee.Throwable
             Item.useStyle = ItemUseStyleID.Swing;
 
             Item.rare = ItemRarityID.LightPurple;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
+            Item.useTurn = false;
 
             Item.shoot = ModContent.ProjectileType<IceNeedle_Proj>();
             Item.shootSpeed = 16f;
-
-            Item.useTurn = false;
 
             Item.noUseGraphic = true;
         }
@@ -120,9 +121,9 @@ namespace EBF.Items.Melee.Throwable
             get => (Behaviour)behave;
             set => behave = (float)value;
         }
-        float behave = 0f;
-
-        bool FrameFound;
+        private List<NPC> validNPCs;
+        private float behave = 0f;
+        private bool FrameFound;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 3;
@@ -148,6 +149,9 @@ namespace EBF.Items.Melee.Throwable
             {
                 FrameFound = true;
                 Projectile.frame = Main.rand.Next(0, 2);
+
+                //Get all valid npcs to target using the following criteria (reduces search size for homing)
+                validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
             }
             if (Behave == Behaviour.Idle)//If the Projectile is idle then slow down smoothly
             {
@@ -175,18 +179,15 @@ namespace EBF.Items.Melee.Throwable
             Vector2 move = Vector2.Zero;
             float distance = 125f;
             bool target = false;
-            for (int k = 0; k < 200; k++)
+            foreach(NPC npc in validNPCs)
             {
-                if (Main.npc[k].active && !Main.npc[k].dontTakeDamage && !Main.npc[k].friendly && Main.npc[k].lifeMax > 5)
+                Vector2 newMove = npc.Center - Projectile.Center;
+                float distanceTo = (float)Math.Sqrt(newMove.X * newMove.X + newMove.Y * newMove.Y);
+                if (distanceTo < distance)
                 {
-                    Vector2 newMove = Main.npc[k].Center - Projectile.Center;
-                    float distanceTo = (float)Math.Sqrt(newMove.X * newMove.X + newMove.Y * newMove.Y);
-                    if (distanceTo < distance)
-                    {
-                        move = newMove;
-                        distance = distanceTo;
-                        target = true;
-                    }
+                    move = newMove;
+                    distance = distanceTo;
+                    target = true;
                 }
             }
             if (target)
