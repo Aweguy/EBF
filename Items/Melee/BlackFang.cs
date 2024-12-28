@@ -46,5 +46,15 @@ namespace EBF.Items.Melee
 				player.HealEffect(HealthHeal);
 			}
 		}
-	}
+
+        public override void AddRecipes()
+        {
+			CreateRecipe(amount: 1)
+				.AddIngredient<BloodBlade>(stack: 1)
+				.AddIngredient(ItemID.SpiderFang, stack: 8)
+				.AddIngredient(ItemID.AdamantiteBar, stack: 12)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+        }
+    }
 }
