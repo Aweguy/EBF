@@ -13,8 +13,7 @@ namespace EBF.Items.Magic
 {
     public class ShootingStar : ModItem
     {
-
-        float offsetX = 20f;
+        private const int spread = 300;
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Shooting Star");//Name of the Item
@@ -45,32 +44,15 @@ namespace EBF.Items.Magic
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-            float ceilingLimit = target.Y;
-            if (ceilingLimit > player.Center.Y - 200f)
-            {
-                ceilingLimit = player.Center.Y - 200f;
-            }
+            //Spawn position
+            float offsetX = Main.rand.NextFloat(-spread, spread);
+            position = new Vector2(Main.MouseWorld.X + offsetX, Main.screenPosition.Y);
+            
+            //Velocity towards cursor
+            velocity = Vector2.Normalize(Main.MouseWorld - position) * velocity.Length();
 
-            position = Main.MouseWorld + new Vector2((-(float)Main.rand.Next(-401, 401) + offsetX) * player.direction, -600f);
-            position.Y -= 100;
-            Vector2 heading = target - position;
-            if (heading.Y < 0f)
-            {
-                heading.Y *= -1f;
-            }
-            if (heading.Y < 20f)
-            {
-                heading.Y = 20f;
-            }
-
-            heading.Normalize();
-            heading *= new Vector2(velocity.X, velocity.Y).Length();
-            velocity.X = heading.X;
-            velocity.Y = heading.Y + Main.rand.Next(-40, 41) * 0.02f;
-            Projectile.NewProjectile(source, position, velocity, type, Item.damage, knockback, player.whoAmI, 0f, ceilingLimit);
-
-
+            //Spawn the projecile
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
     }
