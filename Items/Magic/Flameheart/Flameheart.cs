@@ -104,9 +104,9 @@ namespace EBF.Items.Magic.Flameheart
                 }
 
                 //Spawn projectile
-                float X = Main.rand.NextFloat(-100f, 100f);
-                float Y = Main.rand.NextFloat(-100f, 100f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X + X, Projectile.Center.Y + Y, 0f, 0f, chosenProjectile, 70, 0, Projectile.owner);
+                float X = Projectile.Center.X + Main.rand.NextFloat(-100f, 100f);
+                float Y = Projectile.Center.Y + Main.rand.NextFloat(-100f, 100f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), X, Y, 0f, 0f, chosenProjectile, 70, 0, Projectile.owner);
                 timer = 5;
             }
         }
