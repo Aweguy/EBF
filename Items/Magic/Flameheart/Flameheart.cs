@@ -45,6 +45,15 @@ namespace EBF.Items.Magic.Flameheart
             }
             position = Main.MouseWorld;
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.HellstoneBar, stack: 20)
+                .AddIngredient(ItemID.SoulofLight, stack: 15)
+                .AddIngredient(ItemID.Fireblossom, stack: 3)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 
     public class Flameheart_Firestorm : ModProjectile
