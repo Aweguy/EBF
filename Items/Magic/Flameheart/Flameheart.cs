@@ -14,28 +14,28 @@ namespace EBF.Items.Magic.Flameheart
             base.DisplayName.WithFormatArgs("Flameheart");//Name of the Item
             base.Tooltip.WithFormatArgs("A common but powerful staff, used by mages to scorch foes.\nEvery 3 uses, it summons a firestorm\nConsumes minor amounts of Limit Break");//Tooltip of the item
         }
-
         public override void SetDefaults()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 20;//Item's base damage value
+            Item.damage = 36;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.mana = 16;//The amount of mana this item consumes on use
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
+            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 20;//How fast the item is used
             Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item1;//The item's sound when it's used
+            Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.UseSound = SoundID.Item20;//The item's sound when it's used
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<Flameheart_Fireball>();
+            Item.noMelee = true;//Prevents damage from being dealt by the item itself
         }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (++ChargeStacks >= 3)
