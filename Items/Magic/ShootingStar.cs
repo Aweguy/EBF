@@ -77,20 +77,18 @@ namespace EBF.Items.Magic
 
     public class Star : ModProjectile
     {
-
-        int Bounce = 1;
-        bool Shrkinking = false;
-
+        private const int dustsOnDeath = 50;
+        private const int dustsOnBounce = 20;
+        private const int maxVelocity = 16;
+        private int bounces = 1;
+        private bool isShrinking = false;
         public override void SetDefaults()
         {
             Projectile.width = 20;
             Projectile.height = 20;
-            Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.damage = 10;
-            Projectile.knockBack = 1f;
             Projectile.tileCollide = true;
             Projectile.hide = true;
             Projectile.extraUpdates = 2;
@@ -100,57 +98,47 @@ namespace EBF.Items.Magic
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
-
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             if (Projectile.tileCollide)
             {
                 Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
-
-                if (Bounce > 0)
-                {
-                    if (Projectile.velocity.X != oldVelocity.X)
-                    {
-                        Projectile.velocity.X = -oldVelocity.X * 0.3f;
-                    }
-
-                    if (Projectile.velocity.Y != oldVelocity.Y)
-                    {
-                        Projectile.velocity.Y = -oldVelocity.Y * 0.3f;
-                        Projectile.velocity.X *= 0.5f;
-                    }
-                    Bounce--;
-                    Shrkinking = true;
-
-                    for (int i = 0; i < 20; i++)
-                    {
-                        Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
-                    }
-                }
-                else
+                if (bounces == 0)
                 {
                     return true;
                 }
+
+                bounces--;
+                isShrinking = true;
+
+                //Bounce
+                if (Projectile.velocity.X != oldVelocity.X)
+                {
+                    Projectile.velocity.X = -oldVelocity.X * 0.5f;
+                }
+
+                if (Projectile.velocity.Y != oldVelocity.Y)
+                {
+                    Projectile.velocity.Y = -oldVelocity.Y * 0.5f;
+                    Projectile.velocity.X *= 0.5f;
+                }
+
+                SpawnDusts(dustsOnBounce);
             }
 
             return false;
         }
-
-
-
         public override bool PreAI()
         {
-            Projectile.velocity.Y += 0.3f; //gravity
+            //Gravity & Terminal velocity
+            Projectile.velocity.Y += 0.15f;
+            Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y, -maxVelocity, maxVelocity);
 
-            Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y, -16, 16);
+            //Trail
+            SpawnDusts(2);
 
-            for (int i = 0; i <= 3; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
-            }
-
-            if (Shrkinking)
+            //Handle shrinking & despawning
+            if (isShrinking)
             {
                 Projectile.scale -= 0.01f;
 
@@ -162,14 +150,18 @@ namespace EBF.Items.Magic
 
             return false;
         }
-
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 50; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
-            }
+            SpawnDusts(dustsOnDeath);
         }
 
+        private void SpawnDusts(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                Vector2 dustVelocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, SpeedX: dustVelocity.X, SpeedY: dustVelocity.Y);
+            }
+        }
     }
 }
