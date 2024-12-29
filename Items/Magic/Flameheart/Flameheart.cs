@@ -119,10 +119,55 @@ namespace EBF.Items.Magic.Flameheart
         }
     }
 
-    //OnHitNPC are the same
-    //AI are the same
+    public abstract class Flameheart_FireballBase : ModProjectile
+    {
+        /// <summary>
+        /// Sets the variables that are shared between all fireball sizes.
+        /// <para>If one of these variables should differ between fireballs, then move the variable into each subclass.</para>
+        /// </summary>
+        protected void SetEverythingElse()
+        {
+            Projectile.aiStyle = -1;
 
-    public class Flameheart_Fireball : ModProjectile
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+            Projectile.DamageType = DamageClass.Magic;
+            Projectile.knockBack = 1f;
+
+            Projectile.timeLeft = 100;
+            Projectile.tileCollide = false;
+
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (Main.rand.NextBool(3))
+            {
+                target.AddBuff(BuffID.OnFire, 300, false);
+            }
+        }
+        public override void AI()
+        {
+            if (Main.rand.NextBool(3))
+            {
+                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
+                Vector2 position = Projectile.position;
+                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
+            }
+
+            if (++Projectile.frameCounter > 3)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= 14)
+                {
+                    Projectile.Kill();
+                }
+            }
+        }
+    }
+
+    public class Flameheart_Fireball : Flameheart_FireballBase
     {
         public override void SetStaticDefaults()
         {
@@ -132,47 +177,11 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 64;
             Projectile.height = 64;
-            Projectile.aiStyle = -1;
-
-            Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.knockBack = 1f;
-
-            Projectile.timeLeft = 100;
-            Projectile.tileCollide = false;
-
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Main.rand.NextBool(3))
-            {
-                target.AddBuff(BuffID.OnFire, 300, false);
-            }
-        }
-        public override void AI()
-        {
-            if (Main.rand.NextBool(3))
-            {
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                Vector2 position = Projectile.position;
-                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Torch, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
-            }
-
-            if (++Projectile.frameCounter > 3)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 14)
-                {
-                    Projectile.Kill();
-                }
-            }
+            SetEverythingElse();   
         }
     }
 
-    public class Flameheart_FireballMed : ModProjectile
+    public class Flameheart_FireballMed : Flameheart_FireballBase
     {
         public override void SetStaticDefaults()
         {
@@ -182,45 +191,11 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 32;
             Projectile.height = 32;
-            Projectile.aiStyle = -1;
-            Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.knockBack = 1f;
-            Projectile.timeLeft = 100;
-            Projectile.tileCollide = false;
-
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Main.rand.NextBool(3))
-            {
-                target.AddBuff(BuffID.OnFire, 300, false);
-            }
-        }
-        public override void AI()
-        {
-            if (Main.rand.NextBool(3))
-            {
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                Vector2 position = Projectile.position;
-                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
-            }
-
-            if (++Projectile.frameCounter > 3)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 14)
-                {
-                    Projectile.Kill();
-                }
-            }
+            SetEverythingElse();
         }
     }
 
-    public class Flameheart_FireballSmall : ModProjectile
+    public class Flameheart_FireballSmall : Flameheart_FireballBase
     {
         public override void SetStaticDefaults()
         {
@@ -230,43 +205,7 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 16;
             Projectile.height = 16;
-
-            Projectile.aiStyle = -1;
-            Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.knockBack = 1f;
-
-            Projectile.timeLeft = 100;
-            Projectile.tileCollide = false;
-
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Main.rand.NextBool(3))
-            {
-                target.AddBuff(BuffID.OnFire, 300, false);
-            }
-        }
-        public override void AI()
-        {
-            if (Main.rand.NextBool(3))
-            {
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                Vector2 position = Projectile.position;
-                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
-            }
-
-            if (++Projectile.frameCounter > 3)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 14)
-                {
-                    Projectile.Kill();
-                }
-            }
+            SetEverythingElse();
         }
     }
 }
