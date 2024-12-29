@@ -1,1 +1,6 @@
-EBF Mod is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
+As of now, the mod adds 31 items:
+- 17 Melee weapons
+- 1 Ranged weapon
+- 6 Magic weapons
+- 7 Accessories
