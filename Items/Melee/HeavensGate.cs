@@ -68,7 +68,6 @@ namespace EBF.Items.Melee
     public class HeavensGate_LightBlade : ModProjectile
     {
         private const float spawnPositionOffset = 80f;
-        private bool firstFrame = true;
         private bool stop = false;
         private Vector2 spawnPosition;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
@@ -131,15 +130,13 @@ namespace EBF.Items.Melee
         {
             return Projectile.frame == 4;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            spawnPosition = Main.MouseWorld - Vector2.Normalize(new Vector2(Projectile.ai[0], Projectile.ai[1])) * spawnPositionOffset;
+            moveSpeed = new Vector2(Projectile.ai[0], Projectile.ai[1]);
+        }
         public override bool PreAI()//Use this to write the AI of the projectile. Its behaviour in other words. Updates every frame.
         {
-            if (firstFrame)//Setting the distance of the Projectile from the cursor
-            {
-                spawnPosition = Main.MouseWorld - Vector2.Normalize(new Vector2(Projectile.ai[0], Projectile.ai[1])) * spawnPositionOffset;
-                moveSpeed = new Vector2(Projectile.ai[0], Projectile.ai[1]);
-                firstFrame = false;
-            }
-
             if (Main.rand.NextBool(3))
             {
                 int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight);
@@ -234,7 +231,6 @@ namespace EBF.Items.Melee
     {
         private const int copyLimit = 2; //How many times this projectile can be copied
         private const float spawnPositionOffset = 80f; //How far away new projectiles spawn from a target
-        private bool firstFrame = true;
         private bool stop = false;
         private Vector2 spawnPosition;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
@@ -302,16 +298,16 @@ namespace EBF.Items.Melee
         {
             return Projectile.frame == 4;
         }
-        public override bool PreAI()
+        public override void OnSpawn(IEntitySource source)
         {
             NPC target = Main.npc[(int)Projectile.ai[0]];
             parent = Main.projectile[(int)Projectile.ai[1]];
-            if (firstFrame)//Setting the distance of the Projectile from the cursor
-            {
-                spawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * spawnPositionOffset;
-                moveSpeed = Projectile.velocity;
-                firstFrame = false;
-            }
+
+            spawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * spawnPositionOffset;
+            moveSpeed = Projectile.velocity;
+        }
+        public override bool PreAI()
+        {
 
             //Change the number to determine how much dust will spawn. lower for more, higher for less
             if (Main.rand.NextBool(3))
