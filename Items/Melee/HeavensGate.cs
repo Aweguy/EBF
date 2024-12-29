@@ -62,13 +62,15 @@ namespace EBF.Items.Melee
         }
     }
 
+    /* TODO: Merge both of these projectiles into one
+     */
+
     public class HeavensGate_LightBlade : ModProjectile
     {
-        private const float spawnDistanceFromClick = 80f;
+        private const float spawnPositionOffset = 80f;
         private bool firstFrame = true;
         private bool stop = false;
         private Vector2 spawnPosition;
-        private Vector2 oldMouseWorld;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
         private int trailSkip = 2;
 
@@ -133,8 +135,7 @@ namespace EBF.Items.Melee
         {
             if (firstFrame)//Setting the distance of the Projectile from the cursor
             {
-                spawnPosition = Main.MouseWorld - Vector2.Normalize(new Vector2(Projectile.ai[0], Projectile.ai[1])) * spawnDistanceFromClick;
-                oldMouseWorld = Main.MouseWorld;
+                spawnPosition = Main.MouseWorld - Vector2.Normalize(new Vector2(Projectile.ai[0], Projectile.ai[1])) * spawnPositionOffset;
                 moveSpeed = new Vector2(Projectile.ai[0], Projectile.ai[1]);
                 firstFrame = false;
             }
@@ -150,7 +151,7 @@ namespace EBF.Items.Melee
             {
                 HandleFrames();
             }
-            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= spawnDistanceFromClick * 4f)
+            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= spawnPositionOffset * 4f)
             {
                 stop = false;
             }
@@ -232,11 +233,10 @@ namespace EBF.Items.Melee
     public class HeavensGate_LightBlade_Mini : ModProjectile
     {
         private const int copyLimit = 2; //How many times this projectile can be copied
-        private const float spawnDistanceFromTarget = 80f; //How far away new projectiles spawn from a target
+        private const float spawnPositionOffset = 80f; //How far away new projectiles spawn from a target
         private bool firstFrame = true;
         private bool stop = false;
         private Vector2 spawnPosition;
-        private Vector2 oldTargetPosition;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
         private Projectile parent;
         public override void SetStaticDefaults()
@@ -308,8 +308,7 @@ namespace EBF.Items.Melee
             parent = Main.projectile[(int)Projectile.ai[1]];
             if (firstFrame)//Setting the distance of the Projectile from the cursor
             {
-                spawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * spawnDistanceFromTarget;
-                oldTargetPosition = target.Center;
+                spawnPosition = target.Center - Vector2.Normalize(Projectile.velocity) * spawnPositionOffset;
                 moveSpeed = Projectile.velocity;
                 firstFrame = false;
             }
@@ -325,7 +324,7 @@ namespace EBF.Items.Melee
             {
                 HandleFrames();
             }
-            else if (Vector2.Distance(oldTargetPosition, Projectile.Center) >= spawnDistanceFromTarget * 2f)
+            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= spawnPositionOffset * 4f)
             {
                 stop = false;
             }
