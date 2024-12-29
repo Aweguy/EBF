@@ -55,6 +55,15 @@ namespace EBF.Items.Magic
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.MeteoriteBar, stack: 14)
+                .AddIngredient(ItemID.Star, stack: 10)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 
     public class Star : ModProjectile
