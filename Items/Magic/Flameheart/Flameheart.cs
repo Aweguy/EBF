@@ -43,10 +43,6 @@ namespace EBF.Items.Magic.Flameheart
                 type = ModContent.ProjectileType<Flameheart_Firestorm>();
                 ChargeStacks = 0;
             }
-            else
-            {
-                type = ModContent.ProjectileType<Flameheart_Fireball>();
-            }
             position = Main.MouseWorld;
         }
     }
@@ -123,13 +119,15 @@ namespace EBF.Items.Magic.Flameheart
         }
     }
 
+    //OnHitNPC are the same
+    //AI are the same
+
     public class Flameheart_Fireball : ModProjectile
     {
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 13;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 64;
@@ -147,7 +145,6 @@ namespace EBF.Items.Magic.Flameheart
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(3))
@@ -155,7 +152,6 @@ namespace EBF.Items.Magic.Flameheart
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
         }
-
         public override void AI()
         {
             if (Main.rand.NextBool(3))
@@ -174,13 +170,6 @@ namespace EBF.Items.Magic.Flameheart
                 }
             }
         }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-            return true;
-        }
     }
 
     public class Flameheart_FireballMed : ModProjectile
@@ -189,7 +178,6 @@ namespace EBF.Items.Magic.Flameheart
         {
             Main.projFrames[Projectile.type] = 13;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 32;
@@ -205,7 +193,6 @@ namespace EBF.Items.Magic.Flameheart
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(3))
@@ -213,7 +200,6 @@ namespace EBF.Items.Magic.Flameheart
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
         }
-
         public override void AI()
         {
             if (Main.rand.NextBool(3))
@@ -232,16 +218,6 @@ namespace EBF.Items.Magic.Flameheart
                 }
             }
         }
-
-        #region PreDraw
-        /*public override bool PreDrawExtras()
-        {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-            return true;
-        }*/
-        #endregion PreDraw
     }
 
     public class Flameheart_FireballSmall : ModProjectile
@@ -250,7 +226,6 @@ namespace EBF.Items.Magic.Flameheart
         {
             Main.projFrames[Projectile.type] = 14;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -268,7 +243,6 @@ namespace EBF.Items.Magic.Flameheart
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(3))
@@ -276,7 +250,6 @@ namespace EBF.Items.Magic.Flameheart
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
         }
-
         public override void AI()
         {
             if (Main.rand.NextBool(3))
@@ -295,18 +268,5 @@ namespace EBF.Items.Magic.Flameheart
                 }
             }
         }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            return true;
-        }
-
-        /*public override bool PreDraw(ref Color lightColor)
-        {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
-
-            return true;
-        }*/
     }
 }
