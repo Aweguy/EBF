@@ -13,7 +13,7 @@ namespace EBF.Items.Magic
 {
     public class ShootingStar : ModItem
     {
-        private const int spread = 300;
+        private const int spread = 250;
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Shooting Star");//Name of the Item
@@ -25,21 +25,22 @@ namespace EBF.Items.Magic
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 20;//Item's base damage value
+            Item.damage = 36;//Item's base damage value
             Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.mana = 10;
+            Item.mana = 8;//The amount of mana this item consumes on use
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
-            Item.useTime = 20;//How fast the item is used
-            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+            Item.useTime = 28;//How fast the item is used
+            Item.useAnimation = 28;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Green;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item1;//The item's sound when it's used
+            Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 0, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.UseSound = SoundID.Item43;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
             Item.shootSpeed = 5f;
             Item.shoot = ModContent.ProjectileType<Star>();
+            Item.noMelee = true;//Prevents damage from being dealt by the item itself
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -52,13 +53,14 @@ namespace EBF.Items.Magic
             velocity = Vector2.Normalize(Main.MouseWorld - position) * velocity.Length();
 
             //Spawn the projecile
+            damage += Main.rand.Next(-5, 6);
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
 
         public override void AddRecipes()
         {
-            CreateRecipe()
+            CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.MeteoriteBar, stack: 14)
                 .AddIngredient(ItemID.Star, stack: 10)
                 .AddTile(TileID.Anvils)
