@@ -162,35 +162,7 @@ namespace EBF.Items.Melee.Throwable
                 Projectile.timeLeft = Projectile.timeLeft;
             }
 
-            FindTarget();//Finding target and chasing.
-
-            return false;
-        }
-
-        /* TODO: Optimize npc search and decouple it from these snowflakes, so the mod is easier to scale
-         */
-        private void FindTarget()
-        {
-            if (Projectile.localAI[0] == 0f)
-            {
-                AdjustMagnitude(ref Projectile.velocity);
-                Projectile.localAI[0] = 1f;
-            }
-            Vector2 move = Vector2.Zero;
-            float distance = 125f;
-            bool target = false;
-            foreach(NPC npc in validNPCs)
-            {
-                Vector2 newMove = npc.Center - Projectile.Center;
-                float distanceTo = (float)Math.Sqrt(newMove.X * newMove.X + newMove.Y * newMove.Y);
-                if (distanceTo < distance)
-                {
-                    move = newMove;
-                    distance = distanceTo;
-                    target = true;
-                }
-            }
-            if (target)
+            if (FindTarget(out Vector2 move) == true)
             {
                 Behave = Behaviour.Chase;
                 AdjustMagnitude(ref move);
@@ -201,6 +173,34 @@ namespace EBF.Items.Melee.Throwable
             {
                 Behave = Behaviour.Idle;
             }
+
+            return false;
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            AdjustMagnitude(ref Projectile.velocity);
+        }
+
+        
+        private bool FindTarget(out Vector2 move)
+        {
+            move = Vector2.Zero; //default case
+
+            float distance = 125f;
+            bool target = false;
+            foreach (NPC npc in validNPCs)
+            {
+                Vector2 towardsNPC = npc.Center - Projectile.Center;
+                float distanceTo = towardsNPC.Length();
+                if (distanceTo < distance)
+                {
+                    move = towardsNPC;
+                    distance = distanceTo;
+                    target = true;
+                }
+            }
+            return target;
         }
 
         private void AdjustMagnitude(ref Vector2 vector)
