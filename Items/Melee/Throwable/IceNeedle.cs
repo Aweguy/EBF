@@ -205,7 +205,7 @@ namespace EBF.Items.Melee.Throwable
 
         private void AdjustMagnitude(ref Vector2 vector)
         {
-            float magnitude = (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+            float magnitude = vector.Length();
             if (magnitude > 6f)
             {
                 vector *= 9f / magnitude;
