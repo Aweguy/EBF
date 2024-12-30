@@ -16,19 +16,24 @@ namespace EBF.Items.Accessories.Flairs
             base.DisplayName.WithFormatArgs("Shield Medal");
             base.Tooltip.WithFormatArgs("Aid others where you can. Let all be helped and loved throughout the realm.\n20 defense");
         }
-
         public override void SetDefaults()
         {
             Item.width = 20;
             Item.height = 19;
             Item.accessory = true;
-            Item.rare = ItemRarityID.Blue;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
+            Item.rare = ItemRarityID.Pink;
             Item.defense = 20;
         }
-
-        /*public override void UpdateAccessory(Player player, bool hideVisual)
+        public override void AddRecipes()
         {
-            player.statDefense += 20;
-        }*/
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.HallowedBar, stack: 15)
+                .AddIngredient(ItemID.SoulofSight, stack: 5)
+                .AddIngredient(ItemID.SoulofMight, stack: 5)
+                .AddIngredient(ItemID.SoulofFright, stack: 5)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
     }
 }
