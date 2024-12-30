@@ -61,8 +61,8 @@ namespace EBF.Items.Magic
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.MeteoriteBar, stack: 14)
-                .AddIngredient(ItemID.Star, stack: 10)
+                .AddIngredient(ItemID.MeteoriteBar, stack: 15)
+                .AddIngredient(ItemID.FallenStar, stack: 10)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
