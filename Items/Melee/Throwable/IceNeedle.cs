@@ -181,6 +181,11 @@ namespace EBF.Items.Melee.Throwable
             bool target = false;
             foreach (NPC npc in validNPCs)
             {
+                if (npc.life <= 0)
+                {
+                    continue;
+                }
+
                 Vector2 towardsNPC = npc.Center - Projectile.Center;
                 float distanceTo = towardsNPC.Length();
                 if (distanceTo < distance)
