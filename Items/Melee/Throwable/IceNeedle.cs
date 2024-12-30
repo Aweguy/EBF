@@ -38,6 +38,14 @@ namespace EBF.Items.Melee.Throwable
 
             Item.noUseGraphic = true;
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.NorthPole, stack: 1)
+                .AddIngredient(ItemID.FragmentSolar, stack: 12)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
     }
 
     public class IceNeedle_Proj : ModProjectile
