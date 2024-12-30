@@ -120,7 +120,6 @@ namespace EBF.Items.Melee.Throwable
             Idle = 0,
             Chase = 1
         }
-
         public Behaviour Behave
         {
             get => (Behaviour)behave;
@@ -128,12 +127,10 @@ namespace EBF.Items.Melee.Throwable
         }
         private List<NPC> validNPCs;
         private float behave = 0f;
-        private bool FrameFound;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 3;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 26;
@@ -150,14 +147,6 @@ namespace EBF.Items.Melee.Throwable
 
         public override bool PreAI()
         {
-            if (!FrameFound)//Setting the frame of the snowflake
-            {
-                FrameFound = true;
-                Projectile.frame = Main.rand.Next(0, 2);
-
-                //Get all valid npcs to target using the following criteria (reduces search size for homing)
-                validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
-            }
             if (Behave == Behaviour.Idle)//If the Projectile is idle then slow down smoothly
             {
                 Projectile.velocity *= 0.90f;
