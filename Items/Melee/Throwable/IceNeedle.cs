@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -61,6 +62,7 @@ namespace EBF.Items.Melee.Throwable
 
         public override void AI()
         {
+            //Fix incorrect sprite rotation
             float velRotation = Projectile.velocity.ToRotation();
             Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
             Projectile.spriteDirection = Projectile.direction;
@@ -74,33 +76,36 @@ namespace EBF.Items.Melee.Throwable
 
         public override void OnKill(int timeLeft)
         {
-            int NumOfProjectiles = 9;
+            int numberOfProjectiles = 9;
             float projRotation = 0f;
+
             #region Projectile spawn
-            for (int p = 0; p <= NumOfProjectiles; p++)
+            for (int p = 0; p <= numberOfProjectiles; p++)
             {
-                Vector2 velocity = Projectile.oldVelocity.RotatedBy(projRotation * 0.0174533f) * 0.5f;
+                Vector2 velocity = Projectile.oldVelocity.RotatedBy(projRotation) * 0.5f;
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity, ModContent.ProjectileType<IceNeedle_Icicle>(), Projectile.damage / 2, Projectile.knockBack, Main.myPlayer);
 
-                projRotation += 360 / NumOfProjectiles;
+                projRotation += (float)Math.Tau / numberOfProjectiles;
             }
             #endregion
-            #region dust spawn
-            Vector2 DustPosition = Projectile.position;
-            Vector2 DustOldVelocity = Projectile.oldVelocity;
-            DustOldVelocity.Normalize();
-            DustPosition += DustOldVelocity * 16f;
+
+            #region Dust spawn
+            Vector2 dustPosition = Projectile.position;
+            Vector2 dustOldVelocity = Vector2.Normalize(Projectile.oldVelocity);
+            dustPosition += dustOldVelocity * 16f;
+
             for (int i = 0; i < 30; i++)
             {
-                int icy = Dust.NewDust(DustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 2f);
-                Main.dust[icy].position = (Main.dust[icy].position + Projectile.Center) / 2f;
+                int icy = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 2f);
+
                 Dust dust = Main.dust[icy];
-                dust.velocity += Projectile.oldVelocity * 0.6f;
-                dust = Main.dust[icy];
-                dust.velocity *= 0.5f;
-                Main.dust[icy].noGravity = true;
-                DustPosition -= DustOldVelocity * 8f;
+                dust.position = (dust.position + Projectile.Center) / 2f;
+                dust.velocity += Projectile.oldVelocity * 0.3f;
+                dust.noGravity = true;
+
+                //Form dust into a javelin shape
+                dustPosition -= dustOldVelocity * 8f;
             }
             #endregion
         }
