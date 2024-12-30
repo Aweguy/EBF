@@ -26,7 +26,7 @@ namespace EBF.Items.Accessories.Flairs
             Item.height = 32;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.value = Item.sellPrice(copper:0, silver:50, gold:3, platinum:0);//Item's value when sold
-            Item.rare = ItemRarityID.Green;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.rare = ItemRarityID.Lime;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.accessory = true;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
