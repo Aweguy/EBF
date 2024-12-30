@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -18,7 +16,6 @@ namespace EBF.Items.Melee.Throwable
         {
             base.DisplayName.WithFormatArgs("Ice Needle");//Name of the Item
         }
-
         public override void SetDefaults()
         {
             Item.width = 72;
@@ -59,7 +56,6 @@ namespace EBF.Items.Melee.Throwable
             AIType = ProjectileID.JavelinFriendly;
             Projectile.extraUpdates = 1;
         }
-
         public override void AI()
         {
             //Fix incorrect sprite rotation
@@ -67,13 +63,11 @@ namespace EBF.Items.Melee.Throwable
             Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
             Projectile.spriteDirection = Projectile.direction;
         }
-
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
             return true;
         }
-
         public override void OnKill(int timeLeft)
         {
             int numberOfProjectiles = 9;
@@ -113,10 +107,9 @@ namespace EBF.Items.Melee.Throwable
 
     public class IceNeedle_Icicle : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.NorthPoleSnowflake}";
-
         private bool isChasing = false;
         private List<NPC> validNPCs;
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.NorthPoleSnowflake}";
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 3;
@@ -134,7 +127,6 @@ namespace EBF.Items.Melee.Throwable
             Projectile.light = 1f;
             Projectile.tileCollide = false;
         }
-
         public override bool PreAI()
         {
             if (isChasing)
@@ -162,7 +154,6 @@ namespace EBF.Items.Melee.Throwable
 
             return false;
         }
-
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.frame = Main.rand.Next(0, 3);
@@ -171,8 +162,6 @@ namespace EBF.Items.Melee.Throwable
             //Get all valid npcs to target using the following criteria (reduces search size for homing)
             validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
         }
-
-        
         private bool FindTarget(out Vector2 move)
         {
             move = Vector2.Zero; //default case
@@ -192,7 +181,6 @@ namespace EBF.Items.Melee.Throwable
             }
             return target;
         }
-
         private void AdjustMagnitude(ref Vector2 vector)
         {
             float magnitude = vector.Length();
@@ -201,7 +189,6 @@ namespace EBF.Items.Melee.Throwable
                 vector *= 9f / magnitude;
             }
         }
-
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
