@@ -115,18 +115,8 @@ namespace EBF.Items.Melee.Throwable
     {
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.NorthPoleSnowflake}";
 
-        public enum Behaviour//The behaviour of the snowflake
-        {
-            Idle = 0,
-            Chase = 1
-        }
-        public Behaviour Behave
-        {
-            get => (Behaviour)behave;
-            set => behave = (float)value;
-        }
+        private bool isChasing = false;
         private List<NPC> validNPCs;
-        private float behave = 0f;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 3;
@@ -147,25 +137,27 @@ namespace EBF.Items.Melee.Throwable
 
         public override bool PreAI()
         {
-            if (Behave == Behaviour.Idle)//If the Projectile is idle then slow down smoothly
+            if (isChasing)
             {
-                Projectile.velocity *= 0.90f;
-            }
-            else if (Behave == Behaviour.Chase)
-            {
+                //Don't drain projectile lifetime
                 Projectile.timeLeft = Projectile.timeLeft;
+            }
+            else
+            {
+                //Slow down over time
+                Projectile.velocity *= 0.90f;
             }
 
             if (FindTarget(out Vector2 move) == true)
             {
-                Behave = Behaviour.Chase;
+                isChasing = true;
                 AdjustMagnitude(ref move);
                 Projectile.velocity = (8 * Projectile.velocity + move) / 11f;
                 AdjustMagnitude(ref Projectile.velocity);
             }
             else
             {
-                Behave = Behaviour.Idle;
+                isChasing = false;
             }
 
             return false;
