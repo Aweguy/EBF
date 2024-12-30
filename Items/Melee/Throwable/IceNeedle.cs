@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,28 +16,36 @@ namespace EBF.Items.Melee.Throwable
         {
             base.DisplayName.WithFormatArgs("Ice Needle");//Name of the Item
         }
-
         public override void SetDefaults()
         {
             Item.width = 72;
             Item.height = 72;
 
-            Item.damage = 40;
+            Item.damage = 72;
             Item.knockBack = 1f;
             Item.DamageType = DamageClass.Melee;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 26;
+            Item.useAnimation = 26;
             Item.useStyle = ItemUseStyleID.Swing;
+            Item.UseSound = SoundID.Item1;
 
-            Item.rare = ItemRarityID.LightPurple;
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Red;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 15, platinum: 0);//Item's value when sold
             Item.useTurn = false;
-
+            Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<IceNeedle_Proj>();
             Item.shootSpeed = 16f;
 
             Item.noUseGraphic = true;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.NorthPole, stack: 1)
+                .AddIngredient(ItemID.FragmentSolar, stack: 12)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
         }
     }
 
@@ -58,49 +65,52 @@ namespace EBF.Items.Melee.Throwable
             AIType = ProjectileID.JavelinFriendly;
             Projectile.extraUpdates = 1;
         }
-
         public override void AI()
         {
+            //Fix incorrect sprite rotation
             float velRotation = Projectile.velocity.ToRotation();
             Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
             Projectile.spriteDirection = Projectile.direction;
         }
-
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
             return true;
         }
-
         public override void OnKill(int timeLeft)
         {
-            int NumOfProjectiles = 9;
+            SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
+
+            int numberOfProjectiles = 9;
             float projRotation = 0f;
+
             #region Projectile spawn
-            for (int p = 0; p <= NumOfProjectiles; p++)
+            for (int p = 0; p <= numberOfProjectiles; p++)
             {
-                Vector2 velocity = Projectile.oldVelocity.RotatedBy(projRotation * 0.0174533f) * 0.5f;
+                Vector2 velocity = Projectile.oldVelocity.RotatedBy(projRotation) * 0.5f;
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, velocity, ModContent.ProjectileType<IceNeedle_Icicle>(), Projectile.damage / 2, Projectile.knockBack, Main.myPlayer);
 
-                projRotation += 360 / NumOfProjectiles;
+                projRotation += (float)Math.Tau / numberOfProjectiles;
             }
             #endregion
-            #region dust spawn
-            Vector2 DustPosition = Projectile.position;
-            Vector2 DustOldVelocity = Projectile.oldVelocity;
-            DustOldVelocity.Normalize();
-            DustPosition += DustOldVelocity * 16f;
+
+            #region Dust spawn
+            Vector2 dustPosition = Projectile.position;
+            Vector2 dustOldVelocity = Vector2.Normalize(Projectile.oldVelocity);
+            dustPosition += dustOldVelocity * 16f;
+
             for (int i = 0; i < 30; i++)
             {
-                int icy = Dust.NewDust(DustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 2f);
-                Main.dust[icy].position = (Main.dust[icy].position + Projectile.Center) / 2f;
+                int icy = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 2f);
+
                 Dust dust = Main.dust[icy];
-                dust.velocity += Projectile.oldVelocity * 0.6f;
-                dust = Main.dust[icy];
-                dust.velocity *= 0.5f;
-                Main.dust[icy].noGravity = true;
-                DustPosition -= DustOldVelocity * 8f;
+                dust.position = (dust.position + Projectile.Center) / 2f;
+                dust.velocity += Projectile.oldVelocity * 0.3f;
+                dust.noGravity = true;
+
+                //Form dust into a javelin shape
+                dustPosition -= dustOldVelocity * 8f;
             }
             #endregion
         }
@@ -108,27 +118,13 @@ namespace EBF.Items.Melee.Throwable
 
     public class IceNeedle_Icicle : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.NorthPoleSnowflake}";
-
-        public enum Behaviour//The behaviour of the snowflake
-        {
-            Idle = 0,
-            Chase = 1
-        }
-
-        public Behaviour Behave
-        {
-            get => (Behaviour)behave;
-            set => behave = (float)value;
-        }
+        private bool isChasing = false;
         private List<NPC> validNPCs;
-        private float behave = 0f;
-        private bool FrameFound;
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.NorthPoleSnowflake}";
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 3;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 26;
@@ -142,76 +138,73 @@ namespace EBF.Items.Melee.Throwable
             Projectile.light = 1f;
             Projectile.tileCollide = false;
         }
-
         public override bool PreAI()
         {
-            if (!FrameFound)//Setting the frame of the snowflake
+            if (isChasing)
             {
-                FrameFound = true;
-                Projectile.frame = Main.rand.Next(0, 2);
-
-                //Get all valid npcs to target using the following criteria (reduces search size for homing)
-                validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
-            }
-            if (Behave == Behaviour.Idle)//If the Projectile is idle then slow down smoothly
-            {
-                Projectile.velocity *= 0.90f;
-            }
-            else if (Behave == Behaviour.Chase)
-            {
+                //Don't drain projectile lifetime
                 Projectile.timeLeft = Projectile.timeLeft;
             }
-
-            FindTarget();//Finding target and chasing.
-
-            return false;
-        }
-
-        /* TODO: Optimize npc search and decouple it from these snowflakes, so the mod is easier to scale
-         */
-        private void FindTarget()
-        {
-            if (Projectile.localAI[0] == 0f)
+            else
             {
-                AdjustMagnitude(ref Projectile.velocity);
-                Projectile.localAI[0] = 1f;
+                //Slow down over time
+                Projectile.velocity *= 0.90f;
             }
-            Vector2 move = Vector2.Zero;
-            float distance = 125f;
-            bool target = false;
-            foreach(NPC npc in validNPCs)
+
+            if (FindTarget(out Vector2 move) == true)
             {
-                Vector2 newMove = npc.Center - Projectile.Center;
-                float distanceTo = (float)Math.Sqrt(newMove.X * newMove.X + newMove.Y * newMove.Y);
-                if (distanceTo < distance)
-                {
-                    move = newMove;
-                    distance = distanceTo;
-                    target = true;
-                }
-            }
-            if (target)
-            {
-                Behave = Behaviour.Chase;
+                isChasing = true;
                 AdjustMagnitude(ref move);
                 Projectile.velocity = (8 * Projectile.velocity + move) / 11f;
                 AdjustMagnitude(ref Projectile.velocity);
             }
             else
             {
-                Behave = Behaviour.Idle;
+                isChasing = false;
             }
-        }
 
+            return false;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.frame = Main.rand.Next(0, 3);
+            AdjustMagnitude(ref Projectile.velocity);
+
+            //Get all valid npcs to target using the following criteria (reduces search size for homing)
+            validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
+        }
+        private bool FindTarget(out Vector2 move)
+        {
+            move = Vector2.Zero; //default case
+
+            float distance = 125f;
+            bool target = false;
+            foreach (NPC npc in validNPCs)
+            {
+                if (npc.life <= 0)
+                {
+                    continue;
+                }
+
+                Vector2 towardsNPC = npc.Center - Projectile.Center;
+                float distanceTo = towardsNPC.Length();
+                if (distanceTo < distance)
+                {
+                    move = towardsNPC;
+                    distance = distanceTo;
+                    target = true;
+                }
+            }
+            return target;
+        }
         private void AdjustMagnitude(ref Vector2 vector)
         {
-            float magnitude = (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+            float magnitude = vector.Length();
             if (magnitude > 6f)
             {
                 vector *= 9f / magnitude;
             }
         }
-
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
