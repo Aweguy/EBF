@@ -48,22 +48,25 @@ namespace EBF.Items.Magic
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			int num233 = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-			int num234 = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
+			int posX = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+			int posY = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
 			if (player.gravDir == -1f)
 			{
-				num234 = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
+				posY = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
 			}
-			for (; num234 < Main.maxTilesY && Main.tile[num233, num234] != null && !WorldGen.SolidTile2(num233, num234) && Main.tile[num233 - 1, num234] != null && !WorldGen.SolidTile2(num233 - 1, num234) && Main.tile[num233 + 1, num234] != null && !WorldGen.SolidTile2(num233 + 1, num234); num234++)
-			{
-			}
-			Projectile.NewProjectile(source, (float)Main.mouseX + Main.screenPosition.X, (float)(num234 * 16), 0f, 0f, ModContent.ProjectileType<Seraphim_Judgement>(), Item.damage, 0f, player.whoAmI, 0f, 0f);
+			for (; posY < Main.maxTilesY 
+				&& Main.tile[posX, posY] != null && !WorldGen.SolidTile2(posX, posY) 
+				&& Main.tile[posX - 1, posY] != null && !WorldGen.SolidTile2(posX - 1, posY) 
+				&& Main.tile[posX + 1, posY] != null && !WorldGen.SolidTile2(posX + 1, posY); posY++) { }
+
+			Projectile.NewProjectile(source, (float)Main.mouseX + Main.screenPosition.X, (float)(posY * 16), 0f, 0f, type, damage, 0f, player.whoAmI, 0f, 0f);
 
 			return true;
 		}
 		public override bool CanUseItem(Player player)
 		{
-			return player.ownedProjectileCounts[ModContent.ProjectileType<Seraphim_Judgement>()] < 1 && base.CanUseItem(player);
+			//Can't use it if your judgement still exists
+			return player.ownedProjectileCounts[ModContent.ProjectileType<Seraphim_Judgement>()] < 1;
 		}
 	}
 
@@ -111,9 +114,8 @@ namespace EBF.Items.Magic
 		private Vector2 position;//the initial position of the laser
 		private Vector2 spriterotation = new Vector2(0, -1);//rotation of the laser to look up
 
-		private int timer = 0;//So the ground detection AI runs only once so the laser is not moving.
-		private int timer2 = 0;//Dust spawning timer for the feathers
-		private int timer3 = 0;//Dust spawning for the bubbles
+		private int timer0 = 0;//Dust spawning timer for the feathers
+		private int timer1 = 0;//Dust spawning for the bubbles
 		private int animation = 0;//Sets 0 or 1 for a small animation.
 
 		#endregion Variables and Constants
@@ -210,34 +212,38 @@ namespace EBF.Items.Magic
 			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, position + unit * Distance, beamWidth, ref point);
 		}
 
-		/*public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        /*public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<LightExplosion>(), Projectile.damage, 0, Projectile.owner);
 		}*/
 
-		public override void AI()
+        public override void OnSpawn(IEntitySource source)
+        {
+			//Ground detection
+            Player player = Main.player[Projectile.owner];
+
+            int posX = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+            int posY = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
+            if (player.gravDir == -1f)
+            {
+                posY = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
+            }
+
+            //Find floor
+            for (; posY < Main.maxTilesY
+                && Main.tile[posX, posY] != null && !WorldGen.SolidTile2(posX, posY)
+                && Main.tile[posX - 1, posY] != null && !WorldGen.SolidTile2(posX - 1, posY)
+                && Main.tile[posX + 1, posY] != null && !WorldGen.SolidTile2(posX + 1, posY); posY++) { }
+
+            Projectile.position = new Vector2((float)Main.mouseX + Main.screenPosition.X, (float)(posY * 16));
+            position = Projectile.position;
+        }
+
+        public override void AI()
 		{
-			#region Ground Detection
 
 			Player player = Main.player[Projectile.owner];
-			if (timer == 0)
-			{
-				int num233 = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-				int num234 = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
-				if (player.gravDir == -1f)
-				{
-					num234 = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
-				}
-				for (; num234 < Main.maxTilesY && Main.tile[num233, num234] != null && !WorldGen.SolidTile2(num233, num234) && Main.tile[num233 - 1, num234] != null && !WorldGen.SolidTile2(num233 - 1, num234) && Main.tile[num233 + 1, num234] != null && !WorldGen.SolidTile2(num233 + 1, num234); num234++)
-				{
-				}
-
-				Projectile.position = new Vector2((float)Main.mouseX + Main.screenPosition.X, (float)(num234 * 16));
-				position = Projectile.position;
-				timer--;
-			}
-
-			#endregion Ground Detection
+			
 
 			#region Beam Shrinking
 
@@ -293,9 +299,9 @@ namespace EBF.Items.Magic
 
 			#region Feathers
 
-				timer2++;
+				timer0++;
 
-			if (timer2 == 40)
+			if (timer0 == 40)
 			{
 				if (!Main.dedServ)
 					SoundEngine.PlaySound(JudgementSound, Projectile.Center);
@@ -325,9 +331,9 @@ namespace EBF.Items.Magic
 
 			#region SpiralDust
 			
-			timer3++;
+			timer1++;
 
-			if (timer3 >= 40)
+			if (timer1 >= 40)
 			{
 				if (Main.GameUpdateCount % 2 == 0)
 				{
@@ -348,7 +354,7 @@ namespace EBF.Items.Magic
 				}
 			}
 
-			if (timer3 >= 40)
+			if (timer1 >= 40)
 			{
 				if (Main.GameUpdateCount % 2 == 0)
 				{
@@ -372,10 +378,9 @@ namespace EBF.Items.Magic
 			#endregion SpiralDust
 		}
 
-		/*
-		 * Sets the end of the laser position based on where it collides with something
-		 */
-
+		/// <summary>
+		/// Sets the end of the laser position based on where it collides with something
+		/// </summary>
 		private void SetLaserPosition()
 		{
 			for (Distance = MOVE_DISTANCE; Distance <= 2500f; Distance += 1f)
@@ -407,9 +412,7 @@ namespace EBF.Items.Magic
 		{
 			if (Charge < MAX_CHARGE)
 			{
-			   
 				Charge++;
-				
 			}
 		}
 
