@@ -173,7 +173,11 @@ namespace EBF.Items.Melee.Throwable
 
         public override void OnSpawn(IEntitySource source)
         {
+            Projectile.frame = Main.rand.Next(0, 3);
             AdjustMagnitude(ref Projectile.velocity);
+
+            //Get all valid npcs to target using the following criteria (reduces search size for homing)
+            validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
         }
 
         
