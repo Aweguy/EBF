@@ -106,13 +106,13 @@ namespace EBF.Items.Magic
 		private float scaled = 5f;//Used for the animation illusion
 		private float increaseY = 0f; //It increases the Y axis of the dust spawning
 		private float increaseY2 = 0f;//Same as above
-		private float WaveFrequency = 70f;//Dust spawning wave frequency on both spawners
-		private float WaveLength = 100f;//Dust Spawning wave length on both spawners
+		private const float waveFrequency = 70f;//Dust spawning wave frequency on both spawners
+		private const float waveLength = 100f;//Dust Spawning wave length on both spawners
 		private float beamWidth = 100f;//Collision hitbox.
 		private float offDistance = 0.6f;//Distance Reduction
 
 		private Vector2 position;//the initial position of the laser
-		private Vector2 spriterotation = new Vector2(0, -1);//rotation of the laser to look up
+		private Vector2 spriterotation = -Vector2.UnitY;//rotation of the laser to look up
 
 		private int timer0 = 0;//Dust spawning timer for the feathers
 		private int timer1 = 0;//Dust spawning for the bubbles
@@ -241,22 +241,15 @@ namespace EBF.Items.Magic
 
         public override void AI()
 		{
-
-			Player player = Main.player[Projectile.owner];
-			
-
-			#region Beam Shrinking
-
+			//Beam Shrinking
 			if (IsAtMaxCharge && Projectile.timeLeft <= 80)
 			{
-				beamWidth -= 0.5f;//reducing the hitbox.
+				beamWidth -= 0.5f; //also reduces the hitbox
 			}
 			else
 			{
 				beamWidth = 100f;
 			}
-
-			#endregion Beam Shrinking
 
 			// By separating large AI into methods it becomes very easy to see the flow of the AI in a broader sense
 			// First we update player variables that are needed to channel the laser
@@ -264,6 +257,7 @@ namespace EBF.Items.Magic
 			// If we are fully charged, we proceed to update the laser's position
 			// Finally we spawn some effects like dusts and light
 
+			Player player = Main.player[Projectile.owner];
 			UpdatePlayer(player);
 			ChargeLaser(player);
 
@@ -281,7 +275,7 @@ namespace EBF.Items.Magic
 
 			for (int i = 0; i < 1; ++i)
 			{
-				Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 1.57f) + (Main.rand.Next(2) == 0 ? -1.0f : 1.0f) * 1.57f);
+				Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 1.57f) + (Main.rand.NextBool(2) ? -1.0f : 1.0f) * 1.57f);
 
 				Dust dust = Main.dust[Dust.NewDust(new Vector2(position.X, position.Y), 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, Color.White)];
 				dust.noGravity = true;
@@ -308,7 +302,7 @@ namespace EBF.Items.Magic
 
 				for (int i = 0; i < 85; ++i)
 				{
-					Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 2.57f) + (Main.rand.Next(2) == 0 ? -1.6f : 1.0f) * 1.57f);
+					Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 2.57f) + (Main.rand.NextBool(2) ? -1.6f : 1.0f) * 1.57f);
 
 					float rand = Main.rand.NextFloat(5f, 20f);
 
@@ -337,7 +331,7 @@ namespace EBF.Items.Magic
 			{
 				if (Main.GameUpdateCount % 2 == 0)
 				{
-					Dust dust = Dust.NewDustPerfect(new Vector2((float)(position.X + (WaveLength * Math.Sin(increaseY / WaveFrequency))), position.Y - increaseY), ModContent.DustType<LightBubble>(), new Vector2(0, 0));
+					Dust dust = Dust.NewDustPerfect(new Vector2((float)(position.X + (waveLength * Math.Sin(increaseY / waveFrequency))), position.Y - increaseY), ModContent.DustType<LightBubble>(), new Vector2(0, 0));
 					dust.noGravity = true;
 					dust.scale = 1.2f;
 					dust = Dust.NewDustDirect(new Vector2(position.X, position.Y), 0, 0, DustID.Smoke,
@@ -358,7 +352,7 @@ namespace EBF.Items.Magic
 			{
 				if (Main.GameUpdateCount % 2 == 0)
 				{
-					Dust dust2 = Dust.NewDustPerfect(new Vector2((float)(position.X - (WaveLength * Math.Sin(increaseY2 / WaveFrequency))), position.Y - increaseY2), ModContent.DustType<LightBubble>(), new Vector2(0, 0));
+					Dust dust2 = Dust.NewDustPerfect(new Vector2((float)(position.X - (waveLength * Math.Sin(increaseY2 / waveFrequency))), position.Y - increaseY2), ModContent.DustType<LightBubble>(), new Vector2(0, 0));
 					dust2.noGravity = true;
 					dust2.scale = 1.2f;
 					dust2 = Dust.NewDustDirect(new Vector2(position.X, position.Y), 0, 0, DustID.Smoke,
