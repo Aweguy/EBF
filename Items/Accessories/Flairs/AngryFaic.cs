@@ -20,6 +20,7 @@ namespace EBF.Items.Accessories.Flairs
         {
             Item.width = 32;
             Item.height = 32;
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 2, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
             Item.defense = 2;
