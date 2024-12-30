@@ -21,18 +21,19 @@ namespace EBF.Items.Melee.Throwable
             Item.width = 72;
             Item.height = 72;
 
-            Item.damage = 40;
+            Item.damage = 72;
             Item.knockBack = 1f;
             Item.DamageType = DamageClass.Melee;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 26;
+            Item.useAnimation = 26;
             Item.useStyle = ItemUseStyleID.Swing;
+            Item.UseSound = SoundID.Item1;
 
-            Item.rare = ItemRarityID.LightPurple;
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Red;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 15, platinum: 0);//Item's value when sold
             Item.useTurn = false;
-
+            Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<IceNeedle_Proj>();
             Item.shootSpeed = 16f;
 
@@ -78,6 +79,8 @@ namespace EBF.Items.Melee.Throwable
         }
         public override void OnKill(int timeLeft)
         {
+            SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
+
             int numberOfProjectiles = 9;
             float projRotation = 0f;
 
