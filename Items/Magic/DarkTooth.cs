@@ -2,11 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,53 +16,61 @@ namespace EBF.Items.Magic
             base.DisplayName.WithFormatArgs("Dark Tooth");//Name of the Item
             base.Tooltip.WithFormatArgs("Ancient black magic staff used for Dark elemental magic. Creates a slowly growing black hole that explodes afterwards.\nPulls everything towards it, even the player\nConsumes Limit Break while active");//Tooltip of the item
         }
-
         public override void SetDefaults()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.scale = 1.5f;
 
-            Item.damage = 30;//Item's base damage value
+            Item.damage = 40;//Item's base damage value
             Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
-            Item.useTime = 10;//How fast the item is used
-            Item.useAnimation = 10;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+            Item.useTime = 50;//How fast the item is used
+            Item.useAnimation = 50;//How long the animation lasts. For swords it should stay the same as UseTime
             Item.channel = true;//Channeling the item when held
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Purple;//Item's name colour, this is hardcoded by the modder and should be based on 
+            Item.UseSound = SoundID.Item88;//The item's sound when it's used
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
             Item.noMelee = true;
 
             Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
-            Item.shootSpeed = 0f;
+            Item.shootSpeed = 0.1f; //Must be > 0 to make the held item rotate when used
         }
-
+        public override void UseStyle(Player player, Rectangle heldItemFrame)
+        {
+            player.itemLocation -= new Vector2(player.direction * 16, 2);
+        }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             position = Main.MouseWorld;
         }
-
         public override void HoldItem(Player player)
         {
-            Color drawColor = Color.Black;
-            if (Main.rand.NextBool(2))
-            {
-                drawColor = Color.Red;
-            }
-
+            Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
+ 
             if (player.channel)
             {
-                Dust.NewDustDirect(player.position, player.width, player.height, DustID.Terragrim, 0f, 0f, 0, drawColor, 1f);
+                Dust.NewDustDirect(player.position, player.width, player.height, DustID.Terragrim, newColor: drawColor, Scale: 1f);
             }
         }
         public override bool CanUseItem(Player player)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<DarkTooth_BlackHole>()] < 1 && base.CanUseItem(player);
+            //Cannot use if the player's old black hole exists
+            return player.ownedProjectileCounts[ModContent.ProjectileType<DarkTooth_BlackHole>()] < 1;
         }
-
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.SpectreBar, stack: 30)
+                .AddIngredient(ItemID.Ruby, stack: 5)
+                .AddIngredient(ItemID.SoulofNight, stack: 15)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
     }
 
     public class DarkTooth_BlackHole : ModProjectile
