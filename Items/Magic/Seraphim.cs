@@ -328,7 +328,7 @@ namespace EBF.Items.Magic
 
         private void SetLaserHeight()
         {
-            for (laserHeight = moveDistance; laserHeight <= 2500f; laserHeight += 1f)
+            for (laserHeight = moveDistance; laserHeight <= 2500f; laserHeight += 16f)
             {
                 var start = position + spriterotation * laserHeight;
                 if (!Collision.CanHit(position, 1, 1, start, 1, 1))
