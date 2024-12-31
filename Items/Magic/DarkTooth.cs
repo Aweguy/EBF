@@ -75,13 +75,11 @@ namespace EBF.Items.Magic
 
     public class DarkTooth_BlackHole : ModProjectile
     {
-        private List<Dust> effectDusts = new List<Dust>(); // create a list of dust object
-
+        private const int spawningDust = 100; //How much dust will be created when the projectile spawns
         private const int dustSpawnRate = 100; //bigger = more dust, total dust is dustSpawnTime * dustSpawnRate
         private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
         private const float maxSize = 400f;
-        private float dustSpeed = 5f; //how fast the dust moves
         private float gravMagnitude; //The power of the gravitational force
         private float suckRange = 160;//The current range in which objects will be SUCCED
         private int baseWidth;
@@ -111,54 +109,25 @@ namespace EBF.Items.Magic
         {
             Player player = Main.player[Projectile.owner];
 
-            if (++Projectile.frameCounter >= 5)//frame calculation for the animation
+            if (Main.GameUpdateCount % 5 == 0) //Run this code every 5 frames
             {
-                Projectile.frameCounter = 0;
-
-                //Dust generation when it begins growing.
-
-                #region Start Dust
-
+                //When the black hole first appears, spawn a bunch of dust
                 if (Projectile.frame == 8)
                 {
-                    Vector2 origin = new Vector2(Projectile.Center.X, Projectile.Center.Y);
-
-                    for (int i = 0; i < dustSpawnRate; i++)
-                    {
-                        float rot = Main.rand.NextFloat() * (float)Math.PI * 2; //random angle
-
-                        dustSpeed = Main.rand.NextFloat(3f, 10f);
-
-                        effectDusts.Add(Dust.NewDustPerfect(origin + (new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot)) * dustBoost) * 20f, 31, new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot)) * dustSpeed, 0, new Color(255, 255, 255), 2.5f)); //add new dust to list
-                        effectDusts[effectDusts.Count - 1].noGravity = true;  //modify the newly created dust
-                        effectDusts[effectDusts.Count - 1].scale = 1f;
-                    }
+                    CreateSpawningDust();
                 }
 
-                #endregion Start Dust
-
-                if (++Projectile.frame >= 10)
+                Projectile.frame++;
+                if (Projectile.frame >= 10)
                 {
-                    //passive dust spawning
+                    //Spawn dust passively
+                    Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
+                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, newColor: drawColor, Scale: 1f);
 
-                    #region Dust Spawning
-
-                    Color drawColor = Color.Black;
-                    if (Main.rand.NextBool(2))
+                    // Mouse position can vary in multiplayer, so this code must only run on the client
+                    if (Main.myPlayer == Projectile.owner)
                     {
-                        drawColor = Color.Red;
-                    }
-
-                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 0, drawColor, 1f);
-
-                    #endregion Dust Spawning
-
-                    Vector2 oldSize = Projectile.Size;
-                    // In Multi Player (MP) This code only runs on the client of the Projectile's owner, this is because it relies on mouse position, which isn't the same across all clients.
-                    if (Main.myPlayer == Projectile.owner && Projectile.ai[0] == 0f)
-                    {
-                        Movement(player);//The movement of the black hole
-
+                        MoveTowardsCursor();//The movement of the black hole
 
                         // If the player channels the weapon, do something. This check only works if item.channel is true for the weapon.
                         if (player.channel)
@@ -168,20 +137,21 @@ namespace EBF.Items.Magic
                             {
                                 suckRange = 1600f;
                             }
-
-                            IncreaseScale(player, oldSize);//The growth of the black hole
+                            IncreaseScale(player, Projectile.Size);//The growth of the black hole
                             SuckNPCs(suckRange);
                             SuckGore(suckRange);
                             SuckDust(suckRange);
                         }
                         // If the player stops channeling, do something else.
-                        else if (Projectile.ai[0] == 0f)//The damage when it ends
+                        else
                         {
                             Projectile.timeLeft = 1;
 
                             Damage();//The method that calculates the damage
                         }
                     }
+
+                    //Loop animation
                     if (Projectile.frame >= 16)
                     {
                         Projectile.frame = 10;
@@ -260,7 +230,21 @@ namespace EBF.Items.Magic
         {
             behindNPCs.Add(index);
         }
-        private void Movement(Player player) //Movement of the black hole
+        private void CreateSpawningDust()
+        {
+            for (int i = 0; i < spawningDust; i++)
+            {
+                float rot = Main.rand.NextFloat(0, (float)Math.Tau); //random angle
+                float speed = Main.rand.NextFloat(3f, 10f);
+
+                Vector2 position = Projectile.Center + new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot)) * dustBoost * 20f;
+                Vector2 velocity = new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot)) * speed;
+
+                Dust dust = Dust.NewDustPerfect(position, 31, velocity, 0, new Color(255, 255, 255), 1f);
+                dust.noGravity = true;
+            }
+        }
+        private void MoveTowardsCursor() //Movement of the black hole
         {
             float maxDistance = 3f; // This also sets the maximun speed the Projectile can reach while following the cursor.
             Vector2 vectorToCursor = Main.MouseWorld - Projectile.Center;
