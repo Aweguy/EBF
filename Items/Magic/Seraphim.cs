@@ -26,19 +26,25 @@ namespace EBF.Items.Magic
 
             Item.damage = 52;//Item's base damage value
             Item.knockBack = 1f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.mana = 36;//The amount of mana this item consumes on use
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
-            Item.useTime = 10;//How fast the item is used
-            Item.useAnimation = 10;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+            Item.useTime = 30;//How fast the item is used
+            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 20, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Yellow;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item8;//The item's sound when it's used
-            Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
+            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<Seraphim_Judgement>();
-            Item.shootSpeed = 0f;
+            Item.shootSpeed = 5f;//The held item requires shootSpeed > 0 in order to rotate on use.
+            Item.noMelee = true;//Prevents damage from being dealt by the item itself
+        }
+        public override void UseStyle(Player player, Rectangle heldItemFrame)
+        {
+            player.itemLocation -= new Vector2(player.direction * 16, 2);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
