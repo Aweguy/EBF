@@ -252,11 +252,14 @@ namespace EBF.Items.Magic
 			{
 				Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 1.57f) + (Main.rand.NextBool(2) ? -1.0f : 1.0f) * 1.57f);
 
-				Dust dust = Main.dust[Dust.NewDust(new Vector2(position.X, position.Y), 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, Color.White)];
+				//Electric dust
+				Dust dust = Main.dust[Dust.NewDust(position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, Color.White)];
 				dust.noGravity = true;
 				dust.scale = 1.2f;
 				dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
-				dust = Dust.NewDustDirect(new Vector2(position.X, position.Y), 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
+				
+				//Smoke dust
+				dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
 				dust.fadeIn = 0f;
 				dust.noGravity = true;
 				dust.scale = 0.88f;
@@ -281,13 +284,15 @@ namespace EBF.Items.Magic
 
 					float rand = Main.rand.NextFloat(5f, 20f);
 
-					Dust dust = Main.dust[Dust.NewDust(new Vector2(position.X, position.Y), 0, 0, ModContent.DustType<LightFeather>(), dustVel.X * rand, dustVel.Y * rand)];
+					//Feather dust
+					Dust dust = Main.dust[Dust.NewDust(position, 0, 0, ModContent.DustType<LightFeather>(), dustVel.X * rand, dustVel.Y * rand)];
 					dust.noGravity = true;
 					dust.noLight = true;
 					dust.scale = 1.2f;
 					dust.alpha += 2;
-					dust = Dust.NewDustDirect(new Vector2(position.X, position.Y), 0, 0, DustID.Smoke,
-						-unit.X * Distance, -unit.Y * Distance);
+
+					//Smoke dust
+					dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
 					dust.fadeIn = 0f;
 					dust.noGravity = true;
 					dust.scale = 0.88f;
@@ -306,11 +311,13 @@ namespace EBF.Items.Magic
 			{
 				if (Main.GameUpdateCount % 2 == 0)
 				{
+					//Bubble dust
 					Dust dust = Dust.NewDustPerfect(new Vector2((float)(position.X + (waveLength * Math.Sin(increaseY / waveFrequency))), position.Y - increaseY), ModContent.DustType<LightBubble>(), new Vector2(0, 0));
 					dust.noGravity = true;
 					dust.scale = 1.2f;
-					dust = Dust.NewDustDirect(new Vector2(position.X, position.Y), 0, 0, DustID.Smoke,
-						-unit.X * Distance, -unit.Y * Distance);
+					
+					//Smoke dust
+					dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
 					dust.fadeIn = 0f;
 					dust.noGravity = true;
 					dust.scale = 0.88f;
@@ -327,11 +334,13 @@ namespace EBF.Items.Magic
 			{
 				if (Main.GameUpdateCount % 2 == 0)
 				{
+					//Bubble dust
 					Dust dust2 = Dust.NewDustPerfect(new Vector2((float)(position.X - (waveLength * Math.Sin(increaseY2 / waveFrequency))), position.Y - increaseY2), ModContent.DustType<LightBubble>(), new Vector2(0, 0));
 					dust2.noGravity = true;
 					dust2.scale = 1.2f;
-					dust2 = Dust.NewDustDirect(new Vector2(position.X, position.Y), 0, 0, DustID.Smoke,
-						-unit.X * Distance, -unit.Y * Distance);
+					
+					//Smoke dust
+					dust2 = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
 					dust2.fadeIn = 0f;
 					dust2.noGravity = true;
 					dust2.scale = 0.88f;
