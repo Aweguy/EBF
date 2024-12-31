@@ -51,7 +51,7 @@ namespace EBF.Items.Magic
         public override void HoldItem(Player player)
         {
             Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
- 
+
             if (player.channel)
             {
                 Dust.NewDustDirect(player.position, player.width, player.height, DustID.Terragrim, newColor: drawColor, Scale: 1f);
@@ -77,9 +77,10 @@ namespace EBF.Items.Magic
     {
         private List<Dust> effectDusts = new List<Dust>(); // create a list of dust object
 
-        private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const int dustSpawnRate = 100; //bigger = more dust, total dust is dustSpawnTime * dustSpawnRate
+        private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
+        private const float maxSize = 400f;
         private float dustSpeed = 5f; //how fast the dust moves
         private float gravMagnitude; //The power of the gravitational force
         private float suckRange = 160;//The current range in which objects will be SUCCED
@@ -168,15 +169,10 @@ namespace EBF.Items.Magic
                                 suckRange = 1600f;
                             }
 
-                            Scaling(player, oldSize);//The growth of the black hole
-
-                            NPCSucking(suckRange);//Sucking enemy npcs (or friendly) not bosses
-
-                            //PlayerSucking(player, SuckRange);//Sucking the player and damaging them if too close/ Was a test
-
-                            GoreSucking(suckRange);//Sucking gore
-
-                            DustSucking(suckRange);//Sucking dust
+                            IncreaseScale(player, oldSize);//The growth of the black hole
+                            SuckNPCs(suckRange);
+                            SuckGore(suckRange);
+                            SuckDust(suckRange);
                         }
                         // If the player stops channeling, do something else.
                         else if (Projectile.ai[0] == 0f)//The damage when it ends
@@ -291,30 +287,17 @@ namespace EBF.Items.Magic
 
             Projectile.velocity = vectorToCursor;
         }
-        private void Scaling(Player player, Vector2 oldSize) //The growth rate of the black hole
+        private void IncreaseScale(Player player, Vector2 oldSize) //The growth rate of the black hole
         {
-            float change = 0;
-
-            if (Projectile.width <= 150)
+            if (Projectile.width < maxSize)
             {
-                change = 0.1f;
+                Projectile.scale += 0.05f;
+                Projectile.width = (int)(baseWidth * Projectile.scale);
+                Projectile.height = (int)(baseHeight * Projectile.scale);
+                Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
             }
-            else if (Projectile.width <= 325 && Projectile.width > 150)
-            {
-                change = 0.05f;
-            }
-            else if (Projectile.width > 325 && Projectile.width <= 700)
-            {
-                change = 0.025f;
-            }
-
-            Projectile.scale += change; //multiplied by haste if you want to
-
-            Projectile.width = (int)(baseWidth * Projectile.scale);
-            Projectile.height = (int)(baseHeight * Projectile.scale);
-            Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
         }
-        private void NPCSucking(float suckingRange)
+        private void SuckNPCs(float suckingRange)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -336,7 +319,7 @@ namespace EBF.Items.Magic
                 }
             }
         }
-        private void GoreSucking(float suckingRange)
+        private void SuckGore(float suckingRange)
         {
             for (int i = 0; i < Main.maxGore; i++)
             {
@@ -357,7 +340,7 @@ namespace EBF.Items.Magic
                 }
             }
         }
-        private void DustSucking(float suckingRange)
+        private void SuckDust(float suckingRange)
         {
             for (int i = 0; i < Main.maxDust; i++)
             {
