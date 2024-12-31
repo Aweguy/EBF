@@ -147,7 +147,7 @@ namespace EBF.Items.Magic
                 Projectile.Kill();
             }
 
-            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, 10, Projectile.damage, -1.57f, 1f * scaled, 1000f, Color.White, (int)moveDistance);
+            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, 10, Projectile.damage, -1.57f, scaled, 1000f, Color.White, (int)moveDistance);
             return false;
         }
         public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDist = 2000f, Color color = default(Color), int transDist = 0)
@@ -162,16 +162,16 @@ namespace EBF.Items.Magic
                 Color c = Color.White;
                 origin = start + i * unit;
 
-                spriteBatch.Draw(texture, origin - Main.screenPosition, new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, rot, new Vector2(28 * .5f, 26 * .5f), scale, 0, 0);
+                spriteBatch.Draw(texture, origin - Main.screenPosition, new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, rot, new Vector2(28 * 0.5f, 26 * 0.5f), scale, 0, 0);
             }
 
             // Draws the laser 'tail'
             spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
-                new Rectangle(0, 0, 28, 26), Color.White, rot, new Vector2(28 * .5f, 26 * .5f), scale, 0, 0);
+                new Rectangle(0, 0, 28, 26), Color.White, rot, new Vector2(28 * 0.5f, 26 * 0.5f), scale, 0, 0);
 
             // Draws the laser 'head'
-            /*spriteBatch.Draw(texture, start + (Distance + step) * unit - Main.screenPosition,
-				new Rectangle(0, 52, 28, 26), Color.White, r, new Vector2(28 * .5f, 26 * .5f), scale, 0, 0);*/
+            spriteBatch.Draw(texture, start + (laserHeight + step) * unit - Main.screenPosition,
+				new Rectangle(0, 52, 28, 26), Color.White, rotation: (float)Math.PI, new Vector2(28 * 0.5f, 26 * 0.5f), scale, 0, 0);
         }
 
         // Change the way of collision check of the Projectile
@@ -199,7 +199,6 @@ namespace EBF.Items.Magic
         {
             position = Projectile.position;
         }
-
         public override void AI()
         {
             //Beam Shrinking
@@ -226,13 +225,11 @@ namespace EBF.Items.Magic
             SpawnDusts(player);
             CastLights();
         }
-
         private void SpawnDusts(Player player)
         {
             Vector2 unit = position;
 
             #region generalDust
-
 
             for (int i = 0; i < 1; ++i)
             {
@@ -322,7 +319,6 @@ namespace EBF.Items.Magic
 
             #endregion SpiralDust
         }
-
         private void SetLaserHeight()
         {
             for (laserHeight = moveDistance; laserHeight <= 2500f; laserHeight += 16f)
@@ -349,7 +345,6 @@ namespace EBF.Items.Magic
                 }
             }
         }
-
         private void ChargeLaser(Player player)
         {
             if (Charge < maxCharge)
@@ -357,7 +352,6 @@ namespace EBF.Items.Magic
                 Charge++;
             }
         }
-
         private void UpdatePlayer(Player player)
         {
             // Multiplayer support here, only run this code if the client running it is the owner of the Projectile
@@ -370,7 +364,6 @@ namespace EBF.Items.Magic
             int dir = Projectile.direction;
             player.heldProj = Projectile.whoAmI; // Update player's held Projectile
         }
-
         private void CastLights()
         {
             // Cast a light along the line of the laser
