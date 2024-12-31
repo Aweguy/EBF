@@ -236,20 +236,17 @@ namespace EBF.Items.Magic
 
             for (int i = 0; i < 1; ++i)
             {
-                Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 1.57f) + (Main.rand.NextBool(2) ? -1.0f : 1.0f) * 1.57f);
+                Vector2 dustVel = new Vector2(Main.rand.NextBool(2) ? -1 : 1, 0);
 
                 //Electric dust
-                Dust dust = Main.dust[Dust.NewDust(position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, Color.White)];
+                Dust dust = Main.dust[Dust.NewDust(position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, newColor: Color.White, Scale: 1.2f)];
                 dust.noGravity = true;
-                dust.scale = 1.2f;
                 dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
 
                 //Smoke dust
-                dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight);
+                dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.White, Scale: 0.88f);
                 dust.fadeIn = 0f;
                 dust.noGravity = true;
-                dust.scale = 0.88f;
-                dust.color = Color.White;
                 dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
             }
 
@@ -330,7 +327,7 @@ namespace EBF.Items.Magic
         {
             for (laserHeight = moveDistance; laserHeight <= 2500f; laserHeight += 16f)
             {
-                var start = position + spriterotation * laserHeight;
+                Vector2 start = position + spriterotation * laserHeight;
                 if (!Collision.CanHit(position, 1, 1, start, 1, 1))
                 {
                     if (!IsAtMaxCharge)
@@ -366,9 +363,7 @@ namespace EBF.Items.Magic
             // Multiplayer support here, only run this code if the client running it is the owner of the Projectile
             if (Projectile.owner == Main.myPlayer)
             {
-                Vector2 diff = Main.MouseWorld - player.Center;
-                diff.Normalize();
-                Projectile.velocity = diff;
+                Projectile.velocity = Vector2.Normalize(Main.MouseWorld - player.Center);
                 Projectile.direction = Main.MouseWorld.X > player.position.X ? 1 : -1;
                 Projectile.netUpdate = true;
             }
