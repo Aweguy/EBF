@@ -2,10 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -189,12 +185,11 @@ namespace EBF.Items.Magic
             // It will look for collisions on the given line using AABB
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, position + unit * laserHeight, beamWidth, ref point);
         }
-
-        /*public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-		{
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<LightExplosion>(), Projectile.damage, 0, Projectile.owner);
-		}*/
-
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            //Spawn a projectile on the target
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), target.Center, Vector2.Zero, ModContent.ProjectileType<Seraphim_LightExplosion>(), Damage: 0, KnockBack: 0, Projectile.owner);
+        }
         public override void OnSpawn(IEntitySource source)
         {
             position = Projectile.position;
@@ -369,6 +364,43 @@ namespace EBF.Items.Magic
             // Cast a light along the line of the laser
             DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
             Utils.PlotTileLine(position, position + spriterotation * (laserHeight - moveDistance), 50, DelegateMethods.CastLight);
+        }
+    }
+
+    public class Seraphim_LightExplosion : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 8;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 64;
+            Projectile.height = 64;
+
+            Projectile.aiStyle = -1;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+
+            Projectile.DamageType = DamageClass.Magic;
+            Projectile.tileCollide = false;
+
+            Projectile.alpha = 1;
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
+        }
+        public override bool PreAI()
+        {
+            if (++Projectile.frameCounter >= 2)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= 7)
+                {
+                    Projectile.Kill();
+                }
+            }
+
+            return false;
         }
     }
 }
