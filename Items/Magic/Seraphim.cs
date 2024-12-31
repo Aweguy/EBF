@@ -48,11 +48,12 @@ namespace EBF.Items.Magic
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-            player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int YOffset);
+			player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int YOffset);
 
-			Projectile.NewProjectile(source, XPosition, YPosition, 0f, 0f, type, damage, 0f, player.whoAmI, 0f, 0f);
+            position = new Vector2(XPosition, YPosition);
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, 0f, player.whoAmI, 0f, 0f);
 
-			return true;
+			return false;
 		}
 		public override bool CanUseItem(Player player)
 		{
@@ -210,12 +211,6 @@ namespace EBF.Items.Magic
 
         public override void OnSpawn(IEntitySource source)
         {
-			//Ground detection
-            Player player = Main.player[Projectile.owner];
-
-            player.FindSentryRestingSpot(Projectile.identity, out int XPosition, out int YPosition, out int YOffset);
-
-            Projectile.position = new Vector2(XPosition, YPosition);
             position = Projectile.position;
         }
 
