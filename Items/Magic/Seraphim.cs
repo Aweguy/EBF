@@ -48,18 +48,9 @@ namespace EBF.Items.Magic
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			int posX = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-			int posY = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
-			if (player.gravDir == -1f)
-			{
-				posY = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
-			}
-			for (; posY < Main.maxTilesY 
-				&& Main.tile[posX, posY] != null && !WorldGen.SolidTile2(posX, posY) 
-				&& Main.tile[posX - 1, posY] != null && !WorldGen.SolidTile2(posX - 1, posY) 
-				&& Main.tile[posX + 1, posY] != null && !WorldGen.SolidTile2(posX + 1, posY); posY++) { }
+            player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int YOffset);
 
-			Projectile.NewProjectile(source, (float)Main.mouseX + Main.screenPosition.X, (float)(posY * 16), 0f, 0f, type, damage, 0f, player.whoAmI, 0f, 0f);
+			Projectile.NewProjectile(source, XPosition, YPosition, 0f, 0f, type, damage, 0f, player.whoAmI, 0f, 0f);
 
 			return true;
 		}
@@ -222,20 +213,9 @@ namespace EBF.Items.Magic
 			//Ground detection
             Player player = Main.player[Projectile.owner];
 
-            int posX = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
-            int posY = (int)((float)Main.mouseY + Main.screenPosition.Y) / 16;
-            if (player.gravDir == -1f)
-            {
-                posY = (int)(Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY) / 16;
-            }
+            player.FindSentryRestingSpot(Projectile.identity, out int XPosition, out int YPosition, out int YOffset);
 
-            //Find floor
-            for (; posY < Main.maxTilesY
-                && Main.tile[posX, posY] != null && !WorldGen.SolidTile2(posX, posY)
-                && Main.tile[posX - 1, posY] != null && !WorldGen.SolidTile2(posX - 1, posY)
-                && Main.tile[posX + 1, posY] != null && !WorldGen.SolidTile2(posX + 1, posY); posY++) { }
-
-            Projectile.position = new Vector2((float)Main.mouseX + Main.screenPosition.X, (float)(posY * 16));
+            Projectile.position = new Vector2(XPosition, YPosition);
             position = Projectile.position;
         }
 
