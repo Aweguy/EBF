@@ -23,7 +23,6 @@ namespace EBF.Items.Magic
 			base.DisplayName.WithFormatArgs("Seraphim");//Name of the Item
 			base.Tooltip.WithFormatArgs("A glorious staff used by gorgeous angels.");//Tooltip of the item
 		}
-
 		public override void SetDefaults()
 		{
 			Item.width = 90;//Width of the hitbox of the item (usually the item's sprite width)
@@ -45,7 +44,6 @@ namespace EBF.Items.Magic
 			Item.shoot = ModContent.ProjectileType<Seraphim_Judgement>();
 			Item.shootSpeed = 0f;
 		}
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int YOffset);
@@ -72,28 +70,10 @@ namespace EBF.Items.Magic
 
 		#region Variables and Constants
 
-		private const float MAX_CHARGE = 40f;
-
-		//The distance charge particle from the player center
-		public float MOVE_DISTANCE = 20f;
-
-		// The actual distance is stored in the ai0 field
-		// By making a property to handle this it makes our life easier, and the accessibility more readable
-		public float Distance;
-
-		//{
-		//get => Projectile.ai[0];
-		//set => Projectile.ai[0] = value;
-		//}
-
-		// The actual charge value is stored in the localAI0 field
-		public float Charge
-		{
-			get => Projectile.localAI[0];
-			set => Projectile.localAI[0] = value;
-		}
-
-		public bool IsAtMaxCharge => Charge == MAX_CHARGE;
+		//Fields
+		private const float maxCharge = 40f;
+		public float moveDistance = 20f; //The distance charge particle from the player center
+        public float laserHeight; //This is how tall the laser is, it's set in SetLaserHeight
 
 		private float scaled = 5f;//Used for the animation illusion
 		private float increaseY = 0f; //It increases the Y axis of the dust spawning
@@ -109,10 +89,18 @@ namespace EBF.Items.Magic
 		private int timer0 = 0;//Dust spawning timer for the feathers
 		private int timer1 = 0;//Dust spawning for the bubbles
 		private int animation = 0;//Sets 0 or 1 for a small animation.
+		
+		//Properties
+        public float Charge //Shortcut for readability
+        {
+            get => Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        public bool IsAtMaxCharge => Charge == maxCharge;
 
-		#endregion Variables and Constants
+        #endregion
 
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			Projectile.width = 0;
 			Projectile.height = 0;
@@ -121,7 +109,7 @@ namespace EBF.Items.Magic
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
 
-			Projectile.timeLeft = 120 + (int)MAX_CHARGE;
+			Projectile.timeLeft = 120 + (int)maxCharge;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.hide = true;
 
@@ -134,12 +122,12 @@ namespace EBF.Items.Magic
 			if (!IsAtMaxCharge)//When it's not at max charge have a small laser beam
 			{
 				scaled = 1f;
-				MOVE_DISTANCE = 4f;
+				moveDistance = 4f;
 			}
 			else if (IsAtMaxCharge && Projectile.timeLeft <= 80)//if it's at max charge and some time has passed reduce its scale.
 			{
 				scaled -= 0.06f;
-				MOVE_DISTANCE -= 0.24f;
+				moveDistance -= 0.24f;
 			}
 			else//The animation while damaging
 			{
@@ -147,13 +135,13 @@ namespace EBF.Items.Magic
 				{
 					scaled = 5.5f;
 					animation = 1;
-					MOVE_DISTANCE = 20f;
+					moveDistance = 20f;
 				}
 				else if (animation == 1)
 				{
 					scaled = 5f;
 					animation = 0;
-					MOVE_DISTANCE = 20f;
+					moveDistance = 20f;
 				}
 			}
 			if (scaled <= 0f)
@@ -161,7 +149,7 @@ namespace EBF.Items.Magic
 				Projectile.Kill();
 			}
 
-			DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, 10, Projectile.damage, -1.57f, 1f * scaled, 1000f, Color.White, (int)MOVE_DISTANCE);
+			DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, 10, Projectile.damage, -1.57f, 1f * scaled, 1000f, Color.White, (int)moveDistance);
 			return false;
 		}
 		public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDist = 2000f, Color color = default(Color), int transDist = 0)
@@ -171,7 +159,7 @@ namespace EBF.Items.Magic
 			var origin = Vector2.Zero;
 
 			// Draws the laser 'body'
-			for (float i = transDist; i <= Distance; i += step)
+			for (float i = transDist; i <= laserHeight; i += step)
 			{
 				Color c = Color.White;
 				origin = start + i * unit;
@@ -201,7 +189,7 @@ namespace EBF.Items.Magic
 
 			// Run an AABB versus Line check to look for collisions, look up AABB collision first to see how it works
 			// It will look for collisions on the given line using AABB
-			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, position + unit * Distance, beamWidth, ref point);
+			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, position + unit * laserHeight, beamWidth, ref point);
 		}
 
         /*public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
@@ -236,7 +224,7 @@ namespace EBF.Items.Magic
 			UpdatePlayer(player);
 			ChargeLaser(player);
 
-			SetLaserPosition();
+			SetLaserHeight();
 			SpawnDusts(player);
 			CastLights();
 		}
@@ -259,7 +247,7 @@ namespace EBF.Items.Magic
 				dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
 				
 				//Smoke dust
-				dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
+				dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * laserHeight, -unit.Y * laserHeight);
 				dust.fadeIn = 0f;
 				dust.noGravity = true;
 				dust.scale = 0.88f;
@@ -292,7 +280,7 @@ namespace EBF.Items.Magic
 					dust.alpha += 2;
 
 					//Smoke dust
-					dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
+					dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * laserHeight, -unit.Y * laserHeight);
 					dust.fadeIn = 0f;
 					dust.noGravity = true;
 					dust.scale = 0.88f;
@@ -317,14 +305,14 @@ namespace EBF.Items.Magic
 					dust.scale = 1.2f;
 					
 					//Smoke dust
-					dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
+					dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * laserHeight, -unit.Y * laserHeight);
 					dust.fadeIn = 0f;
 					dust.noGravity = true;
 					dust.scale = 0.88f;
 					dust.color = Color.Cyan;
 				}
 
-				if (increaseY < Distance)//Moving the spiral up
+				if (increaseY < laserHeight)//Moving the spiral up
 				{
 					increaseY += 10;
 				}
@@ -340,14 +328,14 @@ namespace EBF.Items.Magic
 					dust2.scale = 1.2f;
 					
 					//Smoke dust
-					dust2 = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * Distance, -unit.Y * Distance);
+					dust2 = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, -unit.X * laserHeight, -unit.Y * laserHeight);
 					dust2.fadeIn = 0f;
 					dust2.noGravity = true;
 					dust2.scale = 0.88f;
 					dust2.color = Color.Cyan;
 				}
 
-				if (increaseY2 < Distance)//Moving the spiral up
+				if (increaseY2 < laserHeight)//Moving the spiral up
 				{
 					increaseY2 += 10f;
 				}
@@ -356,30 +344,27 @@ namespace EBF.Items.Magic
 			#endregion SpiralDust
 		}
 
-		/// <summary>
-		/// Sets the end of the laser position based on where it collides with something
-		/// </summary>
-		private void SetLaserPosition()
+		private void SetLaserHeight()
 		{
-			for (Distance = MOVE_DISTANCE; Distance <= 2500f; Distance += 1f)
+			for (laserHeight = moveDistance; laserHeight <= 2500f; laserHeight += 1f)
 			{
-				var start = position + spriterotation * Distance;
+				var start = position + spriterotation * laserHeight;
 				if (!Collision.CanHit(position, 1, 1, start, 1, 1))
 				{
 					if (!IsAtMaxCharge)
 					{
-						Distance -= 0f;
+						laserHeight -= 0f;
 						break;
 					}
 					else if (IsAtMaxCharge && Projectile.timeLeft <= 80)
 					{
-						Distance -= 50f - offDistance;
+						laserHeight -= 50f - offDistance;
 						offDistance += 0.6f;
 						break;
 					}
 					else
 					{
-						Distance -= 50f;
+						laserHeight -= 50f;
 						break;
 					}
 				}
@@ -388,7 +373,7 @@ namespace EBF.Items.Magic
 
 		private void ChargeLaser(Player player)
 		{
-			if (Charge < MAX_CHARGE)
+			if (Charge < maxCharge)
 			{
 				Charge++;
 			}
@@ -413,7 +398,7 @@ namespace EBF.Items.Magic
 		{
 			// Cast a light along the line of the laser
 			DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
-			Utils.PlotTileLine(position, position + spriterotation * (Distance - MOVE_DISTANCE), 50, DelegateMethods.CastLight);
+			Utils.PlotTileLine(position, position + spriterotation * (laserHeight - moveDistance), 50, DelegateMethods.CastLight);
 		}
 	}
 }
