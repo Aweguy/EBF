@@ -73,7 +73,7 @@ namespace EBF.Items.Magic
     {
         public static readonly SoundStyle JudgementSound = new("EBF/Assets/Sounds/Custom/Judgement")
         {
-            Volume = 2f,
+            Volume = 1.5f,
             PitchVariance = 1f
         };
 
