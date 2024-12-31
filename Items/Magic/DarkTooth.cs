@@ -80,6 +80,7 @@ namespace EBF.Items.Magic
         private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
         private const float maxSize = 400f;
+        private const float maxSpeed = 3f;
         private float gravMagnitude; //The power of the gravitational force
         private float suckRange = 160;//The current range in which objects will be SUCCED
         private int baseWidth;
@@ -246,30 +247,19 @@ namespace EBF.Items.Magic
         }
         private void MoveTowardsCursor() //Movement of the black hole
         {
-            float maxDistance = 3f; // This also sets the maximun speed the Projectile can reach while following the cursor.
-            Vector2 vectorToCursor = Main.MouseWorld - Projectile.Center;
-            float distanceToCursor = vectorToCursor.Length();
-
-            // Here we can see that the speed of the Projectile depends on the distance to the cursor.
-            if (distanceToCursor > maxDistance)
+            Vector2 newVelocity = Main.MouseWorld - Projectile.Center;
+            if(newVelocity.Length() > maxSpeed)
             {
-                distanceToCursor = maxDistance / distanceToCursor;
-                vectorToCursor *= distanceToCursor;
+                newVelocity = Vector2.Normalize(newVelocity) * maxSpeed;
             }
 
-            int velocityXBy1000 = (int)(vectorToCursor.X * 3f);
-            int oldVelocityXBy1000 = (int)(Projectile.velocity.X * 3f);
-            int velocityYBy1000 = (int)(vectorToCursor.Y * 3f);
-            int oldVelocityYBy1000 = (int)(Projectile.velocity.Y * 3f);
-
-            // This code checks if the precious velocity of the Projectile is different enough from its new velocity, and if it is, syncs it with the server and the other clients in MP.
-            // We previously multiplied the speed by 1000, then casted it to int, this is to reduce its precision and prevent the speed from being synced too much.
-            if (velocityXBy1000 != oldVelocityXBy1000 || velocityYBy1000 != oldVelocityYBy1000)
+            //Limit how often velocity syncs in multiplayer by truncating the decimals
+            if(newVelocity.ToPoint() != Projectile.velocity.ToPoint())
             {
                 Projectile.netUpdate = true;
             }
 
-            Projectile.velocity = vectorToCursor;
+            Projectile.velocity = newVelocity;
         }
         private void IncreaseScale(Player player, Vector2 oldSize) //The growth rate of the black hole
         {
