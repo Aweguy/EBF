@@ -15,15 +15,12 @@ namespace EBF.Items.Magic.Airstrike
 {
     public class Airstrike_Remote : ModItem
     {
-        private float offsetX = 20f;
-
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Airstrike Remote");//Name of the Item
             base.Tooltip.WithFormatArgs("Bombs away!!!!\nLeft click to quickly drop bombs down, right click to drop 3 weaker bombs at once.");//Tooltip of the item
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Item.type] = true;
         }
-
         public override void SetDefaults()
         {
             Item.width = 24;//Width of the hitbox of the item (usually the item's sprite width)
@@ -36,17 +33,16 @@ namespace EBF.Items.Magic.Airstrike
             Item.useTime = 40;//How fast the item is used
             Item.useAnimation = 40;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 8, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.UseSound = SoundID.Item8;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
-
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
-
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -69,87 +65,67 @@ namespace EBF.Items.Magic.Airstrike
             }
             return base.CanUseItem(player);
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            int spawnAmount = 1;
+            float spread = 0f;
+
             if (player.altFunctionUse == 2)
             {
-                for (int i = 0; i <= 2; i++)
-                {
-                    Vector2 target = Main.screenPosition + new Vector2(Main.mouseX + Main.rand.NextFloat(-100f, 100f), Main.mouseY);
-                    float ceilingLimit = target.Y;
-                    if (ceilingLimit > player.Center.Y - 200f)
-                    {
-                        ceilingLimit = player.Center.Y - 200f;
-                    }
-
-                    position = Main.MouseWorld + new Vector2((-(float)Main.rand.Next(-401, 401) + offsetX) * player.direction, -600f);
-                    position.Y -= 100 * i;
-                    Vector2 heading = target - position;
-                    if (heading.Y < 0f)
-                    {
-                        heading.Y *= -1f;
-                    }
-                    if (heading.Y < 20f)
-                    {
-                        heading.Y = 20f;
-                    }
-
-                    heading.Normalize();
-                    heading *= new Vector2(velocity.X, velocity.Y).Length();
-                    velocity.X = heading.X;
-                    velocity.Y = heading.Y + Main.rand.Next(-40, 41) * 0.02f;
-                    Projectile.NewProjectile(source, position, velocity, type, 30, knockback, player.whoAmI, 0f, ceilingLimit);
-
-                }
+                //Use different values for small bomb
+                spread = 100f;
+                spawnAmount = 3;
+                damage /= 2;
             }
-            else
+
+            for (int i = 0; i < spawnAmount; i++)
             {
-                Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-                float ceilingLimit = target.Y;
-                if (ceilingLimit > player.Center.Y - 200f)
-                {
-                    ceilingLimit = player.Center.Y - 200f;
-                }
+                //Spawn position
+                float offsetX = Main.rand.NextFloat(-401f, 401f);
+                position = new Vector2(Main.MouseWorld.X + offsetX, Main.screenPosition.Y);
+                position.Y -= 100 * i; //this is so they fall one by one
 
-                position = Main.MouseWorld + new Vector2((-(float)Main.rand.Next(-401, 401) + offsetX) * player.direction, -600f);
-                position.Y -= 100;
-                Vector2 heading = target - position;
-                if (heading.Y < 0f)
-                {
-                    heading.Y *= -1f;
-                }
-                if (heading.Y < 20f)
-                {
-                    heading.Y = 20f;
-                }
+                //Velocity towards random point near cursor, with slight randomized speed
+                Vector2 target = Main.MouseWorld + new Vector2(Main.rand.NextFloat(spread, -spread), 0);
+                velocity = Vector2.Normalize(target - position) * velocity.Length();
+                velocity *= Main.rand.NextFloat(0.9f, 1.1f);
 
-                heading.Normalize();
-                heading *= new Vector2(velocity.X, velocity.Y).Length();
-                velocity.X = heading.X;
-                velocity.Y = heading.Y + Main.rand.Next(-40, 41) * 0.02f;
-                Projectile.NewProjectile(source, position, velocity, type, 60, knockback, player.whoAmI, 0f, ceilingLimit);
+                //Spawn the projectile
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             }
 
             return false;
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.HallowedBar, stack: 12)
+                .AddIngredient(ItemID.SoulofMight, stack: 8)
+                .AddIngredient(ItemID.Bomb, stack: 30)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
     }
 
-    public class Airstrike_Bomb : ModProjectile
+    public abstract class EBFMissile : ModProjectile
     {
-        bool HasGoneDown = false;
-        int GlowmaskOpacity = 255;
+        protected Texture2D glowmaskTexture;
+        protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
+        protected int explosionSize; //The hitbox size of the explosion
+        protected int glowmaskOpacity = 0;
 
-        bool ShakeLeft = true;
-        bool ShakeRight = false;
+        private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
 
-        bool HasGottenBig = false;
-        bool FromNPC = false;
+        private bool hitboxHasExpanded = false;
+        private bool fromNPC = false;
+        private bool inGround = false;
 
-        public override void SetDefaults()
+        /// <summary>
+        /// Sets the variables that are share identical values between all missiles types.
+        /// <para>If one of these variables should differ between missiles, then move the variable into each subclass.</para>
+        /// </summary>
+        protected void SetEverythingElse()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
@@ -159,319 +135,176 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.tileCollide = true;
             Projectile.hide = true;
             Projectile.extraUpdates = 2;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Face falling direction
+            Projectile.rotation = Projectile.velocity.ToRotation();
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            fromNPC = true;
+            Explode();//Exploding after hitting an npc
+        }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (!inGround)
+            {
+                Projectile.position += Vector2.Normalize(oldVelocity) * diggingDepth;
+                Projectile.velocity = Vector2.Zero;
+                Projectile.timeLeft = 60;
+
+                inGround = true;
+            }
+
+            return false;
+        }
+        public override bool PreAI()
+        {
+            if (inGround)
+            {
+                //Glow and shake
+                glowmaskOpacity += 4;
+
+                if (Main.GameUpdateCount % 2 == 0)
+                {
+                    Projectile.Center += shakeDirection;
+                    shakeDirection.X = -shakeDirection.X;
+                }
+
+                if (Projectile.timeLeft < 3)
+                {
+                    Explode();
+                }
+            }
+
+            return false;
+        }
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCsAndTiles.Add(index);
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            if (inGround)
+            {
+                Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, glowmaskTexture.Width, glowmaskTexture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            }
+        }
+        protected void Explode()
+        {
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+
+            if (!hitboxHasExpanded)
+            {
+                //Expand hitbox
+                Projectile.position = Projectile.Center;
+                Projectile.width += explosionSize;
+                Projectile.height += explosionSize;
+                Projectile.Center = Projectile.position;
+
+                hitboxHasExpanded = true;
+            }
+
+            if (fromNPC)
+            {
+                Projectile.Kill();
+            }
+
+        }
+    }
+
+    public class Airstrike_Bomb : EBFMissile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.width = 16;
+            Projectile.height = 16;
+
             DrawOffsetX = -13;
             DrawOriginOffsetY = -4;
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
+
+            explosionSize = 200; //The hitbox size of the explosion
+            diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
+
+            glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
+
+            SetEverythingElse();
         }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            FromNPC = true;
-            Explode();//Exploding after hitting an npc
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            if (!HasGoneDown)
-            {
-                Projectile.position += Vector2.Normalize(oldVelocity) * 15f;
-                Projectile.velocity = Vector2.Zero;
-                Projectile.timeLeft = 60;
-
-                HasGoneDown = true;
-            }
-
-            return false;
-        }
-
-        public override bool PreAI()
-        {
-            if (Projectile.timeLeft > 60)
-            {
-                float velRotation = Projectile.velocity.ToRotation();
-                Projectile.rotation = velRotation;
-            }
-
-            if (HasGoneDown)
-            {
-                GlowmaskOpacity -= 255 / 100;
-
-                if (Main.GameUpdateCount % 2 == 0)
-                {
-                    if (ShakeLeft)
-                    {
-                        Projectile.Center -= new Vector2(-2, 0);
-
-                        ShakeLeft = false;
-                        ShakeRight = true;
-
-                    }
-                    else if (ShakeRight)
-                    {
-                        Projectile.Center -= new Vector2(2, 0);
-
-                        ShakeLeft = true;
-                        ShakeRight = false;
-                    }
-                }
-            }
-
-            if (Projectile.timeLeft < 3)//Exploding after some time after hitting the ground
-            {
-                Explode();
-            }
-
-            return false;
-        }
-
-        private void Explode()
-        {
-            Projectile.tileCollide = false;
-
-            Projectile.position = Projectile.Center;
-
-            if (!HasGottenBig)
-            {
-                Projectile.width += 200;
-                Projectile.height += 200;
-
-                HasGottenBig = true;
-            }
-
-            Projectile.penetrate = -1;
-            Projectile.Center = Projectile.position;
-
-            if (FromNPC)
-            {
-                Projectile.Kill();
-            }
-
-        }
-
         public override void OnKill(int timeLeft)
         {
             // Play explosion sound
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+
+            Dust dust;
+
             // Smoke Dust spawn
             for (int i = 0; i < 50; i++)
             {
-                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
+                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 2f);
+                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 10;
             }
             // Fire Dust spawn
-            for (int i = 0; i < 80; i++)
+            for (int i = 0; i < 160; i++)
             {
-                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 3f);
-                Main.dust[dustIndex].noGravity = true;
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
-                dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 2f);
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
+                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(2f, 3f));
+                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 5;
             }
             // Large Smoke Gore spawn
-            for (int g = 0; g < 2; g++)
+            for (int g = 0; g < 8; g++)
             {
-                int goreIndex = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f), default, Main.rand.Next(61, 64), 1f);
-                Main.gore[goreIndex].scale = 1.5f;
-                Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X + 1.5f;
-                Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y + 1.5f;
-                goreIndex = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f), default, Main.rand.Next(61, 64), 1f);
-                Main.gore[goreIndex].scale = 1.5f;
-                Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X - 1.5f;
-                Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y + 1.5f;
-                goreIndex = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f), default, Main.rand.Next(61, 64), 1f);
-                Main.gore[goreIndex].scale = 1.5f;
-                Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X + 1.5f;
-                Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y - 1.5f;
-                goreIndex = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f), default, Main.rand.Next(61, 64), 1f);
-                Main.gore[goreIndex].scale = 1.5f;
-                Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X - 1.5f;
-                Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y - 1.5f;
-            }
-        }
-
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            behindNPCsAndTiles.Add(index);
-        }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
-
-            if (HasGoneDown)
-            {
-                Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - GlowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-
+                Vector2 position = Projectile.position + new Vector2(Projectile.width / 2 - 24f, Projectile.height / 2 - 24f);
+                Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, Main.rand.NextBool(2) ? 1.5f : -1.5f);
             }
         }
     }
 
-    public class Airstrike_SmallBomb : ModProjectile
+    public class Airstrike_SmallBomb : EBFMissile
     {
-        bool HasGoneDown = false;
-        int GlowmaskOpacity = 255;
-
-        bool ShakeLeft = true;
-        bool ShakeRight = false;
-
-        bool HasGottenBig = false;
-        bool FromNPC = false;
-
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.aiStyle = -1;
-            Projectile.friendly = true;
-            Projectile.penetrate = 1;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.damage = 10;
-            Projectile.knockBack = 1f;
-            Projectile.tileCollide = true;
-            Projectile.hide = true;
-
-            Projectile.extraUpdates = 2;
             DrawOffsetX = -25;
+
+            explosionSize = 100; //The hitbox size of the explosion
+            diggingDepth = 24; //How far the missile is placed into the ground upon hitting it
+
+            glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
+
+            SetEverythingElse();
         }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            FromNPC = true;
-            Explode();
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            if (!HasGoneDown)
-            {
-                Projectile.position += Vector2.Normalize(oldVelocity) * 24f;
-                Projectile.velocity = Vector2.Zero;
-                Projectile.timeLeft = 60;
-
-                HasGoneDown = true;
-            }
-
-            return false;
-        }
-
-        public override bool PreAI()
-        {
-            if (Projectile.timeLeft > 60)
-            {
-                float velRotation = Projectile.velocity.ToRotation();
-                Projectile.rotation = velRotation;
-            }
-            if (HasGoneDown)
-            {
-                GlowmaskOpacity -= 255 / 100;
-
-                if (Main.GameUpdateCount % 2 == 0)
-                {
-                    if (ShakeLeft)
-                    {
-                        Projectile.Center -= new Vector2(-2, 0);
-
-                        ShakeLeft = false;
-                        ShakeRight = true;
-
-                    }
-                    else if (ShakeRight)
-                    {
-                        Projectile.Center -= new Vector2(2, 0);
-
-                        ShakeLeft = true;
-                        ShakeRight = false;
-                    }
-
-                }
-            }
-            if (Projectile.timeLeft < 3)
-            {
-                Explode();
-            }
-            return false;
-        }
-
-        private void Explode()
-        {
-            Projectile.tileCollide = false;
-
-            Projectile.position = Projectile.Center;
-
-            if (!HasGottenBig)
-            {
-                Projectile.width += 100;
-                Projectile.height += 100;
-
-                HasGottenBig = true;
-            }
-
-            Projectile.penetrate = -1;
-            Projectile.Center = Projectile.position;
-
-            if (FromNPC)
-            {
-                Projectile.Kill();
-            }
-        }
-
         public override void OnKill(int timeLeft)
         {
             // Play explosion sound
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+
+            Dust dust;
+
             // Smoke Dust spawn
             for (int i = 0; i < 25; i++)
             {
-                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 5;
+                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 2f);
+                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 5;
             }
             // Fire Dust spawn
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 80; i++)
             {
-                int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 3f);
-                Main.dust[dustIndex].noGravity = true;
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 3;
-                dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100, new Color(255, 251, 0), 2f);
-                Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 3;
+                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(2f, 3f));
+                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 3;
             }
             // Large Smoke Gore spawn
-            for (int g = 0; g < 2; g++)
+            for (int g = 0; g < 4; g++)
             {
-                int goreIndex = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f), default, Main.rand.Next(61, 64), 1f);
-                Main.gore[goreIndex].scale = 1.5f;
-                Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X + 1.5f;
-                Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y + 1.5f;
-                goreIndex = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + Projectile.width / 2 - 24f, Projectile.position.Y + Projectile.height / 2 - 24f), default, Main.rand.Next(61, 64), 1f);
-                Main.gore[goreIndex].scale = 1.5f;
-                Main.gore[goreIndex].velocity.X = Main.gore[goreIndex].velocity.X - 1.5f;
-                Main.gore[goreIndex].velocity.Y = Main.gore[goreIndex].velocity.Y + 1.5f;
-            }
-            Main.MouseWorld.ToScreenPosition();
-            // reset size to normal width and height.
-            Projectile.position.X = Projectile.position.X + Projectile.width / 2;
-            Projectile.position.Y = Projectile.position.Y + Projectile.height / 2;
-            Projectile.width = 48;
-            Projectile.height = 48;
-            Projectile.position.X = Projectile.position.X - Projectile.width / 2;
-            Projectile.position.Y = Projectile.position.Y - Projectile.height / 2;
-        }
+                Vector2 position = Projectile.position + new Vector2(Projectile.width / 2 - 24f, Projectile.height / 2 - 24f);
+                Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, 1.5f);
 
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            behindNPCsAndTiles.Add(index);
-        }
-
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
-
-            if (HasGoneDown)
-            {
-                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - GlowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+                Gore gore = Gore.NewGoreDirect(Projectile.GetSource_Death(), position, velocity, Main.rand.Next(61, 64), Scale: 1.5f);
             }
         }
-
-
     }
 }
