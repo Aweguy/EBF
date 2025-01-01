@@ -67,7 +67,8 @@ namespace EBF.Items.Melee
 
     public class HeavensGate_LightBlade : ModProjectile
     {
-        private const float spawnPositionOffset = 80f;
+        private const float spawnPositionOffset = 80f; //How far away new projectiles spawn from a target
+        private const float travelDistance = 200f; //How far blades travel before despawning
         private bool stop = false;
         private Vector2 spawnPosition;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
@@ -148,7 +149,7 @@ namespace EBF.Items.Melee
             {
                 HandleFrames();
             }
-            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= spawnPositionOffset * 4f)
+            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= travelDistance)
             {
                 stop = false;
             }
@@ -231,6 +232,7 @@ namespace EBF.Items.Melee
     {
         private const int copyLimit = 2; //How many times this projectile can be copied
         private const float spawnPositionOffset = 80f; //How far away new projectiles spawn from a target
+        private const float travelDistance = 200f; //How far blades travel before despawning
         private bool stop = false;
         private Vector2 spawnPosition;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
@@ -320,7 +322,7 @@ namespace EBF.Items.Melee
             {
                 HandleFrames();
             }
-            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= spawnPositionOffset * 4f)
+            else if (Vector2.Distance(spawnPosition, Projectile.Center) >= travelDistance)
             {
                 stop = false;
             }
