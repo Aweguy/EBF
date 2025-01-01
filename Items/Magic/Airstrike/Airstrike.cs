@@ -137,14 +137,14 @@ namespace EBF.Items.Magic.Airstrike
 
     public class Airstrike_Bomb : ModProjectile
     {
-        bool HasGoneDown = false;
-        int GlowmaskOpacity = 255;
+        private int glowmaskOpacity = 255;
+        private bool hasGoneDown = false;
 
-        bool ShakeLeft = true;
-        bool ShakeRight = false;
+        private bool shakeLeft = true;
+        private bool shakeRight = false;
 
-        bool HasGottenBig = false;
-        bool FromNPC = false;
+        private bool hasGottenBig = false;
+        private bool fromNPC = false;
 
         public override void SetDefaults()
         {
@@ -168,19 +168,19 @@ namespace EBF.Items.Magic.Airstrike
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            FromNPC = true;
+            fromNPC = true;
             Explode();//Exploding after hitting an npc
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (!HasGoneDown)
+            if (!hasGoneDown)
             {
                 Projectile.position += Vector2.Normalize(oldVelocity) * 15f;
                 Projectile.velocity = Vector2.Zero;
                 Projectile.timeLeft = 60;
 
-                HasGoneDown = true;
+                hasGoneDown = true;
             }
 
             return false;
@@ -194,26 +194,26 @@ namespace EBF.Items.Magic.Airstrike
                 Projectile.rotation = velRotation;
             }
 
-            if (HasGoneDown)
+            if (hasGoneDown)
             {
-                GlowmaskOpacity -= 255 / 100;
+                glowmaskOpacity -= 255 / 100;
 
                 if (Main.GameUpdateCount % 2 == 0)
                 {
-                    if (ShakeLeft)
+                    if (shakeLeft)
                     {
                         Projectile.Center -= new Vector2(-2, 0);
 
-                        ShakeLeft = false;
-                        ShakeRight = true;
+                        shakeLeft = false;
+                        shakeRight = true;
 
                     }
-                    else if (ShakeRight)
+                    else if (shakeRight)
                     {
                         Projectile.Center -= new Vector2(2, 0);
 
-                        ShakeLeft = true;
-                        ShakeRight = false;
+                        shakeLeft = true;
+                        shakeRight = false;
                     }
                 }
             }
@@ -232,18 +232,18 @@ namespace EBF.Items.Magic.Airstrike
 
             Projectile.position = Projectile.Center;
 
-            if (!HasGottenBig)
+            if (!hasGottenBig)
             {
                 Projectile.width += 200;
                 Projectile.height += 200;
 
-                HasGottenBig = true;
+                hasGottenBig = true;
             }
 
             Projectile.penetrate = -1;
             Projectile.Center = Projectile.position;
 
-            if (FromNPC)
+            if (fromNPC)
             {
                 Projectile.Kill();
             }
@@ -285,9 +285,9 @@ namespace EBF.Items.Magic.Airstrike
         {
             Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
 
-            if (HasGoneDown)
+            if (hasGoneDown)
             {
-                Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - GlowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
             }
         }
@@ -295,14 +295,14 @@ namespace EBF.Items.Magic.Airstrike
 
     public class Airstrike_SmallBomb : ModProjectile
     {
-        bool HasGoneDown = false;
-        int GlowmaskOpacity = 255;
+        private int glowmaskOpacity = 255;
+        private bool hasGoneDown = false;
 
-        bool ShakeLeft = true;
-        bool ShakeRight = false;
+        private bool shakeLeft = true;
+        private bool shakeRight = false;
 
-        bool HasGottenBig = false;
-        bool FromNPC = false;
+        private bool hasGottenBig = false;
+        private bool fromNPC = false;
 
         public override void SetDefaults()
         {
@@ -323,19 +323,19 @@ namespace EBF.Items.Magic.Airstrike
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            FromNPC = true;
+            fromNPC = true;
             Explode();
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (!HasGoneDown)
+            if (!hasGoneDown)
             {
                 Projectile.position += Vector2.Normalize(oldVelocity) * 24f;
                 Projectile.velocity = Vector2.Zero;
                 Projectile.timeLeft = 60;
 
-                HasGoneDown = true;
+                hasGoneDown = true;
             }
 
             return false;
@@ -348,26 +348,26 @@ namespace EBF.Items.Magic.Airstrike
                 float velRotation = Projectile.velocity.ToRotation();
                 Projectile.rotation = velRotation;
             }
-            if (HasGoneDown)
+            if (hasGoneDown)
             {
-                GlowmaskOpacity -= 255 / 100;
+                glowmaskOpacity -= 255 / 100;
 
                 if (Main.GameUpdateCount % 2 == 0)
                 {
-                    if (ShakeLeft)
+                    if (shakeLeft)
                     {
                         Projectile.Center -= new Vector2(-2, 0);
 
-                        ShakeLeft = false;
-                        ShakeRight = true;
+                        shakeLeft = false;
+                        shakeRight = true;
 
                     }
-                    else if (ShakeRight)
+                    else if (shakeRight)
                     {
                         Projectile.Center -= new Vector2(2, 0);
 
-                        ShakeLeft = true;
-                        ShakeRight = false;
+                        shakeLeft = true;
+                        shakeRight = false;
                     }
 
                 }
@@ -385,18 +385,18 @@ namespace EBF.Items.Magic.Airstrike
 
             Projectile.position = Projectile.Center;
 
-            if (!HasGottenBig)
+            if (!hasGottenBig)
             {
                 Projectile.width += 100;
                 Projectile.height += 100;
 
-                HasGottenBig = true;
+                hasGottenBig = true;
             }
 
             Projectile.penetrate = -1;
             Projectile.Center = Projectile.position;
 
-            if (FromNPC)
+            if (fromNPC)
             {
                 Projectile.Kill();
             }
@@ -440,9 +440,9 @@ namespace EBF.Items.Magic.Airstrike
         {
             Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
 
-            if (HasGoneDown)
+            if (hasGoneDown)
             {
-                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - GlowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             }
         }
 
