@@ -136,8 +136,8 @@ namespace EBF.Items.Magic.Airstrike
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
         protected int explosionSize; //The hitbox size of the explosion
 
-        protected bool hasGoneDown = false;
         protected int glowmaskOpacity = 0;
+        protected bool inGround = false;
 
         protected bool shakeLeft = true;
         protected bool shakeRight = false;
@@ -168,13 +168,13 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (!hasGoneDown)
+            if (!inGround)
             {
                 Projectile.position += Vector2.Normalize(oldVelocity) * diggingDepth;
                 Projectile.velocity = Vector2.Zero;
                 Projectile.timeLeft = 60;
 
-                hasGoneDown = true;
+                inGround = true;
             }
 
             return false;
@@ -187,7 +187,7 @@ namespace EBF.Items.Magic.Airstrike
                 Projectile.rotation = velRotation;
             }
 
-            if (hasGoneDown)
+            if (inGround)
             {
                 glowmaskOpacity += 2;
 
