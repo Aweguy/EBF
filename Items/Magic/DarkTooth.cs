@@ -202,21 +202,19 @@ namespace EBF.Items.Magic
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
-            // This is where the magic happens.
+            int frameCount = Main.projFrames[Projectile.type];
             int frameWidth = texture.Width / 2;
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
+            int frameHeight = texture.Height / frameCount;
 
-            int frameX = (int)(Projectile.frame / Main.projFrames[Projectile.type]) * frameWidth;
-            int frameY = (Projectile.frame % Main.projFrames[Projectile.type]) * frameHeight;
+            //This here is some mysterious shit
+            int frameX = Projectile.frame / frameCount * frameWidth;
+            int frameY = Projectile.frame % frameCount * frameHeight;
+
             Rectangle frame = new Rectangle(frameX, frameY, frameWidth, frameHeight);
-            // This is where the magic stops :(
-
             Vector2 origin = frame.Size() / 2;
 
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, frame, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
-
-            // Do not allow vanilla drawing code to execute.
-            return (false);
+            return false;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
