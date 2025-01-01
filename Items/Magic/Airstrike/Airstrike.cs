@@ -222,15 +222,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             behindNPCsAndTiles.Add(index);
         }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
 
-            if (hasGoneDown)
-            {
-                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            }
-        }
         protected void Explode()
         {
             Projectile.tileCollide = false;
@@ -300,6 +292,15 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, Main.rand.NextBool(2) ? 1.5f : -1.5f);
             }
         }
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
+
+            if (inGround)
+            {
+                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            }
+        }
     }
 
     public class Airstrike_SmallBomb : Missile
@@ -341,6 +342,15 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, 1.5f);
 
                 Gore gore = Gore.NewGoreDirect(Projectile.GetSource_Death(), position, velocity, Main.rand.Next(61, 64), Scale: 1.5f);
+            }
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
+
+            if (inGround)
+            {
+                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             }
         }
     }
