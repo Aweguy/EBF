@@ -57,24 +57,44 @@ namespace EBF.Items.Ranged
 
     public class CrimsonDragon_CrimsonArrow : ModProjectile
     {
+        private const int batSpawnRate = 2; //How often a projectile is spawned per second
+
         public override void SetDefaults()
         {
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.aiStyle = 1;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.damage = 10;
-            Projectile.knockBack = 1f;
+            Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = true;
             Projectile.hide = false;
-            Projectile.extraUpdates = 2;
             DrawOffsetX = -13;
             DrawOriginOffsetY = -4;
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
+        public override bool PreAI()
+        {
+            //Prevent sub-projectiles from being spawned by other players' arrows.
+            if (Main.myPlayer != Projectile.owner)
+                return true;
+
+            Dust.NewDustPerfect(Projectile.Center, DustID.RedTorch, Vector2.Zero, Scale: 0.66f);
+
+            //Run this code x times per second
+            if (Main.GameUpdateCount % (60 / batSpawnRate) == 0) 
+            {
+                Vector2 velocity = (Projectile.velocity / 2) + GetRandomVector();
+                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, velocity, ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
+                proj.timeLeft = 120;
+            }
+
+            return true;
+        }
+       
+        //It would be nice to move this method out of this item, but there's not enough vector logic to warrant an extension class.
+        private Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
     }
 }
