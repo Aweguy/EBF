@@ -136,8 +136,8 @@ namespace EBF.Items.Magic.Airstrike
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
         protected int explosionSize; //The hitbox size of the explosion
 
-        protected int glowmaskOpacity = 255;
         protected bool hasGoneDown = false;
+        protected int glowmaskOpacity = 0;
 
         protected bool shakeLeft = true;
         protected bool shakeRight = false;
@@ -189,7 +189,7 @@ namespace EBF.Items.Magic.Airstrike
 
             if (hasGoneDown)
             {
-                glowmaskOpacity -= 255 / 100;
+                glowmaskOpacity += 2;
 
                 if (Main.GameUpdateCount % 2 == 0)
                 {
