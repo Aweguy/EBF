@@ -106,17 +106,16 @@ namespace EBF.Items.Magic
         }
         public override bool PreAI()
         {
-            Player player = Main.player[Projectile.owner];
-
-            if (Main.GameUpdateCount % 5 == 0) //Run this code every 5 frames
+            //Run this code once every 5 updates
+            if (Main.GameUpdateCount % 5 == 0)
             {
-                //When the black hole first appears, spawn a bunch of dust
+                Projectile.frame++;
                 if (Projectile.frame == 8)
                 {
+                    //When the black hole first appears, spawn a bunch of dust
                     CreateSpawningDust();
                 }
 
-                Projectile.frame++;
                 if (Projectile.frame >= 10)
                 {
                     //Spawn dust passively
@@ -128,20 +127,19 @@ namespace EBF.Items.Magic
                     {
                         MoveTowardsCursor();//The movement of the black hole
 
-                        // If the player channels the weapon, do something. This check only works if item.channel is true for the weapon.
+                        //This check only works if item.channel is true for the weapon.
+                        Player player = Main.player[Projectile.owner];
                         if (player.channel)
                         {
-                            IncreaseScale(player, Projectile.Size);//The growth of the black hole
+                            IncreaseScale(player, Projectile.Size);
                             SuckNPCs(suckRange, suckingStrength: 80);
                             SuckGore(suckRange, suckingStrength: 100);
                             SuckDust(suckRange, suckingStrength: 100);
                         }
-                        // If the player stops channeling, do something else.
                         else
                         {
                             Projectile.timeLeft = 1;
-
-                            Damage();//The method that calculates the damage
+                            CalculateEndExplosionDamage();
                         }
                     }
 
@@ -266,7 +264,7 @@ namespace EBF.Items.Magic
                 suckRange = defaultSuckRange * Projectile.scale;
             }
         }
-        
+
         /* It would have been sweet if these three methods below could be turned into one generic method.
          * However, there's no common base class or interface containing the needed fields to make that possible.
          */
@@ -322,35 +320,16 @@ namespace EBF.Items.Magic
             }
         }
 
-        private void Damage() //Damage after it blows up
+        private void CalculateEndExplosionDamage()
         {
-            Projectile.tileCollide = false;
-            // Set to transparent. This Projectile technically lives as  transparent for about 3 frames
-            // change the hitbox size, centered about the original Projectile center. This makes the Projectile damage enemies during the explosion.
             Projectile.position = Projectile.Center;
-            //Projectile.position.X = Projectile.position.X + (float)(Projectile.width / 2);
-            //Projectile.position.Y = Projectile.position.Y + (float)(Projectile.height / 2);
-            if (Projectile.width <= 150)
-            {
-                Projectile.width += 80;
-                Projectile.height += 80;
-                Projectile.damage = (80 + Projectile.width) * 3;
-            }
-            else if (Projectile.width <= 325 && Projectile.width > 150)
-            {
-                Projectile.width += 220;
-                Projectile.height += 220;
-                Projectile.damage = (220 + Projectile.width) * 4;
-            }
-            else
-            {
-                Projectile.width += 500;
-                Projectile.height += 500;
-                Projectile.damage = (700 + Projectile.width) * 5;
-            }
+
+            //Changing the width and height will cause a bigger hitbox upon exploding
+            Projectile.width += Projectile.width / 2;
+            Projectile.height += Projectile.height / 2;
+            Projectile.damage = Projectile.damage + Projectile.width;
+
             Projectile.Center = Projectile.position;
-            //Projectile.position.X = Projectile.position.X - (float)(Projectile.width / 2);
-            //Projectile.position.Y = Projectile.position.Y - (float)(Projectile.height / 2);
         }
     }
 }
