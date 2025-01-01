@@ -23,7 +23,6 @@ namespace EBF.Items.Magic.Airstrike
             base.Tooltip.WithFormatArgs("Bombs away!!!!\nLeft click to quickly drop bombs down, right click to drop 3 weaker bombs at once.");//Tooltip of the item
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Item.type] = true;
         }
-
         public override void SetDefaults()
         {
             Item.width = 24;//Width of the hitbox of the item (usually the item's sprite width)
@@ -41,12 +40,10 @@ namespace EBF.Items.Magic.Airstrike
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
-
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
-
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -69,7 +66,6 @@ namespace EBF.Items.Magic.Airstrike
             }
             return base.CanUseItem(player);
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (player.altFunctionUse == 2)
@@ -165,13 +161,11 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             fromNPC = true;
             Explode();//Exploding after hitting an npc
         }
-
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             if (!hasGoneDown)
@@ -185,7 +179,6 @@ namespace EBF.Items.Magic.Airstrike
 
             return false;
         }
-
         public override bool PreAI()
         {
             if (Projectile.timeLeft > 60)
@@ -225,7 +218,6 @@ namespace EBF.Items.Magic.Airstrike
 
             return false;
         }
-
         private void Explode()
         {
             Projectile.tileCollide = false;
@@ -249,7 +241,6 @@ namespace EBF.Items.Magic.Airstrike
             }
 
         }
-
         public override void OnKill(int timeLeft)
         {
             // Play explosion sound
@@ -276,7 +267,6 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, Main.rand.NextBool(2) ? 1.5f : -1.5f);
             }
         }
-
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindNPCsAndTiles.Add(index);
@@ -320,13 +310,11 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.extraUpdates = 2;
             DrawOffsetX = -25;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             fromNPC = true;
             Explode();
         }
-
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             if (!hasGoneDown)
@@ -340,7 +328,6 @@ namespace EBF.Items.Magic.Airstrike
 
             return false;
         }
-
         public override bool PreAI()
         {
             if (Projectile.timeLeft > 60)
@@ -378,7 +365,6 @@ namespace EBF.Items.Magic.Airstrike
             }
             return false;
         }
-
         private void Explode()
         {
             Projectile.tileCollide = false;
@@ -401,7 +387,6 @@ namespace EBF.Items.Magic.Airstrike
                 Projectile.Kill();
             }
         }
-
         public override void OnKill(int timeLeft)
         {
             // Play explosion sound
@@ -430,12 +415,10 @@ namespace EBF.Items.Magic.Airstrike
                 Gore gore = Gore.NewGoreDirect(Projectile.GetSource_Death(), position, velocity, Main.rand.Next(61, 64), Scale: 1.5f);
             }
         }
-
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindNPCsAndTiles.Add(index);
         }
-
         public override void PostDraw(Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
@@ -445,7 +428,5 @@ namespace EBF.Items.Magic.Airstrike
                 Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             }
         }
-
-
     }
 }
