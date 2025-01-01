@@ -134,17 +134,15 @@ namespace EBF.Items.Magic.Airstrike
     public abstract class Missile : ModProjectile
     {
         protected Texture2D glowmaskTexture;
-
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
         protected int explosionSize; //The hitbox size of the explosion
-
         protected int glowmaskOpacity = 0;
-        protected bool inGround = false;
 
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
 
-        protected bool hitboxHasExpanded = false;
-        protected bool fromNPC = false;
+        private bool hitboxHasExpanded = false;
+        private bool fromNPC = false;
+        private bool inGround = false;
 
         /// <summary>
         /// Sets the variables that are share identical values between all missiles types.
