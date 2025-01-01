@@ -141,7 +141,7 @@ namespace EBF.Items.Magic.Airstrike
 
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
 
-        protected bool hasGottenBig = false;
+        protected bool hitboxHasExpanded = false;
         protected bool fromNPC = false;
 
         /// <summary>
@@ -208,23 +208,21 @@ namespace EBF.Items.Magic.Airstrike
         {
             behindNPCsAndTiles.Add(index);
         }
-
         protected void Explode()
         {
             Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
 
-            Projectile.position = Projectile.Center;
-
-            if (!hasGottenBig)
+            if (!hitboxHasExpanded)
             {
+                //Expand hitbox
+                Projectile.position = Projectile.Center;
                 Projectile.width += explosionSize;
                 Projectile.height += explosionSize;
+                Projectile.Center = Projectile.position;
 
-                hasGottenBig = true;
+                hitboxHasExpanded = true;
             }
-
-            Projectile.penetrate = -1;
-            Projectile.Center = Projectile.position;
 
             if (fromNPC)
             {
