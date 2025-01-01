@@ -15,8 +15,6 @@ namespace EBF.Items.Magic.Airstrike
 {
     public class Airstrike_Remote : ModItem
     {
-        private float offsetX = 20f;
-
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Airstrike Remote");//Name of the Item
@@ -68,63 +66,31 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            int spawnAmount = 1;
+            float spread = 0f;
+
             if (player.altFunctionUse == 2)
             {
-                for (int i = 0; i <= 2; i++)
-                {
-                    Vector2 target = Main.screenPosition + new Vector2(Main.mouseX + Main.rand.NextFloat(-100f, 100f), Main.mouseY);
-                    float ceilingLimit = target.Y;
-                    if (ceilingLimit > player.Center.Y - 200f)
-                    {
-                        ceilingLimit = player.Center.Y - 200f;
-                    }
-
-                    position = Main.MouseWorld + new Vector2((-(float)Main.rand.Next(-401, 401) + offsetX) * player.direction, -600f);
-                    position.Y -= 100 * i;
-                    Vector2 heading = target - position;
-                    if (heading.Y < 0f)
-                    {
-                        heading.Y *= -1f;
-                    }
-                    if (heading.Y < 20f)
-                    {
-                        heading.Y = 20f;
-                    }
-
-                    heading.Normalize();
-                    heading *= new Vector2(velocity.X, velocity.Y).Length();
-                    velocity.X = heading.X;
-                    velocity.Y = heading.Y + Main.rand.Next(-40, 41) * 0.02f;
-                    Projectile.NewProjectile(source, position, velocity, type, 30, knockback, player.whoAmI, 0f, ceilingLimit);
-
-                }
+                //Use different values for small bomb
+                spread = 100f;
+                spawnAmount = 3;
+                damage /= 2;
             }
-            else
+
+            for (int i = 0; i < spawnAmount; i++)
             {
-                Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-                float ceilingLimit = target.Y;
-                if (ceilingLimit > player.Center.Y - 200f)
-                {
-                    ceilingLimit = player.Center.Y - 200f;
-                }
+                //Spawn position
+                float offsetX = Main.rand.NextFloat(-401f, 401f);
+                position = new Vector2(Main.MouseWorld.X + offsetX, Main.screenPosition.Y);
+                position.Y -= 100 * i; //this is so they fall one by one
 
-                position = Main.MouseWorld + new Vector2((-(float)Main.rand.Next(-401, 401) + offsetX) * player.direction, -600f);
-                position.Y -= 100;
-                Vector2 heading = target - position;
-                if (heading.Y < 0f)
-                {
-                    heading.Y *= -1f;
-                }
-                if (heading.Y < 20f)
-                {
-                    heading.Y = 20f;
-                }
+                //Velocity towards random point near cursor, with slight randomized speed
+                Vector2 target = Main.MouseWorld + new Vector2(Main.rand.NextFloat(spread, -spread), 0);
+                velocity = Vector2.Normalize(target - position) * velocity.Length();
+                velocity *= Main.rand.NextFloat(0.9f, 1.1f);
 
-                heading.Normalize();
-                heading *= new Vector2(velocity.X, velocity.Y).Length();
-                velocity.X = heading.X;
-                velocity.Y = heading.Y + Main.rand.Next(-40, 41) * 0.02f;
-                Projectile.NewProjectile(source, position, velocity, type, 60, knockback, player.whoAmI, 0f, ceilingLimit);
+                //Spawn the projectile
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             }
 
             return false;
@@ -254,7 +220,7 @@ namespace EBF.Items.Magic.Airstrike
 
             explosionSize = 200; //The hitbox size of the explosion
             diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
-            
+
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
 
             SetEverythingElse();
