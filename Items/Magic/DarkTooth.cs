@@ -76,6 +76,7 @@ namespace EBF.Items.Magic
     public class DarkTooth_BlackHole : ModProjectile
     {
         private const int spawningDust = 100; //How much dust will be created when the projectile spawns
+        private const int endingDust = 50; //How much dust will be created when the projectile dies
         private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
         private const float maxSize = 400f;
@@ -154,49 +155,13 @@ namespace EBF.Items.Magic
         }
         public override void OnKill(int timeLeft) //The dust when the Projectile dies
         {
-
-            if (Projectile.width <= 150)
+            //scale goes from 1 up to maxSize / 128
+            for (int i = 0; i < endingDust * Projectile.scale; i++)
             {
-                for (int i = 0; i < 25; i++)
-                {
-                    int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 1f, 1f, 0, Color.Red, 1f);
-                    Main.dust[dustIndex].noGravity = true;
-                    Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
-                    dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 1f, 1f, 0, Color.Black, 1.25f);
-                    Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
-                }
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Smoke, 1f, 1f, newColor: Main.rand.NextBool(2) ? Color.Red : Color.Black, Scale: Projectile.scale);
+                dust.velocity = Vector2.Normalize(dust.position - Projectile.Center) * 10;
+                dust.noGravity = true;
             }
-            else if (Projectile.width <= 325 && Projectile.width > 150)
-            {
-                for (int i = 0; i < 50; i++)
-                {
-                    int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 1f, 1f, 0, Color.Red, 1.5f);
-                    Main.dust[dustIndex].noGravity = true;
-                    Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
-                    dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 1f, 1f, 0, Color.Black, 2f);
-                    Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < 200; i++)
-                {
-                    int dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 1f, 1f, 0, Color.Red, 2f);
-                    Main.dust[dustIndex].noGravity = true;
-                    Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
-                    dustIndex = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 1f, 1f, 0, Color.Black, 2.5f);
-                    Main.dust[dustIndex].velocity += Vector2.Normalize(Main.dust[dustIndex].position - Projectile.Center) * 10;
-                }
-            }
-
-            // Large Smoke Gore spawn
-            // reset size to normal width and height.
-            Projectile.position.X = Projectile.position.X + (float)(Projectile.width / 2);
-            Projectile.position.Y = Projectile.position.Y + (float)(Projectile.height / 2);
-            Projectile.width = 10;
-            Projectile.height = 10;
-            Projectile.position.X = Projectile.position.X - (float)(Projectile.width / 2);
-            Projectile.position.Y = Projectile.position.Y - (float)(Projectile.height / 2);
         }
         public override bool PreDraw(ref Color lightColor) //Code for making thte Projectile animate while its position is centered
         {
