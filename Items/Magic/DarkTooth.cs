@@ -11,6 +11,7 @@ namespace EBF.Items.Magic
 {
     public class DarkTooth : ModItem
     {
+        int manaDrainTimer; //Used to reduce how often mana is drained
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Dark Tooth");//Name of the Item
@@ -24,6 +25,7 @@ namespace EBF.Items.Magic
 
             Item.damage = 40;//Item's base damage value
             Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.mana = 40;//The amount of mana this item consumes on use
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 50;//How fast the item is used
@@ -55,6 +57,8 @@ namespace EBF.Items.Magic
             if (player.channel)
             {
                 Dust.NewDustDirect(player.position, player.width, player.height, DustID.Terragrim, newColor: drawColor, Scale: 1f);
+
+                DrainMana(player);
             }
         }
         public override bool CanUseItem(Player player)
@@ -70,6 +74,25 @@ namespace EBF.Items.Magic
                 .AddIngredient(ItemID.SoulofNight, stack: 15)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
+        }
+        private void DrainMana(Player player)
+        {
+            manaDrainTimer++;
+            if (manaDrainTimer > 10)
+            {
+                manaDrainTimer = 0;
+
+                int manaCost = 5;
+                if (player.statMana >= manaCost)
+                {
+                    player.statMana -= manaCost;
+                    player.manaRegenDelay = 60; //Reset mana regen
+                }
+                else
+                {
+                    player.channel = false; //Stop channeling if out of mana
+                }
+            }
         }
     }
 
