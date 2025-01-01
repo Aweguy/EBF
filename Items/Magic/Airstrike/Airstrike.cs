@@ -107,7 +107,7 @@ namespace EBF.Items.Magic.Airstrike
         }
     }
 
-    public abstract class Missile : ModProjectile
+    public abstract class EBFMissile : ModProjectile
     {
         protected Texture2D glowmaskTexture;
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
@@ -215,7 +215,7 @@ namespace EBF.Items.Magic.Airstrike
         }
     }
 
-    public class Airstrike_Bomb : Missile
+    public class Airstrike_Bomb : EBFMissile
     {
         public override void SetDefaults()
         {
@@ -263,7 +263,7 @@ namespace EBF.Items.Magic.Airstrike
         }
     }
 
-    public class Airstrike_SmallBomb : Missile
+    public class Airstrike_SmallBomb : EBFMissile
     {
         public override void SetDefaults()
         {
