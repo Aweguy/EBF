@@ -86,8 +86,7 @@ namespace EBF.Items.Ranged
             //Run this code x times per second
             if (Main.GameUpdateCount % (60 / batSpawnRate) == 0) 
             {
-                Vector2 velocity = (Projectile.velocity / 2) + GetRandomVector();
-                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, velocity, ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
+                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + GetRandomVector(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
                 proj.timeLeft = 120;
             }
 
