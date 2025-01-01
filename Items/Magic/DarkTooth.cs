@@ -156,7 +156,7 @@ namespace EBF.Items.Magic
                         if (player.channel)
                         {
                             IncreaseScale(player, Projectile.Size);
-                            SuckNPCs(suckRange, suckingStrength: 80);
+                            SuckNPCs(suckRange, suckingStrength: 100);
                             SuckGore(suckRange, suckingStrength: 100);
                             SuckDust(suckRange, suckingStrength: 100);
                         }
