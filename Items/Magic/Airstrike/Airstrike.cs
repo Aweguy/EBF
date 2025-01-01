@@ -133,6 +133,8 @@ namespace EBF.Items.Magic.Airstrike
 
     public abstract class Missile : ModProjectile
     {
+        protected Texture2D glowmaskTexture;
+
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
         protected int explosionSize; //The hitbox size of the explosion
 
@@ -208,6 +210,13 @@ namespace EBF.Items.Magic.Airstrike
         {
             behindNPCsAndTiles.Add(index);
         }
+        public override void PostDraw(Color lightColor)
+        {
+            if (inGround)
+            {
+                Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, glowmaskTexture.Width, glowmaskTexture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            }
+        }
         protected void Explode()
         {
             Projectile.tileCollide = false;
@@ -247,6 +256,8 @@ namespace EBF.Items.Magic.Airstrike
 
             explosionSize = 200; //The hitbox size of the explosion
             diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
+            
+            glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
 
             SetEverythingElse();
         }
@@ -276,15 +287,6 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, Main.rand.NextBool(2) ? 1.5f : -1.5f);
             }
         }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
-
-            if (inGround)
-            {
-                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            }
-        }
     }
 
     public class Airstrike_SmallBomb : Missile
@@ -297,6 +299,8 @@ namespace EBF.Items.Magic.Airstrike
 
             explosionSize = 100; //The hitbox size of the explosion
             diggingDepth = 24; //How far the missile is placed into the ground upon hitting it
+
+            glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
 
             SetEverythingElse();
         }
@@ -326,15 +330,6 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, 1.5f);
 
                 Gore gore = Gore.NewGoreDirect(Projectile.GetSource_Death(), position, velocity, Main.rand.Next(61, 64), Scale: 1.5f);
-            }
-        }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
-
-            if (inGround)
-            {
-                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             }
         }
     }
