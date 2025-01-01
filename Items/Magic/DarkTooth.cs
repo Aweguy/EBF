@@ -76,13 +76,11 @@ namespace EBF.Items.Magic
     public class DarkTooth_BlackHole : ModProjectile
     {
         private const int spawningDust = 100; //How much dust will be created when the projectile spawns
-        private const int dustSpawnRate = 100; //bigger = more dust, total dust is dustSpawnTime * dustSpawnRate
         private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
         private const float maxSize = 400f;
         private const float maxSpeed = 3f;
-        private float gravMagnitude; //The power of the gravitational force
-        private float suckRange = 160;//The current range in which objects will be SUCCED
+        private float suckRange;//The current range in which objects will be SUCCED
         private int baseWidth;
         private int baseHeight;
 
@@ -133,15 +131,10 @@ namespace EBF.Items.Magic
                         // If the player channels the weapon, do something. This check only works if item.channel is true for the weapon.
                         if (player.channel)
                         {
-                            suckRange = defaultSuckRange * Projectile.scale;
-                            if (suckRange > 1600f)
-                            {
-                                suckRange = 1600f;
-                            }
                             IncreaseScale(player, Projectile.Size);//The growth of the black hole
-                            SuckNPCs(suckRange);
-                            SuckGore(suckRange);
-                            SuckDust(suckRange);
+                            SuckNPCs(suckRange, suckingStrength: 80);
+                            SuckGore(suckRange, suckingStrength: 100);
+                            SuckDust(suckRange, suckingStrength: 100);
                         }
                         // If the player stops channeling, do something else.
                         else
@@ -248,13 +241,13 @@ namespace EBF.Items.Magic
         private void MoveTowardsCursor() //Movement of the black hole
         {
             Vector2 newVelocity = Main.MouseWorld - Projectile.Center;
-            if(newVelocity.Length() > maxSpeed)
+            if (newVelocity.Length() > maxSpeed)
             {
                 newVelocity = Vector2.Normalize(newVelocity) * maxSpeed;
             }
 
             //Limit how often velocity syncs in multiplayer by truncating the decimals
-            if(newVelocity.ToPoint() != Projectile.velocity.ToPoint())
+            if (newVelocity.ToPoint() != Projectile.velocity.ToPoint())
             {
                 Projectile.netUpdate = true;
             }
@@ -269,72 +262,66 @@ namespace EBF.Items.Magic
                 Projectile.width = (int)(baseWidth * Projectile.scale);
                 Projectile.height = (int)(baseHeight * Projectile.scale);
                 Projectile.position = Projectile.position - (Projectile.Size - oldSize) / 2f;
+
+                suckRange = defaultSuckRange * Projectile.scale;
             }
         }
-        private void SuckNPCs(float suckingRange)
+        
+        /* It would have been sweet if these three methods below could be turned into one generic method.
+         * However, there's no common base class or interface containing the needed fields to make that possible.
+         */
+        private void SuckNPCs(float suckingRange, float suckingStrength = 100)
         {
-            for (int i = 0; i < Main.maxNPCs; i++)
+            foreach (NPC npc in Main.npc)
             {
-                NPC npc = Main.npc[i];
-                if (npc.active)
+                if (!npc.active || npc.boss)
                 {
-                    float between = Vector2.Distance(Projectile.Center, npc.Center);//Calculating the distance
+                    continue;
+                }
 
-                    if (between < 0.1f)
-                    {
-                        between = 0.1f;
-                    }
-                    gravMagnitude = (Projectile.scale * 75) / between; //gravitaional pull equation
-
-                    if (!npc.boss && between <= suckingRange)
-                    {
-                        npc.velocity += npc.DirectionTo(Projectile.Center) * gravMagnitude;//applying the gravitational pull force calculated above
-                    }
+                float dist = Vector2.Distance(Projectile.Center, npc.Center);
+                if (dist <= suckingRange)
+                {
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); //Won't divide by 0 :)
+                    npc.velocity += npc.DirectionTo(Projectile.Center) * gravityMagnitude;
                 }
             }
         }
-        private void SuckGore(float suckingRange)
+        private void SuckGore(float suckingRange, float suckingStrength = 100)
         {
-            for (int i = 0; i < Main.maxGore; i++)
+            foreach (Gore gore in Main.gore)
             {
-                Gore gore = Main.gore[i];
-                if (gore.active)
+                if (!gore.active)
                 {
-                    float between = Vector2.Distance(Projectile.Center, gore.position);
+                    continue;
+                }
 
-                    if (between < 0.1f)
-                    {
-                        between = 0.1f;
-                    }
-                    if (between <= suckingRange)
-                    {
-                        gravMagnitude = (Projectile.scale * 100) / between; //gravitaional pull equation
-                        gore.velocity -= Vector2.Normalize(gore.position - Projectile.Center) * gravMagnitude;//Final Calculation
-                    }
+                float dist = Vector2.Distance(Projectile.Center, gore.position);
+                if (dist <= suckingRange)
+                {
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); // Won't divide by 0 :)
+                    gore.velocity += Vector2.Normalize(Projectile.Center - gore.position) * gravityMagnitude;
                 }
             }
         }
-        private void SuckDust(float suckingRange)
+        private void SuckDust(float suckingRange, float suckingStrength = 100)
         {
-            for (int i = 0; i < Main.maxDust; i++)
+            foreach (Dust dust in Main.dust)
             {
-                Dust dust = Main.dust[i];
-                if (dust.active)
+                if (!dust.active)
                 {
-                    float between = Vector2.Distance(Projectile.Center, dust.position);
+                    continue;
+                }
 
-                    if (between < 0.1f)
-                    {
-                        between = 0.1f;
-                    }
-                    if (between <= suckingRange)
-                    {
-                        gravMagnitude = (Projectile.scale * 100) / between; //gravitaional pull equation
-                        dust.velocity -= Vector2.Normalize(dust.position - Projectile.Center) * gravMagnitude;//Final Calculation
-                    }
+                float dist = Vector2.Distance(Projectile.Center, dust.position);
+                if (dist <= suckingRange)
+                {
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); //Won't divide by 0 :)
+                    dust.velocity += Vector2.Normalize(Projectile.Center - dust.position) * gravityMagnitude;
                 }
             }
         }
+
         private void Damage() //Damage after it blows up
         {
             Projectile.tileCollide = false;
