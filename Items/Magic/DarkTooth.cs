@@ -32,8 +32,8 @@ namespace EBF.Items.Magic
             Item.useAnimation = 50;//How long the animation lasts. For swords it should stay the same as UseTime
             Item.channel = true;//Channeling the item when held
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Purple;//Item's name colour, this is hardcoded by the modder and should be based on 
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 10, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Yellow;//Item's name colour, this is hardcoded by the modder and should be based on 
             Item.UseSound = SoundID.Item88;//The item's sound when it's used
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
