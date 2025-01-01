@@ -139,8 +139,7 @@ namespace EBF.Items.Magic.Airstrike
         protected int glowmaskOpacity = 0;
         protected bool inGround = false;
 
-        protected bool shakeLeft = true;
-        protected bool shakeRight = false;
+        private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
 
         protected bool hasGottenBig = false;
         protected bool fromNPC = false;
@@ -160,6 +159,11 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.tileCollide = true;
             Projectile.hide = true;
             Projectile.extraUpdates = 2;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Face falling direction
+            Projectile.rotation = Projectile.velocity.ToRotation();
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -181,39 +185,21 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override bool PreAI()
         {
-            if (Projectile.timeLeft > 60)
-            {
-                float velRotation = Projectile.velocity.ToRotation();
-                Projectile.rotation = velRotation;
-            }
-
             if (inGround)
             {
-                glowmaskOpacity += 2;
+                //Glow and shake
+                glowmaskOpacity += 4;
 
                 if (Main.GameUpdateCount % 2 == 0)
                 {
-                    if (shakeLeft)
-                    {
-                        Projectile.Center -= new Vector2(-2, 0);
-
-                        shakeLeft = false;
-                        shakeRight = true;
-
-                    }
-                    else if (shakeRight)
-                    {
-                        Projectile.Center -= new Vector2(2, 0);
-
-                        shakeLeft = true;
-                        shakeRight = false;
-                    }
+                    Projectile.Center += shakeDirection;
+                    shakeDirection.X = -shakeDirection.X;
                 }
-            }
 
-            if (Projectile.timeLeft < 3)//Exploding after some time after hitting the ground
-            {
-                Explode();
+                if (Projectile.timeLeft < 3)
+                {
+                    Explode();
+                }
             }
 
             return false;
