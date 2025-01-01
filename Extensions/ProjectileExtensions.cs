@@ -14,6 +14,14 @@ namespace EBF.Extensions
 {
     public static class ProjectileExtensions
     {
+        /// <summary>
+        /// Adjusts a rotation towards a target angle in small increments, choosing the shortest direction. 
+        /// <para>Mostly used to make things turn towards something while it moves forward.</para>
+        /// </summary>
+        /// <param name="currentRotation">The current rotation in radians.</param>
+        /// <param name="targetAngle">The target rotation that the projectile should rotate towards.</param>
+        /// <param name="speed">How much the projectile can rotate each time the method is called.</param>
+        /// <returns>A rotation which is closer to the target angle than the current.</returns>
         public static float SlowRotation(float currentRotation, float targetAngle, float speed)//Taken from qwerty's mod
         {
             int f = 1; //this is used to switch rotation direction
@@ -49,7 +57,16 @@ namespace EBF.Extensions
 
         public delegate bool SpecialCondition(NPC possibleTarget);
 
-        //used for homing projectile
+        /// <summary>
+        /// Finds the NPC that is closest to a given position.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="maxDistance">NPCs outside of this distance from the centerpoint will be ignored.</param>
+        /// <param name="position">The centerpoint of the search.</param>
+        /// <param name="ignoreTiles"></param>
+        /// <param name="overrideTarget">If any target is provided, the method will always return that target if it's within the given range.</param>
+        /// <param name="specialCondition">Allows special conditions, such as only targetting enemies not having local iFrames.</param>
+        /// <returns>True if an npc has been found within the search range and meets all provided special conditions.</returns>
         public static bool ClosestNPC(ref NPC target, float maxDistance, Vector2 position, bool ignoreTiles = false, int overrideTarget = -1, SpecialCondition specialCondition = null)//Taken from qwerty's mod
         {
             //very advance users can use a delegate to insert special condition into the function like only targetting enemies not currently having local iFrames, but if a special condition isn't added then just return it true
@@ -83,7 +100,13 @@ namespace EBF.Extensions
             return foundTarget;
         }
 
-        public static Vector2 PolarVector(float radius, float theta)//Taken from qwerty's code
+        /// <summary>
+        /// Converts polar vectors into cartesian vectors.
+        /// </summary>
+        /// <param name="radius">The length of the vector.</param>
+        /// <param name="theta">The angle of the vector.</param>
+        /// <returns>A cartesian vector (A vector that has x and y coordinates).</returns>
+        public static Vector2 PolarVector(float radius, float theta)
         {
             return new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta)) * radius;
         }
