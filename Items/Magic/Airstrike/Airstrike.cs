@@ -131,21 +131,26 @@ namespace EBF.Items.Magic.Airstrike
         }
     }
 
-    public class Airstrike_Bomb : ModProjectile
+    public abstract class Missile : ModProjectile
     {
-        private int glowmaskOpacity = 255;
-        private bool hasGoneDown = false;
+        protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
+        protected int explosionSize; //The hitbox size of the explosion
 
-        private bool shakeLeft = true;
-        private bool shakeRight = false;
+        protected int glowmaskOpacity = 255;
+        protected bool hasGoneDown = false;
 
-        private bool hasGottenBig = false;
-        private bool fromNPC = false;
+        protected bool shakeLeft = true;
+        protected bool shakeRight = false;
 
-        public override void SetDefaults()
+        protected bool hasGottenBig = false;
+        protected bool fromNPC = false;
+
+        /// <summary>
+        /// Sets the variables that are share identical values between all missiles types.
+        /// <para>If one of these variables should differ between missiles, then move the variable into each subclass.</para>
+        /// </summary>
+        protected void SetEverythingElse()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
@@ -155,11 +160,6 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.tileCollide = true;
             Projectile.hide = true;
             Projectile.extraUpdates = 2;
-            DrawOffsetX = -13;
-            DrawOriginOffsetY = -4;
-
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -170,7 +170,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             if (!hasGoneDown)
             {
-                Projectile.position += Vector2.Normalize(oldVelocity) * 15f;
+                Projectile.position += Vector2.Normalize(oldVelocity) * diggingDepth;
                 Projectile.velocity = Vector2.Zero;
                 Projectile.timeLeft = 60;
 
@@ -218,7 +218,20 @@ namespace EBF.Items.Magic.Airstrike
 
             return false;
         }
-        private void Explode()
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCsAndTiles.Add(index);
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
+
+            if (hasGoneDown)
+            {
+                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            }
+        }
+        protected void Explode()
         {
             Projectile.tileCollide = false;
 
@@ -226,8 +239,8 @@ namespace EBF.Items.Magic.Airstrike
 
             if (!hasGottenBig)
             {
-                Projectile.width += 200;
-                Projectile.height += 200;
+                Projectile.width += explosionSize;
+                Projectile.height += explosionSize;
 
                 hasGottenBig = true;
             }
@@ -240,6 +253,26 @@ namespace EBF.Items.Magic.Airstrike
                 Projectile.Kill();
             }
 
+        }
+    }
+
+    public class Airstrike_Bomb : Missile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.width = 16;
+            Projectile.height = 16;
+
+            DrawOffsetX = -13;
+            DrawOriginOffsetY = -4;
+
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
+
+            explosionSize = 200; //The hitbox size of the explosion
+            diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
+
+            SetEverythingElse();
         }
         public override void OnKill(int timeLeft)
         {
@@ -267,125 +300,20 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, Main.rand.NextBool(2) ? 1.5f : -1.5f);
             }
         }
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            behindNPCsAndTiles.Add(index);
-        }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
-
-            if (hasGoneDown)
-            {
-                Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-
-            }
-        }
     }
 
-    public class Airstrike_SmallBomb : ModProjectile
+    public class Airstrike_SmallBomb : Missile
     {
-        private int glowmaskOpacity = 255;
-        private bool hasGoneDown = false;
-
-        private bool shakeLeft = true;
-        private bool shakeRight = false;
-
-        private bool hasGottenBig = false;
-        private bool fromNPC = false;
-
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.aiStyle = -1;
-            Projectile.friendly = true;
-            Projectile.penetrate = 1;
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.damage = 10;
-            Projectile.knockBack = 1f;
-            Projectile.tileCollide = true;
-            Projectile.hide = true;
-
-            Projectile.extraUpdates = 2;
             DrawOffsetX = -25;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            fromNPC = true;
-            Explode();
-        }
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            if (!hasGoneDown)
-            {
-                Projectile.position += Vector2.Normalize(oldVelocity) * 24f;
-                Projectile.velocity = Vector2.Zero;
-                Projectile.timeLeft = 60;
 
-                hasGoneDown = true;
-            }
+            explosionSize = 100; //The hitbox size of the explosion
+            diggingDepth = 24; //How far the missile is placed into the ground upon hitting it
 
-            return false;
-        }
-        public override bool PreAI()
-        {
-            if (Projectile.timeLeft > 60)
-            {
-                float velRotation = Projectile.velocity.ToRotation();
-                Projectile.rotation = velRotation;
-            }
-            if (hasGoneDown)
-            {
-                glowmaskOpacity -= 255 / 100;
-
-                if (Main.GameUpdateCount % 2 == 0)
-                {
-                    if (shakeLeft)
-                    {
-                        Projectile.Center -= new Vector2(-2, 0);
-
-                        shakeLeft = false;
-                        shakeRight = true;
-
-                    }
-                    else if (shakeRight)
-                    {
-                        Projectile.Center -= new Vector2(2, 0);
-
-                        shakeLeft = true;
-                        shakeRight = false;
-                    }
-
-                }
-            }
-            if (Projectile.timeLeft < 3)
-            {
-                Explode();
-            }
-            return false;
-        }
-        private void Explode()
-        {
-            Projectile.tileCollide = false;
-
-            Projectile.position = Projectile.Center;
-
-            if (!hasGottenBig)
-            {
-                Projectile.width += 100;
-                Projectile.height += 100;
-
-                hasGottenBig = true;
-            }
-
-            Projectile.penetrate = -1;
-            Projectile.Center = Projectile.position;
-
-            if (fromNPC)
-            {
-                Projectile.Kill();
-            }
+            SetEverythingElse();
         }
         public override void OnKill(int timeLeft)
         {
@@ -413,19 +341,6 @@ namespace EBF.Items.Magic.Airstrike
                 Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, 1.5f);
 
                 Gore gore = Gore.NewGoreDirect(Projectile.GetSource_Death(), position, velocity, Main.rand.Next(61, 64), Scale: 1.5f);
-            }
-        }
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            behindNPCsAndTiles.Add(index);
-        }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
-
-            if (hasGoneDown)
-            {
-                Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, texture.Width, texture.Height), new Color(255, 255, 255) * ((255 - glowmaskOpacity) / 255f), Projectile.rotation, texture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             }
         }
     }
