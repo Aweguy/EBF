@@ -17,8 +17,8 @@ namespace EBF.Items.Melee
 
         public override void SetDefaults()
         {
-            Item.width = 74;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 78;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 80;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 80;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 35;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
