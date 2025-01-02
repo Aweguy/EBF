@@ -318,6 +318,7 @@ Projectiles: {
 	Star.DisplayName: Star
 	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
 	Seraphim_LightExplosion.DisplayName: Seraphim_ Light Explosion
+	Inferno_Proj.DisplayName: Inferno_ Proj
 }
 
 NPCs: {
