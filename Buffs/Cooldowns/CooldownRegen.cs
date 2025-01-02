@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace EBF.Buffs.Cooldowns
@@ -15,6 +9,8 @@ namespace EBF.Buffs.Cooldowns
         {
             base.DisplayName.WithFormatArgs("Regeneration Sated");
             base.Description.WithFormatArgs("Cannot use Regeneration Spell");
+
+            Main.debuff[Type] = true;
         }
     }
 }
