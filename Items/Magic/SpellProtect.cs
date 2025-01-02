@@ -16,7 +16,7 @@ namespace EBF.Items.Magic
     {
         /*public static readonly SoundStyle ProtectSound = new("EBF/Assets/Sounds/Item/Protect")
         {
-            Volume = 2f,
+            Volume = 1f,
             PitchVariance = 1f
         };*/
 
@@ -31,30 +31,33 @@ namespace EBF.Items.Magic
             Item.width = 28;
             Item.height = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.useTime = 100;
-            Item.useAnimation = 10;
-            Item.mana = 5;
-            Item.rare = ItemRarityID.Yellow;
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
+            Item.useTime = 20;
+            Item.useAnimation = 20;
+            Item.mana = 20;
+            Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 0, platinum: 0);
             Item.useTurn = true;
-            /*if (!Main.dedServ)
-            {
-                Item.UseSound = ProtectSound;
-            }*/
+            //Item.UseSound = ProtectSound;
         }
-
         public override bool CanUseItem(Player player)
         {
             int buff = ModContent.BuffType<CooldownProtect>();
             return !player.HasBuff(buff);
         }
-
         public override bool? UseItem(Player player)
         {
             player.AddBuff(ModContent.BuffType<Protected>(), 60 * 10);
             player.AddBuff(ModContent.BuffType<CooldownProtect>(), 60 * 40);
 
             return base.UseItem(player);
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.Book, stack: 1)
+                .AddIngredient(ItemID.IronskinPotion, stack: 5)
+                .AddTile(TileID.Bookcases)
+                .Register();
         }
     }
 }

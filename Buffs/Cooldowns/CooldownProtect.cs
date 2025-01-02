@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace EBF.Buffs.Cooldowns
@@ -15,7 +9,8 @@ namespace EBF.Buffs.Cooldowns
         {
             base.DisplayName.WithFormatArgs("Vulnerable");//Name of the Item
             base.Description.WithFormatArgs("Protection spell is on cooldown.");//Tooltip of the item
+            
+            Main.debuff[Type] = true;
         }
-
     }
 }
