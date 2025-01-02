@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace EBF.Buffs
@@ -20,14 +13,13 @@ namespace EBF.Buffs
         }
         public override void Update(Player player, ref int buffIndex)
         {
-            if (--timer <= 0)
+            timer--;
+            if (timer <= 0)
             {
-                int Regen = player.statLifeMax2 / 100 * 7;
-                player.Heal(Regen);
-                timer = 60;
+                int regen = player.statLifeMax2 / 100 * 5;
+                player.Heal(regen);
+                timer = 120;
             }
         }
-
-
     }
 }
