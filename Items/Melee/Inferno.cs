@@ -22,15 +22,15 @@ namespace EBF.Items.Melee
             Item.width = 60;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 60;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 20;//Item's base damage value
+            Item.damage = 26;//Item's base damage value
             Item.knockBack = 1f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Rapier;//The animation of the item when used
             Item.useTime = 5;//How fast the item is used
             Item.useAnimation = 15;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Cyan;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 1, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
@@ -38,6 +38,14 @@ namespace EBF.Items.Melee
             Item.noUseGraphic = true; // Important, because otherwise you'd sometimes see a duplicate item sprite
             Item.shoot = ModContent.ProjectileType<Inferno_Proj>();
             Item.shootSpeed = 2;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.Gladius, stack: 1)
+                .AddIngredient(ItemID.HellstoneBar, stack: 15)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 
