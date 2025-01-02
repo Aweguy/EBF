@@ -52,7 +52,7 @@ namespace EBF.Items.Magic.Airstrike
                 Item.damage = 60;
                 Item.mana = 30;
                 Item.shoot = ModContent.ProjectileType<Airstrike_SmallBomb>();
-                Item.shootSpeed = 16f;
+                Item.shootSpeed = 24f;
             }
             else
             {
@@ -61,7 +61,7 @@ namespace EBF.Items.Magic.Airstrike
                 Item.useAnimation = 40;
                 Item.mana = 10;
                 Item.shoot = ModContent.ProjectileType<Airstrike_Bomb>();
-                Item.shootSpeed = 10f;
+                Item.shootSpeed = 16f;
             }
             return base.CanUseItem(player);
         }
@@ -128,13 +128,11 @@ namespace EBF.Items.Magic.Airstrike
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
-            Projectile.penetrate = 1;
+            Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.damage = 10;
-            Projectile.knockBack = 1f;
             Projectile.tileCollide = true;
             Projectile.hide = true;
-            Projectile.extraUpdates = 2;
+            Projectile.extraUpdates = 1;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -193,9 +191,6 @@ namespace EBF.Items.Magic.Airstrike
         }
         protected void Explode()
         {
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-
             if (!hitboxHasExpanded)
             {
                 //Expand hitbox
@@ -209,6 +204,7 @@ namespace EBF.Items.Magic.Airstrike
 
             if (fromNPC)
             {
+                //BUG: This makes the projectile disappear before the expanded hitbox has a chance to deal damage, but idk how to fix it
                 Projectile.Kill();
             }
 

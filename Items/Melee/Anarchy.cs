@@ -22,6 +22,7 @@ namespace EBF.Items.Melee
         {
             Item.width = 112;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 116;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.scale = 0.8f;//The size multiplier for the item's sprite and hitbox range
 
             Item.damage = 45;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,6 @@ namespace EBF.Items.Melee
             base.DisplayName.WithFormatArgs("Fusion Blade");//Name of the Item
             base.Tooltip.WithFormatArgs("Modeled after the weapons used by the MILITIA branch.\nShoots a big bullet.");//Tooltip of the item
         }
-
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
@@ -40,7 +40,6 @@ namespace EBF.Items.Melee
             Item.shoot = ModContent.ProjectileType<FusionBlade_BulletBob>();
             Item.shootSpeed = 1f;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
@@ -63,7 +62,6 @@ namespace EBF.Items.Melee
         {
             Main.projFrames[Projectile.type] = 3;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 12;
@@ -79,19 +77,16 @@ namespace EBF.Items.Melee
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnKill(int timeLeft)
         {
             Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
         }
-
         public override void OnSpawn(IEntitySource source)
         {
             direction = Projectile.velocity.ToRotation();
             Projectile.rotation = direction + (MathF.PI / 2);
             Projectile.spriteDirection = Projectile.direction;
         }
-
         public override bool PreAI()
         {
             Projectile.ai[0]++;
@@ -114,16 +109,14 @@ namespace EBF.Items.Melee
                         Projectile.frame = 1;
                     }
 
-                    //DustAI();
+                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Flare);
                     Lighting.AddLight(Projectile.Center, new Vector3(255, 165, 0) / 255f); //Orange lighting coming from the center of the Projectile.
 
-                    Player player = Main.player[Projectile.owner];
-                    if (Extensions.ProjectileExtensions.ClosestNPC(ref target, 2000, Projectile.Center))
+                    if (ProjectileExtensions.ClosestNPC(ref target, 800, Projectile.Center))
                     {
-                        direction = Extensions.ProjectileExtensions.SlowRotation(direction, (target.Center - Projectile.Center).ToRotation(), 3f);
+                        direction = ProjectileExtensions.SlowRotation(direction, (target.Center - Projectile.Center).ToRotation(), 3f);
                     }
                     Projectile.velocity = new Vector2(MathF.Cos(direction) * speed, MathF.Sin(direction) * speed);
-                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Flare);
                 }
             }
             else
@@ -131,17 +124,7 @@ namespace EBF.Items.Melee
                 Projectile.frame = 0;
             }
 
-            // float velRotation = Projectile.velocity.ToRotation();
-            // Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
-            // Projectile.spriteDirection = Projectile.direction;
-
             return false;
-        }
-
-        private void DustAI()
-        {
-            Dust.NewDust(Projectile.position, Projectile.width / 2, Projectile.height / 2, DustID.Firefly);
-            Dust.NewDust(Projectile.position, Projectile.width / 2, Projectile.height / 2, DustID.Firefly);
         }
     }
 }
