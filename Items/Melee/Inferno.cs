@@ -26,8 +26,8 @@ namespace EBF.Items.Melee
             Item.knockBack = 1f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Rapier;//The animation of the item when used
-            Item.useTime = 5;//How fast the item is used
-            Item.useAnimation = 15;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 6;//How fast the item is used
+            Item.useAnimation = 18;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 1, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -49,10 +49,6 @@ namespace EBF.Items.Melee
         }
     }
 
-    /* TODO: Use a vertical sprite instead of rotating the diagonal sprite using PreDraw().
-     * This is needed because the hitbox currently doesn't match the projectile.
-     */
-
     /// <summary>
     /// Shortswords act as projectiles. So this class represents the blade that is seen upon using the Inferno item.
     /// </summary>
@@ -60,17 +56,14 @@ namespace EBF.Items.Melee
     {
         private const float positionOffset = 25f;
         private float rotationOffset;
-        public override string Texture => "EBF/Items/Melee/Inferno";
         public override void SetDefaults()
         {
-            Projectile.width = 60;
-            Projectile.height = 60;
-            Projectile.scale = 1.2f;
+            Projectile.width = 30;
+            Projectile.height = 163; //sprite is 83, but hitbox needs to extend further
+            Projectile.scale = 1.1f;
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.penetrate = -1;
-            Projectile.alpha = 0;
-            DrawOriginOffsetX = -10;
-            DrawOriginOffsetY = -10;
+            DrawOriginOffsetY = 70;
 
             Projectile.hide = true;
             Projectile.ownerHitCheck = true;
@@ -87,25 +80,6 @@ namespace EBF.Items.Melee
         public override void PostAI() //Post because otherwise the shortsword aiStyle would override any changes
         {
             Projectile.position += Vector2.Normalize(Projectile.velocity) * positionOffset;
-        }
-        public override bool PreDraw(ref Color lightColor) //This is used here to correct the sprite rotation
-        {
-            // Get the texture of the projectile
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Source rectangle for animation frames (if needed)
-            Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
-
-            // The origin of the sprite, typically its center
-            Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
-
-            // Adjust the rotation to account for the diagonal texture
-            float correctedRotation = Projectile.rotation - MathHelper.PiOver4; // Rotate sprite
-
-            // Draw the projectile, applying the corrected rotation
-            Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, sourceRectangle, lightColor, correctedRotation, origin, Projectile.scale, SpriteEffects.None, 0f);
-
-            return false;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
