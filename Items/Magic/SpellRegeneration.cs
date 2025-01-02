@@ -23,11 +23,11 @@ namespace EBF.Items.Magic
             Item.width = 28;
             Item.height = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.useTime = 100;
-            Item.useAnimation = 10;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.mana = 50;
             Item.rare = ItemRarityID.Green;
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 0, platinum: 0);
             Item.useTurn = true;
         }
         public override bool CanUseItem(Player player)
