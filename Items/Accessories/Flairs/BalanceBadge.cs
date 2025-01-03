@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 using Terraria;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class BalanceBadge  : ModItem
+    public class BalanceBadge  : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Balance Badge");
-            base.Tooltip.WithFormatArgs("Represents pure equilibrium and bestows a wealth of boosts.\n5 defense\nIncreases maximum health and mana by 10\nIncreases movement, attack speed, damage and crit chance by 5%\nIncreases max minion slots by 1");
-        }
+        public new string LocalizationCategory => "Items.Accessories";
+            //base.Tooltip.WithFormatArgs("Represents pure equilibrium and bestows a wealth of boosts.\n5 defense\nIncreases maximum health and mana by 10\nIncreases movement, attack speed, damage and crit chance by 5%\nIncreases max minion slots by 1");
+        
         public override void SetDefaults()
         {
             Item.width = 20;

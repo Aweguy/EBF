@@ -10,12 +10,10 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee.Throwable
 {
-    public class IceNeedle : ModItem
+    public class IceNeedle : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Ice Needle");//Name of the Item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
         public override void SetDefaults()
         {
             Item.width = 72;

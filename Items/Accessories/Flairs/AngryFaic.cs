@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class AngryFaic : ModItem
+    public class AngryFaic : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Angry Faic");
-            base.Tooltip.WithFormatArgs("Wearing this makes you so angry, you want something to be BLAMMED!\n2 defense\nIncreases critical chance by 8%.\nIncreases enemy aggression.");
-        }
+        public new string LocalizationCategory => "Items.Accessories";
+            //base.Tooltip.WithFormatArgs("Wearing this makes you so angry, you want something to be BLAMMED!\n2 defense\nIncreases critical chance by 8%.\nIncreases enemy aggression.");
+        
         public override void SetDefaults()
         {
             Item.width = 32;

@@ -5,13 +5,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class UltraPro9000X : ModItem
+    public class UltraPro9000X : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Ultra Pro 9000 X");//Name of the Item
-            base.Tooltip.WithFormatArgs("'I can use this old hockey stick as a weapon. I think that should be enough equipment for now.' - Matt");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
+        //'I can use this old hockey stick as a weapon. I think that should be enough equipment for now.' - Matt
 
         public override void SetDefaults()
         {

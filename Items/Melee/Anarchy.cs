@@ -1,23 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class Anarchy : ModItem
+    public class Anarchy : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Anarchy");//Name of the Item
-            base.Tooltip.WithFormatArgs("Reduced defense while held.\nGrows stronger at low health.\n'It's gonna be worth it'");//Tooltip of the item
-        }
-
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+            //base.Tooltip.WithFormatArgs("Reduced defense while held.\nGrows stronger at low health.\n'It's gonna be worth it'");//Tooltip of the item
+        
         public override void SetDefaults()
         {
             Item.width = 112;//Width of the hitbox of the item (usually the item's sprite width)
@@ -37,7 +29,6 @@ namespace EBF.Items.Melee
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
         }
-
         public override void AddRecipes()
         {
             //Recipe that creates this item
@@ -47,7 +38,6 @@ namespace EBF.Items.Melee
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
-
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             if (player.statLife <= player.statLifeMax / 2)
@@ -58,7 +48,6 @@ namespace EBF.Items.Melee
                 }
             }
         }
-
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
             //Boost damage at half health
@@ -67,7 +56,6 @@ namespace EBF.Items.Melee
                 damage *= 1.5f;
             }
         }
-
         public override void HoldItem(Player player)
         {
             //75% defense while held

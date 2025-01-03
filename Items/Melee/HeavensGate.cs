@@ -7,13 +7,12 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class HeavensGate : ModItem
+    public class HeavensGate : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Heaven's Gate");//Name of the Item
-            base.Tooltip.WithFormatArgs("A legendary sword belonging to a line of famed corsairs.");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
+            //A legendary sword belonging to a line of famed corsairs.
+        
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)

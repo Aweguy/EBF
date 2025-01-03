@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,13 +6,9 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee.Spears
 {
-    public class GiantSlayer : ModItem
+    public class GiantSlayer : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Giant Slayer");//Name of the Item
-        }
-
+        public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
             Item.damage = 40;
@@ -36,13 +27,10 @@ namespace EBF.Items.Melee.Spears
             Item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this Item.
             Item.shoot = ModContent.ProjectileType<GiantSlayer_Projectile>();
         }
-
-
         public override void HoldItem(Player player)
         {
             player.GetArmorPenetration(DamageClass.Melee) += 100;
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 25f;

@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class SwiftBrand : ModItem
+    public class SwiftBrand : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Swift Brand");//Name of the Item
-            base.Tooltip.WithFormatArgs("'It's so easy to swing around!' - Matt");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+        //'It's so easy to swing around!' - Matt
 
         public override void SetDefaults()
         {

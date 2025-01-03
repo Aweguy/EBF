@@ -11,14 +11,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class Blizzard : ModItem
+    public class Blizzard : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Blizzard");//Name of the Item
-            base.Tooltip.WithFormatArgs("Shoots an additional bolt of frost at the cost of some accuracy.");//Tooltip of the item
-        }
-
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+           // base.Tooltip.WithFormatArgs("Shoots an additional bolt of frost at the cost of some accuracy.");//Tooltip of the item
+        
         public override void SetDefaults()
         {
             Item.width = 88;//Width of the hitbox of the item (usually the item's sprite width)

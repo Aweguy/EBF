@@ -6,14 +6,13 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic.Flameheart
 {
-    public class Flameheart : ModItem
+    public class Flameheart : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Magic";
+            //base.Tooltip.WithFormatArgs("A common but powerful staff, used by mages to scorch foes.\nEvery 3 uses, it summons a firestorm\nConsumes minor amounts of Limit Break");//Tooltip of the item
+
         int ChargeStacks = 0;
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Flameheart");//Name of the Item
-            base.Tooltip.WithFormatArgs("A common but powerful staff, used by mages to scorch foes.\nEvery 3 uses, it summons a firestorm\nConsumes minor amounts of Limit Break");//Tooltip of the item
-        }
+        
         public override void SetDefaults()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)

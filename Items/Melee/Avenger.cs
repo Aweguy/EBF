@@ -1,22 +1,17 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ID;
 
 namespace EBF.Items.Melee
 {
-    public class Avenger : ModItem
+    public class Avenger : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
         int missHP;//The missing health of the player
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Avenger");//Name of the Item
-            base.Tooltip.WithFormatArgs("For every scar, for every dishonor, the Avenger sharpens its edge. Grows stronger at low health.");//Tooltip of the item
-        }
+
+            //base.Tooltip.WithFormatArgs("For every scar, for every dishonor, the Avenger sharpens its edge. Grows stronger at low health.");//Tooltip of the item
+        
 
         public override void SetDefaults()
         {
@@ -37,7 +32,6 @@ namespace EBF.Items.Melee
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
-
         public override void HoldItem(Player player)
         {
             //Making the sword's damage increase based on the missing health
@@ -48,9 +42,6 @@ namespace EBF.Items.Melee
                 Item.damage = 1 + (int)(missHP / 2);
             }
         }
-
-        /*TODO: Remove recipe and add this sword to the Matt NPC's shop
-         */
         public override void AddRecipes()
         {
             CreateRecipe()

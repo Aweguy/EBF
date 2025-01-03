@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Accessories.Flairs
 {
-	public class IronCross : ModItem
+	public class IronCross : ModItem, ILocalizedModType
 	{
-		public override void SetStaticDefaults()
-		{
-			base.DisplayName.WithFormatArgs("Iron Cross");//Name of the Item
-			base.Tooltip.WithFormatArgs("A war medal which offers protection. Lance's favourite flair.\n4 defense\nBoosts ranged damage by 10%");//Tooltip of the item
-		}
+        public new string LocalizationCategory => "Items.Accessories";
+			//base.Tooltip.WithFormatArgs("A war medal which offers protection. Lance's favourite flair.\n4 defense\nBoosts ranged damage by 10%");//Tooltip of the item
+		
 
 		public override void SetDefaults()
 		{

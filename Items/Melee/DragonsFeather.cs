@@ -1,21 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class DragonsFeather : ModItem
+    public class DragonsFeather : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
         private int swings = 0;
-
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Dragon's Feather");//Name of the Item
-            base.Tooltip.WithFormatArgs("");//Tooltip of the item
-        }
-
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
@@ -33,33 +26,12 @@ namespace EBF.Items.Melee
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-
-            //Item.shoot = ProjectileID.TerraBeam;
-            //Item.shootSpeed = 10;
         }
-
-        /* TODO: Find a good projectile for this weapon, something short range.
-         * Also, we need to find a way to increase player movement speed without giving a buff, otherwise it might cancel existing buffs when unheld.
-         */
-
-        //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        //{
-        //    swings++;
-        //    if (swings >= 3)
-        //    {
-        //        Projectile.NewProjectile(source, position, velocity, type, damage, knockback);
-        //        swings = 0;
-        //    }
-
-        //    return false;
-        //}
-
         public override void HoldItem(Player player)
         {
             player.AddBuff(BuffID.Swiftness, 1);
             player.AddBuff(BuffID.Sunflower, 1);
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

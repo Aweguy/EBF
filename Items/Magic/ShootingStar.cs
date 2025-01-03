@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,14 +6,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class ShootingStar : ModItem
+    public class ShootingStar : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Magic";
+
         private const int spread = 250;
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Shooting Star");//Name of the Item
-            base.Tooltip.WithFormatArgs("");//Tooltip of the item
-        }
 
         public override void SetDefaults()
         {

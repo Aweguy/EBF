@@ -4,13 +4,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class TargetBadge : ModItem
+    public class TargetBadge : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Target Badge");//Name of the Item
-            base.Tooltip.WithFormatArgs("Somehow putting a target on yourself makes you a better shot, who knew?\nIncreases critical chance by 4%.\nIncreases enemy aggression.");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Accessories";
+        //base.Tooltip.WithFormatArgs("Somehow putting a target on yourself makes you a better shot, who knew?\nIncreases critical chance by 4%.\nIncreases enemy aggression.");//Tooltip of the item
+
         public override void SetDefaults()
         {
             Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)

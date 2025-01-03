@@ -5,16 +5,12 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class SwordBreaker : ModItem
+    public class SwordBreaker : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+        //Applies weak to hit targets
+
         private const int debuffDuration = 15; //In seconds
-
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Sword Breaker");//Name of the Item
-            base.Tooltip.WithFormatArgs("Applies Weak to hit targets.");//Tooltip of the item
-        }
-
         public override void SetDefaults()
         {
             Item.width = 80;//Width of the hitbox of the item (usually the item's sprite width)

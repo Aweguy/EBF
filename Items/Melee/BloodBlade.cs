@@ -4,13 +4,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-	public class BloodBlade : ModItem
+	public class BloodBlade : ModItem, ILocalizedModType
 	{
-		public override void SetStaticDefaults()
-		{
-			base.DisplayName.WithFormatArgs("Blood Blade");//Name of the Item
-			base.Tooltip.WithFormatArgs("Drains the health of hit targets");//Tooltip of the item
-		}
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
+			//base.Tooltip.WithFormatArgs("Drains the health of hit targets");//Tooltip of the item
 
 		public override void SetDefaults()
 		{
@@ -39,9 +37,6 @@ namespace EBF.Items.Melee
 				player.HealEffect(HealthHeal);
 			}
 		}
-
-		/*TODO: Remove recipe and add it to the Matt NPC's shop
-		 */
         public override void AddRecipes()
         {
 			CreateRecipe(amount: 1)

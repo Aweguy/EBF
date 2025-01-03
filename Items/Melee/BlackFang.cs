@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-	public class BlackFang : ModItem
+	public class BlackFang : ModItem, ILocalizedModType
 	{
-		public override void SetStaticDefaults()
-		{
-			base.DisplayName.WithFormatArgs("Black Fang");//Name of the Item
-			base.Tooltip.WithFormatArgs("'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt");//Tooltip of the item
-		}
+        public new string LocalizationCategory => "Items.Weapons.Melee";
 
+			//base.Tooltip.WithFormatArgs("'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt");//Tooltip of the item
+		
 		public override void SetDefaults()
 		{
 			Item.width = 82;//Width of the hitbox of the item (usually the item's sprite width)
@@ -47,7 +40,6 @@ namespace EBF.Items.Melee
 				player.HealEffect(HealthHeal);
 			}
 		}
-
         public override void AddRecipes()
         {
 			CreateRecipe(amount: 1)

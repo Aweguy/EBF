@@ -5,13 +5,9 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged
 {
-    public class CrimsonDragon : ModItem
+    public class CrimsonDragon : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Crimson Dragon");//Name of the Item
-            base.Tooltip.WithFormatArgs("");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Ranged";
 
         public override void SetDefaults()
         {
