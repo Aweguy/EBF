@@ -1,10 +1,6 @@
 ﻿using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -12,13 +8,9 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class FusionBlade : ModItem
+    public class FusionBlade : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Fusion Blade");//Name of the Item
-            base.Tooltip.WithFormatArgs("Modeled after the weapons used by the MILITIA branch.\nShoots a big bullet.");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Melee";        
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)

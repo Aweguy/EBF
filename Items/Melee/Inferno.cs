@@ -1,22 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class Inferno : ModItem
+    public class Inferno : ModItem, ILocalizedModType
     {
-
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Inferno");//Name of the Item
-            base.Tooltip.WithFormatArgs("Wreathed in scorching flames.\nBurns foes.");//Tooltip of the item
-        }
-
+        public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
             Item.width = 60;//Width of the hitbox of the item (usually the item's sprite width)

@@ -12,13 +12,9 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class Seraphim : ModItem
+    public class Seraphim : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Seraphim");//Name of the Item
-            base.Tooltip.WithFormatArgs("A glorious staff used by gorgeous angels.");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Magic";
         public override void SetDefaults()
         {
             Item.width = 90;//Width of the hitbox of the item (usually the item's sprite width)

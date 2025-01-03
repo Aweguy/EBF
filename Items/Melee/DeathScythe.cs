@@ -11,13 +11,9 @@ using Microsoft.Xna.Framework;
 
 namespace EBF.Items.Melee
 {
-    public class DeathScythe : ModItem
+    public class DeathScythe : ModItem, ILocalizedModItem
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Death Scythe");//Name of the Item
-            base.Tooltip.WithFormatArgs("");//Tooltip of the item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Magic";
 
         public override void SetDefaults()
         {

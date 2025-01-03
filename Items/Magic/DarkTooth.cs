@@ -9,14 +9,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class DarkTooth : ModItem
+    public class DarkTooth : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Magic";
+
         int manaDrainTimer; //Used to reduce how often mana is drained
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Dark Tooth");//Name of the Item
-            base.Tooltip.WithFormatArgs("Ancient black magic staff used for Dark elemental magic. Creates a slowly growing black hole that explodes afterwards.\nPulls everything towards it, even the player\nConsumes Limit Break while active");//Tooltip of the item
-        }
         public override void SetDefaults()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)

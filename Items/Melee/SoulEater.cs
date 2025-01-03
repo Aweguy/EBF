@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,14 +6,9 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
-    public class SoulEater : ModItem
+    public class SoulEater : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Soul Eater");//Name of the Item
-            base.Tooltip.WithFormatArgs("Deals massive damage but reduces your defense by 50% when held.\nHonestly, it could have been worse. It could kill you instantly.");//Tooltip of the item
-        }
-
+        public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
             Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)

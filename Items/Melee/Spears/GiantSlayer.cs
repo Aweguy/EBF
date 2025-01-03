@@ -5,12 +5,10 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Melee.Spears
 {
-    public class GiantSlayer : ModItem
+    public class GiantSlayer : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Giant Slayer");//Name of the Item
-        }
+        public new string LocalizationCategory => "Items.Weapons.Melee";
+
         public override void SetDefaults()
         {
             Item.width = 32;

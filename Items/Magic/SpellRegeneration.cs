@@ -1,23 +1,14 @@
 ﻿using EBF.Buffs;
 using EBF.Buffs.Cooldowns;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class SpellRegeneration : ModItem
+    public class SpellRegeneration : ModItem, ILocalizedModType
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Regeneration Spell");
-            base.Tooltip.WithFormatArgs("This spell vastly increases your regeneration.\nCosts a lot of mana and has a big cooldown.");
-        }
+        public new string LocalizationCategory => "Items.Weapons.Magic";
         public override void SetDefaults()
         {
             Item.width = 28;

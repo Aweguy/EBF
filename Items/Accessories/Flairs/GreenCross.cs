@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class GreenCross : ModItem
+    public class GreenCross : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Accessories";
+
         private int timer = 60 * 10;//10 second timer
         private const int healthPercentage = 5;
-
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Green Cross");//Name of the Item
-            base.Tooltip.WithFormatArgs("A Geneva-Convention-friendly pin which boasts regenerative properties.\nRegenerates 5% of your maximum health every 10 seconds");//Tooltip of the item
-        }
-
         public override void SetDefaults()
         {
             Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)

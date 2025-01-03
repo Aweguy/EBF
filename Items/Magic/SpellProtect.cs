@@ -1,31 +1,20 @@
 ﻿using EBF.Buffs;
 using EBF.Buffs.Cooldowns;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class SpellProtect : ModItem
+    public class SpellProtect : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Magic";
+
         /*public static readonly SoundStyle ProtectSound = new("EBF/Assets/Sounds/Item/Protect")
         {
             Volume = 1f,
             PitchVariance = 1f
         };*/
-
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Protection");//Name of the Item
-            base.Tooltip.WithFormatArgs("This spell vastly protects you from enemy attacks.\nBlocks 25% of the damage received.");//Tooltip of the item
-        }
-
         public override void SetDefaults()
         {
             Item.width = 28;
