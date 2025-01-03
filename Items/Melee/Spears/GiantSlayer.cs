@@ -17,13 +17,14 @@ namespace EBF.Items.Melee.Spears
             Item.height = 32;
             Item.scale = 0.7f;
 
-            Item.damage = 40;
+            Item.damage = 65;
             Item.knockBack = 6.5f;
+            Item.ArmorPenetration = 100;
             Item.DamageType = DamageClass.Melee;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTime = 50;
             Item.useAnimation = 50;
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 9, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;
             
             Item.shoot = ModContent.ProjectileType<GiantSlayer_Projectile>();
@@ -31,14 +32,24 @@ namespace EBF.Items.Melee.Spears
             Item.noMelee = true; // Important because the spear is actually a projectile instead of an Item. This prevents the melee hitbox of this Item.
             Item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this Item.
         }
-        public override void HoldItem(Player player)
+        public override void AddRecipes()
         {
-            player.GetArmorPenetration(DamageClass.Melee) += 100;
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.HallowedBar, stack: 12)
+                .AddIngredient(ItemID.SoulofMight, stack: 10)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 
     public class GiantSlayer_Projectile : ModProjectile
     {
+        // This property renames an unclear variable and makes the code more readable
+        public float MovementFactor // Change this value to alter how fast the spear moves
+        {
+            get => Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 18;
@@ -55,24 +66,14 @@ namespace EBF.Items.Melee.Spears
             Projectile.tileCollide = false;
             Projectile.friendly = true;
         }
-
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             target.defense -= 3;
         }
-
-        // This property renames an unclear variable and makes the code more readable
-        public float MovementFactor // Change this value to alter how fast the spear moves
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-
         public override void AI()
         {
             DoSpearAI(); // The spear AI is enclosed in a method in case we want to copy that behavior to other items
         }
-
         private void DoSpearAI()
         {
             // Adjust player's held item and itemTime
