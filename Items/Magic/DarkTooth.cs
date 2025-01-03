@@ -258,7 +258,7 @@ namespace EBF.Items.Magic
         {
             foreach (NPC npc in Main.npc)
             {
-                if (!npc.active || npc.boss || npc.immortal) //immortal is only used by target dummy
+                if (!npc.active || npc.boss || npc.immortal || npc.dontTakeDamage) //immortal is target dummy
                 {
                     continue;
                 }
