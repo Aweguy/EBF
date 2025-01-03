@@ -10,9 +10,6 @@ namespace EBF.Items.Melee
     public class HeavensGate : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-
-            //A legendary sword belonging to a line of famed corsairs.
-        
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)

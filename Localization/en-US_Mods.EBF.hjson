@@ -108,94 +108,122 @@ Items: {
 			}
 
 			Avenger: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Grows stronger as health decreases.
+					For every scar, for every dishonor, the Avenger sharpens its edge. 
+					'''
 				DisplayName: Avenger
 			}
 
 			Anarchy: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Reduced defense while held.
+					Grows stronger at low health.
+					'''
 				DisplayName: Anarchy
 			}
 
 			BlackFang: {
+				Tooltip: "'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt"
 				DisplayName: Black Fang
-				Tooltip: ""
 			}
 
 			Blizzard: {
+				Tooltip: Shoots an additional bolt of frost at the cost of some accuracy.
 				DisplayName: Blizzard
-				Tooltip: ""
 			}
 
 			BloodBlade: {
+				Tooltip: Drains the health of hit foes.
 				DisplayName: Blood Blade
-				Tooltip: ""
 			}
 
 			DragonsFeather: {
-				DisplayName: Dragons Feather
 				Tooltip: ""
+				DisplayName: Dragons Feather
 			}
 
 			FusionBlade: {
+				Tooltip:
+					'''
+					Shoots a homing bullet bob.
+					Modeled after the weapons used by the MILITIA branch.
+					'''
 				DisplayName: Fusion Blade
-				Tooltip: ""
 			}
 
 			HeavensGate: {
+				Tooltip: A legendary sword belonging to a line of famed corsairs.
 				DisplayName: Heavens Gate
-				Tooltip: ""
 			}
 
 			Inferno: {
+				Tooltip:
+					'''
+					Burns foes.
+					Wreathed in scorching flames. 
+					'''
 				DisplayName: Inferno
-				Tooltip: ""
 			}
 
 			LoveBlade: {
-				DisplayName: Love Blade
 				Tooltip: ""
+				DisplayName: Love Blade
 			}
 
 			SoulEater: {
+				Tooltip:
+					'''
+					Deals massive damage but reduces your defense by 50% when held.
+					Honestly, it could have been worse. It could kill you instantly.
+					'''
 				DisplayName: Soul Eater
-				Tooltip: ""
 			}
 
 			GiantSlayer: {
-				DisplayName: Giant Slayer
 				Tooltip: ""
+				DisplayName: Giant Slayer
 			}
 
 			SwiftBrand: {
+				Tooltip: "'It's so easy to swing around!' - Matt"
 				DisplayName: Swift Brand
-				Tooltip: ""
 			}
 
 			SwordBreaker: {
+				Tooltip: Applies weak to hit foes.
 				DisplayName: Sword Breaker
-				Tooltip: ""
 			}
 
 			IceNeedle: {
-				DisplayName: Ice Needle
 				Tooltip: ""
+				DisplayName: Ice Needle
 			}
 
 			UltraPro9000X: {
-				DisplayName: Ultra Pro9000 X
-				Tooltip: ""
+				Tooltip: "'I can use this old hockey stick as a weapon. I think that should be enough equipment for now.' - Matt"
+				DisplayName: UltraPro9000X
 			}
 		}
 
 		Magic: {
 			SpellRegeneration: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Costs a lot of mana and has a big cooldown.
+					This spell vastly increases your regeneration.
+					'''
 				DisplayName: Spell Regeneration
 			}
 
 			SpellProtect: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Blocks 25% of the damage received.
+					This spell vastly protects you from enemy attacks.
+					'''
 				DisplayName: Spell Protect
 			}
 
@@ -205,67 +233,107 @@ Items: {
 			}
 
 			Seraphim: {
-				Tooltip: ""
+				Tooltip: A glorious staff used by gorgeous angels.
 				DisplayName: Seraphim
 			}
 
 			Flameheart: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Every third use summons a firestorm.
+					A common but powerful staff, used by mages to scorch foes.
+					'''
 				DisplayName: Flameheart
 			}
 
 			DarkTooth: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Creates a growing black hole that pulls everything and explodes upon being released.
+					An ancient black magic staff used for Dark elemental magic. 
+					'''
 				DisplayName: Dark Tooth
 			}
 
 			Airstrike_Remote: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					Left click to drop a big bomb from the sky, right click to drop 3 weaker bombs at once.
+					Bombs away!!!!
+					'''
 				DisplayName: Airstrike_ Remote
 			}
 		}
 
 		Ranged: {
 			CrimsonDragon: {
-				DisplayName: Crimson Dragon
 				Tooltip: ""
+				DisplayName: Crimson Dragon
 			}
 		}
 	}
 
 	Accessories: {
 		TargetBadge: {
-			Tooltip: ""
+			Tooltip:
+				'''
+				Increases critical chance by 4%.
+				Increases enemy aggression.
+				Somehow putting a target on yourself makes you a better shot, who knew?
+				'''
 			DisplayName: Target Badge
 		}
 
 		SwordMedal: {
-			Tooltip: ""
+			Tooltip:
+				'''
+				Increases Ranged and Melee damage by 20%.
+				True might is the mark of discipline, honor and courage.
+				'''
 			DisplayName: Sword Medal
 		}
 
 		ShieldMedal: {
-			Tooltip: ""
+			Tooltip: Aid others where you can. Let all be helped and loved throughout the realm.
 			DisplayName: Shield Medal
 		}
 
 		IronCross: {
-			Tooltip: ""
+			Tooltip:
+				'''
+				Boosts ranged damage by 10%.
+				A war medal which offers protection. Lance's favourite flair.
+				'''
 			DisplayName: Iron Cross
 		}
 
 		GreenCross: {
-			Tooltip: ""
+			Tooltip:
+				'''
+				Regenerates 5% of your maximum health every 10 seconds.
+				A Geneva-Convention-friendly pin which boasts regenerative properties.
+				'''
 			DisplayName: Green Cross
 		}
 
 		BalanceBadge: {
-			Tooltip: ""
+			Tooltip:
+				'''
+				Increases maximum health and mana by 10.
+				Increases movement, attack speed, damage and crit chance by 5%.
+				Increases max minion slots by 1.
+				Represents pure equilibrium and bestows a wealth of boosts.
+				'''
 			DisplayName: Balance Badge
 		}
 
 		AngryFaic: {
-			Tooltip: ""
+			Tooltip:
+				'''
+				Increases critical chance by 8%.
+				Increases enemy aggression.
+				Wearing this makes you so angry, you want something to be BLAMMED!
+				'''
 			DisplayName: Angry Faic
 		}
 	}

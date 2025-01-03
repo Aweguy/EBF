@@ -8,11 +8,7 @@ namespace EBF.Items.Melee
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
 
-        int missHP;//The missing health of the player
-
-            //base.Tooltip.WithFormatArgs("For every scar, for every dishonor, the Avenger sharpens its edge. Grows stronger at low health.");//Tooltip of the item
-        
-
+        int missHP; //The missing health of the player
         public override void SetDefaults()
         {
             Item.width = 48;//Width of the hitbox of the item (usually the item's sprite width)

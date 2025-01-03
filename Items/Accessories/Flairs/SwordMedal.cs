@@ -7,8 +7,6 @@ namespace EBF.Items.Accessories.Flairs
     public class SwordMedal : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
-        //base.Tooltip.WithFormatArgs("True might is the mark of discipline, honor and courage.\n Increases Ranged and Melee damage by 20%");//Tooltip of the item
-
         public override void SetDefaults()
         {
             Item.width = 32;

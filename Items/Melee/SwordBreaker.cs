@@ -8,7 +8,6 @@ namespace EBF.Items.Melee
     public class SwordBreaker : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-        //Applies weak to hit targets
 
         private const int debuffDuration = 15; //In seconds
         public override void SetDefaults()

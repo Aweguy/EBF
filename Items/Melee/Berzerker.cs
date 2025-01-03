@@ -7,7 +7,6 @@ namespace EBF.Items.Melee
     public class Berzerker : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)

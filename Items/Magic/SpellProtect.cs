@@ -8,17 +8,13 @@ namespace EBF.Items.Magic
 {
     public class SpellProtect : ModItem, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Magic";
+
         /*public static readonly SoundStyle ProtectSound = new("EBF/Assets/Sounds/Item/Protect")
         {
             Volume = 1f,
             PitchVariance = 1f
         };*/
-
-        public new string LocalizationCategory => "Items.Weapons.Magic";
-
-            //base.Tooltip.WithFormatArgs("This spell vastly protects you from enemy attacks.\nBlocks 25% of the damage received.");//Tooltip of the item
-        
-
         public override void SetDefaults()
         {
             Item.width = 28;

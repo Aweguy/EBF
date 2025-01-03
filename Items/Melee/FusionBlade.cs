@@ -10,10 +10,7 @@ namespace EBF.Items.Melee
 {
     public class FusionBlade : ModItem, ILocalizedModType
     {
-        public new string LocalizationCategory => "Items.Weapons.Melee";
-
-            //base.Tooltip.WithFormatArgs("Modeled after the weapons used by the MILITIA branch.\nShoots a big bullet.");//Tooltip of the item
-        
+        public new string LocalizationCategory => "Items.Weapons.Melee";        
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)

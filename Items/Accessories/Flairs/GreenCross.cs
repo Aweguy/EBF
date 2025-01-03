@@ -7,7 +7,6 @@ namespace EBF.Items.Accessories.Flairs
     public class GreenCross : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
-           // base.Tooltip.WithFormatArgs("A Geneva-Convention-friendly pin which boasts regenerative properties.\nRegenerates 5% of your maximum health every 10 seconds");//Tooltip of the item
 
         private int timer = 60 * 10;//10 second timer
         private const int healthPercentage = 5;

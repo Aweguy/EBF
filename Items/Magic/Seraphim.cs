@@ -15,8 +15,6 @@ namespace EBF.Items.Magic
     public class Seraphim : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
-            //base.Tooltip.WithFormatArgs("A glorious staff used by gorgeous angels.");//Tooltip of the item
-        
         public override void SetDefaults()
         {
             Item.width = 90;//Width of the hitbox of the item (usually the item's sprite width)

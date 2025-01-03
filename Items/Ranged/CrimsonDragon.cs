@@ -8,7 +8,6 @@ namespace EBF.Items.Ranged
     public class CrimsonDragon : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged";
-
         public override void SetDefaults()
         {
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
@@ -32,7 +31,6 @@ namespace EBF.Items.Ranged
             Item.shootSpeed = 10f;
 
         }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)

@@ -8,8 +8,6 @@ namespace EBF.Items.Melee
     public class Anarchy : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-            //base.Tooltip.WithFormatArgs("Reduced defense while held.\nGrows stronger at low health.\n'It's gonna be worth it'");//Tooltip of the item
-        
         public override void SetDefaults()
         {
             Item.width = 112;//Width of the hitbox of the item (usually the item's sprite width)

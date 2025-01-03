@@ -7,8 +7,6 @@ namespace EBF.Items.Melee
     public class SwiftBrand : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-        //'It's so easy to swing around!' - Matt
-
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)

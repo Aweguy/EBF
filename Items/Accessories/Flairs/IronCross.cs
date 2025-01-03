@@ -7,9 +7,6 @@ namespace EBF.Items.Accessories.Flairs
 	public class IronCross : ModItem, ILocalizedModType
 	{
         public new string LocalizationCategory => "Items.Accessories";
-			//base.Tooltip.WithFormatArgs("A war medal which offers protection. Lance's favourite flair.\n4 defense\nBoosts ranged damage by 10%");//Tooltip of the item
-		
-
 		public override void SetDefaults()
 		{
 			Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)

@@ -7,9 +7,6 @@ namespace EBF.Items.Melee
 	public class BlackFang : ModItem, ILocalizedModType
 	{
         public new string LocalizationCategory => "Items.Weapons.Melee";
-
-			//base.Tooltip.WithFormatArgs("'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt");//Tooltip of the item
-		
 		public override void SetDefaults()
 		{
 			Item.width = 82;//Width of the hitbox of the item (usually the item's sprite width)

@@ -11,7 +11,6 @@ namespace EBF.Items.Magic
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
         private const int spread = 250;
-
         public override void SetDefaults()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)

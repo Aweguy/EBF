@@ -14,7 +14,6 @@ namespace EBF.Items.Magic.Airstrike
         public new string LocalizationCategory => "Items.Weapons.Magic";
         public override void SetStaticDefaults()
         {
-            //base.Tooltip.WithFormatArgs("Bombs away!!!!\nLeft click to quickly drop bombs down, right click to drop 3 weaker bombs at once.");//Tooltip of the item
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Item.type] = true;
         }
         public override void SetDefaults()

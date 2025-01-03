@@ -7,8 +7,6 @@ namespace EBF.Items.Accessories.Flairs
     public class ShieldMedal : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
-        //base.Tooltip.WithFormatArgs("Aid others where you can. Let all be helped and loved throughout the realm.\n20 defense");
-
         public override void SetDefaults()
         {
             Item.width = 20;

@@ -7,8 +7,6 @@ namespace EBF.Items.Accessories.Flairs
     public class BalanceBadge  : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
-            //base.Tooltip.WithFormatArgs("Represents pure equilibrium and bestows a wealth of boosts.\n5 defense\nIncreases maximum health and mana by 10\nIncreases movement, attack speed, damage and crit chance by 5%\nIncreases max minion slots by 1");
-        
         public override void SetDefaults()
         {
             Item.width = 20;

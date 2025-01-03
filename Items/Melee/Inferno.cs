@@ -9,7 +9,6 @@ namespace EBF.Items.Melee
     public class Inferno : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-        //Wreathed in scorching flames. Burns foes.
         public override void SetDefaults()
         {
             Item.width = 60;//Width of the hitbox of the item (usually the item's sprite width)

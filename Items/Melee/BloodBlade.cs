@@ -7,9 +7,6 @@ namespace EBF.Items.Melee
 	public class BloodBlade : ModItem, ILocalizedModType
 	{
         public new string LocalizationCategory => "Items.Weapons.Melee";
-
-			//base.Tooltip.WithFormatArgs("Drains the health of hit targets");//Tooltip of the item
-
 		public override void SetDefaults()
 		{
 			Item.width = 82;//Width of the hitbox of the item (usually the item's sprite width)

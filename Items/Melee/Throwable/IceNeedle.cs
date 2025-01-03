@@ -13,7 +13,6 @@ namespace EBF.Items.Melee.Throwable
     public class IceNeedle : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-
         public override void SetDefaults()
         {
             Item.width = 72;

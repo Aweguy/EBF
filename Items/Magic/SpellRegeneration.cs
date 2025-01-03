@@ -9,8 +9,6 @@ namespace EBF.Items.Magic
     public class SpellRegeneration : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
-           // base.Tooltip.WithFormatArgs("This spell vastly increases your regeneration.\nCosts a lot of mana and has a big cooldown.");
-        
         public override void SetDefaults()
         {
             Item.width = 28;

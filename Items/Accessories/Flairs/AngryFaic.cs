@@ -1,5 +1,4 @@
-﻿
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,8 +7,6 @@ namespace EBF.Items.Accessories.Flairs
     public class AngryFaic : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
-            //base.Tooltip.WithFormatArgs("Wearing this makes you so angry, you want something to be BLAMMED!\n2 defense\nIncreases critical chance by 8%.\nIncreases enemy aggression.");
-        
         public override void SetDefaults()
         {
             Item.width = 32;

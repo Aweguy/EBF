@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -14,8 +9,6 @@ namespace EBF.Items.Melee
     public class Blizzard : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-           // base.Tooltip.WithFormatArgs("Shoots an additional bolt of frost at the cost of some accuracy.");//Tooltip of the item
-        
         public override void SetDefaults()
         {
             Item.width = 88;//Width of the hitbox of the item (usually the item's sprite width)

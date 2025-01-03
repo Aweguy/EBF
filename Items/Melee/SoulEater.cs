@@ -9,7 +9,6 @@ namespace EBF.Items.Melee
     public class SoulEater : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-        //Deals massive damage but reduces your defense by 50% when held.\nHonestly, it could have been worse. It could kill you instantly.
         public override void SetDefaults()
         {
             Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
