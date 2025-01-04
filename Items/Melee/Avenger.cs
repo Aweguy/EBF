@@ -11,8 +11,8 @@ namespace EBF.Items.Melee
         int missHP; //The missing health of the player
         public override void SetDefaults()
         {
-            Item.width = 48;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 48;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 10;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
