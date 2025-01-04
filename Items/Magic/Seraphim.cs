@@ -25,7 +25,7 @@ namespace EBF.Items.Magic
             Item.height = 90;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 52;//Item's base damage value
-            Item.knockBack = 1f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 0f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 36;//The amount of mana this item consumes on use
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -39,7 +39,7 @@ namespace EBF.Items.Magic
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<Seraphim_Judgement>();
-            Item.shootSpeed = 5f;//The held item requires shootSpeed > 0 in order to rotate on use.
+            Item.shootSpeed = 1f;//The held item requires shootSpeed > 0 in order to rotate on use.
             Item.noMelee = true;//Prevents damage from being dealt by the item itself
         }
         public override void UseStyle(Player player, Rectangle heldItemFrame)
@@ -51,7 +51,7 @@ namespace EBF.Items.Magic
             player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int YOffset);
 
             position = new Vector2(XPosition, YPosition);
-            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, 0f, player.whoAmI, 0f, 0f);
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
 
             return false;
         }
@@ -86,11 +86,10 @@ namespace EBF.Items.Magic
 
         private float beamScale = 5f;//Used for the animation illusion
         private float increaseY = 0f; //It increases the Y axis of the dust spawning
-        private float increaseY2 = 0f;//Same as above
         private const float waveFrequency = 70f;//Dust spawning wave frequency on both spawners
         private const float waveLength = 100f;//Dust Spawning wave length on both spawners
         private float beamWidth = 100f;//Collision hitbox.
-        private float offDistance = 0.6f;//Distance Reduction
+        private float beamHeadVerticalOffset = 0.6f;//Distance Reduction
 
         private Vector2 position;//the initial position of the laser
         private Vector2 spriterotation = -Vector2.UnitY;//rotation of the laser to look up
@@ -226,13 +225,13 @@ namespace EBF.Items.Magic
 
             Player player = Main.player[Projectile.owner];
             UpdatePlayer(player);
-            ChargeLaser(player);
+            ChargeLaser();
 
             SetLaserHeight();
-            SpawnDusts(player);
+            SpawnDusts();
             CastLights();
         }
-        private void SpawnDusts(Player player)
+        private void SpawnDusts()
         {
             Vector2 unit = position;
 
@@ -243,13 +242,12 @@ namespace EBF.Items.Magic
                 Vector2 dustVel = new Vector2(Main.rand.NextBool(2) ? -1 : 1, 0);
 
                 //Electric dust
-                Dust dust = Main.dust[Dust.NewDust(position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, newColor: Color.White, Scale: 1.2f)];
+                Dust dust = Dust.NewDustDirect(position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, newColor: Color.White, Scale: 1.2f);
                 dust.noGravity = true;
                 dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
 
                 //Smoke dust
                 dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.White, Scale: 0.88f);
-                dust.fadeIn = 0f;
                 dust.noGravity = true;
                 dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
             }
@@ -272,19 +270,13 @@ namespace EBF.Items.Magic
                     float rand = Main.rand.NextFloat(5f, 20f);
 
                     //Feather dust
-                    Dust dust = Main.dust[Dust.NewDust(position, 0, 0, ModContent.DustType<LightFeather>(), dustVel.X * rand, dustVel.Y * rand)];
+                    Dust dust = Dust.NewDustDirect(position, 0, 0, ModContent.DustType<LightFeather>(), dustVel.X * rand, dustVel.Y * rand, Alpha: 2, Scale: 1.2f);
                     dust.noGravity = true;
                     dust.noLight = true;
-                    dust.scale = 1.2f;
-                    dust.alpha += 2;
 
                     //Smoke dust
-                    dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight);
-                    dust.fadeIn = 0f;
+                    dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, Alpha: 2, newColor: Color.Cyan, Scale: 0.88f);
                     dust.noGravity = true;
-                    dust.scale = 0.88f;
-                    dust.alpha += 2;
-                    dust.color = Color.Cyan;
                 }
             }
 
@@ -308,12 +300,10 @@ namespace EBF.Items.Magic
 
                 //Smoke dust 1
                 dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.Cyan, Scale: 0.88f);
-                dust.fadeIn = 0f;
                 dust.noGravity = true;
 
                 //Smoke dust 2
                 dust2 = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.Cyan, Scale: 0.88f);
-                dust2.fadeIn = 0f;
                 dust2.noGravity = true;
 
                 //Move the spiral up
@@ -323,36 +313,30 @@ namespace EBF.Items.Magic
                 }
             }
 
-
             #endregion SpiralDust
         }
         private void SetLaserHeight()
         {
+            //Check each tile up from the start of the beam
             for (laserHeight = beamVerticalOffset; laserHeight <= 2500f; laserHeight += 16f)
             {
-                Vector2 start = position + spriterotation * laserHeight;
-                if (!Collision.CanHit(position, 1, 1, start, 1, 1))
+                Vector2 bodyPosition = position + spriterotation * laserHeight;
+                if (!Collision.CanHit(position, 1, 1, bodyPosition, 1, 1))
                 {
                     if (!IsAtMaxCharge)
                     {
                         laserHeight -= 0f;
                         break;
                     }
-                    else if (IsAtMaxCharge && Projectile.timeLeft <= 80)
+                    else 
                     {
-                        laserHeight -= 50f - offDistance;
-                        offDistance += 0.6f;
-                        break;
-                    }
-                    else
-                    {
-                        laserHeight -= 50f;
+                        laserHeight -= 16f;
                         break;
                     }
                 }
             }
         }
-        private void ChargeLaser(Player player)
+        private void ChargeLaser()
         {
             if (Charge < maxCharge)
             {
