@@ -48,7 +48,7 @@ namespace EBF.Items.Magic
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int YOffset);
+            player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int _);
 
             position = new Vector2(XPosition, YPosition);
             Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
@@ -68,7 +68,6 @@ namespace EBF.Items.Magic
                 .Register();
         }
     }
-
     public class Seraphim_Judgement : ModProjectile
     {
         public static readonly SoundStyle JudgementSound = new("EBF/Assets/Sounds/Custom/Judgement")
@@ -82,21 +81,24 @@ namespace EBF.Items.Magic
         //Fields
         private const float maxCharge = 40f;
         public float beamVerticalOffset = 20f; //The distance charge particle from the player center
-        public float laserHeight; //This is how tall the laser is, it's set in SetLaserHeight
 
         private float beamScale = 5f;//Used for the animation illusion
         private float increaseY = 0f; //It increases the Y axis of the dust spawning
         private const float waveFrequency = 70f;//Dust spawning wave frequency on both spawners
         private const float waveLength = 100f;//Dust Spawning wave length on both spawners
         private float beamWidth = 100f;//Collision hitbox.
-        private float beamHeadVerticalOffset = 0.6f;//Distance Reduction
 
         private Vector2 position;//the initial position of the laser
-        private Vector2 spriterotation = -Vector2.UnitY;//rotation of the laser to look up
+        private static Vector2 Up { get => -Vector2.UnitY; } //rotation of the laser to look up
 
         private int animation = 0;//Sets 0 or 1 for a small animation.
 
         //Properties
+        public float LaserHeight
+        {
+            get => Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
         public float Charge //Shortcut for readability
         {
             get => Projectile.localAI[0];
@@ -155,29 +157,29 @@ namespace EBF.Items.Magic
                 Projectile.Kill();
             }
 
-            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, step: 8, rotation: -1.57f, beamScale, Color.White, (int)beamVerticalOffset);
+            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, step: 8, rotation: -1.57f, beamScale, Color.White, (int)beamVerticalOffset);
             return false;
         }
-        public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, float rotation = 0f, float scale = 1f, Color color = default(Color), int beamVerticalOffset = 0)
+        public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, float step, float rotation = 0f, float scale = 1f, Color color = default, int beamVerticalOffset = 0)
         {
             Vector2 bodyPosition;
             Vector2 origin = new Vector2(28 * 0.5f, 26 * 0.5f);
-            float rot = unit.ToRotation() + rotation;
+            float rot = Up.ToRotation() + rotation;
 
             // Draws the laser 'body'
-            for (float i = beamVerticalOffset; i <= laserHeight; i += step)
+            for (float i = beamVerticalOffset; i <= LaserHeight; i += step)
             {
-                bodyPosition = start + i * unit;
+                bodyPosition = start + i * Up;
                 color = i < beamVerticalOffset ? Color.Transparent : Color.White;
                 spriteBatch.Draw(texture, bodyPosition - Main.screenPosition, new Rectangle(0, 26, 28, 26), color, rot, origin, scale, 0, 0);
             }
 
             // Draws the laser 'tail'
-            spriteBatch.Draw(texture, start + unit * (beamVerticalOffset - step) - Main.screenPosition,
+            spriteBatch.Draw(texture, start + Up * (beamVerticalOffset - step) - Main.screenPosition,
                 new Rectangle(0, 0, 28, 26), color, rot, origin, scale, 0, 0);
 
             // Draws the laser 'head'
-            spriteBatch.Draw(texture, start + (laserHeight + step) * unit - Main.screenPosition,
+            spriteBatch.Draw(texture, start + (LaserHeight + step) * Up - Main.screenPosition,
 				new Rectangle(0, 52, 28, 26), color, rotation: (float)Math.PI, origin, scale, 0, 0);
         }
 
@@ -188,13 +190,8 @@ namespace EBF.Items.Magic
             {
                 return false;
             }
-            // We can only collide if we are at max charge, which is when the laser is actually fired
-            Vector2 unit = spriterotation;
             float point = 0f;
-
-            // Run an AABB versus Line check to look for collisions, look up AABB collision first to see how it works
-            // It will look for collisions on the given line using AABB
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, position + unit * laserHeight, beamWidth, ref point);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), position, position + Up * LaserHeight, beamWidth, ref point);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -233,8 +230,6 @@ namespace EBF.Items.Magic
         }
         private void SpawnDusts()
         {
-            Vector2 unit = position;
-
             #region generalDust
 
             for (int i = 0; i < 1; ++i)
@@ -247,7 +242,7 @@ namespace EBF.Items.Magic
                 dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
 
                 //Smoke dust
-                dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.White, Scale: 0.88f);
+                dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, position.X * LaserHeight, position.Y * LaserHeight, newColor: Color.White, Scale: 0.88f);
                 dust.noGravity = true;
                 dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
             }
@@ -256,9 +251,9 @@ namespace EBF.Items.Magic
 
             #region Feathers
 
-            if (IsAtMaxCharge && Projectile.localAI[1] == 0)
+            if (IsAtMaxCharge && Projectile.localAI[2] == 0)
             {
-                Projectile.localAI[1] = 1; //Ensure this only happens once
+                Projectile.localAI[2] = 1; //Ensure this only happens once
 
                 if (!Main.dedServ)
                     SoundEngine.PlaySound(JudgementSound, Projectile.Center);
@@ -275,7 +270,7 @@ namespace EBF.Items.Magic
                     dust.noLight = true;
 
                     //Smoke dust
-                    dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, Alpha: 2, newColor: Color.Cyan, Scale: 0.88f);
+                    dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, position.X * LaserHeight, position.Y * LaserHeight, Alpha: 2, newColor: Color.Cyan, Scale: 0.88f);
                     dust.noGravity = true;
                 }
             }
@@ -299,15 +294,15 @@ namespace EBF.Items.Magic
                 dust2.noGravity = true;
 
                 //Smoke dust 1
-                dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.Cyan, Scale: 0.88f);
+                dust = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, position.X * LaserHeight, position.Y * LaserHeight, newColor: Color.Cyan, Scale: 0.88f);
                 dust.noGravity = true;
 
                 //Smoke dust 2
-                dust2 = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, unit.X * laserHeight, unit.Y * laserHeight, newColor: Color.Cyan, Scale: 0.88f);
+                dust2 = Dust.NewDustDirect(position, 0, 0, DustID.Smoke, position.X * LaserHeight, position.Y * LaserHeight, newColor: Color.Cyan, Scale: 0.88f);
                 dust2.noGravity = true;
 
                 //Move the spiral up
-                if (increaseY < laserHeight)
+                if (increaseY < LaserHeight)
                 {
                     increaseY += 20;
                 }
@@ -318,19 +313,19 @@ namespace EBF.Items.Magic
         private void SetLaserHeight()
         {
             //Check each tile up from the start of the beam
-            for (laserHeight = beamVerticalOffset; laserHeight <= 2500f; laserHeight += 16f)
+            for (LaserHeight = beamVerticalOffset; LaserHeight <= 2500f; LaserHeight += 16f)
             {
-                Vector2 bodyPosition = position + spriterotation * laserHeight;
+                Vector2 bodyPosition = position + Up * LaserHeight;
                 if (!Collision.CanHit(position, 1, 1, bodyPosition, 1, 1))
                 {
                     if (!IsAtMaxCharge)
                     {
-                        laserHeight -= 0f;
+                        LaserHeight -= 0f;
                         break;
                     }
                     else 
                     {
-                        laserHeight -= 16f;
+                        LaserHeight -= 16f;
                         break;
                     }
                 }
@@ -352,14 +347,13 @@ namespace EBF.Items.Magic
                 Projectile.direction = Main.MouseWorld.X > player.position.X ? 1 : -1;
                 Projectile.netUpdate = true;
             }
-            int dir = Projectile.direction;
             player.heldProj = Projectile.whoAmI; // Update player's held Projectile
         }
         private void CastLights()
         {
             // Cast a light along the line of the laser
             DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
-            Utils.PlotTileLine(position, position + spriterotation * (laserHeight - beamVerticalOffset), 50, DelegateMethods.CastLight);
+            Utils.PlotTileLine(position, position + Up * (LaserHeight - beamVerticalOffset), 50, DelegateMethods.CastLight);
         }
     }
 
