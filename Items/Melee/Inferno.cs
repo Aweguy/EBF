@@ -11,8 +11,8 @@ namespace EBF.Items.Melee
         public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
-            Item.width = 60;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 60;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 26;//Item's base damage value
             Item.knockBack = 1f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -46,7 +46,7 @@ namespace EBF.Items.Melee
     /// </summary>
     public class Inferno_Proj : ModProjectile
     {
-        private const float positionOffset = 25f;
+        private const float positionOffset = 40f;
         private float rotationOffset;
         public override void SetDefaults()
         {
