@@ -103,7 +103,7 @@ Items: {
 	Weapons: {
 		Melee: {
 			Berzerker: {
-				Tooltip: ""
+				Tooltip: Launches a boulder.
 				DisplayName: Berzerker
 			}
 
@@ -141,7 +141,7 @@ Items: {
 			}
 
 			DragonsFeather: {
-				Tooltip: ""
+				Tooltip: You feel swift like the wind.
 				DisplayName: Dragons Feather
 			}
 
@@ -169,7 +169,7 @@ Items: {
 			}
 
 			LoveBlade: {
-				Tooltip: ""
+				Tooltip: A sword made for healing, not fighting.
 				DisplayName: Love Blade
 			}
 
@@ -183,7 +183,7 @@ Items: {
 			}
 
 			GiantSlayer: {
-				Tooltip: ""
+				Tooltip: An unwieldy spear made to fight defensive foes.
 				DisplayName: Giant Slayer
 			}
 
@@ -198,7 +198,11 @@ Items: {
 			}
 
 			IceNeedle: {
-				Tooltip: ""
+				Tooltip: 
+					'''
+					Launches a javelin that explodes into homing snowflakes.
+					Used in only the most painful of snowball fights.
+					'''
 				DisplayName: Ice Needle
 			}
 
@@ -228,7 +232,7 @@ Items: {
 			}
 
 			ShootingStar: {
-				Tooltip: ""
+				Tooltip: Summons a bouncy star from the heavens.
 				DisplayName: Shooting Star
 			}
 
@@ -267,7 +271,7 @@ Items: {
 
 		Ranged: {
 			CrimsonDragon: {
-				Tooltip: ""
+				Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
 				DisplayName: Crimson Dragon
 			}
 		}
