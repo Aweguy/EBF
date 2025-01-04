@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -302,17 +303,10 @@ namespace EBF.Items.Magic
                 }
             }
         }
-
         private void CalculateEndExplosionDamage()
         {
-            Projectile.position = Projectile.Center;
-
-            //Changing the width and height will cause a bigger hitbox upon exploding
-            Projectile.width += Projectile.width / 2;
-            Projectile.height += Projectile.height / 2;
+            ProjectileExtensions.ExpandHitboxBy(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
             Projectile.damage = Projectile.damage + Projectile.width;
-
-            Projectile.Center = Projectile.position;
         }
     }
 }
