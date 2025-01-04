@@ -81,10 +81,10 @@ namespace EBF.Items.Magic
 
         //Fields
         private const float maxCharge = 40f;
-        public float moveDistance = 20f; //The distance charge particle from the player center
+        public float beamVerticalOffset = 20f; //The distance charge particle from the player center
         public float laserHeight; //This is how tall the laser is, it's set in SetLaserHeight
 
-        private float scaled = 5f;//Used for the animation illusion
+        private float beamScale = 5f;//Used for the animation illusion
         private float increaseY = 0f; //It increases the Y axis of the dust spawning
         private float increaseY2 = 0f;//Same as above
         private const float waveFrequency = 70f;//Dust spawning wave frequency on both spawners
@@ -128,59 +128,58 @@ namespace EBF.Items.Magic
         {
             if (!IsAtMaxCharge)//When it's not at max charge have a small laser beam
             {
-                scaled = 1f;
-                moveDistance = 4f;
+                beamScale = 1f;
+                beamVerticalOffset = 4f;
             }
             else if (IsAtMaxCharge && Projectile.timeLeft <= 80)//if it's at max charge and some time has passed reduce its scale.
             {
-                scaled -= 0.06f;
-                moveDistance -= 0.24f;
+                beamScale -= 0.06f;
+                beamVerticalOffset -= 0.24f;
             }
             else//The animation while damaging
             {
                 if (animation == 0)
                 {
-                    scaled = 5.5f;
+                    beamScale = 5.5f;
                     animation = 1;
-                    moveDistance = 20f;
+                    beamVerticalOffset = 20f;
                 }
                 else if (animation == 1)
                 {
-                    scaled = 5f;
+                    beamScale = 5f;
                     animation = 0;
-                    moveDistance = 20f;
+                    beamVerticalOffset = 20f;
                 }
             }
-            if (scaled <= 0f)
+            if (beamScale <= 0f)
             {
                 Projectile.Kill();
             }
 
-            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, 10, Projectile.damage, -1.57f, scaled, 1000f, Color.White, (int)moveDistance);
+            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, position, spriterotation, step: 8, rotation: -1.57f, beamScale, Color.White, (int)beamVerticalOffset);
             return false;
         }
-        public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, int damage, float rotation = 0f, float scale = 1f, float maxDist = 2000f, Color color = default(Color), int transDist = 0)
+        public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 unit, float step, float rotation = 0f, float scale = 1f, Color color = default(Color), int beamVerticalOffset = 0)
         {
+            Vector2 bodyPosition;
+            Vector2 origin = new Vector2(28 * 0.5f, 26 * 0.5f);
             float rot = unit.ToRotation() + rotation;
 
-            var origin = Vector2.Zero;
-
             // Draws the laser 'body'
-            for (float i = transDist; i <= laserHeight; i += step)
+            for (float i = beamVerticalOffset; i <= laserHeight; i += step)
             {
-                Color c = Color.White;
-                origin = start + i * unit;
-
-                spriteBatch.Draw(texture, origin - Main.screenPosition, new Rectangle(0, 26, 28, 26), i < transDist ? Color.Transparent : c, rot, new Vector2(28 * 0.5f, 26 * 0.5f), scale, 0, 0);
+                bodyPosition = start + i * unit;
+                color = i < beamVerticalOffset ? Color.Transparent : Color.White;
+                spriteBatch.Draw(texture, bodyPosition - Main.screenPosition, new Rectangle(0, 26, 28, 26), color, rot, origin, scale, 0, 0);
             }
 
             // Draws the laser 'tail'
-            spriteBatch.Draw(texture, start + unit * (transDist - step) - Main.screenPosition,
-                new Rectangle(0, 0, 28, 26), Color.White, rot, new Vector2(28 * 0.5f, 26 * 0.5f), scale, 0, 0);
+            spriteBatch.Draw(texture, start + unit * (beamVerticalOffset - step) - Main.screenPosition,
+                new Rectangle(0, 0, 28, 26), color, rot, origin, scale, 0, 0);
 
             // Draws the laser 'head'
             spriteBatch.Draw(texture, start + (laserHeight + step) * unit - Main.screenPosition,
-				new Rectangle(0, 52, 28, 26), Color.White, rotation: (float)Math.PI, new Vector2(28 * 0.5f, 26 * 0.5f), scale, 0, 0);
+				new Rectangle(0, 52, 28, 26), color, rotation: (float)Math.PI, origin, scale, 0, 0);
         }
 
         // Change the way of collision check of the Projectile
@@ -329,7 +328,7 @@ namespace EBF.Items.Magic
         }
         private void SetLaserHeight()
         {
-            for (laserHeight = moveDistance; laserHeight <= 2500f; laserHeight += 16f)
+            for (laserHeight = beamVerticalOffset; laserHeight <= 2500f; laserHeight += 16f)
             {
                 Vector2 start = position + spriterotation * laserHeight;
                 if (!Collision.CanHit(position, 1, 1, start, 1, 1))
@@ -376,7 +375,7 @@ namespace EBF.Items.Magic
         {
             // Cast a light along the line of the laser
             DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
-            Utils.PlotTileLine(position, position + spriterotation * (laserHeight - moveDistance), 50, DelegateMethods.CastLight);
+            Utils.PlotTileLine(position, position + spriterotation * (laserHeight - beamVerticalOffset), 50, DelegateMethods.CastLight);
         }
     }
 
