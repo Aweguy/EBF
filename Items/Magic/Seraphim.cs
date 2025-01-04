@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -46,14 +45,10 @@ namespace EBF.Items.Magic
         {
             player.itemLocation -= new Vector2(player.direction * 16, 2);
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             player.FindSentryRestingSpot(type, out int XPosition, out int YPosition, out int _);
-
             position = new Vector2(XPosition, YPosition);
-            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
-
-            return false;
         }
         public override bool CanUseItem(Player player)
         {
@@ -77,8 +72,9 @@ namespace EBF.Items.Magic
         };
 
         //Fields
-        private const float maxCharge = 40f;
-        private float beamVerticalOffset = 20f; //The distance charge particle from the player center
+        private const int maxCharge = 40; //How long it takes for the beam to charge up
+        private const int maxHeight = 2000; //How far the beam extends up, given it doesn't hit any tiles
+        private const int beamVerticalOffset = 20; //The distance charge particle from the player center
         private float beamScale = 5f; //Used for the animation illusion
         private float beamWidth = 100f; //Collision hitbox
         private int animation = 0; //Sets 0 or 1 for a small animation
@@ -91,10 +87,11 @@ namespace EBF.Items.Magic
         //Properties
         private Vector2 Position { get => Projectile.position; set => Projectile.position = value; } //Base of the beam
         private static Vector2 Up { get => -Vector2.UnitY; }
-        public float LaserHeight { get => Projectile.localAI[1]; set => Projectile.localAI[1] = value; }
-        public float Charge { get => Projectile.localAI[0]; set => Projectile.localAI[0] = value; }
-        public bool IsAtMaxCharge => Charge == maxCharge;
+        private float LaserHeight { get => Projectile.localAI[1]; set => Projectile.localAI[1] = value; }
+        private float Charge { get => Projectile.localAI[0]; set => Projectile.localAI[0] = value; }
+        private bool IsAtMaxCharge => Charge == maxCharge;
 
+        //Methods
         public override bool ShouldUpdatePosition() => false;
         public override void SetDefaults()
         {
@@ -118,12 +115,10 @@ namespace EBF.Items.Magic
             if (!IsAtMaxCharge) //When it's not at max charge have a small laser beam
             {
                 beamScale = 1f;
-                beamVerticalOffset = 4f;
             }
             else if (IsAtMaxCharge && Projectile.timeLeft <= 80) //if it's at max charge and some time has passed reduce its scale.
             {
                 beamScale -= 0.06f;
-                beamVerticalOffset -= 0.24f;
             }
             else //The animation while damaging
             {
@@ -131,17 +126,16 @@ namespace EBF.Items.Magic
                 {
                     beamScale = 5.5f;
                     animation = 1;
-                    beamVerticalOffset = 20f;
                 }
                 else if (animation == 1)
                 {
                     beamScale = 5f;
                     animation = 0;
-                    beamVerticalOffset = 20f;
                 }
             }
             if (beamScale <= 0f)
             {
+                beamScale = 0f; //without this, the beam flips while the game is paused
                 Projectile.Kill();
             }
 
@@ -168,7 +162,7 @@ namespace EBF.Items.Magic
 
             // Draws the laser 'head'
             spriteBatch.Draw(texture, start + (LaserHeight + step) * Up - Main.screenPosition,
-				new Rectangle(0, 52, 28, 26), color, rotation: (float)Math.PI, origin, scale, 0, 0);
+                new Rectangle(0, 52, 28, 26), color, rot, origin, scale, 0, 0);
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -189,7 +183,7 @@ namespace EBF.Items.Magic
             //Beam Shrinking
             if (IsAtMaxCharge && Projectile.timeLeft <= 80)
             {
-                beamWidth -= 0.5f; //also reduces the hitbox
+                beamWidth -= 0.5f; //also shrinks hitbox
             }
             else
             {
@@ -207,20 +201,19 @@ namespace EBF.Items.Magic
         {
             #region generalDust
 
-            for (int i = 0; i < 1; ++i)
-            {
-                Vector2 dustVel = new Vector2(Main.rand.NextBool(2) ? -1 : 1, 0);
+            Dust dust;
+            Vector2 dustVel = new Vector2(Main.rand.NextBool(2) ? -1 : 1, 0);
 
-                //Electric dust
-                Dust dust = Dust.NewDustDirect(Position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, newColor: Color.White, Scale: 1.2f);
-                dust.noGravity = true;
-                dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
+            //Electric dust
+            dust = Dust.NewDustDirect(Position, 0, 0, DustID.Electric, dustVel.X * 10, dustVel.Y * 10, 0, newColor: Color.White, Scale: 1.2f);
+            dust.noGravity = true;
+            dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
 
-                //Smoke dust
-                dust = Dust.NewDustDirect(Position, 0, 0, DustID.Smoke, Position.X * LaserHeight, Position.Y * LaserHeight, newColor: Color.White, Scale: 0.88f);
-                dust.noGravity = true;
-                dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
-            }
+            //Smoke dust
+            dust = Dust.NewDustDirect(Position, 0, 0, DustID.Smoke, Position.X * LaserHeight, Position.Y * LaserHeight, newColor: Color.White, Scale: 0.88f);
+            dust.noGravity = true;
+            dust.shader = GameShaders.Armor.GetSecondaryShader(64, Main.LocalPlayer);
+
 
             #endregion generalDust
 
@@ -235,12 +228,12 @@ namespace EBF.Items.Magic
 
                 for (int i = 0; i < 85; ++i)
                 {
-                    Vector2 dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 2.57f) + (Main.rand.NextBool(2) ? -1.6f : 1.0f) * 1.57f);
+                    dustVel = new Vector2(1, 0).RotatedBy(Main.rand.NextFloat(1.57f, 2.57f) + (Main.rand.NextBool(2) ? -1.6f : 1.0f) * 1.57f);
 
                     float rand = Main.rand.NextFloat(5f, 20f);
 
                     //Feather dust
-                    Dust dust = Dust.NewDustDirect(Position, 0, 0, ModContent.DustType<LightFeather>(), dustVel.X * rand, dustVel.Y * rand, Alpha: 2, Scale: 1.2f);
+                    dust = Dust.NewDustDirect(Position, 0, 0, ModContent.DustType<LightFeather>(), dustVel.X * rand, dustVel.Y * rand, Alpha: 2, Scale: 1.2f);
                     dust.noGravity = true;
                     dust.noLight = true;
 
@@ -260,21 +253,21 @@ namespace EBF.Items.Magic
 
                 //Bubble dust 1
                 dustPosition = new Vector2((float)(Position.X + (spiralAmplitude * Math.Sin(increaseY / spiralWavelength))), Position.Y - increaseY);
-                Dust dust = Dust.NewDustPerfect(dustPosition, ModContent.DustType<LightBubble>(), Vector2.Zero, Scale: 1.2f);
+                dust = Dust.NewDustPerfect(dustPosition, ModContent.DustType<LightBubble>(), Vector2.Zero, Scale: 1.2f);
                 dust.noGravity = true;
 
                 //Bubble dust 2
                 dustPosition = new Vector2((float)(Position.X - (spiralAmplitude * Math.Sin(increaseY / spiralWavelength))), Position.Y - increaseY);
-                Dust dust2 = Dust.NewDustPerfect(dustPosition, ModContent.DustType<LightBubble>(), Vector2.Zero, Scale: 1.2f);
-                dust2.noGravity = true;
+                dust = Dust.NewDustPerfect(dustPosition, ModContent.DustType<LightBubble>(), Vector2.Zero, Scale: 1.2f);
+                dust.noGravity = true;
 
                 //Smoke dust 1
                 dust = Dust.NewDustDirect(Position, 0, 0, DustID.Smoke, Position.X * LaserHeight, Position.Y * LaserHeight, newColor: Color.Cyan, Scale: 0.88f);
                 dust.noGravity = true;
 
                 //Smoke dust 2
-                dust2 = Dust.NewDustDirect(Position, 0, 0, DustID.Smoke, Position.X * LaserHeight, Position.Y * LaserHeight, newColor: Color.Cyan, Scale: 0.88f);
-                dust2.noGravity = true;
+                dust = Dust.NewDustDirect(Position, 0, 0, DustID.Smoke, Position.X * LaserHeight, Position.Y * LaserHeight, newColor: Color.Cyan, Scale: 0.88f);
+                dust.noGravity = true;
 
                 //Move the spiral up
                 if (increaseY < LaserHeight)
@@ -287,22 +280,18 @@ namespace EBF.Items.Magic
         }
         private void SetLaserHeight()
         {
+            //Limit how often this method runs for performance
+            if (Main.GameUpdateCount % 4 != 0)
+                return;
+
             //Check each tile up from the start of the beam
-            for (LaserHeight = beamVerticalOffset; LaserHeight <= 2500f; LaserHeight += 16f)
+            for (LaserHeight = beamVerticalOffset; LaserHeight <= maxHeight; LaserHeight += 16f)
             {
                 Vector2 bodyPosition = Position + Up * LaserHeight;
                 if (!Collision.CanHit(Position, 1, 1, bodyPosition, 1, 1))
                 {
-                    if (!IsAtMaxCharge)
-                    {
-                        LaserHeight -= 0f;
-                        break;
-                    }
-                    else 
-                    {
-                        LaserHeight -= 16f;
-                        break;
-                    }
+                    LaserHeight -= 16f;
+                    break;
                 }
             }
         }
