@@ -199,10 +199,9 @@ namespace EBF.Items.Magic.Airstrike
 
             if (fromNPC)
             {
-                //BUG: This makes the projectile disappear before the expanded hitbox has a chance to deal damage, but idk how to fix it
+                Projectile.Damage();
                 Projectile.Kill();
             }
-
         }
     }
 
