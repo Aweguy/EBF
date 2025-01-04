@@ -99,9 +99,7 @@ namespace EBF.Items.Melee.Throwable
 
             for (int i = 0; i < 30; i++)
             {
-                int icy = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default(Color), 2f);
-
-                Dust dust = Main.dust[icy];
+                Dust dust = Dust.NewDustDirect(dustPosition, Projectile.width, Projectile.height, DustID.IceTorch, 0f, 0f, 0, default, 2f);
                 dust.position = (dust.position + Projectile.Center) / 2f;
                 dust.velocity += Projectile.oldVelocity * 0.3f;
                 dust.noGravity = true;
@@ -115,8 +113,8 @@ namespace EBF.Items.Melee.Throwable
 
     public class IceNeedle_Icicle : ModProjectile
     {
+        private List<NPC> validNPCs; //This is used to reduce how many npcs are checked in the homing logic
         private bool isChasing = false;
-        private List<NPC> validNPCs;
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.NorthPoleSnowflake}";
         public override void SetStaticDefaults()
         {
@@ -145,7 +143,7 @@ namespace EBF.Items.Melee.Throwable
             else
             {
                 //Slow down over time
-                Projectile.velocity *= 0.90f;
+                Projectile.velocity *= 0.9f;
             }
 
             if (FindTarget(out Vector2 move) == true)
@@ -178,6 +176,7 @@ namespace EBF.Items.Melee.Throwable
             bool target = false;
             foreach (NPC npc in validNPCs)
             {
+                //Ignore dead npcs
                 if (npc.life <= 0)
                 {
                     continue;
@@ -194,7 +193,7 @@ namespace EBF.Items.Melee.Throwable
             }
             return target;
         }
-        private void AdjustMagnitude(ref Vector2 vector)
+        private static void AdjustMagnitude(ref Vector2 vector)
         {
             float magnitude = vector.Length();
             if (magnitude > 6f)
