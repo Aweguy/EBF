@@ -32,9 +32,7 @@ namespace EBF.Items.Melee
 
 			if (player.statLife < player.statLifeMax)
 			{
-				int HealthHeal = (int)(hit.Damage / 10);
-				player.statLife += HealthHeal;
-				player.HealEffect(HealthHeal);
+				player.Heal(hit.Damage / 10);
 			}
 		}
         public override void AddRecipes()
