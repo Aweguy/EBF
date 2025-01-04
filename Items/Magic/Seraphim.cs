@@ -105,7 +105,6 @@ namespace EBF.Items.Magic
 
             Projectile.timeLeft = 120 + (int)maxCharge;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.hide = true;
 
             Projectile.localNPCHitCooldown = 7;
             Projectile.usesLocalNPCImmunity = true;
@@ -192,8 +191,6 @@ namespace EBF.Items.Magic
             {
                 beamWidth = 100f;
             }
-
-            Main.player[Projectile.owner].heldProj = Projectile.whoAmI;
 
             ChargeLaser();
             SetLaserHeight();
