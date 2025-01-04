@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -74,7 +75,7 @@ namespace EBF.Items.Magic
         //Fields
         private const int maxCharge = 40; //How long it takes for the beam to charge up
         private const int maxHeight = 2000; //How far the beam extends up, given it doesn't hit any tiles
-        private const int beamVerticalOffset = 20; //The distance charge particle from the player center
+        private float beamEdgeOffset = 0; //Displaces the head and tail of the beam based on their scale.
         private float beamScale = 5f; //Used for the animation illusion
         private float beamWidth = 100f; //Collision hitbox
         private int animation = 0; //Sets 0 or 1 for a small animation
@@ -139,29 +140,31 @@ namespace EBF.Items.Magic
                 Projectile.Kill();
             }
 
-            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, Position, step: 8, rotation: -1.57f, beamScale, Color.White, (int)beamVerticalOffset);
+            beamEdgeOffset = 10 * beamScale;
+
+            DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, Position, step: 8, rotation: -1.57f, beamScale, Color.White, beamEdgeOffset);
             return false;
         }
-        public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, float step, float rotation = 0f, float scale = 1f, Color color = default, int beamVerticalOffset = 0)
+        public void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, float step, float rotation = 0f, float scale = 1f, Color color = default, float beamEdgeOffset = 0)
         {
             Vector2 bodyPosition;
             Vector2 origin = new Vector2(28 * 0.5f, 26 * 0.5f);
             float rot = Up.ToRotation() + rotation;
 
             // Draws the laser 'body'
-            for (float i = beamVerticalOffset; i <= LaserHeight; i += step)
+            for (float i = beamEdgeOffset; i <= LaserHeight; i += step)
             {
                 bodyPosition = start + i * Up;
-                color = i < beamVerticalOffset ? Color.Transparent : Color.White;
+                color = i < beamEdgeOffset ? Color.Transparent : Color.White;
                 spriteBatch.Draw(texture, bodyPosition - Main.screenPosition, new Rectangle(0, 26, 28, 26), color, rot, origin, scale, 0, 0);
             }
 
             // Draws the laser 'tail'
-            spriteBatch.Draw(texture, start + Up * (beamVerticalOffset - step) - Main.screenPosition,
+            spriteBatch.Draw(texture, start + Up * (beamEdgeOffset - step) - Main.screenPosition,
                 new Rectangle(0, 0, 28, 26), color, rot, origin, scale, 0, 0);
 
             // Draws the laser 'head'
-            spriteBatch.Draw(texture, start + (LaserHeight + step) * Up - Main.screenPosition,
+            spriteBatch.Draw(texture, start + Up * (LaserHeight + step) - Main.screenPosition,
                 new Rectangle(0, 52, 28, 26), color, rot, origin, scale, 0, 0);
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -285,12 +288,12 @@ namespace EBF.Items.Magic
                 return;
 
             //Check each tile up from the start of the beam
-            for (LaserHeight = beamVerticalOffset; LaserHeight <= maxHeight; LaserHeight += 16f)
+            for (LaserHeight = beamEdgeOffset; LaserHeight <= maxHeight; LaserHeight += 16f)
             {
                 Vector2 bodyPosition = Position + Up * LaserHeight;
-                if (!Collision.CanHit(Position, 1, 1, bodyPosition, 1, 1))
+                if (!Collision.CanHit(Position, 1, 1, bodyPosition , 1, 1))
                 {
-                    LaserHeight -= 16f;
+                    LaserHeight -= 16f + beamEdgeOffset;
                     break;
                 }
             }
@@ -306,7 +309,7 @@ namespace EBF.Items.Magic
         {
             // Cast a light along the line of the laser
             DelegateMethods.v3_1 = new Vector3(0.8f, 0.8f, 1f);
-            Utils.PlotTileLine(Position, Position + Up * (LaserHeight - beamVerticalOffset), 50, DelegateMethods.CastLight);
+            Utils.PlotTileLine(Position, Position + Up * (LaserHeight - beamEdgeOffset), 50, DelegateMethods.CastLight);
         }
     }
 
