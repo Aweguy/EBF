@@ -198,7 +198,7 @@ Items: {
 			}
 
 			IceNeedle: {
-				Tooltip: 
+				Tooltip:
 					'''
 					Launches a javelin that explodes into homing snowflakes.
 					Used in only the most painful of snowball fights.

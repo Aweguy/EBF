@@ -51,11 +51,10 @@ namespace EBF.Items.Melee
         public override void SetDefaults()
         {
             Projectile.width = 30;
-            Projectile.height = 163; //sprite is 83, but hitbox needs to extend further
-            Projectile.scale = 1.1f;
+            Projectile.height = 153; //sprite is 83, but hitbox needs to extend further
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.penetrate = -1;
-            DrawOriginOffsetY = 70;
+            DrawOriginOffsetY = 60;
 
             Projectile.hide = true;
             Projectile.ownerHitCheck = true;
