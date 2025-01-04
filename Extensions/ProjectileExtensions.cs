@@ -111,6 +111,14 @@ namespace EBF.Extensions
             return new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta)) * radius;
         }
 
+        public static void ExpandHitboxBy(this Projectile projectile, int width, int height) //From Calamity Utilities
+        {
+            projectile.position = projectile.Center;
+            projectile.width = width;
+            projectile.height = height;
+            projectile.position -= projectile.Size * 0.5f;
+        }
+
         public static bool DrawProjectileCentered(this ModProjectile p, SpriteBatch spriteBatch, Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[p.Projectile.type].Value;
