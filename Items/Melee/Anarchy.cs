@@ -54,22 +54,18 @@ namespace EBF.Items.Melee
                 damage *= 1.5f;
             }
         }
+        public override float UseSpeedMultiplier(Player player)
+        {
+            if (player.statLife <= player.statLifeMax / 2)
+            {
+                return 2f;
+            }
+            return 1f;
+        }
         public override void HoldItem(Player player)
         {
             //75% defense while held
             player.statDefense *= 0.75f;
-
-            //There's no ModifyWeaponAttackSpeed method, so this will have to do...
-            if (player.statLife <= player.statLifeMax / 2)
-            {
-                Item.useTime = 15;
-                Item.useAnimation = 15;
-            }
-            else
-            {
-                Item.useTime = 30;
-                Item.useAnimation = 30;
-            }
         }
     }
 }
