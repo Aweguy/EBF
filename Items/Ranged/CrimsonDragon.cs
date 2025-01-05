@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -80,14 +81,10 @@ namespace EBF.Items.Ranged
             //Run this code x times per second
             if (Main.GameUpdateCount % (60 / batSpawnRate) == 0) 
             {
-                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + GetRandomVector(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
+                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + ProjectileExtensions.GetRandomVector(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
                 proj.timeLeft = 120;
             }
-
             return true;
         }
-       
-        //It would be nice to move this method out of this item, but there's not enough vector logic to warrant an extension class.
-        private Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
     }
 }

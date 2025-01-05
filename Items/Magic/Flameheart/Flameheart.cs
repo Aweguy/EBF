@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -55,13 +56,10 @@ namespace EBF.Items.Magic.Flameheart
 
     public class Flameheart_Firestorm : ModProjectile
     {
-        private int timer = 0;
-
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 5;
         }
-
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -77,7 +75,6 @@ namespace EBF.Items.Magic.Flameheart
             Projectile.tileCollide = false;
             Projectile.hide = true;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(10))
@@ -85,14 +82,10 @@ namespace EBF.Items.Magic.Flameheart
                 target.AddBuff(BuffID.OnFire, 300, false);
             }
         }
-
         public override void AI()
         {
-            Projectile.damage = 0;
-
-            timer--;
-
-            if (timer <= 0)
+            //Run every 5 game updates
+            if (Main.GameUpdateCount % 5 == 0)
             {
                 //Randomize projectile
                 int chosenProjectile = 0;
@@ -110,10 +103,8 @@ namespace EBF.Items.Magic.Flameheart
                 }
 
                 //Spawn projectile
-                float X = Projectile.Center.X + Main.rand.NextFloat(-100f, 100f);
-                float Y = Projectile.Center.Y + Main.rand.NextFloat(-100f, 100f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), X, Y, 0f, 0f, chosenProjectile, 70, 0, Projectile.owner);
-                timer = 5;
+                Vector2 position = Projectile.Center + ProjectileExtensions.GetRandomVector() * 100f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, chosenProjectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
         public override bool PreDraw(ref Color lightColor)

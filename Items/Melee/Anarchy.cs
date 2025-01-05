@@ -10,9 +10,8 @@ namespace EBF.Items.Melee
         public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
-            Item.width = 112;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 116;//Height of the hitbox of the item (usually the item's sprite height)
-            Item.scale = 0.8f;//The size multiplier for the item's sprite and hitbox range
+            Item.width = 56;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 58;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 45;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -54,22 +53,18 @@ namespace EBF.Items.Melee
                 damage *= 1.5f;
             }
         }
+        public override float UseSpeedMultiplier(Player player)
+        {
+            if (player.statLife <= player.statLifeMax / 2)
+            {
+                return 2f;
+            }
+            return 1f;
+        }
         public override void HoldItem(Player player)
         {
             //75% defense while held
             player.statDefense *= 0.75f;
-
-            //There's no ModifyWeaponAttackSpeed method, so this will have to do...
-            if (player.statLife <= player.statLifeMax / 2)
-            {
-                Item.useTime = 15;
-                Item.useAnimation = 15;
-            }
-            else
-            {
-                Item.useTime = 30;
-                Item.useAnimation = 30;
-            }
         }
     }
 }

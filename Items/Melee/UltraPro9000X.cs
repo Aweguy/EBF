@@ -10,9 +10,8 @@ namespace EBF.Items.Melee
         public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
-            Item.width = 116;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 100;//Height of the hitbox of the item (usually the item's sprite height)
-            Item.scale = 0.7f;//The size multiplier for the item's sprite and hitbox range
+            Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 34;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 12;//Item's base damage value
             Item.knockBack = 13f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -27,28 +26,6 @@ namespace EBF.Items.Melee
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
-
-        /* TODO: Find the right values for this so it doesn't look stupid
-         */
-        public override void UseStyle(Player player, Rectangle heldItemFrame)
-        {
-            Vector2 offset;
-
-            if (player.itemRotation < 0f)
-            {
-                // Swinging upwards
-                offset = new Vector2(player.direction * 10f, player.gravDir * 5f);
-            }
-            else 
-            {
-                //Swinging downwards
-                offset = new Vector2(player.direction * 5f, player.gravDir * 5f);
-            }
-
-            offset = offset.RotatedBy(player.itemRotation);
-            player.itemLocation += offset;
-        }
-
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)

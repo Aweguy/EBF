@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
@@ -110,9 +111,6 @@ namespace EBF.Items.Magic.Airstrike
         protected int glowmaskOpacity = 0;
 
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
-
-        private bool hitboxHasExpanded = false;
-        private bool fromNPC = false;
         private bool inGround = false;
 
         /// <summary>
@@ -128,6 +126,9 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.tileCollide = true;
             Projectile.hide = true;
             Projectile.extraUpdates = 1;
+
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -136,8 +137,7 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            fromNPC = true;
-            Explode();//Exploding after hitting an npc
+            Projectile.Kill();
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
@@ -167,7 +167,7 @@ namespace EBF.Items.Magic.Airstrike
 
                 if (Projectile.timeLeft < 3)
                 {
-                    Explode();
+                    Projectile.Kill();
                 }
             }
 
@@ -184,23 +184,42 @@ namespace EBF.Items.Magic.Airstrike
                 Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, glowmaskTexture.Width, glowmaskTexture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             }
         }
-        protected void Explode()
+        public override void OnKill(int timeLeft)
         {
-            if (!hitboxHasExpanded)
+            //Prevent this code from happening twice
+            if (Projectile.localAI[0] == 1)
             {
-                //Expand hitbox
-                Projectile.position = Projectile.Center;
-                Projectile.width += explosionSize;
-                Projectile.height += explosionSize;
-                Projectile.Center = Projectile.position;
-
-                hitboxHasExpanded = true;
+                return;
             }
 
-            if (fromNPC)
+            Projectile.localAI[0] = 1;
+
+            //Explode
+            ProjectileExtensions.ExpandHitboxBy(Projectile, explosionSize, explosionSize);
+            Projectile.Damage();
+
+
+            // Play explosion sound
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+
+            Dust dust;
+
+            // Smoke Dust spawn
+            for (int i = 0; i < 20; i++)
             {
-                Projectile.Damage();
-                Projectile.Kill();
+                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 3f);
+                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 8;
+            }
+            // Fire Dust spawn
+            for (int i = 0; i < 50; i++)
+            {
+                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 4f));
+                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 3;
+            }
+            // Large Smoke Gore spawn
+            for (int g = 0; g < 4; g++)
+            {
+                Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.Center, ProjectileExtensions.GetRandomVector() * 1.5f, Main.rand.Next(61, 64), Scale: 1.5f);
             }
         }
     }
@@ -215,41 +234,12 @@ namespace EBF.Items.Magic.Airstrike
             DrawOffsetX = -13;
             DrawOriginOffsetY = -4;
 
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
-
             explosionSize = 200; //The hitbox size of the explosion
             diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
 
             SetEverythingElse();
-        }
-        public override void OnKill(int timeLeft)
-        {
-            // Play explosion sound
-            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-
-            Dust dust;
-
-            // Smoke Dust spawn
-            for (int i = 0; i < 50; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 2f);
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 10;
-            }
-            // Fire Dust spawn
-            for (int i = 0; i < 160; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(2f, 3f));
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 5;
-            }
-            // Large Smoke Gore spawn
-            for (int g = 0; g < 8; g++)
-            {
-                Vector2 position = Projectile.position + new Vector2(Projectile.width / 2 - 24f, Projectile.height / 2 - 24f);
-                Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, Main.rand.NextBool(2) ? 1.5f : -1.5f);
-            }
         }
     }
 
@@ -267,34 +257,6 @@ namespace EBF.Items.Magic.Airstrike
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
 
             SetEverythingElse();
-        }
-        public override void OnKill(int timeLeft)
-        {
-            // Play explosion sound
-            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-
-            Dust dust;
-
-            // Smoke Dust spawn
-            for (int i = 0; i < 25; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 2f);
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 5;
-            }
-            // Fire Dust spawn
-            for (int i = 0; i < 80; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(2f, 3f));
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 3;
-            }
-            // Large Smoke Gore spawn
-            for (int g = 0; g < 4; g++)
-            {
-                Vector2 position = Projectile.position + new Vector2(Projectile.width / 2 - 24f, Projectile.height / 2 - 24f);
-                Vector2 velocity = new Vector2(Main.rand.NextBool(2) ? 1.5f : -1.5f, 1.5f);
-
-                Gore gore = Gore.NewGoreDirect(Projectile.GetSource_Death(), position, velocity, Main.rand.Next(61, 64), Scale: 1.5f);
-            }
         }
     }
 }

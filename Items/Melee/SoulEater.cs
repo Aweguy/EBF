@@ -31,40 +31,30 @@ namespace EBF.Items.Melee
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            if (Main.rand.NextBool(2)) //Spawning frequency
+            if (Main.rand.NextBool(2))
             {
                 Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.CrimsonTorch);
             }
         }
-
-        public override bool? UseItem(Player player)
+        public override void UseAnimation(Player player)
         {
-            //Drain health every swing
-            if (player.itemAnimation == player.itemAnimationMax - 1) //Limit effect to once per attack.
+            int hpToDrain = 2;
+
+            //Drain or kill
+            if (player.statLife > hpToDrain)
             {
-                int hpToDrain = 2;
-
-                //Drain or kill
-                if (player.statLife > hpToDrain)
-                {
-                    player.statLife -= hpToDrain;
-                    player.HealEffect(-hpToDrain); //Show the health reduction effect
-                }
-                else
-                {
-                    player.KillMe(PlayerDeathReason.ByCustomReason(player.name + " sold their soul."), 10.0, 0);
-                } 
+                player.Heal(-hpToDrain);
             }
-
-            return false;
+            else
+            {
+                player.KillMe(PlayerDeathReason.ByCustomReason(player.name + " sold their soul."), 10.0, 0);
+            }
         }
-
         public override void HoldItem(Player player)
         {
             //50% defense while held
             player.statDefense *= 0.5f;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

@@ -10,7 +10,7 @@ namespace EBF.Items.Melee
 {
     public class FusionBlade : ModItem, ILocalizedModType
     {
-        public new string LocalizationCategory => "Items.Weapons.Melee";        
+        public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
@@ -46,8 +46,9 @@ namespace EBF.Items.Melee
     public class FusionBlade_BulletBob : ModProjectile
     {
         private NPC target;
-        private float speed = 15;
         private float direction;
+        private const float speed = 15;
+        private const int homingRange = 800;
         private const int waitingFrames = 30;
 
         public override void SetStaticDefaults()
@@ -59,9 +60,8 @@ namespace EBF.Items.Melee
             Projectile.width = 12;
             Projectile.height = 12;
 
-            Projectile.aiStyle = 0;
             Projectile.friendly = true;
-            Projectile.penetrate = 100;
+            Projectile.penetrate = 3;
             Projectile.DamageType = DamageClass.Melee;
 
             Projectile.timeLeft = 60 * 5;
@@ -76,44 +76,36 @@ namespace EBF.Items.Melee
         public override void OnSpawn(IEntitySource source)
         {
             direction = Projectile.velocity.ToRotation();
-            Projectile.rotation = direction + (MathF.PI / 2);
-            Projectile.spriteDirection = Projectile.direction;
+            Projectile.rotation = direction + MathHelper.PiOver2;
         }
         public override bool PreAI()
         {
-            Projectile.ai[0]++;
-            if (Projectile.ai[0] == waitingFrames)
+            Projectile.frameCounter++;
+            if (Projectile.frameCounter == waitingFrames)
             {
-                Projectile.frame = 1;
-                Projectile.velocity *= 4.3f;
+                Projectile.velocity *= speed;
             }
-            else if (Projectile.ai[0] > waitingFrames)
+            
+            if (Projectile.frameCounter >= waitingFrames)
             {
-                Projectile.frameCounter++;
-                if (Projectile.frameCounter >= 3)
+                //Animate sprite
+                Projectile.frame++;
+                if (Projectile.frame > 2)
                 {
-                    direction = Projectile.velocity.ToRotation();
-                    Projectile.rotation = direction + (MathF.PI / 2);
-
-                    Projectile.frame++;
-                    if (Projectile.frame > 2)
-                    {
-                        Projectile.frame = 1;
-                    }
-
-                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Flare);
-                    Lighting.AddLight(Projectile.Center, new Vector3(255, 165, 0) / 255f); //Orange lighting coming from the center of the Projectile.
-
-                    if (ProjectileExtensions.ClosestNPC(ref target, 800, Projectile.Center))
-                    {
-                        direction = ProjectileExtensions.SlowRotation(direction, (target.Center - Projectile.Center).ToRotation(), 3f);
-                    }
-                    Projectile.velocity = new Vector2(MathF.Cos(direction) * speed, MathF.Sin(direction) * speed);
+                    Projectile.frame = 1;
                 }
-            }
-            else
-            {
-                Projectile.frame = 0;
+
+                //Trail
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Flare);
+                Lighting.AddLight(Projectile.Center, TorchID.Orange); //Orange lighting coming from the center of the Projectile.
+
+                //Homing
+                if (ProjectileExtensions.ClosestNPC(ref target, homingRange, Projectile.Center))
+                {
+                    direction = ProjectileExtensions.SlowRotation(direction, (target.Center - Projectile.Center).ToRotation(), 3f);
+                    Projectile.velocity = direction.ToRotationVector2() * speed;
+                    Projectile.rotation = direction + MathHelper.PiOver2;
+                }
             }
 
             return false;

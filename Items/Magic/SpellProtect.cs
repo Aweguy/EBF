@@ -17,8 +17,8 @@ namespace EBF.Items.Magic
         };*/
         public override void SetDefaults()
         {
-            Item.width = 28;
-            Item.height = 30;
+            Item.width = 30;
+            Item.height = 34;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useTime = 20;
             Item.useAnimation = 20;
@@ -26,7 +26,7 @@ namespace EBF.Items.Magic
             Item.rare = ItemRarityID.Green;
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 0, platinum: 0);
             Item.useTurn = true;
-            //Item.UseSound = ProtectSound;
+            Item.UseSound = SoundID.Item8;//The item's sound when it's used
         }
         public override bool CanUseItem(Player player)
         {

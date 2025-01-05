@@ -68,13 +68,10 @@ namespace EBF.Items.Melee
         private bool stop = false;
         private Vector2 spawnPosition;
         private Vector2 moveSpeed; //Stores the default velocity so the info isn't lost when the projectile stops
-        private int trailSkip = 2;
 
         public override void SetStaticDefaults()//Mainly used for setting the frames of animations or things we don't want to change in the projectile
         {
             Main.projFrames[Projectile.type] = 11;
-            ProjectileID.Sets.TrailingMode[Type] = 2; // Creates a trail behind the golf ball.
-            ProjectileID.Sets.TrailCacheLength[Type] = 36; // Sets the length of the trail.
         }
         public override void SetDefaults()
         {
@@ -94,25 +91,6 @@ namespace EBF.Items.Melee
 
             Projectile.scale = 1.3f;
         }
-        public override void OnKill(int timeLeft)
-        {
-            Vector2 dustPosition = Projectile.position;
-            Vector2 dustOldVelocity = Vector2.Normalize(Projectile.oldVelocity);
-            dustPosition += dustOldVelocity * 16f;
-            for (int i = 0; i < 20; i++)
-            {
-                int light = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.AncientLight, 0f, 0f, 0, default(Color), 1f);
-                Main.dust[light].position = (Main.dust[light].position + Projectile.Center) / 2f;
-
-                Dust dust = Main.dust[light];
-                dust.velocity += Projectile.oldVelocity * 0.6f;
-                dust = Main.dust[light];
-                dust.velocity *= 0.5f;
-
-                Main.dust[light].noGravity = true;
-                dustPosition -= dustOldVelocity * 8f;
-            }
-        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             //Randomize direction
@@ -122,6 +100,21 @@ namespace EBF.Items.Melee
 
             //Spawn projectile
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<HeavensGate_LightBlade_Mini>(), hit.Damage, Projectile.knockBack, Projectile.owner, target.whoAmI, Projectile.whoAmI);
+        }
+        public override void OnKill(int timeLeft)
+        {
+            Vector2 dustPosition = Projectile.position;
+            Vector2 dustOldVelocity = Vector2.Normalize(Projectile.oldVelocity);
+            dustPosition += dustOldVelocity * 16f;
+            for (int i = 0; i < 20; i++)
+            {
+                Dust dust = Dust.NewDustDirect(dustPosition, Projectile.width, Projectile.height, DustID.AncientLight);
+                dust.position = (dust.position + Projectile.Center) / 2f;
+                dust.velocity += Projectile.oldVelocity * 0.3f;
+                dust.noGravity = true;
+
+                dustPosition -= dustOldVelocity * 8f;
+            }
         }
         public override bool? CanDamage() //If it's not fully form, do not damage
         {
@@ -188,40 +181,6 @@ namespace EBF.Items.Melee
                 }
             }
         }
-
-        /*public override bool PreDraw(ref Color lightColor)
-        {
-
-
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
-            Vector2 origin = frame.Size() / 2;
-            SpriteEffects effects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
-
-            float initialOpacity = 0.8f;
-            float opacityDegrade = 0.08f;
-
-
-
-            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Projectile.type]; i += 1)
-            {
-                if(TrailSkip++ <= 0)
-                {
-                    float opacity = initialOpacity - opacityDegrade * i;
-                    Main.spriteBatch.Draw(texture, Projectile.oldPos[i] + Projectile.Hitbox.Size() / 2 - Main.screenPosition, frame, lightColor * opacity, Projectile.rotation, origin, Projectile.scale, effects, 0f);
-                    TrailSkip = 2;
-                }
-            }
-
-            #region Trailing
-
-            #endregion Trailing
-            //Main.spriteBatch.End();
-            //Main.spriteBatch.Begin();
-
-            return false;
-        }*/
     }
 
     public class HeavensGate_LightBlade_Mini : ModProjectile
@@ -280,15 +239,11 @@ namespace EBF.Items.Melee
             dustPosition += dustOldVelocity * 16f;
             for (int i = 0; i < 20; i++)
             {
-                int light = Dust.NewDust(dustPosition, Projectile.width, Projectile.height, DustID.AncientLight, 0f, 0f, 0, default(Color), 1f);
-                Main.dust[light].position = (Main.dust[light].position + Projectile.Center) / 2f;
+                Dust dust = Dust.NewDustDirect(dustPosition, Projectile.width, Projectile.height, DustID.AncientLight);
+                dust.position += Projectile.Center / 2f;
+                dust.velocity += Projectile.oldVelocity * 0.3f;
+                dust.noGravity = true;
 
-                Dust dust = Main.dust[light];
-                dust.velocity += Projectile.oldVelocity * 0.6f;
-                dust = Main.dust[light];
-                dust.velocity *= 0.5f;
-
-                Main.dust[light].noGravity = true;
                 dustPosition -= dustOldVelocity * 8f;
             }
         }
@@ -306,7 +261,6 @@ namespace EBF.Items.Melee
         }
         public override bool PreAI()
         {
-
             //Change the number to determine how much dust will spawn. lower for more, higher for less
             if (Main.rand.NextBool(3))
             {

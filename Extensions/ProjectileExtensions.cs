@@ -111,6 +111,27 @@ namespace EBF.Extensions
             return new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta)) * radius;
         }
 
+        /// <summary>
+        /// Generates a random vector.
+        /// </summary>
+        /// <returns>A vector where (X = -1 to 1, Y = -1 to 1).</returns>
+        public static Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
+
+        /// <summary>
+        /// Changes the hitbox rectangle of a given projectile.
+        /// <br>Taken from Calamity Utilities.</br>
+        /// </summary>
+        /// <param name="projectile">The projectile whose hitbox will be expanded.</param>
+        /// <param name="width">The new width of the projectile's hitbox.</param>
+        /// <param name="height">The new height of the projectile's hitbox.</param>
+        public static void ExpandHitboxBy(this Projectile projectile, int width, int height)
+        {
+            projectile.position = projectile.Center;
+            projectile.width = width;
+            projectile.height = height;
+            projectile.position -= projectile.Size * 0.5f;
+        }
+
         public static bool DrawProjectileCentered(this ModProjectile p, SpriteBatch spriteBatch, Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[p.Projectile.type].Value;

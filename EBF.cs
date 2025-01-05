@@ -4,31 +4,21 @@ namespace EBF
 {
 	public class EBF : Mod
 	{
-
-
-
-
-
-
-
-        public static EBF instance
+        private static EBF instance;
+        public static EBF Instance
         {
-            get;
-            private set;
-        }
-
-        public EBF()
-        {
-            if (EBF.instance == null)
+            get 
             {
-                EBF.instance = this;
+                if (instance == null)
+                {
+                    instance = new EBF();
+                }
+                return instance;
             }
         }
-
         internal enum EpicMessageType : byte
         {
             EpicPlayerSyncPlayer
         }
-
     }
 }

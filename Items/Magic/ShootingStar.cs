@@ -33,13 +33,12 @@ namespace EBF.Items.Magic
             Item.shoot = ModContent.ProjectileType<Star>();
             Item.noMelee = true;//Prevents damage from being dealt by the item itself
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             //Spawn position
             float offsetX = Main.rand.NextFloat(-spread, spread);
             position = new Vector2(Main.MouseWorld.X + offsetX, Main.screenPosition.Y);
-            
+
             //Velocity towards cursor
             velocity = Vector2.Normalize(Main.MouseWorld - position) * velocity.Length();
 
@@ -48,7 +47,6 @@ namespace EBF.Items.Magic
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
@@ -68,19 +66,13 @@ namespace EBF.Items.Magic
         private bool isShrinking = false;
         public override void SetDefaults()
         {
-            Projectile.width = 20;
-            Projectile.height = 20;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = true;
-            Projectile.hide = true;
-            Projectile.extraUpdates = 2;
-            DrawOffsetX = -13;
-            DrawOriginOffsetY = -4;
-
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
+            Projectile.extraUpdates = 1;
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
@@ -119,17 +111,25 @@ namespace EBF.Items.Magic
             Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y, -maxVelocity, maxVelocity);
 
             //Trail
-            SpawnDusts(2);
+            if (Main.rand.NextBool(2))
+            {
+                SpawnDusts(1);
+            }
 
             //Handle shrinking & despawning
             if (isShrinking)
             {
+                Projectile.rotation -= 0.05f;
                 Projectile.scale -= 0.01f;
 
                 if (Projectile.scale <= 0)
                 {
                     Projectile.Kill();
                 }
+            }
+            else
+            {
+                Projectile.rotation += 0.33f;
             }
 
             return false;
@@ -138,13 +138,11 @@ namespace EBF.Items.Magic
         {
             SpawnDusts(dustsOnDeath);
         }
-
         private void SpawnDusts(int amount)
         {
             for (int i = 0; i < amount; i++)
             {
-                Vector2 dustVelocity = new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, SpeedX: dustVelocity.X, SpeedY: dustVelocity.Y);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, SpeedX: 0, SpeedY: 0);
             }
         }
     }

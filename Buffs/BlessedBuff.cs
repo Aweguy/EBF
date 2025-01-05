@@ -6,12 +6,6 @@ namespace EBF.Buffs
 {
 	public class BlessedBuff : ModBuff
 	{
-        public override void SetStaticDefaults()
-        {
-			base.DisplayName.WithFormatArgs("Blessed");
-			base.Description.WithFormatArgs("You have been granted status immunity, Godcat be praised!");
-		}
-
 		public override void Update(Player player, ref int buffIndex)
 		{
 			//player.GetModPlayer<EpicPlayer>().numberOfDrawableBuffs++;

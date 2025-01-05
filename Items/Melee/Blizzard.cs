@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -33,8 +34,8 @@ namespace EBF.Items.Melee
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity + GetRandomVector() * 0.5f, type, damage, knockback);
-            Projectile.NewProjectile(source, position, velocity + GetRandomVector() * 0.5f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.5f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.5f, type, damage, knockback);
             return false;
         }
 
@@ -47,8 +48,5 @@ namespace EBF.Items.Melee
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
-
-        //It would be nice to move this method out of blizzard, but there's not enough vector logic to warrant an extension class.
-        private Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
     }
 }
