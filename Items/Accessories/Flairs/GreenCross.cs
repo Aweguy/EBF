@@ -13,7 +13,7 @@ namespace EBF.Items.Accessories.Flairs
         public override void SetDefaults()
         {
             Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 32;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.height = 28;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.value = Item.sellPrice(copper:0, silver:50, gold:3, platinum:0);//Item's value when sold
             Item.rare = ItemRarityID.Lime;//Item's name colour, this is hardcoded by the modder and should be based on progression
