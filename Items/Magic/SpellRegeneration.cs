@@ -11,14 +11,16 @@ namespace EBF.Items.Magic
         public new string LocalizationCategory => "Items.Weapons.Magic";
         public override void SetDefaults()
         {
-            Item.width = 28;
-            Item.height = 30;
+            Item.width = 30;
+            Item.height = 36;
+
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useTime = 20;
             Item.useAnimation = 20;
             Item.mana = 50;
-            Item.rare = ItemRarityID.Green;
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 0, platinum: 0);
+            Item.rare = ItemRarityID.Green;
+            Item.UseSound = SoundID.Item8;//The item's sound when it's used
             Item.useTurn = true;
         }
         public override bool CanUseItem(Player player)
