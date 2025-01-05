@@ -5,7 +5,6 @@ namespace EBF.Buffs
 {
     public class Regeneration: ModBuff
     {
-        int timer = 0;
         public override void SetStaticDefaults()
         {
             base.DisplayName.WithFormatArgs("Regeneration");
@@ -13,12 +12,11 @@ namespace EBF.Buffs
         }
         public override void Update(Player player, ref int buffIndex)
         {
-            timer--;
-            if (timer <= 0)
+            //Run code once every 120 updates
+            if (Main.GameUpdateCount % 120 == 0)
             {
                 int regen = player.statLifeMax2 / 100 * 5;
                 player.Heal(regen);
-                timer = 120;
             }
         }
     }
