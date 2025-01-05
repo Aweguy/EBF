@@ -5,11 +5,6 @@ namespace EBF.Buffs
 {
     public class Regeneration: ModBuff
     {
-        public override void SetStaticDefaults()
-        {
-            base.DisplayName.WithFormatArgs("Regeneration");
-            base.Description.WithFormatArgs("Quickly regenerating health");
-        }
         public override void Update(Player player, ref int buffIndex)
         {
             //Run code once every 120 updates

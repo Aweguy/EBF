@@ -15,27 +15,27 @@ EBFConfig: {
 Buffs: {
 	BlessedBuff: {
 		DisplayName: Blessed Buff
-		Description: Mods.EBF.Buffs.BlessedBuff.Description
+		Description: You have been granted status immunity, Godcat be praised!
 	}
 
 	CooldownProtect: {
-		DisplayName: Cooldown Protect
-		Description: Mods.EBF.Buffs.CooldownProtect.Description
+		DisplayName: Vulnerable
+		Description: Protection spell is on cooldown.
 	}
 
 	CooldownRegen: {
-		DisplayName: Cooldown Regen
-		Description: Mods.EBF.Buffs.CooldownRegen.Description
+		DisplayName: Regeneration Sated
+		Description: Cannot use Regeneration Spell
 	}
 
 	Protected: {
 		DisplayName: Protected
-		Description: Mods.EBF.Buffs.Protected.Description
+		Description: Blocks a quarter of damage taken.
 	}
 
 	Regeneration: {
 		DisplayName: Regeneration
-		Description: Mods.EBF.Buffs.Regeneration.Description
+		Description: Quickly regenerating health
 	}
 }
 
