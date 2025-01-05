@@ -9,8 +9,8 @@ namespace EBF.Items.Melee
         public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
-            Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 48;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 48;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 12;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -22,7 +22,7 @@ namespace EBF.Items.Melee
             Item.value = Item.sellPrice(copper: 40, silver: 5, gold: 1, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
-            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
 
@@ -33,9 +33,9 @@ namespace EBF.Items.Melee
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.TungstenBar, 12)
-                .AddIngredient(ItemID.Feather, 8)
-                .AddIngredient(ItemID.Emerald, 4)
+                .AddIngredient(ItemID.TungstenBar, stack: 12)
+                .AddIngredient(ItemID.Feather, stack: 8)
+                .AddIngredient(ItemID.Emerald, stack: 4)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
