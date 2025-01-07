@@ -20,39 +20,19 @@ namespace EBF.Extensions
         /// </summary>
         /// <param name="currentRotation">The current rotation in radians.</param>
         /// <param name="targetAngle">The target rotation that the projectile should rotate towards.</param>
-        /// <param name="speed">How much the projectile can rotate each time the method is called.</param>
+        /// <param name="speed">How much the projectile can rotate per step (In degrees).</param>
         /// <returns>A rotation which is closer to the target angle than the current.</returns>
-        public static float SlowRotation(float currentRotation, float targetAngle, float speed)//Taken from qwerty's mod
+        public static float SlowRotation(float currentRotation, float targetAngle, float speed)
         {
-            int f = 1; //this is used to switch rotation direction
-            float actDirection = new Vector2(MathF.Cos(currentRotation), MathF.Sin(currentRotation)).ToRotation();
-            targetAngle = new Vector2(MathF.Cos(targetAngle), MathF.Sin(targetAngle)).ToRotation();
+            float difference = MathHelper.WrapAngle(targetAngle - currentRotation); //reduces angle to pi / -pi
+            float rotationStep = MathHelper.ToRadians(speed);
 
-            //this makes f 1 or -1 to rotate the shorter distance
-            if (Math.Abs(actDirection - targetAngle) > Math.PI)
+            if (Math.Abs(difference) <= rotationStep)
             {
-                f = -1;
-            }
-            else
-            {
-                f = 1;
+                return targetAngle;
             }
 
-            if (actDirection <= targetAngle + MathHelper.ToRadians(speed * 2) && actDirection >= targetAngle - MathHelper.ToRadians(speed * 2))
-            {
-                actDirection = targetAngle;
-            }
-            else if (actDirection <= targetAngle)
-            {
-                actDirection += MathHelper.ToRadians(speed) * f;
-            }
-            else if (actDirection >= targetAngle)
-            {
-                actDirection -= MathHelper.ToRadians(speed) * f;
-            }
-            actDirection = new Vector2(MathF.Cos(actDirection), MathF.Sin(actDirection)).ToRotation();
-
-            return actDirection;
+            return currentRotation + Math.Sign(difference) * rotationStep;
         }
 
         public delegate bool SpecialCondition(NPC possibleTarget);
