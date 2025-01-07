@@ -17,9 +17,8 @@ namespace EBF.Items.Magic
         int manaDrainTimer; //Used to reduce how often mana is drained
         public override void SetDefaults()
         {
-            Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
-            Item.scale = 1.5f;
+            Item.width = 80;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 80;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 40;//Item's base damage value
             Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
