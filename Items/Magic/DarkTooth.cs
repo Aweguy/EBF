@@ -153,7 +153,7 @@ namespace EBF.Items.Magic
                         Player player = Main.player[Projectile.owner];
                         if (player.channel)
                         {
-                            IncreaseScale(player, Projectile.Size);
+                            IncreaseScale(Projectile.Size);
                             SuckNPCs(suckRange, suckingStrength: 100);
                             SuckGore(suckRange, suckingStrength: 100);
                             SuckDust(suckRange, suckingStrength: 100);
@@ -236,7 +236,7 @@ namespace EBF.Items.Magic
 
             Projectile.velocity = newVelocity;
         }
-        private void IncreaseScale(Player player, Vector2 oldSize) //The growth rate of the black hole
+        private void IncreaseScale(Vector2 oldSize) //The growth rate of the black hole
         {
             if (Projectile.width < maxSize)
             {
