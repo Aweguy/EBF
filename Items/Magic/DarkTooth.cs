@@ -264,7 +264,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, npc.Center);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); //Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); //Won't divide by 0 :)
                     npc.velocity += npc.DirectionTo(Projectile.Center) * gravityMagnitude;
                 }
             }
@@ -281,7 +281,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, gore.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); // Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); // Won't divide by 0 :)
                     gore.velocity += Vector2.Normalize(Projectile.Center - gore.position) * gravityMagnitude;
                 }
             }
@@ -298,7 +298,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, dust.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); //Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); //Won't divide by 0 :)
                     dust.velocity += Vector2.Normalize(Projectile.Center - dust.position) * gravityMagnitude;
                 }
             }
