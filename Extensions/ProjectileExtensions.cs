@@ -49,32 +49,32 @@ namespace EBF.Extensions
         /// <returns>True if an npc has been found within the search range and meets all provided special conditions.</returns>
         public static bool ClosestNPC(ref NPC target, float maxDistance, Vector2 position, bool ignoreTiles = false, int overrideTarget = -1, SpecialCondition specialCondition = null)//Taken from qwerty's mod
         {
-            //very advance users can use a delegate to insert special condition into the function like only targetting enemies not currently having local iFrames, but if a special condition isn't added then just return it true
+            //Advanced users can use a delegate to insert special condition into the function, such as those without active iFrames
+            //if a special condition isn't added then just return it true
             if (specialCondition == null)
             {
                 specialCondition = delegate (NPC possibleTarget) { return true; };
             }
             bool foundTarget = false;
-            //If you want to prioritse a certain target this is where it's processed, mostly used by minions that haave a target priority
             if (overrideTarget != -1)
             {
+                //Prioritizing a certain target happens here, mostly used by minions that have a target priority
                 if ((Main.npc[overrideTarget].Center - position).Length() < maxDistance && !Main.npc[overrideTarget].immortal && (Collision.CanHit(position, 0, 0, Main.npc[overrideTarget].Center, 0, 0) || ignoreTiles) && specialCondition(Main.npc[overrideTarget]))
                 {
                     target = Main.npc[overrideTarget];
                     return true;
                 }
             }
-            //this is the meat of the targetting logic, it loops through every NPC to check if it is valid the minimum distance and target selected are updated so that the closest valid NPC is selected
-            for (int k = 0; k < Main.npc.Length; k++)
+            //Handles targeting logic, loops through each NPC to check if it is valid.
+            //The minimum distance and target selected are updated so that only the closest valid NPC is selected.
+            foreach(NPC npc in Main.npc)
             {
-                NPC possibleTarget = Main.npc[k];
-                float distance = (possibleTarget.Center - position).Length();
-                if (distance < maxDistance && possibleTarget.active && possibleTarget.chaseable && !possibleTarget.dontTakeDamage && !possibleTarget.friendly && possibleTarget.lifeMax > 5 && !possibleTarget.immortal && (Collision.CanHit(position, 0, 0, possibleTarget.Center, 0, 0) || ignoreTiles) && specialCondition(possibleTarget))
+                float distance = (npc.Center - position).Length();
+                if (distance < maxDistance && npc.active && npc.chaseable && !npc.dontTakeDamage && !npc.friendly && npc.lifeMax > 5 && !npc.immortal && (Collision.CanHit(position, 0, 0, npc.Center, 0, 0) || ignoreTiles) && specialCondition(npc))
                 {
-                    target = Main.npc[k];
+                    target = npc;
                     foundTarget = true;
-
-                    maxDistance = (target.Center - position).Length();
+                    maxDistance = distance;
                 }
             }
             return foundTarget;
@@ -99,7 +99,7 @@ namespace EBF.Extensions
 
         /// <summary>
         /// Changes the hitbox rectangle of a given projectile.
-        /// <br>Taken from Calamity Utilities.</br>
+        /// <br>From Calamity Utilities.</br>
         /// </summary>
         /// <param name="projectile">The projectile whose hitbox will be expanded.</param>
         /// <param name="width">The new width of the projectile's hitbox.</param>
