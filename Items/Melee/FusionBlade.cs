@@ -66,7 +66,7 @@ namespace EBF.Items.Melee
 
             Projectile.timeLeft = 60 * 5;
 
-            Projectile.localNPCHitCooldown = -1;
+            Projectile.localNPCHitCooldown = 30;
             Projectile.usesLocalNPCImmunity = true;
         }
         public override void OnKill(int timeLeft)

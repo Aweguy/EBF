@@ -17,9 +17,8 @@ namespace EBF.Items.Magic
         int manaDrainTimer; //Used to reduce how often mana is drained
         public override void SetDefaults()
         {
-            Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
-            Item.scale = 1.5f;
+            Item.width = 80;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 80;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 40;//Item's base damage value
             Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -264,7 +263,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, npc.Center);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); //Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); //Won't divide by 0 :)
                     npc.velocity += npc.DirectionTo(Projectile.Center) * gravityMagnitude;
                 }
             }
@@ -281,7 +280,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, gore.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); // Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); // Won't divide by 0 :)
                     gore.velocity += Vector2.Normalize(Projectile.Center - gore.position) * gravityMagnitude;
                 }
             }
@@ -298,7 +297,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, dust.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 0.01f); //Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); //Won't divide by 0 :)
                     dust.velocity += Vector2.Normalize(Projectile.Center - dust.position) * gravityMagnitude;
                 }
             }
