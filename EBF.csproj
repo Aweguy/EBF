@@ -23,6 +23,7 @@
     <None Remove="Items\Melee\Throwable\IceNeedle_Proj.png" />
     <None Remove="Items\NeedleBoom.png" />
     <None Remove="Items\NeedleShot.png" />
+    <None Remove="Items\Ranged\Bows\EagleEye.png" />
     <None Remove="Items\Ranged\CrimsonDragon.png" />
     <None Remove="Items\Ranged\CrimsonDragon_CrimsonArrow.png" />
     <None Remove="Items\Ranged\CrimsonDragon_FireCrystal.png" />
@@ -46,7 +47,6 @@
     <None Remove="NPCs\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract_Classes\" />
     <Folder Include="Assets\Sounds\Custom\" />
     <Folder Include="Players\" />
     <Folder Include="Projectiles\" />

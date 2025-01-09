@@ -4,11 +4,11 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace EBF.Items.Ranged
+namespace EBF.Items.Ranged.Bows
 {
     public class CrimsonDragon : ModItem, ILocalizedModType
     {
-        public new string LocalizationCategory => "Items.Weapons.Ranged";
+        public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
@@ -26,7 +26,7 @@ namespace EBF.Items.Ranged
             Item.UseSound = SoundID.DD2_BallistaTowerShot;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 10f;
@@ -79,7 +79,7 @@ namespace EBF.Items.Ranged
             Dust.NewDustPerfect(Projectile.Center, DustID.RedTorch, Vector2.Zero, Scale: 0.66f);
 
             //Run this code x times per second
-            if (Main.GameUpdateCount % (60 / batSpawnRate) == 0) 
+            if (Main.GameUpdateCount % (60 / batSpawnRate) == 0)
             {
                 Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + ProjectileExtensions.GetRandomVector(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
                 proj.timeLeft = 120;
