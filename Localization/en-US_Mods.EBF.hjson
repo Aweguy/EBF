@@ -270,9 +270,11 @@ Items: {
 		}
 
 		Ranged: {
-			CrimsonDragon: {
-				Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
-				DisplayName: Crimson Dragon
+			Bows: {
+				CrimsonDragon: {
+					Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
+					DisplayName: Crimson Dragon
+				}
 			}
 		}
 	}

@@ -46,7 +46,6 @@
     <None Remove="NPCs\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract_Classes\" />
     <Folder Include="Assets\Sounds\Custom\" />
     <Folder Include="Players\" />
     <Folder Include="Projectiles\" />
