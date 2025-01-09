@@ -71,6 +71,7 @@ Projectiles: {
 	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
 	Seraphim_LightExplosion.DisplayName: Seraphim_ Light Explosion
 	Inferno_Proj.DisplayName: Inferno_ Proj
+	EagleEye_Arrow.DisplayName: Eagle Eye_ Arrow
 }
 
 NPCs: {
@@ -274,6 +275,11 @@ Items: {
 				CrimsonDragon: {
 					Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
 					DisplayName: Crimson Dragon
+				}
+
+				EagleEye: {
+					DisplayName: Eagle Eye
+					Tooltip: ""
 				}
 			}
 		}
