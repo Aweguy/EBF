@@ -50,7 +50,7 @@ namespace EBF.Items.Ranged.Bows
 
     public class EagleEye_Arrow : EBFChargeableArrow
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.UnholyArrow}";
         public override void SetDefaults()
         {
             Projectile.width = 70;
@@ -59,9 +59,10 @@ namespace EBF.Items.Ranged.Bows
             Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
             Projectile.penetrate = -1;
             Projectile.friendly = false;
-            Projectile.tileCollide = false;
-            Projectile.hide = true;
+            Projectile.tileCollide = true;
+            Projectile.hide = false;
             Projectile.DamageType = DamageClass.Ranged;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 100;
@@ -72,6 +73,18 @@ namespace EBF.Items.Ranged.Bows
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
+        }
+        public override void OnProjectileRelease()
+        {
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, ProjectileID.UnholyArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 30; i++)
+            {
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight, SpeedX: 0, SpeedY: 0);
+                dust.noGravity = true;
+            }
         }
     }
 }

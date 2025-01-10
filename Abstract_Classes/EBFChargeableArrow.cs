@@ -11,7 +11,8 @@ namespace EBF.Abstract_Classes
 {
     public abstract class EBFChargeableArrow : ModProjectile
     {
-        private Projectile arrow = null;
+        private bool isReleased = false;
+        private int baseAiStyle;
         private float drawTime = 0;//The current charge value
         private bool giveTileCollision = false;//stores arrow tilecollision bool for later so it doesn't hit things while the player is drawing the arrow.
         private float baseVelocity; //Set this SetDefaults in each bow
@@ -68,7 +69,7 @@ namespace EBF.Abstract_Classes
         /// </summary>
         /// <param name="projectile">The projectile that was fired from the bow. This projectile is different from the one held in the bow.
         /// <br>Use this parameter instead of the main Projectile property.</br></param>
-        public virtual void OnKillSafe(Projectile projectile) { }
+        public virtual void OnProjectileRelease() { }
 
         /// <summary>
         /// Called after the base class has finished PreAI().
@@ -87,23 +88,20 @@ namespace EBF.Abstract_Classes
                 return;
             }
 
-            //Get stats from bow
+            //Consume ammo
             Player player = Main.player[Projectile.owner];
-            player.PickAmmo(player.HeldItem, out int ammo, out _, out int damage, out float knockback, out _);
+            player.PickAmmo(player.HeldItem, out _, out _, out _, out _, out _);
 
-            //Apply stats from bow to the projectile that is launched on release
-            arrow = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ammo, damage, knockback, Projectile.owner);
-            arrow.penetrate = Projectile.penetrate;
-            arrow.friendly = false;
-            arrow.localNPCHitCooldown = Projectile.localNPCHitCooldown;
-            arrow.usesLocalNPCImmunity = Projectile.usesLocalNPCImmunity;
-            baseVelocity = player.inventory[player.selectedItem].shootSpeed;
+            //Prevent arrow from acting while held
+            Projectile.friendly = false;
+            baseVelocity = Projectile.velocity.Length();
+            baseAiStyle = Projectile.aiStyle;
+            Projectile.aiStyle = 0;
 
-            //Prevent arrow from colliding with tiles while held
-            if (arrow.tileCollide)
+            if (Projectile.tileCollide)
             {
                 giveTileCollision = true;
-                arrow.tileCollide = false;
+                Projectile.tileCollide = false;
             }
 
             //Allow further customization
@@ -111,9 +109,9 @@ namespace EBF.Abstract_Classes
         }
         public override sealed bool PreAI()
         {
-            if (Main.netMode == NetmodeID.Server || arrow == null)
+            if (Main.netMode == NetmodeID.Server || isReleased)
             {
-                return false;
+                return true;
             }
 
             Player player = Main.player[Projectile.owner];
@@ -124,7 +122,7 @@ namespace EBF.Abstract_Classes
                 Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
                 if (Main.myPlayer == Projectile.owner)
                 {
-                    //Update velocity
+                    //Update velocity to face cursor
                     Vector2 oldVelocity = Projectile.velocity;
                     Projectile.velocity = Vector2.Normalize(Main.MouseWorld - playerCenter);
 
@@ -134,18 +132,17 @@ namespace EBF.Abstract_Classes
                     }
                 }
 
-                //Lock arrow to player
-                Projectile.position = playerCenter - Projectile.Size / 2;
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
-
-
+                UpdateArrow(playerCenter);
                 UpdatePlayer(player);
-                UpdateArrow();
                 HandleTimer(player);
             }
             else
             {
-                Projectile.Kill();
+                if (Projectile.localAI[0] == 0)
+                {
+                    Projectile.localAI[0]++;
+                    ReleaseProjectile();
+                }
             }
 
             //Allow further customization
@@ -153,26 +150,30 @@ namespace EBF.Abstract_Classes
 
             return false;
         }
-        public override sealed void OnKill(int timeLeft)
+        private void ReleaseProjectile()
         {
+            isReleased = true;
+
             SoundEngine.PlaySound(SoundID.Item5, Projectile.position);
 
             //Calculate boosts from the arrow's draw time.
             float damageBoost = 1 + (damageScale - 1) * (drawTime / MaximumDrawTime);
             float velocityBoost = 1 + (velocityScale - 1) * (drawTime / MaximumDrawTime);
 
-            arrow.damage = (int)(arrow.damage * damageBoost);
-            arrow.velocity = Projectile.velocity * baseVelocity * velocityBoost;
-            arrow.extraUpdates = Projectile.extraUpdates;
-            arrow.friendly = true;
+            Projectile.damage = (int)(Projectile.damage * damageBoost);
+            Projectile.velocity *= baseVelocity * velocityBoost;
 
-            if (arrow != null && giveTileCollision)
+            //Restore projectile stats
+            Projectile.friendly = true;
+            Projectile.aiStyle = baseAiStyle;
+
+            if (giveTileCollision)
             {
-                arrow.tileCollide = true;
+                Projectile.tileCollide = true;
             }
 
             //Allow further customization
-            OnKillSafe(arrow);
+            OnProjectileRelease();
         }
         private void HandleTimer(Player player)
         {
@@ -188,22 +189,21 @@ namespace EBF.Abstract_Classes
             {
                 //Light the tip of the arrow
                 Vector2 offset = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * 4;
-                Dust dust = Dust.NewDustPerfect(arrow.Center + offset, DustID.AncientLight, Vector2.Zero);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center - new Vector2(28, 0) + offset, DustID.AncientLight, Vector2.Zero);
                 dust.noGravity = true;
             }
         }
-        private void UpdateArrow()
+        private void UpdateArrow(Vector2 playerCenter)
         {
-            float drawOffset = 8f * drawTime / MaximumDrawTime;
-            arrow.Center = Projectile.Center + ProjectileExtensions.PolarVector(36 - drawOffset, Projectile.rotation - MathHelper.PiOver2);
-            arrow.rotation = Projectile.rotation;
-            arrow.velocity = Projectile.velocity;
-            arrow.timeLeft += arrow.extraUpdates + 1;
+            Vector2 drawOffset = ProjectileExtensions.PolarVector(36 - (8f * drawTime / MaximumDrawTime), Projectile.rotation - MathHelper.PiOver2);
+            Projectile.Center = playerCenter + new Vector2(28, 0) + drawOffset; //the vector is a bandaid fix, we need to find the real reason the arrow is offset
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
+            Projectile.timeLeft += Projectile.extraUpdates + 1;
         }
         private void UpdatePlayer(Player player)
         {
             player.ChangeDir(Projectile.direction);
-            player.heldProj = arrow.whoAmI;
+            player.heldProj = Projectile.whoAmI;
             
             //These checks exists so the arrow doesn't remove the bow's usetime
             if (player.itemTime < 2)
