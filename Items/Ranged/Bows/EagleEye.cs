@@ -34,6 +34,7 @@ namespace EBF.Items.Ranged.Bows
             Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 8f;
             Item.channel = true;
+            Item.noMelee = true;
         }
         public override bool CanUseItem(Player player)
         {
@@ -50,11 +51,11 @@ namespace EBF.Items.Ranged.Bows
 
     public class EagleEye_Arrow : EBFChargeableArrow
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.UnholyArrow}";
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
-            Projectile.width = 70;
-            Projectile.height = 20;
+            Projectile.width = 14;
+            Projectile.height = 32;
 
             Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
             Projectile.penetrate = -1;
@@ -73,18 +74,6 @@ namespace EBF.Items.Ranged.Bows
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
-        }
-        public override void OnProjectileRelease()
-        {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, ProjectileID.UnholyArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
-        }
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 30; i++)
-            {
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.AncientLight, SpeedX: 0, SpeedY: 0);
-                dust.noGravity = true;
-            }
         }
     }
 }

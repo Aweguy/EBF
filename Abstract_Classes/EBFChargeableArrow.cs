@@ -1,9 +1,9 @@
 ﻿using EBF.Extensions;
 using System;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria;
+using Terraria.ID;
+using Terraria.Audio;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
@@ -65,10 +65,8 @@ namespace EBF.Abstract_Classes
         private float velocityScale = 2;
 
         /// <summary>
-        /// Called after the base class has finished OnKill().
+        /// Called once the projectile has been released from the weapon.
         /// </summary>
-        /// <param name="projectile">The projectile that was fired from the bow. This projectile is different from the one held in the bow.
-        /// <br>Use this parameter instead of the main Projectile property.</br></param>
         public virtual void OnProjectileRelease() { }
 
         /// <summary>
@@ -109,9 +107,13 @@ namespace EBF.Abstract_Classes
         }
         public override sealed bool PreAI()
         {
-            if (Main.netMode == NetmodeID.Server || isReleased)
+            if (Main.netMode == NetmodeID.Server)
             {
-                return true;
+                return false;
+            }
+            if (isReleased) //Removing this will cause already fired arrows to return to the bow. Idk why, it's probably a reference type thing.
+            {
+                return true; //Use the projectile's actual AI.
             }
 
             Player player = Main.player[Projectile.owner];
@@ -119,29 +121,17 @@ namespace EBF.Abstract_Classes
 
             if (isHolding)
             {
-                Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-                if (Main.myPlayer == Projectile.owner)
-                {
-                    //Update velocity to face cursor
-                    Vector2 oldVelocity = Projectile.velocity;
-                    Projectile.velocity = Vector2.Normalize(Main.MouseWorld - playerCenter);
-
-                    if (oldVelocity != Projectile.velocity)
-                    {
-                        Projectile.netUpdate = true;
-                    }
-                }
-
-                UpdateArrow(playerCenter);
-                UpdatePlayer(player);
-                HandleTimer(player);
+                HandleArrow(player);
+                HandlePlayer(player);
+                HandleDrawTime(player);
             }
             else
             {
+                //Run only once
                 if (Projectile.localAI[0] == 0)
                 {
                     Projectile.localAI[0]++;
-                    ReleaseProjectile();
+                    ReleaseProjectile(); //Return arrow stats & boost by drawtime
                 }
             }
 
@@ -149,6 +139,61 @@ namespace EBF.Abstract_Classes
             PreAISafe();
 
             return false;
+        }
+        private void HandleArrow(Player player)
+        {
+            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                //Update velocity to face cursor
+                Vector2 oldVelocity = Projectile.velocity;
+                Projectile.velocity = Vector2.Normalize(Main.MouseWorld - playerCenter);
+
+                if (oldVelocity != Projectile.velocity)
+                {
+                    Projectile.netUpdate = true;
+                }
+            }
+
+            Vector2 drawOffset = ProjectileExtensions.PolarVector(28 - (8f * drawTime / MaximumDrawTime), Projectile.rotation - MathHelper.PiOver2);
+            Projectile.Center = playerCenter + drawOffset; //the vector is a bandaid fix, we need to find the real reason the arrow is offset
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
+            Projectile.timeLeft += Projectile.extraUpdates + 1;
+        }
+        private void HandlePlayer(Player player)
+        {
+            player.ChangeDir(Projectile.direction);
+            
+            //These checks exists so the arrow doesn't remove the bow's usetime
+            if (player.itemTime < 2)
+            {
+                player.itemTime = 2;
+            }
+            if (player.itemAnimation < 2)
+            {
+                player.itemAnimation = 2;
+            }
+
+            //Using the projectile's rotation instead of velocity will break the player's hands, even if the bow sprite is correct.
+            player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+        }
+        private void HandleDrawTime(Player player)
+        {
+            if (drawTime < MaximumDrawTime)
+            {
+                drawTime++;
+                if ((int)drawTime == MaximumDrawTime) //cast to eliminate possible float precision error
+                {
+                    SoundEngine.PlaySound(SoundID.MaxMana, player.position);
+                }
+            }
+            else
+            {
+                //Light the tip of the arrow
+                Vector2 offset = ProjectileExtensions.PolarVector(12, Projectile.rotation - MathHelper.PiOver2);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center + offset, DustID.AncientLight, Vector2.Zero);
+                dust.noGravity = true;
+            }
         }
         private void ReleaseProjectile()
         {
@@ -174,49 +219,6 @@ namespace EBF.Abstract_Classes
 
             //Allow further customization
             OnProjectileRelease();
-        }
-        private void HandleTimer(Player player)
-        {
-            if (drawTime < MaximumDrawTime)
-            {
-                drawTime++;
-                if ((int)drawTime == MaximumDrawTime) //cast to eliminate possible float precision error
-                {
-                    SoundEngine.PlaySound(SoundID.MaxMana, player.position);
-                }
-            }
-            else
-            {
-                //Light the tip of the arrow
-                Vector2 offset = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * 4;
-                Dust dust = Dust.NewDustPerfect(Projectile.Center - new Vector2(28, 0) + offset, DustID.AncientLight, Vector2.Zero);
-                dust.noGravity = true;
-            }
-        }
-        private void UpdateArrow(Vector2 playerCenter)
-        {
-            Vector2 drawOffset = ProjectileExtensions.PolarVector(36 - (8f * drawTime / MaximumDrawTime), Projectile.rotation - MathHelper.PiOver2);
-            Projectile.Center = playerCenter + new Vector2(28, 0) + drawOffset; //the vector is a bandaid fix, we need to find the real reason the arrow is offset
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
-            Projectile.timeLeft += Projectile.extraUpdates + 1;
-        }
-        private void UpdatePlayer(Player player)
-        {
-            player.ChangeDir(Projectile.direction);
-            player.heldProj = Projectile.whoAmI;
-            
-            //These checks exists so the arrow doesn't remove the bow's usetime
-            if (player.itemTime < 2)
-            {
-                player.itemTime = 2;
-            }
-            if (player.itemAnimation < 2)
-            {
-                player.itemAnimation = 2;
-            }
-
-            //Using the projectile's rotation instead of velocity will break the player's hands, even if the bow sprite is correct.
-            player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
         }
     }
 }
