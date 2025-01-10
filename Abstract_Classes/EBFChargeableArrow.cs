@@ -11,23 +11,25 @@ namespace EBF.Abstract_Classes
 {
     public abstract class EBFChargeableArrow : ModProjectile
     {
-        private bool isReleased = false;
-        private int baseAiStyle;
-        private float drawTime = 0;//The current charge value
-        private bool giveTileCollision = false;//stores arrow tilecollision bool for later so it doesn't hit things while the player is drawing the arrow.
-        private float baseVelocity; //Set this SetDefaults in each bow
+        private bool isReleased = false; //Flag to prevent flying arrows from warping back to the bow. It's likely caused by some reference type shenanigans.
+        private bool giveTileCollision = false; //Stores the projectile's tilecollision for later, to be set when the held arrow is released.
+        private int baseAiStyle; //Stores the projectile's AI for later, to be set when the held arrow is released.
+        private float baseVelocity; //Stores the projectile's velocity for later, to be set when the held arrow is released.
+        private float drawTime = 0;//The current charge value.
 
         /// <summary>
         /// The maximum amount of charge an arrow can have, at which point draw time will stop increasing. Draw time starts at 0 and ticks up by 1 every update while an arrow exists.
         /// <br>If you wish to check if the arrow is fully charged, use the FullyCharged property instead.</br>
+        /// <para>Defaults to 80.</para>
         /// </summary>
-        protected int MaximumDrawTime { get; set; }//Set this SetDefaults in each bow
+        protected int MaximumDrawTime { get; set; } = 80;
 
         /// <summary>
         /// The minimum time it takes before an arrow can be released. Draw time starts at 0 and ticks up by 1 every update while an arrow exists.
         /// <br>If the player releases their click earlier than this given time, the bow will keep charging until it meets this threshold, at which it will then shoot.</br>
+        /// <para>Defaults to 30.</para>
         /// </summary>
-        protected int MinimumDrawTime { get; set; }//Set this SetDefaults in each bow
+        protected int MinimumDrawTime { get; set; } = 30;
 
         /// <summary>
         /// True when the arrow is fully charged.
