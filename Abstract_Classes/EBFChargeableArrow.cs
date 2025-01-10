@@ -37,6 +37,12 @@ namespace EBF.Abstract_Classes
         protected bool FullyCharged => (int)drawTime == MaximumDrawTime;
 
         /// <summary>
+        /// Check to indicate that the projectile has been released from the weapon. Use this to handle logic that should only play while the projectile is flying.
+        /// <br>If you want to handle logic only the moment the shot is released, use the OnProjectileRelease() hook.</br>
+        /// </summary>
+        protected bool IsReleased => isReleased;
+
+        /// <summary>
         /// How much the damage should be multiplied based on its charging percentage. The value cannot be set below 1.
         /// <br>Defaults to 2 times increase.</br>
         /// </summary>
@@ -68,6 +74,7 @@ namespace EBF.Abstract_Classes
 
         /// <summary>
         /// Called once the projectile has been released from the weapon.
+        /// <br>If you wish to handle logic continously as the projectile is flying, use the IsReleased property.</br>
         /// </summary>
         public virtual void OnProjectileRelease() { }
 
