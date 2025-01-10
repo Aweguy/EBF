@@ -34,6 +34,7 @@ namespace EBF.Items.Ranged.Bows
             Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 8f;
             Item.channel = true;
+            Item.noMelee = true;
         }
         public override bool CanUseItem(Player player)
         {
@@ -53,15 +54,16 @@ namespace EBF.Items.Ranged.Bows
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
-            Projectile.width = 70;
-            Projectile.height = 20;
+            Projectile.width = 14;
+            Projectile.height = 32;
 
             Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
             Projectile.penetrate = -1;
             Projectile.friendly = false;
-            Projectile.tileCollide = false;
-            Projectile.hide = true;
+            Projectile.tileCollide = true;
+            Projectile.hide = false;
             Projectile.DamageType = DamageClass.Ranged;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 100;
