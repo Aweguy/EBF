@@ -54,8 +54,8 @@ namespace EBF.Items.Ranged.Bows
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
-            Projectile.width = 14;
-            Projectile.height = 32;
+            Projectile.width = 10;
+            Projectile.height = 10;
 
             Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
             Projectile.penetrate = -1;
@@ -67,9 +67,9 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 100;
-            MinimumDrawTime = 10;
+            MinimumDrawTime = 20;
 
-            DamageScale = 3f;
+            DamageScale = 2f;
             VelocityScale = 2f;
 
             Projectile.localNPCHitCooldown = -1;

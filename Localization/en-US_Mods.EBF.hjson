@@ -279,7 +279,7 @@ Items: {
 
 				EagleEye: {
 					DisplayName: Eagle Eye
-					Tooltip: ""
+					Tooltip: Wooden arrows turn into chargeable, piercing arrows.
 				}
 			}
 		}
