@@ -30,6 +30,7 @@ namespace EBF.Items.Melee
             Item.noUseGraphic = true; // Important, because otherwise you'd sometimes see a duplicate item sprite
             Item.shoot = ModContent.ProjectileType<Inferno_Proj>();
             Item.shootSpeed = 2;
+            Item.noMelee = true;
         }
         public override void AddRecipes()
         {
@@ -51,10 +52,9 @@ namespace EBF.Items.Melee
         public override void SetDefaults()
         {
             Projectile.width = 30;
-            Projectile.height = 153; //sprite is 83, but hitbox needs to extend further
+            Projectile.height = 30; //sprite is 83, but hitbox wants to stay facing up
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.penetrate = -1;
-            DrawOriginOffsetY = 60;
 
             Projectile.hide = true;
             Projectile.ownerHitCheck = true;
@@ -88,9 +88,8 @@ namespace EBF.Items.Melee
     {
         public override void SetDefaults()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.scale = 0.5f;
+            Projectile.width = 12;
+            Projectile.height = 12;
 
             Projectile.friendly = true;
             Projectile.penetrate = -1;
@@ -105,7 +104,10 @@ namespace EBF.Items.Melee
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.OnFire, 60 * 2);
+            if (Main.rand.NextBool(3))
+            {
+                target.AddBuff(BuffID.OnFire, 60 * 2);
+            }
         }
 
         public override bool PreAI()
