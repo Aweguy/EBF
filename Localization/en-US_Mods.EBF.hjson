@@ -73,6 +73,7 @@ Projectiles: {
 	Inferno_Proj.DisplayName: Inferno_ Proj
 	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
 	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
+	BlackWidow_Arrow.DisplayName: Black Widow Arrow
 }
 
 NPCs: {
@@ -290,6 +291,10 @@ Items: {
 						Fully charged wooden arrows launch with additional damaging leaves.
 						Has autofiring capabilities.
 						'''
+				}
+				BlackWidow: {
+					DisplayName: Black Widow
+					Tooltip: Fully charged wooden arrows break into spiders that chase foes.
 				}
 			}
 		}
