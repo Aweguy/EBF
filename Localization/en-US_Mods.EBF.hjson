@@ -61,17 +61,18 @@ Projectiles: {
 	SapphireOre_SapphireExplosion.DisplayName: Sapphire Ore_ Sapphire Explosion
 	TopazOre_TopazExplosion.DisplayName: Topaz Ore_ Topaz Explosion
 	ZirconOre_ZirconExplosion.DisplayName: Zircon Ore_ Zircon Explosion
-	Inferno_Fireball.DisplayName: Inferno_ Fireball
+	Inferno_Fireball.DisplayName: Inferno Fireball
 	Flamma.DisplayName: Flamma
 	Bombbbbbb.DisplayName: Bombbbbbb
 	BlitzNeedleProjectile.DisplayName: Blitz Needle Projectile
 	NeedleShot.DisplayName: Needle Shot
 	NeedleBoom.DisplayName: Needle Boom
 	Star.DisplayName: Star
-	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
-	Seraphim_LightExplosion.DisplayName: Seraphim_ Light Explosion
+	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon Arrow
+	Seraphim_LightExplosion.DisplayName: Seraphim Light Explosion
 	Inferno_Proj.DisplayName: Inferno_ Proj
-	EagleEye_Arrow.DisplayName: Eagle Eye_ Arrow
+	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
+	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
 }
 
 NPCs: {
@@ -280,6 +281,15 @@ Items: {
 				EagleEye: {
 					DisplayName: Eagle Eye
 					Tooltip: Wooden arrows turn into chargeable, piercing arrows.
+				}
+
+				FairyBow: {
+					DisplayName: Fairy Bow
+					Tooltip:
+						'''
+						Fully charged wooden arrows launch with additional damaging leaves.
+						Has autofiring capabilities.
+						'''
 				}
 			}
 		}
