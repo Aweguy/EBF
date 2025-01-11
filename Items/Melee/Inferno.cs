@@ -52,7 +52,7 @@ namespace EBF.Items.Melee
         public override void SetDefaults()
         {
             Projectile.width = 30;
-            Projectile.height = 30; //sprite is 83, but hitbox wants to stay facing up
+            Projectile.height = 30; //sprite is 83, but hitbox wants to stay facing up.
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.penetrate = -1;
 
