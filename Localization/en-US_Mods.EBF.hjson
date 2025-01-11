@@ -73,6 +73,7 @@ Projectiles: {
 	Inferno_Proj.DisplayName: Inferno_ Proj
 	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
 	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
+	Sharanga_Arrow.DisplayName: Sharanga Arrow
 	BlackWidow_Arrow.DisplayName: Black Widow Arrow
 }
 
@@ -292,6 +293,12 @@ Items: {
 						Has autofiring capabilities.
 						'''
 				}
+
+				Sharanga: {
+					DisplayName: Sharanga
+					Tooltip: Wooden arrows turn into chargeable, piercing sharanga arrows.
+				}
+
 				BlackWidow: {
 					DisplayName: Black Widow
 					Tooltip: Fully charged wooden arrows break into spiders that chase foes.
