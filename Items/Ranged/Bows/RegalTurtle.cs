@@ -1,35 +1,33 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
+using Terraria.Audio;
 using Terraria.ID;
-using Terraria.Map;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class EagleEye : ModItem, ILocalizedModType
+    public class RegalTurtle : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 36;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 40;//Item's base damage value
+            Item.damage = 38;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 8, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 4, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item5;//The item's sound when it's used
-            Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
+            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 8f;
@@ -44,30 +42,33 @@ namespace EBF.Items.Ranged.Bows
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<EagleEye_Arrow>();
+                type = ModContent.ProjectileType<RegalTurtle_Arrow>();
             }
+        }
+        public override void HoldItem(Player player)
+        {
+            player.statDefense *= 1.5f;
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.Cog, stack: 30)
-                .AddIngredient(ItemID.TinBar, stack: 20)
-                .AddIngredient(ItemID.SoulofSight, stack: 15)
+                .AddIngredient(ItemID.AdamantiteBar, stack: 12)
+                .AddIngredient(ItemID.GoldBar, stack: 20)
+                .AddIngredient(ItemID.Ruby, stack: 5)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
 
-    public class EagleEye_Arrow : EBFChargeableArrow
+    public class RegalTurtle_Arrow : EBFChargeableArrow
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
-            Projectile.width = 10;
-            Projectile.height = 10;
+            Projectile.width = 20;
+            Projectile.height = 20;
 
-            Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 2;
+
             Projectile.friendly = false;
             Projectile.tileCollide = true;
             Projectile.hide = false;
@@ -75,14 +76,37 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 100;
+            MaximumDrawTime = 80;
             MinimumDrawTime = 20;
+            ReleaseSound = SoundID.Item92;
 
             DamageScale = 2f;
             VelocityScale = 2f;
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
+        }
+        public override void PreAISafe()
+        {
+            //Reduce player movement speed
+            if (!IsReleased)
+            {
+                Player player = Main.player[Projectile.owner];
+                player.velocity.X = MathHelper.Clamp(player.velocity.X, -4f, 4f);
+                player.velocity.Y = MathHelper.Clamp(player.velocity.Y, -6f, 6f);
+            }
+        }
+        public override void OnProjectileRelease()
+        {
+            //Recoil on player
+            if (FullyCharged)
+            {
+                Main.player[Projectile.owner].velocity -= Projectile.velocity / 2;
+            }
+            else
+            {
+                Main.player[Projectile.owner].velocity -= Projectile.velocity / 3;
+            }
         }
     }
 }

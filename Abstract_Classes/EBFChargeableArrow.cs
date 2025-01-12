@@ -18,6 +18,11 @@ namespace EBF.Abstract_Classes
         private float drawTime = 0;//The current charge value.
 
         /// <summary>
+        /// The sound that plays once the projectile has been released.
+        /// <para>Defaults to Item5 (bow shoot sound).</para>
+        /// </summary>
+        protected SoundStyle ReleaseSound = SoundID.Item5;
+        /// <summary>
         /// The maximum amount of charge an arrow can have, at which point draw time will stop increasing. Draw time starts at 0 and ticks up by 1 every update while an arrow exists.
         /// <br>If you wish to check if the arrow is fully charged, use the FullyCharged property instead.</br>
         /// <para>Defaults to 80.</para>
@@ -128,6 +133,7 @@ namespace EBF.Abstract_Classes
             }
             if (isReleased) //Removing this will cause already fired arrows to return to the bow. Idk why, it's probably a reference type thing.
             {
+                PreAISafe(); //Allow further customization
                 return true; //Use the projectile's actual AI.
             }
 
@@ -219,7 +225,7 @@ namespace EBF.Abstract_Classes
         {
             isReleased = true;
 
-            SoundEngine.PlaySound(SoundID.Item5, Projectile.position);
+            SoundEngine.PlaySound(ReleaseSound, Projectile.position);
 
             //Calculate boosts from the arrow's draw time.
             float damageBoost = 1 + (damageScale - 1) * (drawTime / MaximumDrawTime);

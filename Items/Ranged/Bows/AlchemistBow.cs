@@ -12,7 +12,7 @@ namespace EBF.Items.Ranged.Bows
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 20;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 30;//Item's base damage value
