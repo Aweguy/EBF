@@ -77,6 +77,7 @@ Projectiles: {
 	BlackWidow_Arrow.DisplayName: Black Widow Arrow
 	AlchemistBow_Arrow.DisplayName: Alchemist Bow Arrow
 	Juggernaut_Arrow.DisplayName: Juggernaut Arrow
+	GaiasGift_Arrow.DisplayName: Gaias Gift Arrow
 }
 
 NPCs: {
@@ -318,6 +319,11 @@ Items: {
 						Wooden arrows turn into chargeable hellfire arrows
 						Heavy enough to block a blade.
 						'''
+				}
+
+				GaiasGift: {
+					DisplayName: Gaias Gift
+					Tooltip: Fully charged wooden arrows have life stealing capabilities and inflict poison on hit foes.
 				}
 			}
 		}
