@@ -14,7 +14,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 20;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 40;//Item's base damage value
+            Item.damage = 56;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -22,7 +22,7 @@ namespace EBF.Items.Ranged.Bows
             Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.rare = ItemRarityID.Cyan;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item5;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
@@ -43,6 +43,14 @@ namespace EBF.Items.Ranged.Bows
             {
                 type = ModContent.ProjectileType<Sharanga_Arrow>();
             }
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient<EagleEye>(stack: 1)
+                .AddIngredient(ItemID.ShroomiteBar, stack: 15)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 

@@ -14,15 +14,15 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 30;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 40;//Item's base damage value
+            Item.damage = 9;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
-            Item.useTime = 20;//How fast the item is used
-            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 50;//How fast the item is used
+            Item.useAnimation = 50;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 0, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item5;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
@@ -43,6 +43,15 @@ namespace EBF.Items.Ranged.Bows
             {
                 type = ModContent.ProjectileType<FairyBow_Arrow>();
             }
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.Wood, stack: 40)
+                .AddIngredient(ItemID.LivingWoodWand, stack: 1)
+                .AddIngredient(ItemID.Silk, stack: 8)
+                .AddTile(TileID.WorkBenches)
+                .Register();
         }
     }
 
@@ -65,7 +74,7 @@ namespace EBF.Items.Ranged.Bows
             MinimumDrawTime = 20;
             AutoRelease = true;
 
-            DamageScale = 1.5f;
+            DamageScale = 1.0f;
             VelocityScale = 1.33f;
 
             Projectile.localNPCHitCooldown = -1;
@@ -78,7 +87,7 @@ namespace EBF.Items.Ranged.Bows
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.33d), ProjectileID.Leaf, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.33d), ProjectileID.Leaf, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
                 }
             }
         }

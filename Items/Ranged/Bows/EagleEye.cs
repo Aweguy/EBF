@@ -24,7 +24,7 @@ namespace EBF.Items.Ranged.Bows
             Item.useTime = 20;//How fast the item is used
             Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 8, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item5;//The item's sound when it's used
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
@@ -46,6 +46,15 @@ namespace EBF.Items.Ranged.Bows
             {
                 type = ModContent.ProjectileType<EagleEye_Arrow>();
             }
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.Cog, stack: 30)
+                .AddIngredient(ItemID.TinBar, stack: 20)
+                .AddIngredient(ItemID.SoulofSight, stack: 15)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 
