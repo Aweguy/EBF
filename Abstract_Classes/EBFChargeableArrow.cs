@@ -128,6 +128,7 @@ namespace EBF.Abstract_Classes
             }
             if (isReleased) //Removing this will cause already fired arrows to return to the bow. Idk why, it's probably a reference type thing.
             {
+                PreAISafe(); //Allow further customization
                 return true; //Use the projectile's actual AI.
             }
 
