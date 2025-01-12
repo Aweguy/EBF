@@ -1,38 +1,35 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Map;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class EagleEye : ModItem, ILocalizedModType
+    public class Sharanga : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 36;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 20;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 40;//Item's base damage value
+            Item.damage = 56;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 20;//How fast the item is used
             Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 8, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Cyan;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item5;//The item's sound when it's used
-            Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
+            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
-            Item.shootSpeed = 8f;
+            Item.shootSpeed = 10f;
             Item.channel = true;
             Item.noMelee = true;
         }
@@ -44,23 +41,21 @@ namespace EBF.Items.Ranged.Bows
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<EagleEye_Arrow>();
+                type = ModContent.ProjectileType<Sharanga_Arrow>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.Cog, stack: 30)
-                .AddIngredient(ItemID.TinBar, stack: 20)
-                .AddIngredient(ItemID.SoulofSight, stack: 15)
+                .AddIngredient<EagleEye>(stack: 1)
+                .AddIngredient(ItemID.ShroomiteBar, stack: 15)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
 
-    public class EagleEye_Arrow : EBFChargeableArrow
+    public class Sharanga_Arrow : EBFChargeableArrow
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -68,6 +63,7 @@ namespace EBF.Items.Ranged.Bows
 
             Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
             Projectile.penetrate = -1;
+
             Projectile.friendly = false;
             Projectile.tileCollide = true;
             Projectile.hide = false;
@@ -78,7 +74,7 @@ namespace EBF.Items.Ranged.Bows
             MaximumDrawTime = 100;
             MinimumDrawTime = 20;
 
-            DamageScale = 2f;
+            DamageScale = 3f;
             VelocityScale = 2f;
 
             Projectile.localNPCHitCooldown = -1;

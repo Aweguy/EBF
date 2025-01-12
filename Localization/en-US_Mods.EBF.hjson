@@ -61,17 +61,21 @@ Projectiles: {
 	SapphireOre_SapphireExplosion.DisplayName: Sapphire Ore_ Sapphire Explosion
 	TopazOre_TopazExplosion.DisplayName: Topaz Ore_ Topaz Explosion
 	ZirconOre_ZirconExplosion.DisplayName: Zircon Ore_ Zircon Explosion
-	Inferno_Fireball.DisplayName: Inferno_ Fireball
+	Inferno_Fireball.DisplayName: Inferno Fireball
 	Flamma.DisplayName: Flamma
 	Bombbbbbb.DisplayName: Bombbbbbb
 	BlitzNeedleProjectile.DisplayName: Blitz Needle Projectile
 	NeedleShot.DisplayName: Needle Shot
 	NeedleBoom.DisplayName: Needle Boom
 	Star.DisplayName: Star
-	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
-	Seraphim_LightExplosion.DisplayName: Seraphim_ Light Explosion
+	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon Arrow
+	Seraphim_LightExplosion.DisplayName: Seraphim Light Explosion
 	Inferno_Proj.DisplayName: Inferno_ Proj
-	EagleEye_Arrow.DisplayName: Eagle Eye_ Arrow
+	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
+	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
+	Sharanga_Arrow.DisplayName: Sharanga Arrow
+	BlackWidow_Arrow.DisplayName: Black Widow Arrow
+	AlchemistBow_Arrow.DisplayName: Alchemist Bow Arrow
 }
 
 NPCs: {
@@ -279,7 +283,31 @@ Items: {
 
 				EagleEye: {
 					DisplayName: Eagle Eye
-					Tooltip: ""
+					Tooltip: Wooden arrows turn into chargeable, piercing arrows.
+				}
+
+				FairyBow: {
+					DisplayName: Fairy Bow
+					Tooltip:
+						'''
+						Fully charged wooden arrows launch with additional damaging leaves.
+						Has autofiring capabilities.
+						'''
+				}
+
+				Sharanga: {
+					DisplayName: Sharanga
+					Tooltip: Wooden arrows turn into chargeable, piercing sharanga arrows.
+				}
+
+				BlackWidow: {
+					DisplayName: Black Widow
+					Tooltip: Fully charged wooden arrows break into spiders that chase foes.
+				}
+
+				AlchemistBow: {
+					DisplayName: Alchemist Bow
+					Tooltip: Fully charged wooden arrows launch with three additional random arrows.
 				}
 			}
 		}
