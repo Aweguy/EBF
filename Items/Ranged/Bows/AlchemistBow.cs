@@ -1,17 +1,18 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class FairyBow : ModItem, ILocalizedModType
+    public class AlchemistBow : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 30;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.width = 20;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 40;//Item's base damage value
@@ -29,7 +30,7 @@ namespace EBF.Items.Ranged.Bows
 
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
-            Item.shootSpeed = 8f;
+            Item.shootSpeed = 10f;
             Item.channel = true;
             Item.noMelee = true;
         }
@@ -41,13 +42,15 @@ namespace EBF.Items.Ranged.Bows
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<FairyBow_Arrow>();
+                type = ModContent.ProjectileType<AlchemistBow_Arrow>();
             }
         }
     }
 
-    public class FairyBow_Arrow : EBFChargeableArrow
+    public class AlchemistBow_Arrow : EBFChargeableArrow
     {
+        private List<int> arrows = new List<int>();
+
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
@@ -61,24 +64,50 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 50;
+            MaximumDrawTime = 100;
             MinimumDrawTime = 20;
-            AutoRelease = true;
 
-            DamageScale = 1.5f;
-            VelocityScale = 1.33f;
+            DamageScale = 2f;
+            VelocityScale = 2f;
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
 
+        /*TODO: This probably needs a rework, cuz it takes a while to iterate through every projectile, and this code does it per arrow.
+         * It would be better if the bow itself stored all the arrows, so the code only needs to run once. There might also exist a better method to get the arrows that I don't know about.
+         * - DigitalZero
+         */
+        public override void PreAISafe()
+        {
+            //Run this code once when the bow has fully charged
+            if (FullyCharged && Projectile.localAI[1] == 0)
+            {
+                Projectile.localAI[1]++;
+
+                //Go through every projectile
+                for (int i = 0; i < ProjectileID.Count; i++)
+                {
+                    Projectile proj = new Projectile();
+                    proj.SetDefaults(i);
+
+                    //Store each arrow
+                    if (proj.arrow && proj.ModProjectile == null)
+                    {
+                        arrows.Add(i);
+                    }
+                }
+            }
+        }
         public override void OnProjectileRelease()
         {
             if (FullyCharged)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.33d), ProjectileID.Leaf, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    //Choose random arrow
+                    int projectile = arrows[Main.rand.Next(arrows.Count)];
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.33d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
         }

@@ -75,6 +75,7 @@ Projectiles: {
 	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
 	Sharanga_Arrow.DisplayName: Sharanga Arrow
 	BlackWidow_Arrow.DisplayName: Black Widow Arrow
+	AlchemistBow_Arrow.DisplayName: Alchemist Bow Arrow
 }
 
 NPCs: {
@@ -302,6 +303,11 @@ Items: {
 				BlackWidow: {
 					DisplayName: Black Widow
 					Tooltip: Fully charged wooden arrows break into spiders that chase foes.
+				}
+
+				AlchemistBow: {
+					DisplayName: Alchemist Bow
+					Tooltip: Fully charged wooden arrows launch with three additional random arrows.
 				}
 			}
 		}
