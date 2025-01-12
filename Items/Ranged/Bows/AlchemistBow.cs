@@ -52,7 +52,7 @@ namespace EBF.Items.Ranged.Bows
                 .AddIngredient(ItemID.HealingPotion, stack: 5)
                 .AddIngredient(ItemID.ManaPotion, stack: 5)
                 .AddTile(TileID.AlchemyTable)
-                .Register()
+                .Register();
         }
     }
 
