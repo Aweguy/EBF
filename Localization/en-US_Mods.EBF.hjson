@@ -78,6 +78,7 @@ Projectiles: {
 	AlchemistBow_Arrow.DisplayName: Alchemist Bow Arrow
 	Juggernaut_Arrow.DisplayName: Juggernaut Arrow
 	GaiasGift_Arrow.DisplayName: Gaias Gift Arrow
+	RegalTurtle_Arrow.DisplayName: Regal Turtle Arrow
 }
 
 NPCs: {
@@ -324,6 +325,15 @@ Items: {
 				GaiasGift: {
 					DisplayName: Gaias Gift
 					Tooltip: Fully charged wooden arrows have life stealing capabilities and inflict poison on hit foes.
+				}
+
+				RegalTurtle: {
+					DisplayName: Regal Turtle
+					Tooltip:
+						'''
+						Wooden arrows turn into massive, chargable regal arrows.
+						This unwieldy bow requires some serious leg muscles.
+						'''
 				}
 			}
 		}
