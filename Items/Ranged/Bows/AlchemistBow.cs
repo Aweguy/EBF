@@ -116,7 +116,7 @@ namespace EBF.Items.Ranged.Bows
                 {
                     //Choose random arrow
                     int projectile = arrows[Main.rand.Next(arrows.Count)];
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.33d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
         }
