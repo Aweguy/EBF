@@ -385,7 +385,7 @@ Items: {
 		IronCross: {
 			Tooltip:
 				'''
-				Boosts ranged damage by 10%.
+				Boosts ranged damage by 8%.
 				A war medal which offers protection. Lance's favourite flair.
 				'''
 			DisplayName: Iron Cross
