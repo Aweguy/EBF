@@ -12,7 +12,7 @@ namespace EBF.Items.Melee
 			Item.width = 82;//Width of the hitbox of the item (usually the item's sprite width)
 			Item.height = 88;//Height of the hitbox of the item (usually the item's sprite height)
 
-			Item.damage = 14;//Item's base damage value
+			Item.damage = 13;//Item's base damage value
 			Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
 			Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
 			Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
@@ -29,7 +29,7 @@ namespace EBF.Items.Melee
 		{
 			if (player.statLife < player.statLifeMax)
 			{
-				player.Heal(hit.Damage / 5);
+				player.Heal(hit.Damage / 8);
 			}
 		}
         public override void AddRecipes()
