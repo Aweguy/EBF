@@ -176,7 +176,8 @@ namespace EBF.Abstract_Classes
                 Vector2 oldVelocity = Projectile.velocity;
                 Projectile.velocity = Vector2.Normalize(Main.MouseWorld - playerCenter);
 
-                if (oldVelocity != Projectile.velocity)
+                //Truncate decimals to reduce net update frequency
+                if (oldVelocity.ToPoint() != Projectile.velocity.ToPoint())
                 {
                     Projectile.netUpdate = true;
                 }
