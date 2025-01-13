@@ -371,7 +371,7 @@ Items: {
 		SwordMedal: {
 			Tooltip:
 				'''
-				Increases Ranged and Melee damage by 20%.
+				Increases Ranged and Melee damage by 15%.
 				True might is the mark of discipline, honor and courage.
 				'''
 			DisplayName: Sword Medal

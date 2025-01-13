@@ -14,7 +14,7 @@ namespace EBF.Items.Accessories.Flairs
             Item.accessory = true;
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
             Item.rare = ItemRarityID.Pink;
-            Item.defense = 20;
+            Item.defense = 15;
         }
         public override void AddRecipes()
         {
