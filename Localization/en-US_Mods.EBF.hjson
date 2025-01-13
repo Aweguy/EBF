@@ -79,6 +79,7 @@ Projectiles: {
 	Juggernaut_Arrow.DisplayName: Juggernaut Arrow
 	GaiasGift_Arrow.DisplayName: Gaias Gift Arrow
 	RegalTurtle_Arrow.DisplayName: Regal Turtle Arrow
+	IronTusk_Arrow.DisplayName: Iron Tusk Arrow
 }
 
 NPCs: {
@@ -334,6 +335,11 @@ Items: {
 						Wooden arrows turn into massive, chargable regal arrows.
 						This unwieldy bow requires some serious leg muscles.
 						'''
+				}
+
+				IronTusk: {
+					DisplayName: Iron Tusk
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows
 				}
 			}
 		}
