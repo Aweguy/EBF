@@ -1,6 +1,7 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,7 +24,7 @@ namespace EBF.Items.Ranged.Bows
 
             Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 4, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item5;//The item's sound when it's used
+            Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
@@ -91,6 +92,7 @@ namespace EBF.Items.Ranged.Bows
         {
             if(FullyCharged)
             {
+                SoundEngine.PlaySound(SoundID.Item17, Projectile.position);
                 for (int i = 0; i < 3; i++)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.33d), ProjectileID.BabySpider, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);

@@ -6,23 +6,23 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class GaiasGift : ModItem, ILocalizedModType
+    public class ThornBow : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 30;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 41;//Item's base damage value
+            Item.damage = 18;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 50;//How fast the item is used
+            Item.useAnimation = 50;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 3, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 55, gold: 0, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
@@ -41,22 +41,23 @@ namespace EBF.Items.Ranged.Bows
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<GaiasGift_Arrow>();
+                type = ModContent.ProjectileType<ThornBow_Arrow>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.ChlorophyteBar, stack: 20)
-                .AddIngredient(ItemID.LifeFruit, stack: 1)
-                .AddIngredient(ItemID.MudBlock, stack: 80)
-                .AddTile(TileID.MythrilAnvil)
+                .AddIngredient<FairyBow>(stack: 1)
+                .AddIngredient(ItemID.Stinger, stack: 10)
+                .AddIngredient(ItemID.JungleSpores, stack: 12)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }
 
-    public class GaiasGift_Arrow : EBFChargeableArrow
+    public class ThornBow_Arrow : EBFChargeableArrow
     {
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -70,26 +71,25 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 50;
-            MinimumDrawTime = 5;
+            MinimumDrawTime = 20;
+            AutoRelease = true;
 
-            DamageScale = 1.5f;
-            VelocityScale = 2f;
+            DamageScale = 1.0f;
+            VelocityScale = 1.33f;
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnProjectileRelease()
         {
             if (FullyCharged)
             {
-                target.AddBuff(BuffID.Poisoned, 60 * 2);
-
-                Player player = Main.player[Projectile.owner];
-                player.Heal(hit.Damage / 10);
-
-                //Launch blade of grass projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.BladeOfGrass, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                Projectile.Kill();
+                for (int i = 0; i < 3; i++)
+                {
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                }
             }
         }
     }

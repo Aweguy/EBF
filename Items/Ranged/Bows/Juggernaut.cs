@@ -14,7 +14,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 28;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 58;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 55;//Item's base damage value
+            Item.damage = 41;//Item's base damage value
             Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Bows
 
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item5;//The item's sound when it's used
+            Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
@@ -47,9 +47,10 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.LeadBar, stack: 20)
-                .AddIngredient(ItemID.Grenade, stack: 20)
-                .AddIngredient(ItemID.SoulofMight, stack: 15)
+                .AddIngredient<IronTusk>(stack: 1)
+                .AddIngredient(ItemID.HallowedBar, stack: 10)
+                .AddIngredient(ItemID.Bomb, stack: 20)
+                .AddIngredient(ItemID.SoulofMight, stack: 10)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
@@ -57,7 +58,6 @@ namespace EBF.Items.Ranged.Bows
 
     public class Juggernaut_Arrow : EBFChargeableArrow
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.HellfireArrow}";
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -73,8 +73,9 @@ namespace EBF.Items.Ranged.Bows
             MaximumDrawTime = 50;
             MinimumDrawTime = 10;
 
-            DamageScale = 3f;
+            DamageScale = 2f;
             VelocityScale = 2f;
+            ReleaseSound = SoundID.Item10;
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;

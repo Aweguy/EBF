@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Bows
 
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Cyan;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item5;//The item's sound when it's used
+            Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
@@ -79,6 +79,17 @@ namespace EBF.Items.Ranged.Bows
 
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
+        }
+        public override void AI()
+        {
+            //Trail
+            Lighting.AddLight(Projectile.Center, TorchID.Blue);
+            for (int i = 0; i < 5; i++)
+            {
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.BlueTorch, Vector2.Zero, Scale: 1f);
+                dust.position -= Projectile.velocity / 5f * i;
+                dust.noGravity = true;
+            }
         }
     }
 }
