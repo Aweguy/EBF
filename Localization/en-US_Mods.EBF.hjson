@@ -81,6 +81,7 @@ Projectiles: {
 	RegalTurtle_Arrow.DisplayName: Regal Turtle Arrow
 	IronTusk_Arrow.DisplayName: Iron Tusk Arrow
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
+	ThorsHammer_Arrow.DisplayName: Thors Hammer Arrow
 }
 
 NPCs: {
@@ -346,6 +347,11 @@ Items: {
 				ThornBow: {
 					DisplayName: Thorn Bow
 					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+				}
+
+				ThorsHammer: {
+					DisplayName: Thors Hammer
+					Tooltip: ""
 				}
 			}
 		}
