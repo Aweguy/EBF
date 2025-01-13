@@ -6,6 +6,7 @@ namespace EBF.Items.Melee
 {
 	public class BlackFang : ModItem, ILocalizedModType
 	{
+		private int regenCooldown;
         public new string LocalizationCategory => "Items.Weapons.Melee";
 		public override void SetDefaults()
 		{
@@ -31,11 +32,19 @@ namespace EBF.Items.Melee
 		{
 			target.AddBuff(BuffID.Poisoned, 60 * 3);
 
-			if (player.statLife < player.statLifeMax)
+			if (player.statLife < player.statLifeMax && regenCooldown <= 0)
 			{
-				player.Heal(hit.Damage / 20);
+				regenCooldown = 60;
+				player.Heal(hit.Damage / 10);
 			}
 		}
+        public override void HoldItem(Player player)
+        {
+			if(regenCooldown > 0)
+			{
+				regenCooldown--;
+			}
+        }
         public override void AddRecipes()
         {
 			CreateRecipe(amount: 1)

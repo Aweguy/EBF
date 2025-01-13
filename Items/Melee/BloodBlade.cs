@@ -6,6 +6,7 @@ namespace EBF.Items.Melee
 {
 	public class BloodBlade : ModItem, ILocalizedModType
 	{
+        private int regenCooldown;
         public new string LocalizationCategory => "Items.Weapons.Melee";
 		public override void SetDefaults()
 		{
@@ -27,11 +28,19 @@ namespace EBF.Items.Melee
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (player.statLife < player.statLifeMax)
+			if (player.statLife < player.statLifeMax && regenCooldown <= 0)
 			{
-				player.Heal(hit.Damage / 8);
+				regenCooldown = 60;
+				player.Heal(hit.Damage / 5);
 			}
 		}
+        public override void HoldItem(Player player)
+        {
+            if (regenCooldown > 0)
+            {
+                regenCooldown--;
+            }
+        }
         public override void AddRecipes()
         {
 			CreateRecipe(amount: 1)
