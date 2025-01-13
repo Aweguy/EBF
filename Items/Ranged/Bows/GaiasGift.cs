@@ -47,9 +47,9 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient<FairyBow>(stack: 1)
                 .AddIngredient(ItemID.ChlorophyteBar, stack: 20)
                 .AddIngredient(ItemID.LifeFruit, stack: 1)
+                .AddIngredient(ItemID.MudBlock, stack: 80)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
