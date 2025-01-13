@@ -29,11 +29,11 @@ namespace EBF.Items.Melee
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			target.AddBuff(BuffID.Poisoned, 60 * 5);
+			target.AddBuff(BuffID.Poisoned, 60 * 3);
 
 			if (player.statLife < player.statLifeMax)
 			{
-				player.Heal(hit.Damage / 10);
+				player.Heal(hit.Damage / 20);
 			}
 		}
         public override void AddRecipes()
