@@ -21,7 +21,8 @@ namespace EBF.Abstract_Classes
         /// The sound that plays once the projectile has been released.
         /// <para>Defaults to Item5 (bow shoot sound).</para>
         /// </summary>
-        protected SoundStyle ReleaseSound = SoundID.Item5;
+        protected SoundStyle ReleaseSound { get; set; } = SoundID.Item5;
+
         /// <summary>
         /// The maximum amount of charge an arrow can have, at which point draw time will stop increasing. Draw time starts at 0 and ticks up by 1 every update while an arrow exists.
         /// <br>If you wish to check if the arrow is fully charged, use the FullyCharged property instead.</br>
@@ -175,7 +176,8 @@ namespace EBF.Abstract_Classes
                 Vector2 oldVelocity = Projectile.velocity;
                 Projectile.velocity = Vector2.Normalize(Main.MouseWorld - playerCenter);
 
-                if (oldVelocity != Projectile.velocity)
+                //Truncate decimals to reduce net update frequency
+                if (oldVelocity.ToPoint() != Projectile.velocity.ToPoint())
                 {
                     Projectile.netUpdate = true;
                 }
