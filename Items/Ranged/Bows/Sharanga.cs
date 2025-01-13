@@ -80,5 +80,16 @@ namespace EBF.Items.Ranged.Bows
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
+        public override void AI()
+        {
+            //Trail
+            Lighting.AddLight(Projectile.Center, TorchID.Blue);
+            for (int i = 0; i < 5; i++)
+            {
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.BlueTorch, Vector2.Zero, Scale: 1f);
+                dust.position -= Projectile.velocity / 5f * i;
+                dust.noGravity = true;
+            }
+        }
     }
 }
