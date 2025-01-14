@@ -6,13 +6,13 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class ThornBow : ModItem, ILocalizedModType
+    public class TheStinger : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 30;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 18;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -41,7 +41,7 @@ namespace EBF.Items.Ranged.Bows
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<ThornBow_Arrow>();
+                type = ModContent.ProjectileType<TheStinger_Arrow>();
             }
         }
         public override void AddRecipes()
@@ -55,7 +55,7 @@ namespace EBF.Items.Ranged.Bows
         }
     }
 
-    public class ThornBow_Arrow : EBFChargeableArrow
+    public class TheStinger_Arrow : EBFChargeableArrow
     {
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()

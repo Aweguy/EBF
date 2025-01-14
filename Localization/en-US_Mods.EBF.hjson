@@ -80,10 +80,10 @@ Projectiles: {
 	GaiasGift_Arrow.DisplayName: Gaias Gift Arrow
 	RegalTurtle_Arrow.DisplayName: Regal Turtle Arrow
 	IronTusk_Arrow.DisplayName: Iron Tusk Arrow
-	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	ThorsHammer_Arrow.DisplayName: Thors Hammer Arrow
 	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
 	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
+	TheStinger_Arrow.DisplayName: The Stinger Arrow
 }
 
 NPCs: {
@@ -346,11 +346,6 @@ Items: {
 					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
 				}
 
-				ThornBow: {
-					DisplayName: Thorn Bow
-					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
-				}
-
 				ThorsHammer: {
 					DisplayName: Thors Hammer
 					Tooltip: Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
@@ -364,6 +359,11 @@ Items: {
 				GaiasBow: {
 					DisplayName: Gaias Bow
 					Tooltip: Fully charged wooden arrows inflict poison on hit foes.
+				}
+
+				TheStinger: {
+					DisplayName: The Stinger
+					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
 				}
 			}
 		}
