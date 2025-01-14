@@ -218,7 +218,7 @@ namespace EBF.Abstract_Classes
             else
             {
                 //Light the tip of the arrow
-                Vector2 offset = ProjectileExtensions.PolarVector(8, Projectile.rotation - MathHelper.PiOver2);
+                Vector2 offset = ProjectileExtensions.PolarVector(8 - DrawOriginOffsetY, Projectile.rotation - MathHelper.PiOver2);
                 Dust dust = Dust.NewDustPerfect(Projectile.Center + offset, DustID.AncientLight, Vector2.Zero);
                 dust.noGravity = true;
             }

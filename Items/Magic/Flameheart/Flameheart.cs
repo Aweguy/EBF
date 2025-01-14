@@ -14,8 +14,8 @@ namespace EBF.Items.Magic.Flameheart
         int ChargeStacks = 0;
         public override void SetDefaults()
         {
-            Item.width = 80;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 80;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 60;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 36;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit

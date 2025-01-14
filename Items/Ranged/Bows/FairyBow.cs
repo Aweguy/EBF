@@ -11,8 +11,8 @@ namespace EBF.Items.Ranged.Bows
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 30;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 20;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 8;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -24,12 +24,12 @@ namespace EBF.Items.Ranged.Bows
             Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
-            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
-            Item.shootSpeed = 8f;
+            Item.shootSpeed = 6f;
             Item.channel = true;
             Item.noMelee = true;
         }
@@ -62,6 +62,7 @@ namespace EBF.Items.Ranged.Bows
         {
             Projectile.width = 10;
             Projectile.height = 10;
+            DrawOriginOffsetY = 6;
 
             Projectile.friendly = false;
             Projectile.tileCollide = true;
@@ -72,7 +73,6 @@ namespace EBF.Items.Ranged.Bows
 
             MaximumDrawTime = 80;
             MinimumDrawTime = 20;
-            AutoRelease = true;
 
             DamageScale = 1.0f;
             VelocityScale = 1.33f;
@@ -85,7 +85,7 @@ namespace EBF.Items.Ranged.Bows
         {
             if (FullyCharged)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.Leaf, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
                 }

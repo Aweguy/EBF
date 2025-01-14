@@ -80,8 +80,10 @@ Projectiles: {
 	GaiasGift_Arrow.DisplayName: Gaias Gift Arrow
 	RegalTurtle_Arrow.DisplayName: Regal Turtle Arrow
 	IronTusk_Arrow.DisplayName: Iron Tusk Arrow
-	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	ThorsHammer_Arrow.DisplayName: Thors Hammer Arrow
+	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
+	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
+	TheStinger_Arrow.DisplayName: The Stinger Arrow
 }
 
 NPCs: {
@@ -180,7 +182,7 @@ Items: {
 			}
 
 			LoveBlade: {
-				Tooltip: 
+				Tooltip:
 					'''
 					Striking a foe has a chance to spawn damaging auras on nearby foes.
 					A sword made for healing, not fighting.
@@ -298,11 +300,7 @@ Items: {
 
 				FairyBow: {
 					DisplayName: Fairy Bow
-					Tooltip:
-						'''
-						Fully charged wooden arrows launch with additional damaging leaves.
-						Has autofiring capabilities.
-						'''
+					Tooltip: Fully charged wooden arrows launch with additional damaging leaves.
 				}
 
 				Sharanga: {
@@ -324,7 +322,7 @@ Items: {
 					DisplayName: Juggernaut
 					Tooltip:
 						'''
-						Wooden arrows turn into chargeable hellfire arrows
+						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
 						Heavy enough to block a blade.
 						'''
 				}
@@ -345,17 +343,27 @@ Items: {
 
 				IronTusk: {
 					DisplayName: Iron Tusk
-					Tooltip: Wooden arrows turn into chargeable hellfire arrows
-				}
-
-				ThornBow: {
-					DisplayName: Thorn Bow
-					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
 				}
 
 				ThorsHammer: {
 					DisplayName: Thors Hammer
-					Tooltip: ""
+					Tooltip: Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
+				}
+
+				IronTooth: {
+					DisplayName: Iron Tooth
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+				}
+
+				GaiasBow: {
+					DisplayName: Gaias Bow
+					Tooltip: Fully charged wooden arrows inflict poison on hit foes.
+				}
+
+				TheStinger: {
+					DisplayName: The Stinger
+					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
 				}
 			}
 		}

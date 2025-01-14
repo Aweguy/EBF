@@ -6,15 +6,15 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class IronTusk : ModItem, ILocalizedModType
+    public class IronTooth : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 34;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 46;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 24;//Item's base damage value
+            Item.damage = 12;//Item's base damage value
             Item.knockBack = 4f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -29,7 +29,7 @@ namespace EBF.Items.Ranged.Bows
 
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
-            Item.shootSpeed = 10f;
+            Item.shootSpeed = 7f;
             Item.channel = true;
             Item.noMelee = true;
         }
@@ -41,21 +41,20 @@ namespace EBF.Items.Ranged.Bows
         {
             if (type == ProjectileID.WoodenArrowFriendly)
             {
-                type = ModContent.ProjectileType<IronTusk_Arrow>();
+                type = ModContent.ProjectileType<IronTooth_Arrow>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient<IronTooth>(stack: 1)
-                .AddIngredient(ItemID.HellstoneBar, stack: 20)
-                .AddIngredient(ItemID.Grenade, stack: 15)
+                .AddIngredient(ItemID.PlatinumBar, stack: 20)
+                .AddIngredient(ItemID.Grenade, stack: 5)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
     }
 
-    public class IronTusk_Arrow : EBFChargeableArrow
+    public class IronTooth_Arrow : EBFChargeableArrow
     {
         public override string Texture => "EBF/Items/Ranged/Bows/Juggernaut_Arrow";
         public override void SetDefaults()
@@ -70,11 +69,11 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 60;
-            MinimumDrawTime = 15;
+            MaximumDrawTime = 80;
+            MinimumDrawTime = 20;
 
-            DamageScale = 1.5f;
-            VelocityScale = 2f;
+            DamageScale = 1.25f;
+            VelocityScale = 1.75f;
             ReleaseSound = SoundID.Item10;
 
             Projectile.localNPCHitCooldown = -1;

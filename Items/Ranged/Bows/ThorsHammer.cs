@@ -3,6 +3,7 @@ using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -88,6 +89,7 @@ namespace EBF.Items.Ranged.Bows
         {
             if (FullyCharged)
             {
+                SoundEngine.PlaySound(SoundID.Item75, Projectile.position);
                 hitTargets = new List<NPC>();
                 Projectile.extraUpdates = 2;
                 Projectile.penetrate = -1;
