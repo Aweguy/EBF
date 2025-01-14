@@ -180,7 +180,11 @@ Items: {
 			}
 
 			LoveBlade: {
-				Tooltip: A sword made for healing, not fighting.
+				Tooltip: 
+					'''
+					Striking a foe has a chance to spawn damaging auras on nearby foes.
+					A sword made for healing, not fighting.
+					'''
 				DisplayName: Love Blade
 			}
 
