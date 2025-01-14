@@ -83,6 +83,7 @@ Projectiles: {
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	ThorsHammer_Arrow.DisplayName: Thors Hammer Arrow
 	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
+	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
 }
 
 NPCs: {
@@ -358,6 +359,11 @@ Items: {
 				IronTooth: {
 					DisplayName: Iron Tooth
 					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+				}
+
+				GaiasBow: {
+					DisplayName: Gaias Bow
+					Tooltip: Fully charged wooden arrows inflict poison on hit foes.
 				}
 			}
 		}

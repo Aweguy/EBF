@@ -1,6 +1,7 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
 using EBF.Items.Melee;
+using EBF.Items.Ranged.Bows;
 
 namespace EBF.NPCs
 {
@@ -13,6 +14,10 @@ namespace EBF.NPCs
             if (type == NPCID.Princess)
             {
                 shop.Add<LoveBlade>();
+            }
+            if(type == NPCID.WitchDoctor)
+            {
+                shop.Add<GaiasBow>();
             }
         }
     }
