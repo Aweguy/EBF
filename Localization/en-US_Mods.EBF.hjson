@@ -82,6 +82,7 @@ Projectiles: {
 	IronTusk_Arrow.DisplayName: Iron Tusk Arrow
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	ThorsHammer_Arrow.DisplayName: Thors Hammer Arrow
+	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
 }
 
 NPCs: {
@@ -351,7 +352,12 @@ Items: {
 
 				ThorsHammer: {
 					DisplayName: Thors Hammer
-					Tooltip: ""
+					Tooltip: Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
+				}
+
+				IronTooth: {
+					DisplayName: Iron Tooth
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
 				}
 			}
 		}
