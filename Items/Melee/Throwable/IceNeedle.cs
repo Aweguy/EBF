@@ -41,7 +41,7 @@ namespace EBF.Items.Melee.Throwable
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.NorthPole, stack: 1)
-                .AddIngredient(ItemID.FragmentSolar, stack: 12)
+                .AddIngredient(ItemID.SpectreBar, stack: 24)
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();
         }

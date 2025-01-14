@@ -180,7 +180,11 @@ Items: {
 			}
 
 			LoveBlade: {
-				Tooltip: A sword made for healing, not fighting.
+				Tooltip: 
+					'''
+					Striking a foe has a chance to spawn damaging auras on nearby foes.
+					A sword made for healing, not fighting.
+					'''
 				DisplayName: Love Blade
 			}
 
@@ -371,7 +375,7 @@ Items: {
 		SwordMedal: {
 			Tooltip:
 				'''
-				Increases Ranged and Melee damage by 20%.
+				Increases Ranged and Melee damage by 15%.
 				True might is the mark of discipline, honor and courage.
 				'''
 			DisplayName: Sword Medal
@@ -385,7 +389,7 @@ Items: {
 		IronCross: {
 			Tooltip:
 				'''
-				Boosts ranged damage by 10%.
+				Boosts ranged damage by 8%.
 				A war medal which offers protection. Lance's favourite flair.
 				'''
 			DisplayName: Iron Cross

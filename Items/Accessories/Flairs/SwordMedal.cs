@@ -17,8 +17,8 @@ namespace EBF.Items.Accessories.Flairs
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(DamageClass.Ranged) += 0.2f;
-            player.GetDamage(DamageClass.Melee) += 0.2f;
+            player.GetDamage(DamageClass.Ranged) += 0.15f;
+            player.GetDamage(DamageClass.Melee) += 0.15f;
         }
         public override void AddRecipes()
         {

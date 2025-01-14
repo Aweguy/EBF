@@ -24,6 +24,7 @@
     <None Remove="Items\NeedleBoom.png" />
     <None Remove="Items\NeedleShot.png" />
     <None Remove="Items\Ranged\Bows\EagleEye.png" />
+    <None Remove="Items\Ranged\Bows\ThornBow.png" />
     <None Remove="Items\Ranged\CrimsonDragon.png" />
     <None Remove="Items\Ranged\CrimsonDragon_CrimsonArrow.png" />
     <None Remove="Items\Ranged\CrimsonDragon_FireCrystal.png" />
