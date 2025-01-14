@@ -298,11 +298,7 @@ Items: {
 
 				FairyBow: {
 					DisplayName: Fairy Bow
-					Tooltip:
-						'''
-						Fully charged wooden arrows launch with additional damaging leaves.
-						Has autofiring capabilities.
-						'''
+					Tooltip: Fully charged wooden arrows launch with additional damaging leaves.
 				}
 
 				Sharanga: {
