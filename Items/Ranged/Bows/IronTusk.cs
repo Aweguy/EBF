@@ -47,6 +47,7 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
+                .AddIngredient<IronTooth>(stack: 1)
                 .AddIngredient(ItemID.HellstoneBar, stack: 20)
                 .AddIngredient(ItemID.Grenade, stack: 15)
                 .AddTile(TileID.Anvils)

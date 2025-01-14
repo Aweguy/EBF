@@ -1,5 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -94,7 +95,7 @@ namespace EBF.Items.Ranged.Bows
         public override void OnKill(int timeLeft)
         {
             //Generate explosion
-            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.HellfireArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.Stynger, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
             proj.Kill();
         }
     }

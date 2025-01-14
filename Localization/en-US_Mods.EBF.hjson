@@ -321,7 +321,7 @@ Items: {
 					DisplayName: Juggernaut
 					Tooltip:
 						'''
-						Wooden arrows turn into chargeable hellfire arrows
+						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
 						Heavy enough to block a blade.
 						'''
 				}
@@ -342,7 +342,7 @@ Items: {
 
 				IronTusk: {
 					DisplayName: Iron Tusk
-					Tooltip: Wooden arrows turn into chargeable hellfire arrows
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
 				}
 
 				ThornBow: {
