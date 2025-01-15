@@ -48,7 +48,7 @@ namespace EBF.Items.Ranged.Bows
         {
             CreateRecipe(amount: 1)
                 .AddIngredient<EagleEye>(stack: 1)
-                .AddIngredient(ItemID.ShroomiteBar, stack: 15)
+                .AddIngredient(ItemID.SpectreBar, stack: 15)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
