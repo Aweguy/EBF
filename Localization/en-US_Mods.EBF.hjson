@@ -84,6 +84,8 @@ Projectiles: {
 	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
 	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
 	TheStinger_Arrow.DisplayName: The Stinger Arrow
+	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
+	GaiaSeed.DisplayName: Gaia Seed
 }
 
 NPCs: {
@@ -329,7 +331,7 @@ Items: {
 
 				GaiasGift: {
 					DisplayName: Gaias Gift
-					Tooltip: Fully charged wooden arrows have life stealing capabilities and inflict poison on hit foes.
+					Tooltip: Fully charged wooden arrows have life stealing capabilities and spawn a big poisonous gaia seed on hit foes.
 				}
 
 				RegalTurtle: {
@@ -358,11 +360,16 @@ Items: {
 
 				GaiasBow: {
 					DisplayName: Gaias Bow
-					Tooltip: Fully charged wooden arrows inflict poison on hit foes.
+					Tooltip: Fully charged wooden arrows spawn a poisonous gaia seed on hit foes.
 				}
 
 				TheStinger: {
 					DisplayName: The Stinger
+					Tooltip: Like the Thorn Bow, but a whole lot more painful.
+				}
+
+				ThornBow: {
+					DisplayName: Thorn Bow
 					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
 				}
 			}

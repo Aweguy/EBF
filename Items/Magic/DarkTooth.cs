@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -146,6 +147,7 @@ namespace EBF.Items.Magic
                     // Mouse position can vary in multiplayer, so this code must only run on the client
                     if (Main.myPlayer == Projectile.owner)
                     {
+                        HandleAudioLoop();
                         MoveTowardsCursor();//The movement of the black hole
 
                         //This check only works if item.channel is true for the weapon.
@@ -159,8 +161,7 @@ namespace EBF.Items.Magic
                         }
                         else
                         {
-                            Projectile.timeLeft = 1;
-                            CalculateEndExplosionDamage();
+                            Explode();
                         }
                     }
 
@@ -175,6 +176,8 @@ namespace EBF.Items.Magic
         }
         public override void OnKill(int timeLeft) //The dust when the Projectile dies
         {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+
             //scale goes from 1 up to maxSize / 128
             for (int i = 0; i < endingDust * Projectile.scale; i++)
             {
@@ -183,7 +186,7 @@ namespace EBF.Items.Magic
                 dust.noGravity = true;
             }
         }
-        public override bool PreDraw(ref Color lightColor) //Code for making thte Projectile animate while its position is centered
+        public override bool PreDraw(ref Color lightColor) //Code for making the Projectile animate while its position is centered
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
@@ -246,10 +249,6 @@ namespace EBF.Items.Magic
                 ProjectileExtensions.ExpandHitboxBy(Projectile, newWidth, newHeight);
             }
         }
-
-        /* It would have been sweet if these three methods below could be turned into one generic method.
-         * However, there's no common base class or interface containing the needed fields to make that possible.
-         */
         private void SuckNPCs(float suckingRange, float suckingStrength = 100)
         {
             foreach (NPC npc in Main.npc)
@@ -262,7 +261,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, npc.Center);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); //Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); //Won't divide by 0 :)
                     npc.velocity += npc.DirectionTo(Projectile.Center) * gravityMagnitude;
                 }
             }
@@ -279,7 +278,7 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, gore.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); // Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); // Won't divide by 0 :)
                     gore.velocity += Vector2.Normalize(Projectile.Center - gore.position) * gravityMagnitude;
                 }
             }
@@ -296,15 +295,37 @@ namespace EBF.Items.Magic
                 float dist = Vector2.Distance(Projectile.Center, dust.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist + 1f); //Won't divide by 0 :)
+                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); //Won't divide by 0 :)
                     dust.velocity += Vector2.Normalize(Projectile.Center - dust.position) * gravityMagnitude;
                 }
             }
         }
-        private void CalculateEndExplosionDamage()
+        private void Explode()
         {
+            //Change hitbox size and damage
             ProjectileExtensions.ExpandHitboxBy(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
-            Projectile.damage = Projectile.damage + Projectile.width;
+            int explosionDamage = Projectile.damage + Projectile.width;
+
+            foreach(NPC npc in Main.npc)
+            {
+                //Find any valid npc inside the hitbox
+                if (npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(Projectile.Hitbox))
+                {
+                    //Deal the damage, ignoring their iframes
+                    var info = npc.CalculateHitInfo(explosionDamage, Projectile.direction);
+                    npc.StrikeNPC(info);
+                    NetMessage.SendStrikeNPC(npc, info);
+                }
+            }
+
+            Projectile.Kill();
+        }
+        private void HandleAudioLoop()
+        {
+            if (Main.GameUpdateCount % 40 == 0)
+            {
+                SoundEngine.PlaySound(SoundID.Item15 with { Pitch = -0.95f }, Projectile.position);
+            }
         }
     }
 }

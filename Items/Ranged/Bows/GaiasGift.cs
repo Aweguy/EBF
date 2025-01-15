@@ -21,7 +21,7 @@ namespace EBF.Items.Ranged.Bows
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 3, platinum: 0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 50, gold: 12, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
@@ -47,9 +47,9 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
+                .AddIngredient<GaiasBow>(stack: 1)
                 .AddIngredient(ItemID.ChlorophyteBar, stack: 20)
                 .AddIngredient(ItemID.LifeFruit, stack: 1)
-                .AddIngredient(ItemID.MudBlock, stack: 80)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
@@ -83,13 +83,15 @@ namespace EBF.Items.Ranged.Bows
         {
             if (FullyCharged)
             {
-                target.AddBuff(BuffID.Poisoned, 60 * 2);
-
                 Player player = Main.player[Projectile.owner];
                 player.Heal(hit.Damage / 10);
 
-                //Launch blade of grass projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.BladeOfGrass, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                //Spawn Gaia seed
+                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaiaSeed>(), 1, 0, Projectile.owner);
+                proj.scale = 2f;
+                
+                //Temporary firework explosion until we care to make our own
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ProjectileID.RocketFireworksBoxGreen, Projectile.damage, 0, Projectile.owner);
             }
         }
     }

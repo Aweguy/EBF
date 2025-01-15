@@ -123,6 +123,9 @@ namespace EBF.Abstract_Classes
                 Projectile.tileCollide = false;
             }
 
+            //Prevent arrow from being in the wrong place on the first frame
+            HandleArrow(player);
+
             //Allow further customization
             OnSpawnSafe();
         }
