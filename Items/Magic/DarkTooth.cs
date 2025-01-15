@@ -186,7 +186,7 @@ namespace EBF.Items.Magic
                 dust.noGravity = true;
             }
         }
-        public override bool PreDraw(ref Color lightColor) //Code for making thte Projectile animate while its position is centered
+        public override bool PreDraw(ref Color lightColor) //Code for making the Projectile animate while its position is centered
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 
