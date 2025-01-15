@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -104,6 +105,8 @@ namespace EBF.Items.Ranged.Bows
 
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item60, Projectile.position);
+
             //Spawn dust in circle
             int numberOfProjectiles = 8;
             for (float theta = 0; theta <= Math.Tau; theta += (float)Math.Tau / numberOfProjectiles)
