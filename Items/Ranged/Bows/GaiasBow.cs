@@ -13,8 +13,8 @@ namespace EBF.Items.Ranged.Bows
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 22;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 56;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 24;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 58;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 21;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Bows
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 3, platinum: 0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 10, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
