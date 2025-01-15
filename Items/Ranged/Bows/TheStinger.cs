@@ -1,5 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,15 +15,15 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 18;//Item's base damage value
+            Item.damage = 31;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
-            Item.useTime = 50;//How fast the item is used
-            Item.useAnimation = 50;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 10;//How fast the item is used
+            Item.useAnimation = 10;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 55, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 90, gold: 8, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
@@ -47,10 +48,10 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient<FairyBow>(stack: 1)
+                .AddIngredient<ThornBow>(stack: 1)
+                .AddIngredient(ItemID.ChlorophyteBar, stack: 20)
                 .AddIngredient(ItemID.Stinger, stack: 10)
-                .AddIngredient(ItemID.JungleSpores, stack: 12)
-                .AddTile(TileID.Anvils)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
@@ -70,8 +71,8 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 50;
-            MinimumDrawTime = 20;
+            MaximumDrawTime = 10;
+            MinimumDrawTime = 5;
             AutoRelease = true;
 
             DamageScale = 1.0f;

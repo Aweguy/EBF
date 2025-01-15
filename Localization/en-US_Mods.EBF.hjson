@@ -365,12 +365,12 @@ Items: {
 
 				TheStinger: {
 					DisplayName: The Stinger
-					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+					Tooltip: Like the Thorn Bow, but a whole lot more painful.
 				}
 
 				ThornBow: {
 					DisplayName: Thorn Bow
-					Tooltip: Like The Stinger, but a whole lot more painful.
+					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
 				}
 			}
 		}
