@@ -85,6 +85,7 @@ Projectiles: {
 	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
 	TheStinger_Arrow.DisplayName: The Stinger Arrow
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
+	GaiaSeed.DisplayName: Gaia Seed
 }
 
 NPCs: {

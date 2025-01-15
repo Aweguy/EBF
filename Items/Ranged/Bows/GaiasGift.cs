@@ -83,13 +83,11 @@ namespace EBF.Items.Ranged.Bows
         {
             if (FullyCharged)
             {
-                target.AddBuff(BuffID.Poisoned, 60 * 2);
-
                 Player player = Main.player[Projectile.owner];
                 player.Heal(hit.Damage / 10);
 
-                //Launch blade of grass projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.BladeOfGrass, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                //Spawn Gaia seed
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaiaSeed>(), 1, 0, Projectile.owner);
             }
         }
     }

@@ -7,8 +7,6 @@ namespace EBF.Items.Melee
     public class DragonsFeather : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Melee";
-
-        private int swings = 0;
         public override void SetDefaults()
         {
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
