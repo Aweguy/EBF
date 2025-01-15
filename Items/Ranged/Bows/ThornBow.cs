@@ -12,7 +12,7 @@ namespace EBF.Items.Ranged.Bows
         public override void SetDefaults()
         {
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.height = 62;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 18;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
