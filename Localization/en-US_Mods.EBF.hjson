@@ -84,6 +84,7 @@ Projectiles: {
 	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
 	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
 	TheStinger_Arrow.DisplayName: The Stinger Arrow
+	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 }
 
 NPCs: {
@@ -364,6 +365,11 @@ Items: {
 				TheStinger: {
 					DisplayName: The Stinger
 					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+				}
+
+				ThornBow: {
+					DisplayName: Thorn Bow
+					Tooltip: Like The Stinger, but a whole lot more painful.
 				}
 			}
 		}
