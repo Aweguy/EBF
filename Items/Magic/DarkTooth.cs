@@ -161,8 +161,7 @@ namespace EBF.Items.Magic
                         }
                         else
                         {
-                            Projectile.timeLeft = 1;
-                            CalculateEndExplosionDamage();
+                            Explode();
                         }
                     }
 
@@ -301,10 +300,25 @@ namespace EBF.Items.Magic
                 }
             }
         }
-        private void CalculateEndExplosionDamage()
+        private void Explode()
         {
+            //Change hitbox size and damage
             ProjectileExtensions.ExpandHitboxBy(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
-            Projectile.damage = Projectile.damage + Projectile.width;
+            int explosionDamage = Projectile.damage + Projectile.width;
+
+            foreach(NPC npc in Main.npc)
+            {
+                //Find any valid npc inside the hitbox
+                if (npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(Projectile.Hitbox))
+                {
+                    //Deal the damage, ignoring their iframes
+                    var info = npc.CalculateHitInfo(explosionDamage, Projectile.direction);
+                    npc.StrikeNPC(info);
+                    NetMessage.SendStrikeNPC(npc, info);
+                }
+            }
+
+            Projectile.Kill();
         }
         private void HandleAudioLoop()
         {
