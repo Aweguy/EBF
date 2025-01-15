@@ -35,12 +35,13 @@ namespace EBF.Items.Melee.Throwable
             Item.shootSpeed = 16f;
 
             Item.noUseGraphic = true;
+            Item.noMelee = true;
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.NorthPole, stack: 1)
-                .AddIngredient(ItemID.FragmentSolar, stack: 12)
+                .AddIngredient(ItemID.SpectreBar, stack: 24)
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();
         }
@@ -50,7 +51,8 @@ namespace EBF.Items.Melee.Throwable
     {
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 26;
+            Projectile.width = 26;
+            Projectile.height = 26;
 
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;

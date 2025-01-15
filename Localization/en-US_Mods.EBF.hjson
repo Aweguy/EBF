@@ -61,16 +61,31 @@ Projectiles: {
 	SapphireOre_SapphireExplosion.DisplayName: Sapphire Ore_ Sapphire Explosion
 	TopazOre_TopazExplosion.DisplayName: Topaz Ore_ Topaz Explosion
 	ZirconOre_ZirconExplosion.DisplayName: Zircon Ore_ Zircon Explosion
-	Inferno_Fireball.DisplayName: Inferno_ Fireball
+	Inferno_Fireball.DisplayName: Inferno Fireball
 	Flamma.DisplayName: Flamma
 	Bombbbbbb.DisplayName: Bombbbbbb
 	BlitzNeedleProjectile.DisplayName: Blitz Needle Projectile
 	NeedleShot.DisplayName: Needle Shot
 	NeedleBoom.DisplayName: Needle Boom
 	Star.DisplayName: Star
-	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon_ Crimson Arrow
-	Seraphim_LightExplosion.DisplayName: Seraphim_ Light Explosion
+	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon Arrow
+	Seraphim_LightExplosion.DisplayName: Seraphim Light Explosion
 	Inferno_Proj.DisplayName: Inferno_ Proj
+	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
+	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
+	Sharanga_Arrow.DisplayName: Sharanga Arrow
+	BlackWidow_Arrow.DisplayName: Black Widow Arrow
+	AlchemistBow_Arrow.DisplayName: Alchemist Bow Arrow
+	Juggernaut_Arrow.DisplayName: Juggernaut Arrow
+	GaiasGift_Arrow.DisplayName: Gaias Gift Arrow
+	RegalTurtle_Arrow.DisplayName: Regal Turtle Arrow
+	IronTusk_Arrow.DisplayName: Iron Tusk Arrow
+	ThorsHammer_Arrow.DisplayName: Thors Hammer Arrow
+	IronTooth_Arrow.DisplayName: Iron Tooth Arrow
+	GaiasBow_Arrow.DisplayName: Gaias Bow Arrow
+	TheStinger_Arrow.DisplayName: The Stinger Arrow
+	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
+	GaiaSeed.DisplayName: Gaia Seed
 }
 
 NPCs: {
@@ -169,7 +184,11 @@ Items: {
 			}
 
 			LoveBlade: {
-				Tooltip: A sword made for healing, not fighting.
+				Tooltip:
+					'''
+					Striking a foe has a chance to spawn damaging auras on nearby foes.
+					A sword made for healing, not fighting.
+					'''
 				DisplayName: Love Blade
 			}
 
@@ -265,14 +284,94 @@ Items: {
 					Left click to drop a big bomb from the sky, right click to drop 3 weaker bombs at once.
 					Bombs away!!!!
 					'''
-				DisplayName: Airstrike_ Remote
+				DisplayName: Airstrike Remote
 			}
 		}
 
 		Ranged: {
-			CrimsonDragon: {
-				Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
-				DisplayName: Crimson Dragon
+			Bows: {
+				CrimsonDragon: {
+					Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
+					DisplayName: Crimson Dragon
+				}
+
+				EagleEye: {
+					DisplayName: Eagle Eye
+					Tooltip: Wooden arrows turn into chargeable, piercing arrows.
+				}
+
+				FairyBow: {
+					DisplayName: Fairy Bow
+					Tooltip: Fully charged wooden arrows launch with additional damaging leaves.
+				}
+
+				Sharanga: {
+					DisplayName: Sharanga
+					Tooltip: Wooden arrows turn into chargeable, piercing sharanga arrows.
+				}
+
+				BlackWidow: {
+					DisplayName: Black Widow
+					Tooltip: Fully charged wooden arrows break into spiders that chase foes.
+				}
+
+				AlchemistBow: {
+					DisplayName: Alchemist Bow
+					Tooltip: Fully charged wooden arrows launch with three additional random arrows.
+				}
+
+				Juggernaut: {
+					DisplayName: Juggernaut
+					Tooltip:
+						'''
+						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
+						Heavy enough to block a blade.
+						'''
+				}
+
+				GaiasGift: {
+					DisplayName: Gaias Gift
+					Tooltip: Fully charged wooden arrows have life stealing capabilities and spawn a big poisonous gaia seed on hit foes.
+				}
+
+				RegalTurtle: {
+					DisplayName: Regal Turtle
+					Tooltip:
+						'''
+						Wooden arrows turn into massive, chargable regal arrows.
+						This unwieldy bow requires some serious leg muscles.
+						'''
+				}
+
+				IronTusk: {
+					DisplayName: Iron Tusk
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+				}
+
+				ThorsHammer: {
+					DisplayName: Thors Hammer
+					Tooltip: Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
+				}
+
+				IronTooth: {
+					DisplayName: Iron Tooth
+					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+				}
+
+				GaiasBow: {
+					DisplayName: Gaias Bow
+					Tooltip: Fully charged wooden arrows spawn a poisonous gaia seed on hit foes.
+				}
+
+				TheStinger: {
+					DisplayName: The Stinger
+					Tooltip: Like the Thorn Bow, but a whole lot more painful.
+				}
+
+				ThornBow: {
+					DisplayName: Thorn Bow
+					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+				}
 			}
 		}
 	}
@@ -291,7 +390,7 @@ Items: {
 		SwordMedal: {
 			Tooltip:
 				'''
-				Increases Ranged and Melee damage by 20%.
+				Increases Ranged and Melee damage by 15%.
 				True might is the mark of discipline, honor and courage.
 				'''
 			DisplayName: Sword Medal
@@ -305,7 +404,7 @@ Items: {
 		IronCross: {
 			Tooltip:
 				'''
-				Boosts ranged damage by 10%.
+				Boosts ranged damage by 8%.
 				A war medal which offers protection. Lance's favourite flair.
 				'''
 			DisplayName: Iron Cross

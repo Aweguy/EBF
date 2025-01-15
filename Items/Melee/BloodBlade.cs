@@ -6,13 +6,14 @@ namespace EBF.Items.Melee
 {
 	public class BloodBlade : ModItem, ILocalizedModType
 	{
+        private int regenCooldown;
         public new string LocalizationCategory => "Items.Weapons.Melee";
 		public override void SetDefaults()
 		{
 			Item.width = 82;//Width of the hitbox of the item (usually the item's sprite width)
 			Item.height = 88;//Height of the hitbox of the item (usually the item's sprite height)
 
-			Item.damage = 14;//Item's base damage value
+			Item.damage = 13;//Item's base damage value
 			Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
 			Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
 			Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
@@ -27,11 +28,19 @@ namespace EBF.Items.Melee
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (player.statLife < player.statLifeMax)
+			if (player.statLife < player.statLifeMax && regenCooldown <= 0)
 			{
+				regenCooldown = 60;
 				player.Heal(hit.Damage / 5);
 			}
 		}
+        public override void HoldItem(Player player)
+        {
+            if (regenCooldown > 0)
+            {
+                regenCooldown--;
+            }
+        }
         public override void AddRecipes()
         {
 			CreateRecipe(amount: 1)

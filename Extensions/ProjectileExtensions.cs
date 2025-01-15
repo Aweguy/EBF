@@ -20,39 +20,19 @@ namespace EBF.Extensions
         /// </summary>
         /// <param name="currentRotation">The current rotation in radians.</param>
         /// <param name="targetAngle">The target rotation that the projectile should rotate towards.</param>
-        /// <param name="speed">How much the projectile can rotate each time the method is called.</param>
+        /// <param name="speed">How much the projectile can rotate per step (In degrees).</param>
         /// <returns>A rotation which is closer to the target angle than the current.</returns>
-        public static float SlowRotation(float currentRotation, float targetAngle, float speed)//Taken from qwerty's mod
+        public static float SlowRotation(float currentRotation, float targetAngle, float speed)
         {
-            int f = 1; //this is used to switch rotation direction
-            float actDirection = new Vector2(MathF.Cos(currentRotation), MathF.Sin(currentRotation)).ToRotation();
-            targetAngle = new Vector2(MathF.Cos(targetAngle), MathF.Sin(targetAngle)).ToRotation();
+            float difference = MathHelper.WrapAngle(targetAngle - currentRotation); //reduces angle to pi / -pi
+            float rotationStep = MathHelper.ToRadians(speed);
 
-            //this makes f 1 or -1 to rotate the shorter distance
-            if (Math.Abs(actDirection - targetAngle) > Math.PI)
+            if (Math.Abs(difference) <= rotationStep)
             {
-                f = -1;
-            }
-            else
-            {
-                f = 1;
+                return targetAngle;
             }
 
-            if (actDirection <= targetAngle + MathHelper.ToRadians(speed * 2) && actDirection >= targetAngle - MathHelper.ToRadians(speed * 2))
-            {
-                actDirection = targetAngle;
-            }
-            else if (actDirection <= targetAngle)
-            {
-                actDirection += MathHelper.ToRadians(speed) * f;
-            }
-            else if (actDirection >= targetAngle)
-            {
-                actDirection -= MathHelper.ToRadians(speed) * f;
-            }
-            actDirection = new Vector2(MathF.Cos(actDirection), MathF.Sin(actDirection)).ToRotation();
-
-            return actDirection;
+            return currentRotation + Math.Sign(difference) * rotationStep;
         }
 
         public delegate bool SpecialCondition(NPC possibleTarget);
@@ -69,32 +49,32 @@ namespace EBF.Extensions
         /// <returns>True if an npc has been found within the search range and meets all provided special conditions.</returns>
         public static bool ClosestNPC(ref NPC target, float maxDistance, Vector2 position, bool ignoreTiles = false, int overrideTarget = -1, SpecialCondition specialCondition = null)//Taken from qwerty's mod
         {
-            //very advance users can use a delegate to insert special condition into the function like only targetting enemies not currently having local iFrames, but if a special condition isn't added then just return it true
+            //Advanced users can use a delegate to insert special condition into the function, such as those without active iFrames
+            //if a special condition isn't added then just return it true
             if (specialCondition == null)
             {
                 specialCondition = delegate (NPC possibleTarget) { return true; };
             }
             bool foundTarget = false;
-            //If you want to prioritse a certain target this is where it's processed, mostly used by minions that haave a target priority
             if (overrideTarget != -1)
             {
+                //Prioritizing a certain target happens here, mostly used by minions that have a target priority
                 if ((Main.npc[overrideTarget].Center - position).Length() < maxDistance && !Main.npc[overrideTarget].immortal && (Collision.CanHit(position, 0, 0, Main.npc[overrideTarget].Center, 0, 0) || ignoreTiles) && specialCondition(Main.npc[overrideTarget]))
                 {
                     target = Main.npc[overrideTarget];
                     return true;
                 }
             }
-            //this is the meat of the targetting logic, it loops through every NPC to check if it is valid the minimum distance and target selected are updated so that the closest valid NPC is selected
-            for (int k = 0; k < Main.npc.Length; k++)
+            //Handles targeting logic, loops through each NPC to check if it is valid.
+            //The minimum distance and target selected are updated so that only the closest valid NPC is selected.
+            foreach(NPC npc in Main.npc)
             {
-                NPC possibleTarget = Main.npc[k];
-                float distance = (possibleTarget.Center - position).Length();
-                if (distance < maxDistance && possibleTarget.active && possibleTarget.chaseable && !possibleTarget.dontTakeDamage && !possibleTarget.friendly && possibleTarget.lifeMax > 5 && !possibleTarget.immortal && (Collision.CanHit(position, 0, 0, possibleTarget.Center, 0, 0) || ignoreTiles) && specialCondition(possibleTarget))
+                float distance = (npc.Center - position).Length();
+                if (distance < maxDistance && npc.active && npc.chaseable && !npc.dontTakeDamage && !npc.friendly && npc.lifeMax > 5 && !npc.immortal && (Collision.CanHit(position, 0, 0, npc.Center, 0, 0) || ignoreTiles) && specialCondition(npc))
                 {
-                    target = Main.npc[k];
+                    target = npc;
                     foundTarget = true;
-
-                    maxDistance = (target.Center - position).Length();
+                    maxDistance = distance;
                 }
             }
             return foundTarget;
@@ -119,7 +99,7 @@ namespace EBF.Extensions
 
         /// <summary>
         /// Changes the hitbox rectangle of a given projectile.
-        /// <br>Taken from Calamity Utilities.</br>
+        /// <br>From Calamity Utilities.</br>
         /// </summary>
         /// <param name="projectile">The projectile whose hitbox will be expanded.</param>
         /// <param name="width">The new width of the projectile's hitbox.</param>
@@ -131,43 +111,5 @@ namespace EBF.Extensions
             projectile.height = height;
             projectile.position -= projectile.Size * 0.5f;
         }
-
-        public static bool DrawProjectileCentered(this ModProjectile p, SpriteBatch spriteBatch, Color lightColor)
-        {
-            Texture2D texture = TextureAssets.Projectile[p.Projectile.type].Value;
-            Rectangle frame = texture.Frame(1, Main.projFrames[p.Projectile.type], 0, p.Projectile.frame);
-            Vector2 origin = frame.Size() / 2 + new Vector2(p.DrawOriginOffsetX, p.DrawOriginOffsetY);
-            SpriteEffects effects = p.Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
-            Vector2 drawPosition = p.Projectile.Center - Main.screenPosition + new Vector2(p.DrawOffsetX, 0);
-
-            spriteBatch.Draw(texture, drawPosition, frame, lightColor, p.Projectile.rotation, origin, p.Projectile.scale, effects, 0f);
-
-            return (false);
-        }
-
-        #region After Effects
-
-        public static void DrawProjectileTrailCentered(this ModProjectile p, SpriteBatch spriteBatch, Color drawColor, float initialOpacity = 0.8f, float opacityDegrade = 0.2f, int stepSize = 1)
-        {
-            Texture2D texture = TextureAssets.Projectile[p.Projectile.type].Value;
-
-            p.DrawProjectileTrailCenteredWithTexture(texture, spriteBatch, drawColor, initialOpacity, opacityDegrade, stepSize);
-        }
-
-        public static void DrawProjectileTrailCenteredWithTexture(this ModProjectile p, Texture2D texture, SpriteBatch spriteBatch, Color drawColor, float initialOpacity = 0.8f, float opacityDegrade = 0.2f, int stepSize = 1)
-        {
-            Rectangle frame = texture.Frame(1, Main.projFrames[p.Projectile.type], 0, p.Projectile.frame);
-            Vector2 origin = frame.Size() / 2;
-            SpriteEffects effects = p.Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
-            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[p.Projectile.type]; i += stepSize)
-            {
-                float opacity = initialOpacity - opacityDegrade * i;
-                spriteBatch.Draw(texture, p.Projectile.oldPos[i] + p.Projectile.Hitbox.Size() / 2 - Main.screenPosition, frame, drawColor * opacity, p.Projectile.oldRot[i], origin, p.Projectile.scale, effects, 0f);
-            }
-        }
-
-        #endregion After Effects
     }
 }

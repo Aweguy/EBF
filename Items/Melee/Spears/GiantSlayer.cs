@@ -64,10 +64,6 @@ namespace EBF.Items.Melee.Spears
             Projectile.tileCollide = false;
             Projectile.friendly = true;
         }
-        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
-        {
-            target.defense -= 3;
-        }
         public override void AI()
         {
             DoSpearAI(); // The spear AI is enclosed in a method in case we want to copy that behavior to other items

@@ -23,6 +23,10 @@
     <None Remove="Items\Melee\Throwable\IceNeedle_Proj.png" />
     <None Remove="Items\NeedleBoom.png" />
     <None Remove="Items\NeedleShot.png" />
+    <None Remove="Items\Ranged\Bows\EagleEye.png" />
+    <None Remove="Items\Ranged\Bows\GaiasBow.png" />
+    <None Remove="Items\Ranged\Bows\GaiaSeed.png" />
+    <None Remove="Items\Ranged\Bows\ThornBow.png" />
     <None Remove="Items\Ranged\CrimsonDragon.png" />
     <None Remove="Items\Ranged\CrimsonDragon_CrimsonArrow.png" />
     <None Remove="Items\Ranged\CrimsonDragon_FireCrystal.png" />
@@ -31,22 +35,17 @@
     <AdditionalFiles Remove="Assets\Sounds\NPCHit\**" />
     <AdditionalFiles Remove="Gores\**" />
     <AdditionalFiles Remove="Items\Limit Breaks\**" />
-    <AdditionalFiles Remove="NPCs\**" />
     <Compile Remove="Assets\Sounds\NPCHit\**" />
     <Compile Remove="Gores\**" />
     <Compile Remove="Items\Limit Breaks\**" />
-    <Compile Remove="NPCs\**" />
     <EmbeddedResource Remove="Assets\Sounds\NPCHit\**" />
     <EmbeddedResource Remove="Gores\**" />
     <EmbeddedResource Remove="Items\Limit Breaks\**" />
-    <EmbeddedResource Remove="NPCs\**" />
     <None Remove="Assets\Sounds\NPCHit\**" />
     <None Remove="Gores\**" />
     <None Remove="Items\Limit Breaks\**" />
-    <None Remove="NPCs\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract_Classes\" />
     <Folder Include="Assets\Sounds\Custom\" />
     <Folder Include="Players\" />
     <Folder Include="Projectiles\" />

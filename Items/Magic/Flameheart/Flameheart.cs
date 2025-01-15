@@ -14,8 +14,8 @@ namespace EBF.Items.Magic.Flameheart
         int ChargeStacks = 0;
         public override void SetDefaults()
         {
-            Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 60;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 36;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -32,7 +32,12 @@ namespace EBF.Items.Magic.Flameheart
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<Flameheart_Fireball>();
+            Item.shootSpeed = 1f;//Required for item rotating towards cursor
             Item.noMelee = true;//Prevents damage from being dealt by the item itself
+        }
+        public override void UseStyle(Player player, Rectangle heldItemFrame)
+        {
+            player.itemLocation -= new Vector2(player.direction * 20, 0);
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -56,6 +61,7 @@ namespace EBF.Items.Magic.Flameheart
 
     public class Flameheart_Firestorm : ModProjectile
     {
+        public override bool ShouldUpdatePosition() => false;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 5;
@@ -118,6 +124,8 @@ namespace EBF.Items.Magic.Flameheart
 
     public abstract class Flameheart_FireballBase : ModProjectile
     {
+        public override bool ShouldUpdatePosition() => false;
+
         /// <summary>
         /// Sets the variables that are shared between all fireball sizes.
         /// <para>If one of these variables should differ between fireballs, then move the variable into each subclass.</para>

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -66,7 +67,7 @@ namespace EBF.Items.Melee
 
             Projectile.timeLeft = 60 * 5;
 
-            Projectile.localNPCHitCooldown = -1;
+            Projectile.localNPCHitCooldown = 30;
             Projectile.usesLocalNPCImmunity = true;
         }
         public override void OnKill(int timeLeft)
@@ -83,7 +84,9 @@ namespace EBF.Items.Melee
             Projectile.frameCounter++;
             if (Projectile.frameCounter == waitingFrames)
             {
+                //Ignite
                 Projectile.velocity *= speed;
+                SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
             }
             
             if (Projectile.frameCounter >= waitingFrames)
