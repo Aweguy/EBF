@@ -331,7 +331,7 @@ Items: {
 
 				GaiasGift: {
 					DisplayName: Gaias Gift
-					Tooltip: Fully charged wooden arrows have life stealing capabilities and spawn a poisonous gaia seed on hit foes.
+					Tooltip: Fully charged wooden arrows have life stealing capabilities and spawn a big poisonous gaia seed on hit foes.
 				}
 
 				RegalTurtle: {
