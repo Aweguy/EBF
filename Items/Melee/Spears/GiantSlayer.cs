@@ -11,24 +11,23 @@ namespace EBF.Items.Melee.Spears
 
         public override void SetDefaults()
         {
-            Item.width = 32;
-            Item.height = 32;
-            Item.scale = 0.7f;
+            Item.width = 140;
+            Item.height = 140;
 
-            Item.damage = 65;
+            Item.damage = 71;
             Item.knockBack = 6.5f;
             Item.ArmorPenetration = 100;
             Item.DamageType = DamageClass.Melee;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useTime = 50;
-            Item.useAnimation = 50;
+            Item.useTime = 25;
+            Item.useAnimation = 25;
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 9, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;
             
             Item.shoot = ModContent.ProjectileType<GiantSlayer_Projectile>();
-            Item.shootSpeed = 3.7f;
-            Item.noMelee = true; // Important because the spear is actually a projectile instead of an Item. This prevents the melee hitbox of this Item.
-            Item.noUseGraphic = true; // Important, it's kind of wired if people see two spears at one time. This prevents the melee animation of this Item.
+            Item.shootSpeed = 7.5f;
+            Item.noMelee = true; // Important, the spear is a projectile instead of an item. This prevents the melee hitbox of this item.
+            Item.noUseGraphic = true; // Important, it's weird to see two spears at once. This prevents the melee animation of this item.
         }
         public override void AddRecipes()
         {
@@ -42,8 +41,7 @@ namespace EBF.Items.Melee.Spears
 
     public class GiantSlayer_Projectile : ModProjectile
     {
-        // This property renames an unclear variable and makes the code more readable
-        public float MovementFactor // Change this value to alter how fast the spear moves
+        public float PositionOffset
         {
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
@@ -55,8 +53,6 @@ namespace EBF.Items.Melee.Spears
 
             Projectile.aiStyle = ProjAIStyleID.Spear;
             Projectile.penetrate = -1;
-            DrawOriginOffsetX = -10;
-            DrawOriginOffsetY = -10;
 
             Projectile.hide = true;
             Projectile.ownerHitCheck = true;
@@ -70,47 +66,40 @@ namespace EBF.Items.Melee.Spears
         }
         private void DoSpearAI()
         {
-            // Adjust player's held item and itemTime
-            Player projOwner = Main.player[Projectile.owner];
-            projOwner.heldProj = Projectile.whoAmI;
-            projOwner.itemTime = projOwner.itemAnimation;
+            Player player = Main.player[Projectile.owner];
+            player.heldProj = Projectile.whoAmI;
 
             // Set position to the player's center adjusted for mount and step stool
-            Vector2 ownerMountedCenter = projOwner.RotatedRelativePoint(projOwner.MountedCenter, true);
-            Projectile.position.X = ownerMountedCenter.X - (float)Projectile.width / 2;
-            Projectile.position.Y = ownerMountedCenter.Y - (float)Projectile.height / 2;
+            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
+            Projectile.position = playerCenter - Projectile.Size / 2;
 
-            // As long as the player isn't frozen, the spear can move
-            if (!projOwner.frozen)
+            // if the player can move, the spear can move
+            if (!player.CCed)
             {
-                if (MovementFactor == 0f) // When initially thrown out, the ai0 will be 0f
+                if (PositionOffset == 0f)
                 {
-                    MovementFactor = 15f; // Make sure the spear moves forward when initially thrown out
-                    Projectile.netUpdate = true; // Make sure to netUpdate this spear
+                    PositionOffset = 15f; // Set initial offset
+                    Projectile.netUpdate = true;
                 }
 
                 // Handle move direction based on the item's use animation
-                if (projOwner.itemAnimation > projOwner.itemAnimationMax / 2)
+                if (player.itemAnimation > player.itemAnimationMax / 2)
                 {
                     //Move forward
-                    MovementFactor += 0.5f;
+                    PositionOffset += 0.5f;
                 }
                 else
                 {
                     //Move backward
-                    MovementFactor -= 2f;
+                    PositionOffset -= 2f;
                 }
             }
 
-            // Change the spear position based off of the velocity and the movementFactor
-            Projectile.position += Projectile.velocity * MovementFactor;
+            // Change the spear position based on the velocity and the offset
+            Projectile.position += Projectile.velocity * PositionOffset;
 
-
-            // When we reach the end of the animation, we can kill the spear Projectile
-            if (projOwner.itemAnimation == 0)
-            {
-                Projectile.Kill();
-            }
+            // Kill projectile if it's done being used
+            Projectile.timeLeft = player.itemAnimation;
 
             // Adjust sprite's rotation to the direction of the stab
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(135f);
