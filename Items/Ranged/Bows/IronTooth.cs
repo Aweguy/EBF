@@ -69,7 +69,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 80;
+            MaximumDrawTime = 70;
             MinimumDrawTime = 20;
 
             DamageScale = 1.25f;
@@ -81,7 +81,7 @@ namespace EBF.Items.Ranged.Bows
         }
         public override void PreAISafe()
         {
-            if (IsReleased)
+            if (IsReleased && FullyCharged)
             {
                 Dust dust;
                 dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Scale: 2f);
@@ -92,9 +92,12 @@ namespace EBF.Items.Ranged.Bows
         }
         public override void OnKill(int timeLeft)
         {
-            //Generate explosion
-            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.HellfireArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            proj.Kill();
+            if (FullyCharged)
+            {
+                //Generate explosion
+                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.HellfireArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                proj.Kill();
+            }
         }
     }
 }

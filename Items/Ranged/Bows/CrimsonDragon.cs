@@ -15,12 +15,12 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 30;//Item's base damage value
+            Item.damage = 34;//Item's base damage value
             Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 20;//How fast the item is used
+            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -54,7 +54,7 @@ namespace EBF.Items.Ranged.Bows
 
     public class CrimsonDragon_CrimsonArrow : EBFChargeableArrow
     {
-        private const int batSpawnRate = 2; //How often a projectile is spawned per second
+        private const int batSpawnRate = 3; //How often a projectile is spawned per second
 
         public override void SetDefaults()
         {
@@ -67,12 +67,12 @@ namespace EBF.Items.Ranged.Bows
             Projectile.tileCollide = true;
             Projectile.hide = false;
 
-            MinimumDrawTime = 20;
-            MaximumDrawTime = 60;
+            MinimumDrawTime = 10;
+            MaximumDrawTime = 40;
             AutoRelease = true;
             ReleaseSound = SoundID.DD2_FlameburstTowerShot;
 
-            DamageScale = 2.0f;
+            DamageScale = 2.5f;
             VelocityScale = 1.5f;
 
             Projectile.localNPCHitCooldown = -1;
