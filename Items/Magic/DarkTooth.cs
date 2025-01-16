@@ -80,7 +80,7 @@ namespace EBF.Items.Magic
             {
                 manaDrainTimer = 0;
 
-                int manaCost = 5;
+                int manaCost = 4;
                 if (player.statMana >= manaCost)
                 {
                     player.statMana -= manaCost;
@@ -101,7 +101,7 @@ namespace EBF.Items.Magic
         private const float dustBoost = 2f; //The offset from the center from which the dust will spawn
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
         private const float maxSize = 400f;
-        private const float maxSpeed = 3f;
+        private const float maxSpeed = 5f;
         private float suckRange;//The current range in which objects will be SUCCED
         private int baseWidth;
         private int baseHeight;

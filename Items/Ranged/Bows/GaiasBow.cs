@@ -17,7 +17,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 24;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 58;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 21;//Item's base damage value
+            Item.damage = 26;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -118,7 +118,7 @@ namespace EBF.Items.Ranged.Bows
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.Poisoned, 60 * 3);
+            target.AddBuff(BuffID.Poisoned, 60 * 5);
         }
         public override void AI()
         {
