@@ -13,30 +13,6 @@ V1.1 Bows Update (15/01/2025)
 
 V1.1.1 Balance and Fixes (16/01/2025)
 
--Anarchy -6 usetime, and is now 8 pixels bigger.
--Avenger +13 damage and -4 usetime.
--Berzerker +5 damage and -2 usetime.
--Dragon's feather 10% bigger and +28 damage.
--Fusion blade +7 damage, +6 usetime and -1 second of projectile lifetime.
--Heavens gate +50 damage and -2 usetime.
--Inferno +5 damage.
--Love blade +10 damage, -3 usetime and aura now does 75% of damage instead of 50%.
--Soul eater 10% bigger and +50 damage.
--Swift brand +2 damage.
--Giant slayer +6 damage and -25 usetime. Being webbed and stoned now also prevents using the item.
--Ice needle +54 damage, javelin explodes 5 ticks earlier, -2 snowflakes and stronger homing.
--Alchemist bow, charge gives 66% extra damage instead of 100%.
--Black widow, +6 damage and charge gives 50% extra damage instead of 0%.
--Crimson dragon, +4 damage, -10 usetime, bats spawn 3 times per sec instead of 2, max draw is achieved 20 ticks earlier and charge gives 150% extra damage instead of 100%.
--Eagle eye, +2 damage and charge gives 150% extra damage instead of 100%.
--Fairy bow, -15 usetime, extra leaves on full charge do 75% of damage instead of 50%.
--Gaia's bow, +5 damage and poison lasts 2 seconds longer.
--Gaia's gift, +10 damage, charge gives 33% extra damage instead of 50%, regained health is 6.66% instead of 10% of damage.
--Iron tooth, Max draw is achieved 10 ticks earlier, arrows now only explode on full charge.
--Regal turtle, -7 damage and charge gives 125% extra damage instead of 100%.
--Sharanga, +32 damage.
--Thorn bow, -20 usetime and stingers deal full damage instead of 50%.
--Thor's hammer, retiered to pre-mech with a new recipe and max draw is achieved 10 ticks earlier.
--The Air Strike bombs and Shooting Star projectile now passes through tiles above the clicked position.
--Dark Tooth, passive mana drain is now 4 instead of 5 per second and maximum speed has been increased from 3 to 5.
--Seraphim, +55 damage.
+Balanced some weapons and fixed bugs.
+Details in the changelog
+
