@@ -16,3 +16,4 @@ V1.1.1 Balance and Fixes (16/01/2025)
 Balanced some weapons and fixed bugs.
 Details in the changelog
 
+If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf
