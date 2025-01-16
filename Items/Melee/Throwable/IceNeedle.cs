@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace EBF.Items.Melee.Throwable
             Item.width = 72;
             Item.height = 72;
 
-            Item.damage = 72;
+            Item.damage = 126;
             Item.knockBack = 1f;
             Item.DamageType = DamageClass.Melee;
 
@@ -58,7 +59,7 @@ namespace EBF.Items.Melee.Throwable
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             Projectile.aiStyle = -1;
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 25;
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
             AIType = ProjectileID.JavelinFriendly;
@@ -80,7 +81,7 @@ namespace EBF.Items.Melee.Throwable
         {
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
 
-            int numberOfProjectiles = 9;
+            int numberOfProjectiles = 7;
             float projRotation = 0f;
 
             #region Projectile spawn
@@ -147,13 +148,11 @@ namespace EBF.Items.Melee.Throwable
                 //Slow down over time
                 Projectile.velocity *= 0.9f;
             }
-
+           
             if (FindTarget(out Vector2 move) == true)
             {
                 isChasing = true;
-                AdjustMagnitude(ref move);
-                Projectile.velocity = (8 * Projectile.velocity + move) / 11f;
-                AdjustMagnitude(ref Projectile.velocity);
+                Projectile.velocity += move;
             }
             else
             {
@@ -165,7 +164,6 @@ namespace EBF.Items.Melee.Throwable
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.frame = Main.rand.Next(0, 3);
-            AdjustMagnitude(ref Projectile.velocity);
 
             //Get all valid npcs to target using the following criteria (reduces search size for homing)
             validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
@@ -175,7 +173,7 @@ namespace EBF.Items.Melee.Throwable
             move = Vector2.Zero; //default case
 
             float distance = 125f;
-            bool target = false;
+            bool foundTarget = false;
             foreach (NPC npc in validNPCs)
             {
                 //Ignore dead npcs
@@ -188,20 +186,12 @@ namespace EBF.Items.Melee.Throwable
                 float distanceTo = towardsNPC.Length();
                 if (distanceTo < distance)
                 {
-                    move = towardsNPC;
+                    move = Vector2.Normalize(towardsNPC);
                     distance = distanceTo;
-                    target = true;
+                    foundTarget = true;
                 }
             }
-            return target;
-        }
-        private static void AdjustMagnitude(ref Vector2 vector)
-        {
-            float magnitude = vector.Length();
-            if (magnitude > 6f)
-            {
-                vector *= 9f / magnitude;
-            }
+            return foundTarget;
         }
         public override void OnKill(int timeLeft)
         {

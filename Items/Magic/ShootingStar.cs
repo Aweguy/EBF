@@ -64,6 +64,7 @@ namespace EBF.Items.Magic
         private const int maxVelocity = 16;
         private int bounces = 1;
         private bool isShrinking = false;
+        private Vector2 clickPosition; //Used to let the projectile pass through tiles above the cursor
         public override void SetDefaults()
         {
             Projectile.width = 32;
@@ -71,8 +72,15 @@ namespace EBF.Items.Magic
             Projectile.friendly = true;
             Projectile.penetrate = 1;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.extraUpdates = 1;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (Main.myPlayer == Projectile.owner)
+            {
+                clickPosition = Main.MouseWorld;
+            }
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
@@ -106,6 +114,9 @@ namespace EBF.Items.Magic
         }
         public override bool PreAI()
         {
+            //Tile collision
+            HandleTileEnabling();
+
             //Gravity & Terminal velocity
             Projectile.velocity.Y += 0.15f;
             Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y, -maxVelocity, maxVelocity);
@@ -137,6 +148,18 @@ namespace EBF.Items.Magic
         public override void OnKill(int timeLeft)
         {
             SpawnDusts(dustsOnDeath);
+        }
+        private void HandleTileEnabling()
+        {
+            if (Projectile.position.Y >= clickPosition.Y)
+            {
+                Tile tile = Framing.GetTileSafely((int)(Projectile.position.X / 16), (int)(Projectile.position.Y / 16));
+
+                if (tile == null || !tile.HasTile)
+                {
+                    Projectile.tileCollide = true;
+                }
+            }
         }
         private void SpawnDusts(int amount)
         {

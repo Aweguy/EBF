@@ -1,6 +1,7 @@
 ﻿using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -110,6 +111,7 @@ namespace EBF.Items.Magic.Airstrike
         protected int explosionSize; //The hitbox size of the explosion
         protected int glowmaskOpacity = 0;
 
+        private Vector2 clickPosition; //Used to let the projectile pass through tiles above the cursor
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
         private bool inGround = false;
 
@@ -123,7 +125,7 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.hide = true;
             Projectile.extraUpdates = 1;
 
@@ -134,6 +136,12 @@ namespace EBF.Items.Magic.Airstrike
         {
             //Face falling direction
             Projectile.rotation = Projectile.velocity.ToRotation();
+
+            //Store click position for tile collision
+            if (Main.myPlayer == Projectile.owner)
+            {
+                clickPosition = Main.MouseWorld;
+            }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -154,6 +162,9 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override bool PreAI()
         {
+            //Tile collision
+            HandleTileEnabling();
+
             if (inGround)
             {
                 //Glow and shake
@@ -220,6 +231,18 @@ namespace EBF.Items.Magic.Airstrike
             for (int g = 0; g < 4; g++)
             {
                 Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.Center, ProjectileExtensions.GetRandomVector() * 1.5f, Main.rand.Next(61, 64), Scale: 1.5f);
+            }
+        }
+        private void HandleTileEnabling()
+        {
+            if (Projectile.position.Y >= clickPosition.Y)
+            {
+                Tile tile = Framing.GetTileSafely((int)(Projectile.position.X / 16), (int)(Projectile.position.Y / 16));
+
+                if (tile == null || !tile.HasTile)
+                {
+                    Projectile.tileCollide = true;
+                }
             }
         }
     }

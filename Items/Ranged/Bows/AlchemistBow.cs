@@ -76,7 +76,7 @@ namespace EBF.Items.Ranged.Bows
             MaximumDrawTime = 100;
             MinimumDrawTime = 20;
 
-            DamageScale = 2f;
+            DamageScale = 1.66f;
             VelocityScale = 2f;
 
             Projectile.localNPCHitCooldown = -1;

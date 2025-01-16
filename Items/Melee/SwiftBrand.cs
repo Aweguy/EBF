@@ -12,7 +12,7 @@ namespace EBF.Items.Melee
             Item.width = 48;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 48;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 12;//Item's base damage value
+            Item.damage = 14;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
@@ -27,7 +27,7 @@ namespace EBF.Items.Melee
         }
 
         /* TODO: Increase player movement speed while holding the weapon.
-         * also, make the crafting recipe work with silver bars, cuz right now it explicitly wants tungsten bars.
+         * also, add recipe group for silver/tungsten.
          */
 
         public override void AddRecipes()

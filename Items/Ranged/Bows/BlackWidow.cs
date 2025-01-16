@@ -15,7 +15,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 38;//Item's base damage value
+            Item.damage = 44;//Item's base damage value
             Item.knockBack = 2.5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -73,7 +73,7 @@ namespace EBF.Items.Ranged.Bows
             MaximumDrawTime = 50;
             MinimumDrawTime = 10;
 
-            DamageScale = 1f;
+            DamageScale = 1.5f;
             VelocityScale = 2f;
 
             Projectile.localNPCHitCooldown = -1;
