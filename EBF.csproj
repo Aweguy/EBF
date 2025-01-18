@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Buffs\Cooldowns\Overheated.png" />
     <None Remove="Items\BlitzNeedle.png" />
     <None Remove="Items\BlitzNeedleProjectile.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_Bomb.png" />

@@ -37,6 +37,11 @@ Buffs: {
 		DisplayName: Regeneration
 		Description: Quickly regenerating health
 	}
+
+	Overheated: {
+		DisplayName: Overheated
+		Description: Your launcher is too hot to use.
+	}
 }
 
 Projectiles: {
@@ -86,6 +91,8 @@ Projectiles: {
 	TheStinger_Arrow.DisplayName: The Stinger Arrow
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	GaiaSeed.DisplayName: Gaia Seed
+	HeavyClawLauncher.DisplayName: Heavy Claw Launcher
+	HeavyClawSidearm.DisplayName: Heavy Claw Sidearm
 }
 
 NPCs: {
@@ -371,6 +378,13 @@ Items: {
 				ThornBow: {
 					DisplayName: Thorn Bow
 					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+				}
+			}
+
+			Guns: {
+				HeavyClaw: {
+					DisplayName: Heavy Claw
+					Tooltip: ""
 				}
 			}
 		}
