@@ -1,5 +1,6 @@
 ﻿using EBF.Extensions;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -34,6 +35,9 @@ namespace EBF.Abstract_Classes
             Player player = Main.player[Projectile.owner];
             HandleTransform(player);
 
+            //Handle player arm rotation
+            player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+
             //Run only once
             if (Projectile.localAI[0] == 0)
             {
@@ -41,10 +45,10 @@ namespace EBF.Abstract_Classes
                 SoundEngine.PlaySound(ShootSound, Projectile.position);
 
                 //Identify bullet type
-                int type = ProjectileID.Bullet;
-                player.PickAmmo(player.HeldItem, out type, out _, out _, out _, out _, true);
-                
-                OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+                if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
+                {
+                    OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+                }
             }
 
             Projectile.timeLeft = player.itemTime + 1;

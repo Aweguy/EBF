@@ -93,6 +93,8 @@ Projectiles: {
 	GaiaSeed.DisplayName: Gaia Seed
 	HeavyClawLauncher.DisplayName: Heavy Claw Launcher
 	HeavyClawSidearm.DisplayName: Heavy Claw Sidearm
+	SteelSharkLauncher.DisplayName: Steel Shark Launcher
+	SteelSharkSidearm.DisplayName: Steel Shark Sidearm
 }
 
 NPCs: {
@@ -384,7 +386,12 @@ Items: {
 			Guns: {
 				HeavyClaw: {
 					DisplayName: Heavy Claw
-					Tooltip: ""
+					Tooltip: Press right click to launch a devastating missile.
+				}
+
+				SteelShark: {
+					DisplayName: Steel Shark
+					Tooltip: Press right click to swing the shark, leaving anyone it hits with half armor for 10 seconds.
 				}
 			}
 		}

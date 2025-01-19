@@ -1,5 +1,6 @@
 ﻿using EBF.Extensions;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -55,7 +56,12 @@ namespace EBF.Abstract_Classes
             Player player = Main.player[Projectile.owner];
             HandleTransform(player);
             HandleCharge(player);
-            
+
+            Projectile.timeLeft = player.itemTime + 1;
+
+            //Handle player arm rotation
+            player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
+
             return PreAISafe();
         }
         private void HandleTransform(Player player)
@@ -77,11 +83,11 @@ namespace EBF.Abstract_Classes
             {
                 charge++;
 
-                if (player.itemTime < 2)
+                if (player.itemTime < 1)
                 {
-                    player.itemTime = 2;
-                    player.itemAnimation = 2;
-                    Projectile.timeLeft = 2;
+                    player.itemTime = 1;
+                    player.itemAnimation = 1;
+                    Projectile.timeLeft = 1;
                 }
             }
             if (charge >= MaxCharge)
