@@ -19,23 +19,11 @@ namespace EBF.Abstract_Classes
         /// <para/> Defaults to Item13 (aqua scepter sound).
         /// </summary>
         protected SoundStyle SpawnSound { get; set; } = SoundID.Item13;
-        
-        /// <summary>
-        /// The sound this item makes when shooting. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
-        /// <br/> For example <c>ShootSound = SoundID.Item11;</c> can be used for a bullet being fired.
-        /// <para/> Defaults to Item99 (dart rifle sound).
-        /// </summary>
-        protected SoundStyle ShootSound { get; set; } = SoundID.Item99;
 
         /// <summary>
         /// This hook is called once the weapon has been used.
         /// </summary>
         public virtual void OnSpawnSafe() { }
-
-        /// <summary>
-        /// This hook is called when the weapon has finished its use.
-        /// </summary>
-        public virtual void OnKillSafe(int timeLeft) { }
 
         /// <summary>
         /// Allows you to determine how this projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns false by default.
@@ -45,7 +33,7 @@ namespace EBF.Abstract_Classes
         public virtual bool PreAISafe() { return false; }
 
         public override sealed bool ShouldUpdatePosition() => false;
-        public sealed override void OnSpawn(IEntitySource source)
+        public override sealed void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(SpawnSound, Projectile.position);
             Projectile.timeLeft = Main.player[Projectile.owner].itemTime;
@@ -60,6 +48,12 @@ namespace EBF.Abstract_Classes
             //Handle player arm rotation (this need to be improved because the arm can't go behind the player's head when Atan is used).
             Vector2 directionToGun = Vector2.Normalize(Projectile.position - player.Center);
             player.itemRotation = MathF.Atan2(directionToGun.Y * Projectile.direction, directionToGun.X * Projectile.direction);
+
+            //Add collision when near ground
+            if (Projectile.timeLeft < 2)
+            {
+                Projectile.tileCollide = true;
+            }
 
             return PreAISafe();
         }
@@ -82,11 +76,6 @@ namespace EBF.Abstract_Classes
 
             //Handle rotation
             Projectile.rotation = (angle * Projectile.direction) - MathHelper.PiOver2 * Projectile.direction;
-        }
-        public override void OnKill(int timeLeft)
-        {
-            SoundEngine.PlaySound(ShootSound, Projectile.position);
-            OnKillSafe(timeLeft);
         }
     }
 }

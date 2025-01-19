@@ -4,6 +4,7 @@ using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,8 +15,8 @@ namespace EBF.Items.Ranged.Guns
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 66;
-            Item.height = 32;
+            Item.width = 80;
+            Item.height = 30;
 
             Item.useTime = 30;
             Item.useAnimation = 30;
@@ -51,7 +52,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 5);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 1);
                 type = ModContent.ProjectileType<DeepBlueLauncher>();
             }
             else
@@ -60,62 +61,34 @@ namespace EBF.Items.Ranged.Guns
             }
         }
     }
-    public class DeepBlueLauncher : EBFLauncher
+    public class DeepBlueLauncher : EBFMagicLauncher
     {
         public override string Texture => "EBF/Items/Ranged/Guns/DeepBlue";
         public override void SetDefaults()
         {
-            Projectile.width = 66;
-            Projectile.height = 32;
+            Projectile.width = 80;
+            Projectile.height = 30;
 
             Projectile.penetrate = -1;
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
 
-            ChargeSound = SoundID.Item1;
-            ShootSound = SoundID.Item14;
-            MaxCharge = 30; //Gotta match usetime for this specific weapon because why should I have known that they wanted a launcher to be swung like a fucking sword???
+            SpawnSound = SoundID.Item1;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            target.AddBuff(BuffID.BrokenArmor, 60 * 10);
+            SoundEngine.PlaySound(SoundID.Dig);
+            return true;
         }
-        public override bool PreAISafe()
-        {
-            //WARNING: THIS AI IS VERY POORLY PROGRAMMED
 
-            Player player = Main.player[Projectile.owner];
-            HandleTransform(player);
-
-            //Handle player arm rotation
-            Vector2 directionToGun = Vector2.Normalize(Projectile.position - player.Center);
-            player.itemRotation = MathF.Atan2(directionToGun.Y * Projectile.direction, directionToGun.X * Projectile.direction);
-
-            return false;
-        }
-        private void HandleTransform(Player player)
-        {
-            //Very funny magic formula that gives the swing exponential speed, don't ask me how it works cuz idk.
-            Projectile.frameCounter++;
-            float itemTimePercent = (float)Projectile.frameCounter / (float)Projectile.timeLeft;
-            float angle = MathHelper.Pi * (itemTimePercent / (player.itemTimeMax / 3));
-
-            //Handle position
-            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            Projectile.position = playerCenter - Projectile.Size * 0.5f;
-            Projectile.position -= (Vector2.UnitX * 30 * Projectile.direction).RotatedBy(angle * Projectile.direction);
-
-            //Handle rotation
-            Projectile.rotation = (angle * Projectile.direction) - MathHelper.PiOver2 * Projectile.direction;
-        }
     }
     public class DeepBlueSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {
             Projectile.width = 36;
-            Projectile.height = 22;
+            Projectile.height = 24;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
