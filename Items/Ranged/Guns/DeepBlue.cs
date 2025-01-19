@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class SteelShark : ModItem, ILocalizedModType
+    public class DeepBlue : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
@@ -17,8 +17,8 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 66;
             Item.height = 32;
 
-            Item.useTime = 14;
-            Item.useAnimation = 14;
+            Item.useTime = 30;
+            Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 20;
@@ -52,17 +52,17 @@ namespace EBF.Items.Ranged.Guns
             if (player.altFunctionUse == 2)
             {
                 player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 5);
-                type = ModContent.ProjectileType<SteelSharkLauncher>();
+                type = ModContent.ProjectileType<DeepBlueLauncher>();
             }
             else
             {
-                type = ModContent.ProjectileType<SteelSharkSidearm>();
+                type = ModContent.ProjectileType<DeepBlueSidearm>();
             }
         }
     }
-    public class SteelSharkLauncher : EBFLauncher
+    public class DeepBlueLauncher : EBFLauncher
     {
-        public override string Texture => "EBF/Items/Ranged/Guns/SteelShark";
+        public override string Texture => "EBF/Items/Ranged/Guns/DeepBlue";
         public override void SetDefaults()
         {
             Projectile.width = 66;
@@ -75,7 +75,7 @@ namespace EBF.Items.Ranged.Guns
 
             ChargeSound = SoundID.Item1;
             ShootSound = SoundID.Item14;
-            MaxCharge = 14; //Gotta match usetime for this specific weapon because why should I have known that they wanted a launcher to be swung like a fucking sword???
+            MaxCharge = 30; //Gotta match usetime for this specific weapon because why should I have known that they wanted a launcher to be swung like a fucking sword???
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -94,46 +94,23 @@ namespace EBF.Items.Ranged.Guns
 
             return false;
         }
-        public override void OnKill(int timeLeft)
-        {
-            //Explode
-            Projectile.position += Vector2.UnitX * 40 * Projectile.direction; //Extend hitbox forward
-            ProjectileExtensions.ExpandHitboxBy(Projectile, 100, 100);
-            Projectile.friendly = true;
-            Projectile.Damage();
-
-            //Handle dust
-            Dust dust;
-
-            // Smoke
-            for (int i = 0; i < 10; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 2f);
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 2;
-            }
-            // Fire
-            for (int i = 0; i < 20; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 2f));
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 1;
-            }
-        }
         private void HandleTransform(Player player)
         {
-            //Calculate angle
-            float itemTimePercent = (float)player.itemTime / (float)player.itemTimeMax;
-            float angle = MathHelper.Pi * (1 - itemTimePercent);
+            //Very funny magic formula that gives the swing exponential speed, don't ask me how it works cuz idk.
+            Projectile.frameCounter++;
+            float itemTimePercent = (float)Projectile.frameCounter / (float)Projectile.timeLeft;
+            float angle = MathHelper.Pi * (itemTimePercent / (player.itemTimeMax / 3));
 
             //Handle position
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
             Projectile.position = playerCenter - Projectile.Size * 0.5f;
-            Projectile.position -= (Vector2.UnitX * 40 * Projectile.direction).RotatedBy(angle * Projectile.direction);
+            Projectile.position -= (Vector2.UnitX * 30 * Projectile.direction).RotatedBy(angle * Projectile.direction);
 
             //Handle rotation
-            Projectile.rotation = (angle * Projectile.direction) + MathHelper.Pi;
+            Projectile.rotation = (angle * Projectile.direction) - MathHelper.PiOver2 * Projectile.direction;
         }
     }
-    public class SteelSharkSidearm : EBFSidearm
+    public class DeepBlueSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {

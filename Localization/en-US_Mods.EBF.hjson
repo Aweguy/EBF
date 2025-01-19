@@ -95,6 +95,8 @@ Projectiles: {
 	HeavyClawSidearm.DisplayName: Heavy Claw Sidearm
 	SteelSharkLauncher.DisplayName: Steel Shark Launcher
 	SteelSharkSidearm.DisplayName: Steel Shark Sidearm
+	DeepBlueLauncher.DisplayName: Deep Blue Launcher
+	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
 }
 
 NPCs: {
@@ -386,12 +388,17 @@ Items: {
 			Guns: {
 				HeavyClaw: {
 					DisplayName: Heavy Claw
-					Tooltip: Press right click to launch a devastating missile.
+					Tooltip: Right click launches a devastating missile.
 				}
 
 				SteelShark: {
 					DisplayName: Steel Shark
-					Tooltip: Press right click to swing the shark, leaving anyone it hits with half armor for 10 seconds.
+					Tooltip: Right click swings the shark, leaving anyone it hits with half armor for 10 seconds.
+				}
+
+				DeepBlue: {
+					DisplayName: Deep Blue
+					Tooltip: Right click plants the gun into the ground, causing geysers to erupt below nearby foes.
 				}
 			}
 		}
