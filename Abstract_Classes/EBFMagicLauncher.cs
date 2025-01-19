@@ -1,9 +1,11 @@
 ﻿using EBF.Extensions;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,6 +34,11 @@ namespace EBF.Abstract_Classes
         /// <returns>Whether or not to stop other AI.</returns>
         public virtual bool PreAISafe() { return false; }
 
+        /// <summary>
+        /// This hook is called if the projectile makes a successful collision with the ground.
+        /// </summary>
+        public virtual void OnGroundHit() { }
+
         public override sealed bool ShouldUpdatePosition() => false;
         public override sealed void OnSpawn(IEntitySource source)
         {
@@ -49,10 +56,11 @@ namespace EBF.Abstract_Classes
             Vector2 directionToGun = Vector2.Normalize(Projectile.position - player.Center);
             player.itemRotation = MathF.Atan2(directionToGun.Y * Projectile.direction, directionToGun.X * Projectile.direction);
 
-            //Add collision when near ground
-            if (Projectile.timeLeft < 2)
+            //Check for ground collision at the end of the animation.
+            if (Projectile.timeLeft < 2 && CheckGroundHit(player))
             {
-                Projectile.tileCollide = true;
+                SoundEngine.PlaySound(SoundID.Dig);
+                OnGroundHit();
             }
 
             return PreAISafe();
@@ -76,6 +84,14 @@ namespace EBF.Abstract_Classes
 
             //Handle rotation
             Projectile.rotation = (angle * Projectile.direction) - MathHelper.PiOver2 * Projectile.direction;
+        }
+        private bool CheckGroundHit(Player player)
+        {
+            //Make custom tile check because using the projectile's position does not want to work.
+            Vector2 hitPosition = player.Bottom + new Vector2(30 * Projectile.direction, 8);
+            Tile tile = Framing.GetTileSafely(hitPosition);
+
+            return tile.HasTile && Main.tileSolid[tile.TileType];
         }
     }
 }

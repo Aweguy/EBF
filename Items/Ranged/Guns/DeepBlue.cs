@@ -76,12 +76,6 @@ namespace EBF.Items.Ranged.Guns
 
             SpawnSound = SoundID.Item1;
         }
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            SoundEngine.PlaySound(SoundID.Dig);
-            return true;
-        }
-
     }
     public class DeepBlueSidearm : EBFSidearm
     {
