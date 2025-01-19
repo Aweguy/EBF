@@ -56,23 +56,8 @@ namespace EBF.Abstract_Classes
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
             Projectile.position = playerCenter - Projectile.Size * 0.5f;
 
-            Projectile.velocity = Vector2.Normalize(Main.MouseWorld - playerCenter) * Projectile.velocity.Length();
-            Projectile.rotation = Projectile.velocity.ToRotation();
-
-            //Add some positional offset
+            Projectile.LookAt(Main.MouseWorld);
             Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
-
-            //Set old direction
-            int oldDirection = Projectile.spriteDirection;
-            if (oldDirection == -1)
-                Projectile.rotation += MathHelper.Pi;
-
-            //Update direction
-            Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt();
-            player.ChangeDir(Projectile.direction);
-
-            if (Projectile.spriteDirection != oldDirection)
-                Projectile.rotation -= MathHelper.Pi;
         }
     }
 }
