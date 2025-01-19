@@ -8,6 +8,11 @@ using Terraria.ModLoader;
 
 namespace EBF.Abstract_Classes
 {
+    /// <summary>
+    /// This class represents a standard sidearm to a launcher weapon, which sticks to the player and points at the cursor.
+    /// <br>It is necessary for our modded guns to use this projectile, because they are unable to switch texture depending on whether RMB was pressed or not. 
+    /// Instead, the sidearm and corresponding launcher are projectiles that simulate being a weapon.</br>
+    /// </summary>
     public abstract class EBFSidearm : ModProjectile
     {
         /// <summary>
