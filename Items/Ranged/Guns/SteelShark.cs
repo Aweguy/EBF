@@ -4,6 +4,7 @@ using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,7 +52,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 5);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
                 type = ModContent.ProjectileType<SteelSharkLauncher>();
             }
             else
@@ -62,6 +63,7 @@ namespace EBF.Items.Ranged.Guns
     }
     public class SteelSharkLauncher : EBFLauncher
     {
+        private int bulletsToShoot;
         public override string Texture => "EBF/Items/Ranged/Guns/SteelShark";
         public override void SetDefaults()
         {
@@ -73,64 +75,37 @@ namespace EBF.Items.Ranged.Guns
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
 
-            ChargeSound = SoundID.Item1;
+            ActiveTime = 90;
             ShootSound = SoundID.Item14;
-            MaxCharge = 14; //Gotta match usetime for this specific weapon because why should I have known that they wanted a launcher to be swung like a fucking sword???
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            target.AddBuff(BuffID.BrokenArmor, 60 * 10);
         }
         public override bool PreAISafe()
         {
-            //WARNING: THIS AI IS VERY POORLY PROGRAMMED
-
-            Player player = Main.player[Projectile.owner];
-            HandleTransform(player);
-
-            //Handle player arm rotation
-            Vector2 directionToGun = Vector2.Normalize(Projectile.position - player.Center);
-            player.itemRotation = MathF.Atan2(directionToGun.Y * Projectile.direction, directionToGun.X * Projectile.direction);
-
+            //Add some offset cuz the sprite is small
+            Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
             return false;
         }
-        public override void OnKill(int timeLeft)
+        public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            //Explode
-            Projectile.position += Vector2.UnitX * 40 * Projectile.direction; //Extend hitbox forward
-            ProjectileExtensions.ExpandHitboxBy(Projectile, 100, 100);
-            Projectile.friendly = true;
-            Projectile.Damage();
-
-            //Handle dust
-            Dust dust;
-
-            // Smoke
-            for (int i = 0; i < 10; i++)
+            //Run once
+            if (Projectile.localAI[1] == 0)
             {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 2f);
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 2;
+                bulletsToShoot = 50;
+                Projectile.localAI[1] = 1;
             }
-            // Fire
-            for (int i = 0; i < 20; i++)
+
+            //Release bullets
+            if (bulletsToShoot > 0)
             {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 2f));
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 1;
+                //Reduce firerate over time
+                int rate = 51 - bulletsToShoot;
+                if (Main.GameUpdateCount % rate == 0)
+                {
+                    //Shoot
+                    SoundEngine.PlaySound(SoundID.Item11, Projectile.position);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity.RotatedByRandom(0.1d), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    bulletsToShoot--;
+                }
             }
-        }
-        private void HandleTransform(Player player)
-        {
-            //Calculate angle
-            float itemTimePercent = (float)player.itemTime / (float)player.itemTimeMax;
-            float angle = MathHelper.Pi * (1 - itemTimePercent);
-
-            //Handle position
-            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
-            Projectile.position = playerCenter - Projectile.Size * 0.5f;
-            Projectile.position -= (Vector2.UnitX * 40 * Projectile.direction).RotatedBy(angle * Projectile.direction);
-
-            //Handle rotation
-            Projectile.rotation = (angle * Projectile.direction) + MathHelper.Pi;
         }
     }
     public class SteelSharkSidearm : EBFSidearm

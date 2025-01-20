@@ -81,40 +81,21 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.position))
+            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.Center))
             {
                 //Get ground below target
-                Player player = Main.player[Projectile.owner];
-                GetGroundPosition(ModContent.ProjectileType<GeyserSpell>(), target.Center, out int XPosition, out int YPosition, out int _);
-                Vector2 position = new Vector2(XPosition, YPosition);
+                Vector2 position = GetGroundPosition(target.Center);
 
                 //Spawn projectile
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
-        private static void GetGroundPosition(int checkProj, Vector2 checkPosition, out int worldX, out int worldY, out int pushYUp)
+        private static Vector2 GetGroundPosition(Vector2 checkPosition)
         {
-            //Copied from player.FindSentryRestingSpot(), with the difference being this takes a position parameter
-            bool flag = false;
-            int posX = (int)checkPosition.X / 16;
-            int posY = (int)checkPosition.Y / 16;
-            worldX = posX * 16 + 8;
-            pushYUp = 41;
-            
-            if (!flag)
-            {
-                for (; posY < Main.maxTilesY - 10 
-                    && Main.tile[posX, posY] != null && !WorldGen.SolidTile2(posX, posY) 
-                    && Main.tile[posX - 1, posY] != null && !WorldGen.SolidTile2(posX - 1, posY) 
-                    && Main.tile[posX + 1, posY] != null && !WorldGen.SolidTile2(posX + 1, posY); posY++)
-                { }
+            Point pos = checkPosition.ToTileCoordinates();
+            for (; pos.Y < Main.maxTilesY - 10 && Main.tile[pos.X, pos.Y] != null && !WorldGen.SolidTile2(pos.X, pos.Y); pos.Y++) { }
 
-                posY++;
-            }
-
-            posY--;
-            pushYUp -= 14;
-            worldY = posY * 16;
+            return new Vector2(pos.X * 16 + 8, pos.Y * 16);
         }
     }
     public class DeepBlueSidearm : EBFSidearm
@@ -167,7 +148,7 @@ namespace EBF.Items.Ranged.Guns
         public override void AI()
         {
             //Shoot up from the ground
-            if(Projectile.height < 120)
+            if (Projectile.height < 120)
             {
                 Projectile.position.Y -= 5;
                 Projectile.height += 5;

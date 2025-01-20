@@ -73,7 +73,7 @@ namespace EBF.Items.Ranged.Guns
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
         }
-        public override void OnShoot(Vector2 barrelEnd)
+        public override void OnShoot(Vector2 barrelEnd, int type)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, ProjectileID.RocketI, Projectile.damage, Projectile.knockBack, Projectile.owner);
         }

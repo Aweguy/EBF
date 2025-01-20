@@ -394,12 +394,12 @@ Items: {
 
 				SteelShark: {
 					DisplayName: Steel Shark
-					Tooltip: Right click swings the shark, leaving anyone it hits with half armor for 10 seconds.
+					Tooltip: Right click makes the shark shoot a lot of bullets at once.
 				}
 
 				DeepBlue: {
 					DisplayName: Deep Blue
-					Tooltip: Right click plants the gun into the ground, causing geysers to erupt below nearby foes.
+					Tooltip: Right click plants the gun into the ground, causing a geysers to erupt below the closest foe.
 				}
 			}
 		}
