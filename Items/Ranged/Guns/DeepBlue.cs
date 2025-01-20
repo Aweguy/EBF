@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -52,7 +53,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 1);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 3);
                 type = ModContent.ProjectileType<DeepBlueLauncher>();
             }
             else
@@ -76,6 +77,45 @@ namespace EBF.Items.Ranged.Guns
 
             SpawnSound = SoundID.Item1;
         }
+        public override void OnGroundHit()
+        {
+            //Find a nearby target
+            NPC target = new NPC();
+            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.position))
+            {
+                //Get ground below target
+                Player player = Main.player[Projectile.owner];
+                GetGroundPosition(ModContent.ProjectileType<GeyserSpell>(), target.Center, out int XPosition, out int YPosition, out int _);
+                Vector2 position = new Vector2(XPosition, YPosition);
+
+                //Spawn projectile
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+        }
+        private static void GetGroundPosition(int checkProj, Vector2 checkPosition, out int worldX, out int worldY, out int pushYUp)
+        {
+            //Copied from player.FindSentryRestingSpot(), with the difference being this takes a position parameter
+            bool flag = false;
+            int posX = (int)checkPosition.X / 16;
+            int posY = (int)checkPosition.Y / 16;
+            worldX = posX * 16 + 8;
+            pushYUp = 41;
+            
+            if (!flag)
+            {
+                for (; posY < Main.maxTilesY - 10 
+                    && Main.tile[posX, posY] != null && !WorldGen.SolidTile2(posX, posY) 
+                    && Main.tile[posX - 1, posY] != null && !WorldGen.SolidTile2(posX - 1, posY) 
+                    && Main.tile[posX + 1, posY] != null && !WorldGen.SolidTile2(posX + 1, posY); posY++)
+                { }
+
+                posY++;
+            }
+
+            posY--;
+            pushYUp -= 14;
+            worldY = posY * 16;
+        }
     }
     public class DeepBlueSidearm : EBFSidearm
     {
@@ -91,6 +131,47 @@ namespace EBF.Items.Ranged.Guns
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
+    }
+
+    public class GeyserSpell : ModProjectile
+    {
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
+        public override void SetDefaults()
+        {
+            Projectile.width = 64;
+            Projectile.height = 2;
+
+            Projectile.timeLeft = 30;
+            Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.tileCollide = false;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                //Spawn dirt dust
+                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 5f);
+                dust.noGravity = true;
+            }
+            for (int i = 0; i < 30; i++)
+            {
+                //Spawn water dust
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.GemSapphire, SpeedX: 0, SpeedY: Main.rand.Next(-8, -3), Scale: 3f);
+                dust.noGravity = true;
+                dust.noLight = true;
+            }
+        }
+        public override void AI()
+        {
+            //Shoot up from the ground
+            if(Projectile.height < 120)
+            {
+                Projectile.position.Y -= 5;
+                Projectile.height += 5;
+            }
         }
     }
 }

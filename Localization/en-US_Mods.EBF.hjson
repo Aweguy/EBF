@@ -97,6 +97,7 @@ Projectiles: {
 	SteelSharkSidearm.DisplayName: Steel Shark Sidearm
 	DeepBlueLauncher.DisplayName: Deep Blue Launcher
 	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
+	GeyserSpell.DisplayName: Geyser Spell
 }
 
 NPCs: {
