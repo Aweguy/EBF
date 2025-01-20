@@ -23,13 +23,19 @@ namespace EBF.Abstract_Classes
         /// <para>Defaults to 30.</para>
         /// </summary>
         protected int MaxCharge { get; set; } = 30;
-        
+
+        /// <summary>
+        /// How many ticks the weapon stays active after having fully charged.
+        /// <para>Defaults to 0.</para>
+        /// </summary>
+        protected int ActiveTime { get; set; } = 0;
+
         /// <summary>
         /// The initial sound this item makes upon being used. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
         /// <para/> Defaults to Item13 (aqua scepter sound).
         /// </summary>
         protected SoundStyle ChargeSound { get; set; } = SoundID.Item13;
-        
+
         /// <summary>
         /// The sound this item makes when shooting. Set this to an existing <see cref="SoundID"/> entry or assign to a new <see cref="SoundStyle"/> for a custom sound.
         /// <br/> For example <c>ShootSound = SoundID.Item11;</c> can be used for a bullet being fired.
@@ -38,10 +44,11 @@ namespace EBF.Abstract_Classes
         protected SoundStyle ShootSound { get; set; } = SoundID.Item99;
 
         /// <summary>
-        /// This hook is called when the weapon is supposed to shoot its projectile.
+        /// This hook is called while the weapon is fully charged.
         /// </summary>
         /// <param name="barrelEnd">The approximate position of the launcher's barrel.</param>
-        public virtual void OnShoot(Vector2 barrelEnd) { }
+        /// <param name="type">Reference to the bullet type in the player's inventory.</param>
+        public virtual void OnShoot(Vector2 barrelEnd, int type) { }
 
         /// <summary>
         /// This hook is called once the weapon has been used.
@@ -97,9 +104,35 @@ namespace EBF.Abstract_Classes
             }
             if (charge >= MaxCharge)
             {
-                SoundEngine.PlaySound(ShootSound, Projectile.position);
-                OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()));
-                Projectile.Kill();
+                //Run only once
+                if (Projectile.localAI[0] == 0)
+                {
+                    Projectile.localAI[0] = 1;
+                    SoundEngine.PlaySound(ShootSound, Projectile.position);
+                }
+
+                //Identify bullet type
+                if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, false))
+                {
+                    OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()), type);
+                }
+
+                //Check if the launcher should die or stay for some time
+                ActiveTime--;
+                if (ActiveTime <= 0)
+                {
+                    Projectile.Kill();
+                }
+                else
+                {
+                    //Keep item active
+                    if (player.itemTime < 2)
+                    {
+                        player.itemTime = 2;
+                        player.itemAnimation = 2;
+                        Projectile.timeLeft = 2;
+                    }
+                }
             }
         }
     }

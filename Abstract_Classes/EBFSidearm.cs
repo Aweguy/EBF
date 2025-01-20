@@ -23,7 +23,7 @@ namespace EBF.Abstract_Classes
         protected SoundStyle ShootSound { get; set; } = SoundID.Item11;
 
         /// <summary>
-        /// This hook is called when the weapon is supposed to shoot its projectile.
+        /// This hook is called once when the weapon is fully charged.
         /// </summary>
         public virtual void OnShoot(Vector2 barrelEnd, int type) { }
 
