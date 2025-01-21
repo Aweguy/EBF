@@ -23,6 +23,16 @@ namespace EBF.Abstract_Classes
         protected SoundStyle ShootSound { get; set; } = SoundID.Item11;
 
         /// <summary>
+        /// How many ticks the weapon stays active after being used.
+        /// <para>Defaults to 0.</para>
+        /// </summary>
+        protected int ActiveTime { get; set; } = 0;
+
+        /// <summary>
+        /// This hook is called once when the weapon is fully charged.
+        /// </summary>
+        public virtual void WhileShoot(Vector2 barrelEnd, int type) { }
+        /// <summary>
         /// This hook is called once when the weapon is fully charged.
         /// </summary>
         public virtual void OnShoot(Vector2 barrelEnd, int type) { }
@@ -39,25 +49,12 @@ namespace EBF.Abstract_Classes
         {
             Player player = Main.player[Projectile.owner];
             HandleTransform(player);
+            HandleShoot(player);
+            HandleTimeLeft(player);
 
             //Handle player arm rotation
             player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
-
-            //Run only once
-            if (Projectile.localAI[0] == 0)
-            {
-                Projectile.localAI[0] = 1;
-                SoundEngine.PlaySound(ShootSound, Projectile.position);
-
-                //Identify bullet type
-                if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
-                {
-                    OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
-                }
-            }
-
-            Projectile.timeLeft = player.itemTime + 1;
-
+            
             return PreAISafe();
         }
         private void HandleTransform(Player player)
@@ -67,6 +64,40 @@ namespace EBF.Abstract_Classes
 
             Projectile.LookAt(Main.MouseWorld);
             Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
+        }
+        private void HandleShoot(Player player) 
+        {
+            //Identify bullet type
+            if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
+            {
+                WhileShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+            }
+
+            //Run only once
+            if (Projectile.localAI[0] == 0)
+            {
+                Projectile.localAI[0] = 1;
+                SoundEngine.PlaySound(ShootSound, Projectile.position);
+
+                OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+            }
+        }
+        private void HandleTimeLeft(Player player)
+        {
+            if(ActiveTime != 0)
+            {
+                ActiveTime--;
+
+                //Keep item active
+                if (player.itemTime < 2)
+                {
+                    player.itemTime = 2;
+                    player.itemAnimation = 2;
+                    Projectile.timeLeft = 2;
+                }
+            }
+
+            Projectile.timeLeft = player.itemTime + 1;
         }
     }
 }

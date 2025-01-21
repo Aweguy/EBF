@@ -105,6 +105,8 @@ Projectiles: {
 	DesertScorpionLauncher.DisplayName: Desert Scorpion Launcher
 	DesertScorpionSidearm.DisplayName: Desert Scorpion Sidearm
 	SandDuneSpell.DisplayName: Sand Dune Spell
+	PositronRifleLauncher.DisplayName: Positron Rifle Launcher
+	PositronRifleSidearm.DisplayName: Positron Rifle Sidearm
 }
 
 NPCs: {
@@ -417,6 +419,11 @@ Items: {
 				DesertScorpion: {
 					DisplayName: Desert Scorpion
 					Tooltip: Right click plants the gun into the ground, causing a sand dune to erupt below the closest foe.
+				}
+
+				PositronRifle: {
+					DisplayName: Positron Rifle
+					Tooltip: ""
 				}
 			}
 		}
