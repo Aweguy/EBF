@@ -376,7 +376,7 @@ Items: {
 
 				IronTooth: {
 					DisplayName: Iron Tooth
-					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+					Tooltip: Fully charged wooden arrows are converted into hellfire arrows.
 				}
 
 				GaiasBow: {

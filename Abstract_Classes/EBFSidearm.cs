@@ -29,11 +29,12 @@ namespace EBF.Abstract_Classes
         protected int ActiveTime { get; set; } = 0;
 
         /// <summary>
-        /// This hook is called once when the weapon is fully charged.
+        /// This hook is called while the weapon is active.
         /// </summary>
         public virtual void WhileShoot(Vector2 barrelEnd, int type) { }
+
         /// <summary>
-        /// This hook is called once when the weapon is fully charged.
+        /// This hook is called once when the weapon is active.
         /// </summary>
         public virtual void OnShoot(Vector2 barrelEnd, int type) { }
 
@@ -71,15 +72,15 @@ namespace EBF.Abstract_Classes
             if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
             {
                 WhileShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
-            }
 
-            //Run only once
-            if (Projectile.localAI[0] == 0)
-            {
-                Projectile.localAI[0] = 1;
-                SoundEngine.PlaySound(ShootSound, Projectile.position);
+                //Run only once
+                if (Projectile.localAI[0] == 0)
+                {
+                    Projectile.localAI[0] = 1;
+                    SoundEngine.PlaySound(ShootSound, Projectile.position);
 
-                OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+                    OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+                }
             }
         }
         private void HandleTimeLeft(Player player)

@@ -44,11 +44,18 @@ namespace EBF.Abstract_Classes
         protected SoundStyle ShootSound { get; set; } = SoundID.Item99;
 
         /// <summary>
-        /// This hook is called while the weapon is fully charged.
+        /// This hook is called once the weapon is fully charged.
         /// </summary>
         /// <param name="barrelEnd">The approximate position of the launcher's barrel.</param>
         /// <param name="type">Reference to the bullet type in the player's inventory.</param>
         public virtual void OnShoot(Vector2 barrelEnd, int type) { }
+
+        /// <summary>
+        /// This hook is called while the weapon is fully charged.
+        /// </summary>
+        /// <param name="barrelEnd">The approximate position of the launcher's barrel.</param>
+        /// <param name="type">Reference to the bullet type in the player's inventory.</param>
+        public virtual void WhileShoot(Vector2 barrelEnd, int type) { }
 
         /// <summary>
         /// This hook is called once the weapon has been used.
@@ -104,17 +111,18 @@ namespace EBF.Abstract_Classes
             }
             if (charge >= MaxCharge)
             {
-                //Run only once
-                if (Projectile.localAI[0] == 0)
-                {
-                    Projectile.localAI[0] = 1;
-                    SoundEngine.PlaySound(ShootSound, Projectile.position);
-                }
-
                 //Identify bullet type
-                if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, false))
+                if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
                 {
-                    OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()), type);
+                    WhileShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()), type);
+
+                    //Run only once
+                    if (Projectile.localAI[0] == 0)
+                    {
+                        Projectile.localAI[0] = 1;
+                        SoundEngine.PlaySound(ShootSound, Projectile.position);
+                        OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()), type);
+                    }
                 }
 
                 //Check if the launcher should die or stay for some time
