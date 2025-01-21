@@ -111,5 +111,25 @@ namespace EBF.Extensions
             projectile.height = height;
             projectile.position -= projectile.Size * 0.5f;
         }
+
+        public static void LookAt(this Projectile projectile, Vector2 target)
+        {
+            //Initial rotation
+            projectile.velocity = Vector2.Normalize(target - projectile.position) * projectile.velocity.Length();
+            projectile.rotation = projectile.velocity.ToRotation();
+
+            //Account for directions
+            int oldDirection = projectile.spriteDirection;
+            if (oldDirection == -1)
+                projectile.rotation += MathHelper.Pi;
+
+            projectile.direction = projectile.spriteDirection = (projectile.velocity.X > 0).ToDirectionInt();
+
+            if (projectile.spriteDirection != oldDirection)
+                projectile.rotation -= MathHelper.Pi;
+
+            //Player facing direction
+            Main.player[projectile.owner].ChangeDir(projectile.direction);
+        }
     }
 }

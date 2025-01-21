@@ -37,6 +37,11 @@ Buffs: {
 		DisplayName: Regeneration
 		Description: Quickly regenerating health
 	}
+
+	Overheated: {
+		DisplayName: Overheated
+		Description: Your launcher is too hot to use.
+	}
 }
 
 Projectiles: {
@@ -86,6 +91,13 @@ Projectiles: {
 	TheStinger_Arrow.DisplayName: The Stinger Arrow
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	GaiaSeed.DisplayName: Gaia Seed
+	HeavyClawLauncher.DisplayName: Heavy Claw Launcher
+	HeavyClawSidearm.DisplayName: Heavy Claw Sidearm
+	SteelSharkLauncher.DisplayName: Steel Shark Launcher
+	SteelSharkSidearm.DisplayName: Steel Shark Sidearm
+	DeepBlueLauncher.DisplayName: Deep Blue Launcher
+	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
+	GeyserSpell.DisplayName: Geyser Spell
 }
 
 NPCs: {
@@ -371,6 +383,23 @@ Items: {
 				ThornBow: {
 					DisplayName: Thorn Bow
 					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+				}
+			}
+
+			Guns: {
+				HeavyClaw: {
+					DisplayName: Heavy Claw
+					Tooltip: Right click launches a devastating missile.
+				}
+
+				SteelShark: {
+					DisplayName: Steel Shark
+					Tooltip: Right click makes the shark shoot a lot of bullets at once.
+				}
+
+				DeepBlue: {
+					DisplayName: Deep Blue
+					Tooltip: Right click plants the gun into the ground, causing a geysers to erupt below the closest foe.
 				}
 			}
 		}
