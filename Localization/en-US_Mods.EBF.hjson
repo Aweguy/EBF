@@ -98,6 +98,10 @@ Projectiles: {
 	DeepBlueLauncher.DisplayName: Deep Blue Launcher
 	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
 	GeyserSpell.DisplayName: Geyser Spell
+	BiohazardBlasterLauncher.DisplayName: Biohazard Blaster Launcher
+	BiohazardBlasterSidearm.DisplayName: Biohazard Blaster Sidearm
+	PoisonCloud.DisplayName: Poison Cloud
+	BiohazardCloud.DisplayName: Biohazard Cloud
 }
 
 NPCs: {
@@ -399,7 +403,12 @@ Items: {
 
 				DeepBlue: {
 					DisplayName: Deep Blue
-					Tooltip: Right click plants the gun into the ground, causing a geysers to erupt below the closest foe.
+					Tooltip: Right click plants the gun into the ground, causing a geyser to erupt below the closest foe.
+				}
+
+				BiohazardBlaster: {
+					DisplayName: Biohazard Blaster
+					Tooltip: Right click to launch a lingering noxious cloud, which poisons and venoms foes.
 				}
 			}
 		}
