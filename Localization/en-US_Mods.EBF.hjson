@@ -75,7 +75,7 @@ Projectiles: {
 	Star.DisplayName: Star
 	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon Arrow
 	Seraphim_LightExplosion.DisplayName: Seraphim Light Explosion
-	Inferno_Proj.DisplayName: Inferno_ Proj
+	Inferno_Proj.DisplayName: Inferno Proj
 	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
 	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
 	Sharanga_Arrow.DisplayName: Sharanga Arrow
@@ -107,6 +107,11 @@ Projectiles: {
 	SandDuneSpell.DisplayName: Sand Dune Spell
 	PositronRifleLauncher.DisplayName: Positron Rifle Launcher
 	PositronRifleSidearm.DisplayName: Positron Rifle Sidearm
+	ShadowBlasterLauncher.DisplayName: Shadow Blaster Launcher
+	ShadowBlasterSidearm.DisplayName: Shadow Blaster Sidearm
+	ShadowBlaster_DarkExplosionSmall.DisplayName: Shadow Blaster Dark Explosion Small
+	ShadowBlaster_DarkShot.DisplayName: Shadow Blaster Dark Shot
+	ShadowBlaster_AntimatterFissure.DisplayName: Shadow Blaster_ Antimatter Fissure
 }
 
 NPCs: {
@@ -423,6 +428,11 @@ Items: {
 
 				PositronRifle: {
 					DisplayName: Positron Rifle
+					Tooltip: ""
+				}
+
+				ShadowBlaster: {
+					DisplayName: Shadow Blaster
 					Tooltip: ""
 				}
 			}
