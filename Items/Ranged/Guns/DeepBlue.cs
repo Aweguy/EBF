@@ -61,6 +61,15 @@ namespace EBF.Items.Ranged.Guns
                 type = ModContent.ProjectileType<DeepBlueSidearm>();
             }
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.Coral, stack: 5)
+                .AddIngredient(ItemID.PlatinumBar, stack: 10)
+                .AddIngredient(ItemID.Sapphire, stack: 5)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
     public class DeepBlueLauncher : EBFMagicLauncher
     {
