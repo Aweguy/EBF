@@ -102,6 +102,9 @@ Projectiles: {
 	BiohazardBlasterSidearm.DisplayName: Biohazard Blaster Sidearm
 	PoisonCloud.DisplayName: Poison Cloud
 	BiohazardCloud.DisplayName: Biohazard Cloud
+	DesertScorpionLauncher.DisplayName: Desert Scorpion Launcher
+	DesertScorpionSidearm.DisplayName: Desert Scorpion Sidearm
+	SandDuneSpell.DisplayName: Sand Dune Spell
 }
 
 NPCs: {
@@ -409,6 +412,11 @@ Items: {
 				BiohazardBlaster: {
 					DisplayName: Biohazard Blaster
 					Tooltip: Right click to launch a lingering noxious cloud, which poisons and venoms foes.
+				}
+
+				DesertScorpion: {
+					DisplayName: Desert Scorpion
+					Tooltip: Right click plants the gun into the ground, causing a sand dune to erupt below the closest foe.
 				}
 			}
 		}
