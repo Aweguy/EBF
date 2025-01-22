@@ -1,8 +1,8 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -82,7 +82,9 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, ProjectileID.RocketI, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            type = ModContent.ProjectileType<PositronRifle_PlasmaShot>();
+            int explosionID = ModContent.ProjectileType<PositronRifle_PlasmaWave>();
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner, explosionID);
         }
     }
     public class PositronRifleSidearm : EBFSidearm
@@ -103,10 +105,126 @@ namespace EBF.Items.Ranged.Guns
             //Shoot twice
             if(Projectile.frameCounter == 0 || Projectile.frameCounter == 4)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                int explosionID = 0;
+                if(type == ProjectileID.Bullet)
+                {
+                    explosionID = ModContent.ProjectileType<PositronRifle_PlasmaBurst>();
+                    type = ModContent.ProjectileType<PositronRifle_PlasmaShot>();
+                }
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner, explosionID);
             }
 
             Projectile.frameCounter++;
+        }
+    }
+
+    public class PositronRifle_PlasmaShot : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 2;
+        }
+
+        public override void SetDefaults()
+        {
+            Projectile.width = 6;
+            Projectile.height = 6;
+
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.timeLeft = 60 * 2;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Face direction
+            float velRotation = Projectile.velocity.ToRotation();
+            Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
+            Projectile.spriteDirection = Projectile.direction;
+        }
+        public override void AI()
+        {
+            if (Main.GameUpdateCount % 4 == 0)
+            {
+                Projectile.frame++;
+                if (Projectile.frame >= 2)
+                {
+                    Projectile.frame = 0;
+                }
+            }
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            //Spawn the explosion that was passed down from the gun through the AI.
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, (int)Projectile.ai[0], Projectile.damage, 0, Projectile.owner);
+        }
+    }
+    public class PositronRifle_PlasmaBurst : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 6;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 64;
+            Projectile.height = 64;
+
+            Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.tileCollide = false;
+
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.rotation = MathHelper.PiOver4 * Main.rand.Next(1, 5);
+        }
+        public override void AI()
+        {
+            //Run every other frame
+            if(Main.GameUpdateCount % 4 == 0)
+            {
+                Projectile.frame++;
+                if(Projectile.frame > Main.projFrames[Projectile.type])
+                {
+                    Projectile.Kill();
+                }
+            }
+        }
+    }
+    public class PositronRifle_PlasmaWave : ModProjectile
+    {
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 6;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 64;
+            Projectile.height = 64;
+
+            Projectile.penetrate = -1;
+            Projectile.friendly = false;
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 40;
+
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+        }
+        public override void AI()
+        {
+            //Run every other frame
+            if (Main.GameUpdateCount % 2 == 0)
+            {
+                Vector2 position = Projectile.position + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-0.5f, 0.5f)) * 128;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<PositronRifle_PlasmaBurst>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
         }
     }
 }

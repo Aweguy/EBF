@@ -112,6 +112,9 @@ Projectiles: {
 	ShadowBlaster_DarkExplosionSmall.DisplayName: Shadow Blaster Dark Explosion Small
 	ShadowBlaster_DarkShot.DisplayName: Shadow Blaster Dark Shot
 	ShadowBlaster_AntimatterFissure.DisplayName: Shadow Blaster_ Antimatter Fissure
+	PositronRifle_PlasmaBurst.DisplayName: Positron Rifle_ Plasma Burst
+	PositronRifle_PlasmaShot.DisplayName: Positron Rifle_ Plasma Shot
+	PositronRifle_PlasmaWave.DisplayName: Positron Rifle_ Plasma Wave
 }
 
 NPCs: {
