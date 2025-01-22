@@ -390,7 +390,7 @@ Items: {
 					DisplayName: Juggernaut
 					Tooltip:
 						'''
-						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
+						Wooden arrows turn into chargeable hellfire arrows.
 						'A pain to use, but boasts low recoil for such explosive firepower.'
 						'''
 				}
@@ -417,7 +417,7 @@ Items: {
 					DisplayName: Iron Tusk
 					Tooltip:
 						'''
-						Wooden arrows turn into chargeable hellfire arrows.
+						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
 						'A girthy nest of twisted metal. Effectively a hand-cannon at this point.'
 						'''
 				}
