@@ -84,7 +84,7 @@ namespace EBF.Items.Ranged.Guns
             Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
             return false;
         }
-        public override void OnShoot(Vector2 barrelEnd, int type)
+        public override void WhileShoot(Vector2 barrelEnd, int type)
         {
             //Run once
             if (Projectile.localAI[1] == 0)
