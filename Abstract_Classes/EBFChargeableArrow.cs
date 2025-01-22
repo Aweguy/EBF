@@ -109,7 +109,7 @@ namespace EBF.Abstract_Classes
 
             //Consume ammo
             Player player = Main.player[Projectile.owner];
-            player.PickAmmo(player.HeldItem, out _, out _, out _, out _, out _);
+            player.PickAmmo(player.HeldItem, out _, out _, out _, out _, out _, true);
 
             //Prevent arrow from acting while held
             Projectile.friendly = false;
