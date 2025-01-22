@@ -98,6 +98,7 @@ Projectiles: {
 	DeepBlueLauncher.DisplayName: Deep Blue Launcher
 	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
 	GeyserSpell.DisplayName: Geyser Spell
+	SoulEater_SwingProjectile.DisplayName: Soul Eater_ Swing Projectile
 }
 
 NPCs: {
