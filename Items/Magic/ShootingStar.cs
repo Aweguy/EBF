@@ -43,7 +43,7 @@ namespace EBF.Items.Magic
             velocity = Vector2.Normalize(Main.MouseWorld - position) * velocity.Length();
 
             //Spawn the projecile
-            damage += Main.rand.Next(-5, 6);
+            damage += Main.rand.Next(-20, 21);
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
