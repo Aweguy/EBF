@@ -75,7 +75,7 @@ Projectiles: {
 	Star.DisplayName: Star
 	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon Arrow
 	Seraphim_LightExplosion.DisplayName: Seraphim Light Explosion
-	Inferno_Proj.DisplayName: Inferno_ Proj
+	Inferno_Proj.DisplayName: Inferno Proj
 	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
 	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
 	Sharanga_Arrow.DisplayName: Sharanga Arrow
@@ -99,6 +99,23 @@ Projectiles: {
 	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
 	GeyserSpell.DisplayName: Geyser Spell
 	SoulEater_SwingProjectile.DisplayName: Soul Eater_ Swing Projectile
+	BiohazardBlasterLauncher.DisplayName: Biohazard Blaster Launcher
+	BiohazardBlasterSidearm.DisplayName: Biohazard Blaster Sidearm
+	PoisonCloud.DisplayName: Poison Cloud
+	BiohazardCloud.DisplayName: Biohazard Cloud
+	DesertScorpionLauncher.DisplayName: Desert Scorpion Launcher
+	DesertScorpionSidearm.DisplayName: Desert Scorpion Sidearm
+	SandDuneSpell.DisplayName: Sand Dune Spell
+	PositronRifleLauncher.DisplayName: Positron Rifle Launcher
+	PositronRifleSidearm.DisplayName: Positron Rifle Sidearm
+	ShadowBlasterLauncher.DisplayName: Shadow Blaster Launcher
+	ShadowBlasterSidearm.DisplayName: Shadow Blaster Sidearm
+	ShadowBlaster_DarkExplosionSmall.DisplayName: Shadow Blaster Dark Explosion Small
+	ShadowBlaster_DarkShot.DisplayName: Shadow Blaster Dark Shot
+	ShadowBlaster_AntimatterFissure.DisplayName: Shadow Blaster_ Antimatter Fissure
+	PositronRifle_PlasmaBurst.DisplayName: Positron Rifle_ Plasma Burst
+	PositronRifle_PlasmaShot.DisplayName: Positron Rifle_ Plasma Shot
+	PositronRifle_PlasmaWave.DisplayName: Positron Rifle_ Plasma Wave
 }
 
 NPCs: {
@@ -434,6 +451,8 @@ Items: {
 						Fully charged wooden arrows are converted into hellfire arrows.
 						'Demands a strong pull for its powerful shots.'
 						'''
+					Tooltip: Fully charged wooden arrows are converted into hellfire arrows.
+
 				}
 
 				GaiasBow: {
@@ -477,7 +496,27 @@ Items: {
 
 				DeepBlue: {
 					DisplayName: Deep Blue
-					Tooltip: Right click plants the gun into the ground, causing a geysers to erupt below the closest foe.
+					Tooltip: Right click plants the gun into the ground, causing a geyser to erupt below the closest foe.
+				}
+
+				BiohazardBlaster: {
+					DisplayName: Biohazard Blaster
+					Tooltip: Right click to launch a lingering noxious cloud, which poisons and venoms foes.
+				}
+
+				DesertScorpion: {
+					DisplayName: Desert Scorpion
+					Tooltip: Right click plants the gun into the ground, causing a sand dune to erupt below the closest foe.
+				}
+
+				PositronRifle: {
+					DisplayName: Positron Rifle
+					Tooltip: ""
+				}
+
+				ShadowBlaster: {
+					DisplayName: Shadow Blaster
+					Tooltip: ""
 				}
 			}
 		}
