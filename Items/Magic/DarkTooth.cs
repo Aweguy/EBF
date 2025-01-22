@@ -38,7 +38,7 @@ namespace EBF.Items.Magic
             Item.noMelee = true;
 
             Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
-            Item.shootSpeed = 0.1f; //Must be > 0 to make the held item rotate when used
+            Item.shootSpeed = 0.01f; //Must be > 0 to make the held item rotate when used
         }
         public override void UseStyle(Player player, Rectangle heldItemFrame)
         {
@@ -102,6 +102,7 @@ namespace EBF.Items.Magic
         private const float defaultSuckRange = 160;//The default range in which objects will be SUCCED
         private const float maxSize = 400f;
         private const float maxSpeed = 5f;
+        private float currentSpeed = 0f;
         private float suckRange;//The current range in which objects will be SUCCED
         private int baseWidth;
         private int baseHeight;
@@ -115,7 +116,7 @@ namespace EBF.Items.Magic
             Projectile.width = 128;
             Projectile.height = 128;
 
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.knockBack = 1f;
@@ -128,47 +129,55 @@ namespace EBF.Items.Magic
         }
         public override bool PreAI()
         {
-            //Run this code once every 5 updates
-            if (Main.GameUpdateCount % 5 == 0)
+            //Run this code once every 8 updates
+            if (Main.GameUpdateCount % 8 == 0)
             {
                 Projectile.frame++;
                 if (Projectile.frame == 8)
                 {
                     //When the black hole first appears, spawn a bunch of dust
                     CreateSpawningDust();
+                    Projectile.friendly = true;
                 }
 
-                if (Projectile.frame >= 10)
+                //Loop animation
+                if (Projectile.frame >= 19)
                 {
-                    //Spawn dust passively
-                    Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
-                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, newColor: drawColor, Scale: 1f);
+                    Projectile.frame = 10;
+                }
 
-                    // Mouse position can vary in multiplayer, so this code must only run on the client
-                    if (Main.myPlayer == Projectile.owner)
+                //Rotate randomly
+                if (Projectile.frame > 9)
+                {
+                    Projectile.rotation = Main.rand.NextFloat(0, (float)Math.Tau);
+                }
+            }
+
+            //While active
+            if (Projectile.frame >= 10)
+            {
+                //Spawn dust passively
+                Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, newColor: drawColor);
+
+                // Mouse position can vary in multiplayer, so this code must only run on the client
+                if (Main.myPlayer == Projectile.owner)
+                {
+                    HandleAudioLoop();
+                    MoveTowardsCursor();//The movement of the black hole
+
+                    //This check only works if item.channel is true for the weapon.
+                    Player player = Main.player[Projectile.owner];
+                    if (player.channel)
                     {
-                        HandleAudioLoop();
-                        MoveTowardsCursor();//The movement of the black hole
-
-                        //This check only works if item.channel is true for the weapon.
-                        Player player = Main.player[Projectile.owner];
-                        if (player.channel)
-                        {
-                            IncreaseScale();
-                            SuckNPCs(suckRange, suckingStrength: 100);
-                            SuckGore(suckRange, suckingStrength: 100);
-                            SuckDust(suckRange, suckingStrength: 100);
-                        }
-                        else
-                        {
-                            Explode();
-                        }
+                        IncreaseScale();
+                        SuckNPCs(suckRange, suckingStrength: 20);
+                        SuckGore(suckRange, suckingStrength: 20);
+                        SuckDust(suckRange, suckingStrength: 20);
                     }
-
-                    //Loop animation
-                    if (Projectile.frame >= 16)
+                    else
                     {
-                        Projectile.frame = 10;
+                        Explode();
                     }
                 }
             }
@@ -224,10 +233,17 @@ namespace EBF.Items.Magic
         }
         private void MoveTowardsCursor() //Movement of the black hole
         {
-            Vector2 newVelocity = Main.MouseWorld - Projectile.Center;
-            if (newVelocity.Length() > maxSpeed)
+            //Gradually build up speed
+            if(currentSpeed < maxSpeed)
             {
-                newVelocity = Vector2.Normalize(newVelocity) * maxSpeed;
+                currentSpeed += 0.1f;
+            }
+
+            //Set direction
+            Vector2 newVelocity = Main.MouseWorld - Projectile.Center;
+            if (newVelocity.Length() > currentSpeed)
+            {
+                newVelocity = Vector2.Normalize(newVelocity) * currentSpeed;
             }
 
             //Limit how often velocity syncs in multiplayer by truncating the decimals
@@ -242,14 +258,14 @@ namespace EBF.Items.Magic
         {
             if (Projectile.width < maxSize)
             {
-                Projectile.scale += 0.05f;
+                Projectile.scale += 0.01f;
                 suckRange = defaultSuckRange * Projectile.scale;
                 int newWidth = (int)(baseWidth * Projectile.scale);
                 int newHeight = (int)(baseHeight * Projectile.scale);
                 ProjectileExtensions.ExpandHitboxBy(Projectile, newWidth, newHeight);
             }
         }
-        private void SuckNPCs(float suckingRange, float suckingStrength = 100)
+        private void SuckNPCs(float suckingRange, float suckingStrength = 20)
         {
             foreach (NPC npc in Main.npc)
             {
@@ -266,7 +282,7 @@ namespace EBF.Items.Magic
                 }
             }
         }
-        private void SuckGore(float suckingRange, float suckingStrength = 100)
+        private void SuckGore(float suckingRange, float suckingStrength = 20)
         {
             foreach (Gore gore in Main.gore)
             {
@@ -283,7 +299,7 @@ namespace EBF.Items.Magic
                 }
             }
         }
-        private void SuckDust(float suckingRange, float suckingStrength = 100)
+        private void SuckDust(float suckingRange, float suckingStrength = 20)
         {
             foreach (Dust dust in Main.dust)
             {
@@ -306,7 +322,7 @@ namespace EBF.Items.Magic
             ProjectileExtensions.ExpandHitboxBy(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
             int explosionDamage = Projectile.damage + Projectile.width;
 
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
                 //Find any valid npc inside the hitbox
                 if (npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(Projectile.Hitbox))
