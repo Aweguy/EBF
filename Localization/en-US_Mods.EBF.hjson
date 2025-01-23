@@ -116,6 +116,8 @@ Projectiles: {
 	PositronRifle_PlasmaBurst.DisplayName: Positron Rifle_ Plasma Burst
 	PositronRifle_PlasmaShot.DisplayName: Positron Rifle_ Plasma Shot
 	PositronRifle_PlasmaWave.DisplayName: Positron Rifle_ Plasma Wave
+	DestroyerLauncher.DisplayName: Destroyer Launcher
+	DestroyerSidearm.DisplayName: Destroyer Sidearm
 }
 
 NPCs: {
@@ -510,6 +512,11 @@ Items: {
 
 				ShadowBlaster: {
 					DisplayName: Shadow Blaster
+					Tooltip: ""
+				}
+
+				Destroyer: {
+					DisplayName: Destroyer
 					Tooltip: ""
 				}
 			}
