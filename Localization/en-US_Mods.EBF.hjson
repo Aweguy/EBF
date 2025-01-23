@@ -42,6 +42,11 @@ Buffs: {
 		DisplayName: Overheated
 		Description: Your launcher is too hot to use.
 	}
+
+	Charged: {
+		DisplayName: Charged
+		Description: You feel ready to unleash hell upon whoever is in your way.
+	}
 }
 
 Projectiles: {
@@ -118,6 +123,8 @@ Projectiles: {
 	PositronRifle_PlasmaWave.DisplayName: Positron Rifle_ Plasma Wave
 	DestroyerLauncher.DisplayName: Destroyer Launcher
 	DestroyerSidearm.DisplayName: Destroyer Sidearm
+	CrystalWingLauncher.DisplayName: Crystal Wing Launcher
+	CrystalWingSidearm.DisplayName: Crystal Wing Sidearm
 }
 
 NPCs: {
@@ -517,6 +524,11 @@ Items: {
 
 				Destroyer: {
 					DisplayName: Destroyer
+					Tooltip: ""
+				}
+
+				CrystalWing: {
+					DisplayName: Crystal Wing
 					Tooltip: ""
 				}
 			}
