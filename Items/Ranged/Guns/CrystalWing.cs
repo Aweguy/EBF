@@ -17,8 +17,8 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 46;
             Item.height = 30;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 70;
