@@ -99,7 +99,7 @@ namespace EBF.Items.Ranged.Guns
 
     public class BiohazardCloud : ModProjectile
     {
-        private const int maxSize = 256;
+        private int maxSize;
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
         public override void SetDefaults()
         {
@@ -115,6 +115,10 @@ namespace EBF.Items.Ranged.Guns
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            maxSize = (int)Projectile.ai[0];
+        }
         public override void AI()
         {
             if(Main.GameUpdateCount % 2 == 0)
@@ -122,16 +126,20 @@ namespace EBF.Items.Ranged.Guns
                 //Expand hitbox until max size
                 if (Projectile.width < maxSize)
                 {
-                    Projectile.ExpandHitboxBy(Projectile.width + 4, Projectile.height + 4);
+                    Projectile.ExpandHitboxBy(Projectile.width + 2, Projectile.height + 2);
                 }
 
                 //Slow down
                 Projectile.velocity *= 0.99f;
 
                 //Spawn clouds
-                Vector2 position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width / 2);
-                Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, ProjectileExtensions.GetRandomVector(), Main.rand.Next(435, 438), 0.5f + ((float)Projectile.width * 2 / maxSize));
-                gore.alpha = 128;
+                for (int i = 0; i < 1 + Projectile.width / 50; i++)
+                {
+                    Vector2 position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width);
+                    Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, ProjectileExtensions.GetRandomVector(), Type: Main.rand.Next(435, 438), Scale: 0.5f + ((float)Projectile.width * 2 / maxSize));
+                    gore.alpha = 128;
+                    gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5); 
+                }
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
