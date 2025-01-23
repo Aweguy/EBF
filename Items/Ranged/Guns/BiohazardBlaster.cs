@@ -3,7 +3,7 @@ using EBF.Buffs.Cooldowns;
 using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,8 +14,8 @@ namespace EBF.Items.Ranged.Guns
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 48;
-            Item.height = 30;
+            Item.width = 50;
+            Item.height = 28;
 
             Item.useTime = 30;
             Item.useAnimation = 30;
@@ -77,15 +77,15 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, ModContent.ProjectileType<BiohazardCloud>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, ModContent.ProjectileType<BiohazardCloud>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, 200);
         }
     }
     public class BiohazardBlasterSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {
-            Projectile.width = 42;
-            Projectile.height = 24;
+            Projectile.width = 50;
+            Projectile.height = 28;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;

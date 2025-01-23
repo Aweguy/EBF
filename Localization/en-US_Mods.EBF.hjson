@@ -446,13 +446,7 @@ Items: {
 
 				IronTooth: {
 					DisplayName: Iron Tooth
-					Tooltip:
-						'''
-						Fully charged wooden arrows are converted into hellfire arrows.
-						'Demands a strong pull for its powerful shots.'
-						'''
 					Tooltip: Fully charged wooden arrows are converted into hellfire arrows.
-
 				}
 
 				GaiasBow: {
