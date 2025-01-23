@@ -115,17 +115,13 @@ namespace EBF.Items.Ranged.Guns
         public override void WhileShoot(Vector2 barrelEnd, int type)
         {
             Player player = Main.player[Projectile.owner];
-            if (!player.HasBuff<Charged>()) //We check false instead of true because WhileShoot() runs after OnShoot(). I know this is a bad way of doing it.
+            if (!player.HasBuff<Charged>()) //We check false instead of true because WhileShoot() runs after OnShoot() has cleared the buff.
             {
-                Projectile.frameCounter++;
-                if (Projectile.frameCounter > 1) //Ignore first frame because the buff system probably adds buffs between updates.
-                {
-                    //Randomize 
-                    Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * Main.rand.NextFloatDirection() * beamWidth;
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
-                    proj.friendly = true;
-                    proj.penetrate = -1;
-                }
+                //Randomize 
+                Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * Main.rand.NextFloatDirection() * beamWidth;
+                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
+                proj.friendly = true;
+                proj.penetrate = -1;
             }
         }
     }
