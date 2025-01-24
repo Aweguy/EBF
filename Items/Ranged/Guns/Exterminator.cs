@@ -12,8 +12,8 @@ namespace EBF.Items.Ranged.Guns
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 36;
-            Item.height = 24;
+            Item.width = 42;
+            Item.height = 26;
 
             Item.useTime = 18;
             Item.useAnimation = 18;
@@ -72,8 +72,8 @@ namespace EBF.Items.Ranged.Guns
         public override string Texture => "EBF/Items/Ranged/Guns/Exterminator";
         public override void SetDefaults()
         {
-            Projectile.width = 60;
-            Projectile.height = 32;
+            Projectile.width = 70;
+            Projectile.height = 36;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
@@ -93,8 +93,8 @@ namespace EBF.Items.Ranged.Guns
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
-            Projectile.height = 24;
+            Projectile.width = 42;
+            Projectile.height = 26;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
