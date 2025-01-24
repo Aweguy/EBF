@@ -77,7 +77,10 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, ModContent.ProjectileType<BiohazardCloud>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, 200);
+            type = ModContent.ProjectileType<BiohazardCloud>();
+            int extraDebuff = BuffID.Ichor;
+            int extraDebuff2 = BuffID.Venom;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, type, Projectile.damage / 2, 0, Projectile.owner, 200, extraDebuff, extraDebuff2);
         }
     }
     public class BiohazardBlasterSidearm : EBFSidearm
@@ -154,7 +157,17 @@ namespace EBF.Items.Ranged.Guns
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Poisoned, 60 * 5);
-            target.AddBuff(BuffID.Venom, 60 * 5);
+            target.AddBuff(BuffID.Stinky, 60 * 5);
+            
+            //Add extra debuffs if specified
+            if (Projectile.ai[1] != 0)
+            {
+                target.AddBuff((int)Projectile.ai[1], 60 * 5);
+            }
+            if (Projectile.ai[2] != 0)
+            {
+                target.AddBuff((int)Projectile.ai[2], 60 * 5);
+            }
         }
     }
 

@@ -75,7 +75,8 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, ModContent.ProjectileType<BiohazardCloud>(), Projectile.damage / 2, Projectile.knockBack, Projectile.owner, 100);
+            type = ModContent.ProjectileType<BiohazardCloud>();
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, type, Projectile.damage / 2, 0, Projectile.owner, 100);
         }
     }
     public class DestroyerSidearm : EBFSidearm
