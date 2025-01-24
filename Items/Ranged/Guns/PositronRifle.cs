@@ -134,6 +134,7 @@ namespace EBF.Items.Ranged.Guns
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.timeLeft = 60 * 2;
+            Projectile.extraUpdates = 1; //because it's a bullet
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -222,8 +223,9 @@ namespace EBF.Items.Ranged.Guns
             //Run every other frame
             if (Main.GameUpdateCount % 2 == 0)
             {
+                int type = ModContent.ProjectileType<PositronRifle_PlasmaBurst>();
                 Vector2 position = Projectile.position + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-0.5f, 0.5f)) * 128;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<PositronRifle_PlasmaBurst>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, type, Projectile.damage, 0, Projectile.owner);
             }
         }
     }
