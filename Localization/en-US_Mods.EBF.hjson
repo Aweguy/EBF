@@ -128,6 +128,9 @@ Projectiles: {
 	GasBullet.DisplayName: Gas Bullet
 	ExterminatorLauncher.DisplayName: Exterminator Launcher
 	ExterminatorSidearm.DisplayName: Exterminator Sidearm
+	CoconutShooterLauncher.DisplayName: Coconut Shooter Launcher
+	CoconutShooterSidearm.DisplayName: Coconut Shooter Sidearm
+	CoconutProjectile.DisplayName: Coconut Projectile
 }
 
 NPCs: {
@@ -537,6 +540,11 @@ Items: {
 
 				Exterminator: {
 					DisplayName: Exterminator
+					Tooltip: ""
+				}
+
+				CoconutShooter: {
+					DisplayName: Coconut Shooter
 					Tooltip: ""
 				}
 			}
