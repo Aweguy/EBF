@@ -42,6 +42,11 @@ Buffs: {
 		DisplayName: Overheated
 		Description: Your launcher is too hot to use.
 	}
+
+	Charged: {
+		DisplayName: Charged
+		Description: You feel ready to unleash hell upon whoever is in your way.
+	}
 }
 
 Projectiles: {
@@ -116,6 +121,16 @@ Projectiles: {
 	PositronRifle_PlasmaBurst.DisplayName: Positron Rifle_ Plasma Burst
 	PositronRifle_PlasmaShot.DisplayName: Positron Rifle_ Plasma Shot
 	PositronRifle_PlasmaWave.DisplayName: Positron Rifle_ Plasma Wave
+	DestroyerLauncher.DisplayName: Destroyer Launcher
+	DestroyerSidearm.DisplayName: Destroyer Sidearm
+	CrystalWingLauncher.DisplayName: Crystal Wing Launcher
+	CrystalWingSidearm.DisplayName: Crystal Wing Sidearm
+	GasBullet.DisplayName: Gas Bullet
+	ExterminatorLauncher.DisplayName: Exterminator Launcher
+	ExterminatorSidearm.DisplayName: Exterminator Sidearm
+	CoconutShooterLauncher.DisplayName: Coconut Shooter Launcher
+	CoconutShooterSidearm.DisplayName: Coconut Shooter Sidearm
+	CoconutProjectile.DisplayName: Coconut Projectile
 }
 
 NPCs: {
@@ -446,13 +461,7 @@ Items: {
 
 				IronTooth: {
 					DisplayName: Iron Tooth
-					Tooltip:
-						'''
-						Fully charged wooden arrows are converted into hellfire arrows.
-						'Demands a strong pull for its powerful shots.'
-						'''
 					Tooltip: Fully charged wooden arrows are converted into hellfire arrows.
-
 				}
 
 				GaiasBow: {
@@ -516,6 +525,26 @@ Items: {
 
 				ShadowBlaster: {
 					DisplayName: Shadow Blaster
+					Tooltip: ""
+				}
+
+				Destroyer: {
+					DisplayName: Destroyer
+					Tooltip: ""
+				}
+
+				CrystalWing: {
+					DisplayName: Crystal Wing
+					Tooltip: ""
+				}
+
+				Exterminator: {
+					DisplayName: Exterminator
+					Tooltip: ""
+				}
+
+				CoconutShooter: {
+					DisplayName: Coconut Shooter
 					Tooltip: ""
 				}
 			}

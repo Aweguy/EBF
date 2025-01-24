@@ -90,7 +90,7 @@ namespace EBF.Abstract_Classes
 
             Projectile.LookAt(Main.MouseWorld);
         }
-        protected void HandleCharge(Player player)
+        private void HandleCharge(Player player)
         {
             if (charge == 0)
             {
@@ -101,28 +101,26 @@ namespace EBF.Abstract_Classes
             if (charge < MaxCharge)
             {
                 charge++;
-
-                if (player.itemTime < 1)
-                {
-                    player.itemTime = 1;
-                    player.itemAnimation = 1;
-                    Projectile.timeLeft = 1;
-                }
+                EnforceItemStay(player);
             }
-            if (charge >= MaxCharge)
+            else
             {
                 //Identify bullet type
                 if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
                 {
-                    WhileShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()), type);
+                    //Get the barrel's estimated position
+                    Vector2 barrelOffset = ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation());
 
                     //Run only once
                     if (Projectile.localAI[0] == 0)
                     {
                         Projectile.localAI[0] = 1;
                         SoundEngine.PlaySound(ShootSound, Projectile.position);
-                        OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation()), type);
+                        OnShoot(Projectile.Center + barrelOffset, type);
                     }
+
+                    //Run every frame (Note that this method runs after OnShoot, in case it is relevant for you)
+                    WhileShoot(Projectile.Center + barrelOffset, type);
                 }
 
                 //Check if the launcher should die or stay for some time
@@ -133,14 +131,17 @@ namespace EBF.Abstract_Classes
                 }
                 else
                 {
-                    //Keep item active
-                    if (player.itemTime < 2)
-                    {
-                        player.itemTime = 2;
-                        player.itemAnimation = 2;
-                        Projectile.timeLeft = 2;
-                    }
+                    EnforceItemStay(player);
                 }
+            }
+        }
+        private void EnforceItemStay(Player player)
+        {
+            if (player.itemTime < 2)
+            {
+                player.itemTime = 2;
+                player.itemAnimation = 2;
+                Projectile.timeLeft = 2;
             }
         }
     }
