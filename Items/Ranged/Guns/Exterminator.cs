@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class Destroyer : ModItem, ILocalizedModType
+    public class Exterminator : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
@@ -15,15 +15,15 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 36;
             Item.height = 24;
 
-            Item.useTime = 24;
-            Item.useAnimation = 24;
+            Item.useTime = 18;
+            Item.useAnimation = 18;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 32;
+            Item.damage = 54;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 80, gold: 0, platinum: 0);
-            Item.rare = ItemRarityID.Orange;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 2, platinum: 0);
+            Item.rare = ItemRarityID.LightRed;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -50,26 +50,26 @@ namespace EBF.Items.Ranged.Guns
             if (player.altFunctionUse == 2)
             {
                 player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
-                type = ModContent.ProjectileType<DestroyerLauncher>();
+                type = ModContent.ProjectileType<ExterminatorLauncher>();
             }
             else
             {
-                type = ModContent.ProjectileType<DestroyerSidearm>();
+                type = ModContent.ProjectileType<ExterminatorSidearm>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.BeeWax, stack: 12)
-                .AddIngredient(ItemID.JungleSpores, stack: 8)
-                .AddIngredient(ItemID.VilePowder, stack: 20)
-                .AddTile(TileID.Anvils)
+                .AddIngredient<Destroyer>(stack: 1)
+                .AddIngredient(ItemID.Ichor, stack: 15)
+                .AddIngredient(ItemID.MythrilBar, stack: 10)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
-    public class DestroyerLauncher : EBFLauncher
+    public class ExterminatorLauncher : EBFLauncher
     {
-        public override string Texture => "EBF/Items/Ranged/Guns/Destroyer";
+        public override string Texture => "EBF/Items/Ranged/Guns/Exterminator";
         public override void SetDefaults()
         {
             Projectile.width = 60;
@@ -85,10 +85,11 @@ namespace EBF.Items.Ranged.Guns
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
             type = ModContent.ProjectileType<BiohazardCloud>();
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, type, Projectile.damage / 2, 0, Projectile.owner, 100);
+            int extraDebuff = BuffID.Ichor;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity / 4, type, Projectile.damage / 2, 0, Projectile.owner, 150, extraDebuff);
         }
     }
-    public class DestroyerSidearm : EBFSidearm
+    public class ExterminatorSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {

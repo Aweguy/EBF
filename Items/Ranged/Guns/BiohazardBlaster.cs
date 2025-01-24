@@ -17,15 +17,15 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 50;
             Item.height = 28;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 14;
+            Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 86;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
-            Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
+            Item.rare = ItemRarityID.Lime;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -58,6 +58,15 @@ namespace EBF.Items.Ranged.Guns
             {
                 type = ModContent.ProjectileType<BiohazardBlasterSidearm>();
             }
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient<Exterminator>(stack: 1)
+                .AddIngredient(ItemID.ToxicFlask, stack: 1)
+                .AddIngredient(ItemID.VialofVenom, stack: 20)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
     public class BiohazardBlasterLauncher : EBFLauncher

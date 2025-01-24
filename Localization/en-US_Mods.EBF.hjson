@@ -126,6 +126,8 @@ Projectiles: {
 	CrystalWingLauncher.DisplayName: Crystal Wing Launcher
 	CrystalWingSidearm.DisplayName: Crystal Wing Sidearm
 	GasBullet.DisplayName: Gas Bullet
+	ExterminatorLauncher.DisplayName: Exterminator Launcher
+	ExterminatorSidearm.DisplayName: Exterminator Sidearm
 }
 
 NPCs: {
@@ -530,6 +532,11 @@ Items: {
 
 				CrystalWing: {
 					DisplayName: Crystal Wing
+					Tooltip: ""
+				}
+
+				Exterminator: {
+					DisplayName: Exterminator
 					Tooltip: ""
 				}
 			}
