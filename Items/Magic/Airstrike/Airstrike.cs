@@ -169,12 +169,7 @@ namespace EBF.Items.Magic.Airstrike
             {
                 //Glow and shake
                 glowmaskOpacity += 4;
-
-                if (Main.GameUpdateCount % 2 == 0)
-                {
-                    Projectile.Center += shakeDirection;
-                    shakeDirection.X = -shakeDirection.X;
-                }
+                Shake();
 
                 if (Projectile.timeLeft < 3)
                 {
@@ -243,6 +238,20 @@ namespace EBF.Items.Magic.Airstrike
                 {
                     Projectile.tileCollide = true;
                 }
+            }
+        }
+        private void Shake()
+        {
+            //Using frame counter instead of gameupdate because of extra updates
+            Projectile.frameCounter++;
+            if (Projectile.frameCounter <= 1)
+            {
+                Projectile.Center += shakeDirection;
+                shakeDirection.X = -shakeDirection.X;
+            }
+            else
+            {
+                Projectile.frameCounter = 0;
             }
         }
     }
