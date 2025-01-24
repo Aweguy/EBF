@@ -93,10 +93,19 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
+            if (type == ProjectileID.Bullet)
+            {
+                type = ModContent.ProjectileType<GasBullet>();
+            }
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 
+    /// <summary>
+    /// This is a expanding cloud which lingers, damages, poisons and stinks foes.
+    /// <br>ai[0] determines the maximum size the cloud grows to, with a minimum of 50.</br>
+    /// <br>ai[1] and ai[2] should store additional debuffs which are inflicted on foes.</br>
+    /// </summary>
     public class BiohazardCloud : ModProjectile
     {
         private int maxSize;
@@ -121,7 +130,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
-            if(Main.GameUpdateCount % 2 == 0)
+            if (Main.GameUpdateCount % 2 == 0)
             {
                 //Expand hitbox until max size
                 if (Projectile.width < maxSize)
@@ -138,7 +147,7 @@ namespace EBF.Items.Ranged.Guns
                     Vector2 position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width);
                     Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, ProjectileExtensions.GetRandomVector(), Type: Main.rand.Next(435, 438), Scale: 0.5f + ((float)Projectile.width * 2 / maxSize));
                     gore.alpha = 128;
-                    gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5); 
+                    gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5);
                 }
             }
         }
@@ -146,6 +155,41 @@ namespace EBF.Items.Ranged.Guns
         {
             target.AddBuff(BuffID.Poisoned, 60 * 5);
             target.AddBuff(BuffID.Venom, 60 * 5);
+        }
+    }
+
+    /// <summary>
+    /// This is a bullet that explodes into a damaging gas cloud upon hitting a foe.
+    /// </summary>
+    public class GasBullet : ModProjectile
+    {
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.CursedBullet}";
+        public override void SetDefaults()
+        {
+            Projectile.width = 4;
+            Projectile.height = 4;
+
+            Projectile.timeLeft = 60 * 4;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.tileCollide = true;
+            Projectile.extraUpdates = 1;
+
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Face direction
+            float velRotation = Projectile.velocity.ToRotation();
+            Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
+            Projectile.spriteDirection = Projectile.direction;
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            //Spawn gas cloud
+            int type = Main.rand.Next(511, 514);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, type, Projectile.damage / 2, 0, Projectile.owner);
         }
     }
 }
