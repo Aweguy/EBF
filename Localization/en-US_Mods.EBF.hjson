@@ -134,6 +134,9 @@ Projectiles: {
 	IcebergSpell.DisplayName: Iceberg Spell
 	SubZeroLauncher.DisplayName: Sub Zero Launcher
 	SubZeroSidearm.DisplayName: Sub Zero Sidearm
+	QuakeMakerLauncher.DisplayName: Quake Maker Launcher
+	QuakeMakerSidearm.DisplayName: Quake Maker Sidearm
+	SandSpell.DisplayName: Sand Spell
 }
 
 NPCs: {
@@ -599,6 +602,11 @@ Items: {
 						Right click slams the weapon into the ground, unleashing an iceberg beneath the nearest foe.
 						'It keeps fridges cool by day! It freezes foes by night!'
 						'''
+				}
+
+				QuakeMaker: {
+					DisplayName: Quake Maker
+					Tooltip: ""
 				}
 			}
 		}
