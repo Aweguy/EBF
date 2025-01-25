@@ -19,11 +19,11 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 48;
             Item.height = 36;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 60;
             Item.knockBack = 2;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
@@ -90,7 +90,7 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.Center))
+            if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center))
             {
                 //Get ground below target
                 Vector2 position = GetGroundPosition(target.Center);
@@ -129,10 +129,10 @@ namespace EBF.Items.Ranged.Guns
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
         public override void SetDefaults()
         {
-            Projectile.width = 64;
+            Projectile.width = 128;
             Projectile.height = 2;
 
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 60;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Generic;
@@ -140,16 +140,16 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
                 //Spawn dirt dust
-                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 5f);
+                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 6f);
                 dust.noGravity = true;
             }
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 50; i++)
             {
                 //Spawn water dust
-                Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.GemTopaz, SpeedX: 0, SpeedY: Main.rand.Next(-8, -3), Scale: 3f);
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.GemTopaz, SpeedX: 0, SpeedY: Main.rand.Next(-18, 0), Scale: 5f);
                 dust.noGravity = true;
                 dust.noLight = true;
             }
@@ -157,10 +157,10 @@ namespace EBF.Items.Ranged.Guns
         public override void AI()
         {
             //Shoot up from the ground
-            if (Projectile.height < 120)
+            if (Projectile.height < 250)
             {
-                Projectile.position.Y -= 5;
-                Projectile.height += 5;
+                Projectile.position.Y -= 25;
+                Projectile.height += 25;
             }
         }
     }

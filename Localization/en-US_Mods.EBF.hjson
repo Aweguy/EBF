@@ -498,7 +498,7 @@ Items: {
 			Guns: {
 				HeavyClaw: {
 					DisplayName: Heavy Claw
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click launches a devastating missile.
 						'Can hold three tons of metal in its grip, at least until your back gives out.'
@@ -507,7 +507,7 @@ Items: {
 
 				SteelShark: {
 					DisplayName: Steel Shark
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click makes the shark shoot a lot of bullets at once.
 						'Preferred weapon of the dreaded robo-pirate techno-mage.'
@@ -516,7 +516,7 @@ Items: {
 
 				DeepBlue: {
 					DisplayName: Deep Blue
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click slams the weapon into the ground, unleashing a torrent of water.
 						'Almost as good at crushing as it is shooting.'
@@ -525,7 +525,7 @@ Items: {
 
 				BiohazardBlaster: {
 					DisplayName: Biohazard Blaster
-					Tooltip: 
+					Tooltip:
 						'''
 						Bullets burst into damaging fumes.
 						Right click fires a blast of lingering gas clouds that inflict Poison, Ichor and Venom on foes.
@@ -535,10 +535,7 @@ Items: {
 
 				DesertScorpion: {
 					DisplayName: Desert Scorpion
-					Tooltip: 
-						'''
-						Right click plants the gun into the ground, causing a sand dune to erupt below the closest foe.
-						'''
+					Tooltip: Right click plants the gun into the ground, causing a sand dune to erupt below the closest foe.
 				}
 
 				PositronRifle: {
@@ -552,7 +549,7 @@ Items: {
 
 				ShadowBlaster: {
 					DisplayName: Shadow Blaster
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click fires a blast that bursts into an antimatter flux.
 						'Oh my god, it's full of stars.'
@@ -561,7 +558,7 @@ Items: {
 
 				Destroyer: {
 					DisplayName: Destroyer
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click fires a blast of lingering gas clouds that inflict Poison on foes.
 						'Gas mask is optional.'
@@ -579,7 +576,7 @@ Items: {
 
 				Exterminator: {
 					DisplayName: Exterminator
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click fires a blast of lingering gas clouds that inflict Poison and Ichor on foes.
 						'Makes every problem into 'just a pest problem'!'
@@ -588,7 +585,7 @@ Items: {
 
 				CoconutShooter: {
 					DisplayName: Coconut Shooter
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click launches a bouncy coconut.
 						'A gorilla's bazooka. Beat your chest with open palms before use.'
@@ -597,7 +594,7 @@ Items: {
 
 				SubZero: {
 					DisplayName: Sub Zero
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click slams the weapon into the ground, unleashing an iceberg beneath the nearest foe.
 						'It keeps fridges cool by day! It freezes foes by night!'
