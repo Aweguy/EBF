@@ -65,7 +65,7 @@ namespace EBF.Items.Ranged.Guns
                 .AddIngredient<DeepBlue>(stack: 1)
                 .AddIngredient(ItemID.IceBlock, stack: 50)
                 .AddIngredient(ItemID.HallowedBar, stack: 10)
-                .AddIngredient(ItemID.Sapphire, stack: 5)
+                .AddIngredient(ItemID.FrostCore, stack: 1)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
