@@ -120,6 +120,7 @@ namespace EBF.Items.Ranged.Guns
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.timeLeft = 60 * 2;
+            Projectile.extraUpdates = 1;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -141,7 +142,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
-            if (Main.GameUpdateCount % 4 == 0)
+            if (Main.GameUpdateCount % 8 == 0)
             {
                 Projectile.frame++;
                 if (Projectile.frame >= 2)
