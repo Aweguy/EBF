@@ -131,6 +131,9 @@ Projectiles: {
 	CoconutShooterLauncher.DisplayName: Coconut Shooter Launcher
 	CoconutShooterSidearm.DisplayName: Coconut Shooter Sidearm
 	CoconutProjectile.DisplayName: Coconut Projectile
+	IcebergSpell.DisplayName: Iceberg Spell
+	SubZeroLauncher.DisplayName: Sub Zero Launcher
+	SubZeroSidearm.DisplayName: Sub Zero Sidearm
 }
 
 NPCs: {
@@ -545,6 +548,11 @@ Items: {
 
 				CoconutShooter: {
 					DisplayName: Coconut Shooter
+					Tooltip: ""
+				}
+
+				SubZero: {
+					DisplayName: Sub Zero
 					Tooltip: ""
 				}
 			}
