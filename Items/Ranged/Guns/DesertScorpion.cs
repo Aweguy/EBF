@@ -64,9 +64,10 @@ namespace EBF.Items.Ranged.Guns
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.Amber, stack: 5)
-                .AddIngredient(ItemID.DemoniteBar, stack: 10)
-                .AddIngredient(ItemID.ScarabBomb, stack: 5)
+                .AddIngredient<QuakeMaker>(stack: 1)
+                .AddIngredient(ItemID.Amber, stack: 10)
+                .AddIngredient(ItemID.HallowedBar, stack: 10)
+                .AddIngredient(ItemID.AncientBattleArmorMaterial, stack: 1)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
