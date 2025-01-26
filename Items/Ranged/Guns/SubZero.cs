@@ -3,6 +3,7 @@ using EBF.Buffs.Cooldowns;
 using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -125,13 +126,17 @@ namespace EBF.Items.Ranged.Guns
 
     public class IcebergSpell : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
+        public override string Texture => "EBF/Items/Ranged/Guns/SubZero_Iceberg";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 4;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 128;
-            Projectile.height = 2;
+            Projectile.height = 8; //Height is set later because it affects ground placement logic
 
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 90;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Generic;
@@ -139,27 +144,45 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item30, Projectile.Center);
+
             for (int i = 0; i < 15; i++)
             {
                 //Spawn dirt dust
-                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 6f);
+                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 8f);
                 dust.noGravity = true;
             }
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 //Spawn ice dust
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.Ice, SpeedX: 0, SpeedY: Main.rand.Next(-18, 0), Scale: 5f);
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.Ice, SpeedX: 0, SpeedY: Main.rand.Next(-14, 0), Scale: 3f);
                 dust.noGravity = true;
                 dust.noLight = true;
             }
+
+            //Move into place
+            Projectile.height = 256;
+            Projectile.position.Y -= Projectile.height + 16;
         }
         public override void AI()
         {
-            //Shoot up from the ground
-            if (Projectile.height < 250)
+            if(Main.GameUpdateCount % 4 == 0)
             {
-                Projectile.position.Y -= 25;
-                Projectile.height += 25;
+                //Handle animation
+                Projectile.frame++;
+                if (Projectile.frame > 3)
+                {
+                    Projectile.frame = 3;
+                }
+            }
+        }
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item27, Projectile.Center);
+
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, SpeedX: 0, SpeedY: 0, Scale: 2f); 
             }
         }
     }

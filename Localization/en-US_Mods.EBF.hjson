@@ -538,7 +538,7 @@ Items: {
 
 				DesertScorpion: {
 					DisplayName: Desert Scorpion
-					Tooltip: 
+					Tooltip:
 						'''
 						Right click slams the weapon into the ground, unleashing a sand dune to scour foes.
 						'Brings the desert with it.'
