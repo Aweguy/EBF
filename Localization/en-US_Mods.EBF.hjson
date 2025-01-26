@@ -139,6 +139,8 @@ Projectiles: {
 	SandSpell.DisplayName: Sand Spell
 	GodHandLauncher.DisplayName: God Hand Launcher
 	GodHandSidearm.DisplayName: God Hand Sidearm
+	ThePhantomLauncher.DisplayName: The Phantom Launcher
+	ThePhantomSidearm.DisplayName: The Phantom Sidearm
 }
 
 NPCs: {
@@ -623,6 +625,11 @@ Items: {
 
 				GodHand: {
 					DisplayName: God Hand
+					Tooltip: ""
+				}
+
+				ThePhantom: {
+					DisplayName: The Phantom
 					Tooltip: ""
 				}
 			}
