@@ -137,6 +137,8 @@ Projectiles: {
 	QuakeMakerLauncher.DisplayName: Quake Maker Launcher
 	QuakeMakerSidearm.DisplayName: Quake Maker Sidearm
 	SandSpell.DisplayName: Sand Spell
+	GodHandLauncher.DisplayName: God Hand Launcher
+	GodHandSidearm.DisplayName: God Hand Sidearm
 }
 
 NPCs: {
@@ -617,6 +619,11 @@ Items: {
 						Right click slams the weapon into the ground, unleashing an eruption of sand.
 						'They feel tremors from right beneath.'
 						'''
+				}
+
+				GodHand: {
+					DisplayName: God Hand
+					Tooltip: ""
 				}
 			}
 		}
