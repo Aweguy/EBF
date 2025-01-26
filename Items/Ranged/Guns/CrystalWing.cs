@@ -24,8 +24,8 @@ namespace EBF.Items.Ranged.Guns
             Item.damage = 70;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
-            Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 8, platinum: 0);
+            Item.rare = ItemRarityID.Cyan;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -63,7 +63,7 @@ namespace EBF.Items.Ranged.Guns
         {
             CreateRecipe()
                 .AddIngredient(ItemID.IllegalGunParts, 1)
-                .AddIngredient(ItemID.MarbleBlock, 150)
+                .AddIngredient(ItemID.Ectoplasm, 15)
                 .AddIngredient(ItemID.SoulofLight, 20)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();

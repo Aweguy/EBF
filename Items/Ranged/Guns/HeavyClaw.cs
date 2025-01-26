@@ -18,15 +18,15 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 48;
             Item.height = 30;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 24;
+            Item.useAnimation = 24;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 62;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
-            Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
+            Item.rare = ItemRarityID.LightRed;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -60,6 +60,8 @@ namespace EBF.Items.Ranged.Guns
                 type = ModContent.ProjectileType<HeavyClawSidearm>();
             }
         }
+       
+        //Dropped by skeletron prime vice sometimes
     }
     public class HeavyClawLauncher : EBFLauncher
     {

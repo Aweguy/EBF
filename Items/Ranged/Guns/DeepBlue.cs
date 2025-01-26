@@ -19,14 +19,14 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 80;
             Item.height = 30;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 28;
+            Item.useAnimation = 28;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 21;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 70, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Green;
             Item.autoReuse = true;
 

@@ -2,6 +2,7 @@
 using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,11 +21,11 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 44;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
-            Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(copper: 0, silver: 40, gold: 2, platinum: 0);
+            Item.rare = ItemRarityID.LightRed;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -112,6 +113,7 @@ namespace EBF.Items.Ranged.Guns
                     type = ModContent.ProjectileType<PositronRifle_PlasmaShot>();
                 }
 
+                SoundEngine.PlaySound(ShootSound, Projectile.position);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner, explosionID);
             }
 

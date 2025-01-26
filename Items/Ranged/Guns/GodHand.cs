@@ -21,7 +21,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 94;
+            Item.damage = 84;
             Item.knockBack = 2;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);

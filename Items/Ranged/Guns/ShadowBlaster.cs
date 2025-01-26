@@ -19,15 +19,15 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 50;
             Item.height = 30;
 
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 24;
+            Item.useAnimation = 24;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 72;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
-            Item.rare = ItemRarityID.Green;
+            Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 5, platinum: 0);
+            Item.rare = ItemRarityID.Pink;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -60,6 +60,15 @@ namespace EBF.Items.Ranged.Guns
             {
                 type = ModContent.ProjectileType<ShadowBlasterSidearm>();
             }
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.IllegalGunParts, 1)
+                .AddIngredient(ItemID.SoulofMight, 20)
+                .AddIngredient(ItemID.Obsidian, 30)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
     public class ShadowBlasterLauncher : EBFLauncher

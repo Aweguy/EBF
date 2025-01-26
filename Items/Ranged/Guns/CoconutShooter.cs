@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Guns
             Item.damage = 6;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 40, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 25, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Blue;
             Item.autoReuse = true;
 

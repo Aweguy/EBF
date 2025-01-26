@@ -15,14 +15,14 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 50;
             Item.height = 30;
 
-            Item.useTime = 18;
-            Item.useAnimation = 18;
+            Item.useTime = 14;
+            Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 80;
+            Item.damage = 192;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 90, gold: 10, platinum: 0);
             Item.rare = ItemRarityID.Red;
             Item.autoReuse = true;
 
@@ -56,6 +56,15 @@ namespace EBF.Items.Ranged.Guns
             {
                 type = ModContent.ProjectileType<ThePhantomSidearm>();
             }
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient<ShadowBlaster>(stack: 1)
+                .AddIngredient(ItemID.LunarBar, stack: 15)
+                .AddIngredient(ItemID.Obsidian, stack: 80)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
         }
     }
     public class ThePhantomLauncher : EBFLauncher
