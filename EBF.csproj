@@ -32,8 +32,12 @@
     <None Remove="Items\Ranged\CrimsonDragon_CrimsonArrow.png" />
     <None Remove="Items\Ranged\CrimsonDragon_FireCrystal.png" />
     <None Remove="Items\Ranged\Guns\BiohazardBlasterSidearm.png" />
+    <None Remove="Items\Ranged\Guns\GodHand.png" />
+    <None Remove="Items\Ranged\Guns\GodHandSidearm.png" />
     <None Remove="Items\Ranged\Guns\QuakeMaker.png" />
     <None Remove="Items\Ranged\Guns\QuakeMakerSidearm.png" />
+    <None Remove="Items\Ranged\Guns\ThePhantom.png" />
+    <None Remove="Items\Ranged\Guns\ThePhantomSidearm.png" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sounds\NPCHit\**" />
