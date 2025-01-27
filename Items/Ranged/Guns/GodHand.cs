@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class CrystalWing : ModItem, ILocalizedModType
+    public class GodHand : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
@@ -17,15 +17,15 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 46;
             Item.height = 30;
 
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 14;
+            Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 70;
+            Item.damage = 84;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 8, platinum: 0);
-            Item.rare = ItemRarityID.Cyan;
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
+            Item.rare = ItemRarityID.Red;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -52,27 +52,26 @@ namespace EBF.Items.Ranged.Guns
             if (player.altFunctionUse == 2)
             {
                 player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 2);
-                type = ModContent.ProjectileType<CrystalWingLauncher>();
+                type = ModContent.ProjectileType<GodHandLauncher>();
             }
             else
             {
-                type = ModContent.ProjectileType<CrystalWingSidearm>();
+                type = ModContent.ProjectileType<GodHandSidearm>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.IllegalGunParts, 1)
-                .AddIngredient(ItemID.Ectoplasm, 15)
-                .AddIngredient(ItemID.SoulofLight, 20)
-                .AddTile(TileID.MythrilAnvil)
+                .AddIngredient<CrystalWing>(stack: 1)
+                .AddIngredient(ItemID.LunarBar, 20)
+                .AddTile(TileID.LunarCraftingStation)
                 .Register();
         }
     }
-    public class CrystalWingLauncher : EBFLauncher
+    public class GodHandLauncher : EBFLauncher
     {
-        private const float beamWidth = 0.5f;
-        public override string Texture => "EBF/Items/Ranged/Guns/CrystalWing";
+        private const float beamWidth = 2f;
+        public override string Texture => "EBF/Items/Ranged/Guns/GodHand";
         public override void SetDefaults()
         {
             Projectile.width = 84;
@@ -117,15 +116,19 @@ namespace EBF.Items.Ranged.Guns
             Player player = Main.player[Projectile.owner];
             if (!player.HasBuff<Charged>()) //We check false instead of true because WhileShoot() runs after OnShoot() has cleared the buff.
             {
-                //Randomize 
-                Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * Main.rand.NextFloatDirection() * beamWidth;
-                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
-                proj.friendly = true;
-                proj.penetrate = -1;
+                for (int i = 0; i < 3; i++)
+                {
+                    //Randomize 
+                    Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * Main.rand.NextFloatDirection() * beamWidth;
+                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    proj.friendly = true;
+                    proj.penetrate = -1;
+                    proj.timeLeft = 120;
+                }
             }
         }
     }
-    public class CrystalWingSidearm : EBFSidearm
+    public class GodHandSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {
@@ -138,7 +141,12 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            //Shoot five shots
+            for (float i = -1f; i < 1f; i += 0.501f)
+            {
+                Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * i;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity * Main.rand.NextFloat(0.9f, 1.1f), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
         }
     }
 }

@@ -2,22 +2,20 @@
 using EBF.Buffs.Cooldowns;
 using EBF.Extensions;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class DeepBlue : ModItem, ILocalizedModType
+    public class QuakeMaker : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 80;
-            Item.height = 30;
+            Item.width = 38;
+            Item.height = 28;
 
             Item.useTime = 28;
             Item.useAnimation = 28;
@@ -26,7 +24,7 @@ namespace EBF.Items.Ranged.Guns
             Item.damage = 21;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 70, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 60, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Green;
             Item.autoReuse = true;
 
@@ -54,30 +52,30 @@ namespace EBF.Items.Ranged.Guns
             if (player.altFunctionUse == 2)
             {
                 player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 3);
-                type = ModContent.ProjectileType<DeepBlueLauncher>();
+                type = ModContent.ProjectileType<QuakeMakerLauncher>();
             }
             else
             {
-                type = ModContent.ProjectileType<DeepBlueSidearm>();
+                type = ModContent.ProjectileType<QuakeMakerSidearm>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.Coral, stack: 5)
-                .AddIngredient(ItemID.PlatinumBar, stack: 10)
-                .AddIngredient(ItemID.Sapphire, stack: 5)
+                .AddIngredient(ItemID.Amber, stack: 5)
+                .AddIngredient(ItemID.DemoniteBar, stack: 10)
+                .AddIngredient(ItemID.ScarabBomb, stack: 5)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
     }
-    public class DeepBlueLauncher : EBFMagicLauncher
+    public class QuakeMakerLauncher : EBFMagicLauncher
     {
-        public override string Texture => "EBF/Items/Ranged/Guns/DeepBlue";
+        public override string Texture => "EBF/Items/Ranged/Guns/QuakeMaker";
         public override void SetDefaults()
         {
-            Projectile.width = 80;
-            Projectile.height = 30;
+            Projectile.width = 68;
+            Projectile.height = 50;
 
             Projectile.penetrate = -1;
             Projectile.friendly = false;
@@ -96,7 +94,7 @@ namespace EBF.Items.Ranged.Guns
                 Vector2 position = GetGroundPosition(target.Center);
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<SandSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
         private static Vector2 GetGroundPosition(Vector2 checkPosition)
@@ -107,12 +105,12 @@ namespace EBF.Items.Ranged.Guns
             return new Vector2(pos.X * 16 + 8, pos.Y * 16);
         }
     }
-    public class DeepBlueSidearm : EBFSidearm
+    public class QuakeMakerSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
-            Projectile.height = 24;
+            Projectile.width = 38;
+            Projectile.height = 28;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
@@ -124,7 +122,7 @@ namespace EBF.Items.Ranged.Guns
         }
     }
 
-    public class GeyserSpell : ModProjectile
+    public class SandSpell : ModProjectile
     {
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
         public override void SetDefaults()
@@ -149,7 +147,7 @@ namespace EBF.Items.Ranged.Guns
             for (int i = 0; i < 30; i++)
             {
                 //Spawn water dust
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.GemSapphire, SpeedX: 0, SpeedY: Main.rand.Next(-8, -3), Scale: 3f);
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.GemTopaz, SpeedX: 0, SpeedY: Main.rand.Next(-8, -3), Scale: 3f);
                 dust.noGravity = true;
                 dust.noLight = true;
             }

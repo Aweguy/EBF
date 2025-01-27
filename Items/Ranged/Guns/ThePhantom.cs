@@ -1,32 +1,29 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class HeavyClaw : ModItem, ILocalizedModType
+    public class ThePhantom : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
             Item.width = 48;
-            Item.height = 30;
+            Item.height = 22;
 
-            Item.useTime = 24;
-            Item.useAnimation = 24;
+            Item.useTime = 14;
+            Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 62;
+            Item.damage = 192;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
-            Item.rare = ItemRarityID.LightRed;
+            Item.value = Item.sellPrice(copper: 0, silver: 90, gold: 10, platinum: 0);
+            Item.rare = ItemRarityID.Red;
             Item.autoReuse = true;
 
             Item.useAmmo = AmmoID.Bullet;
@@ -53,23 +50,30 @@ namespace EBF.Items.Ranged.Guns
             if (player.altFunctionUse == 2)
             {
                 player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 8);
-                type = ModContent.ProjectileType<HeavyClawLauncher>();
+                type = ModContent.ProjectileType<ThePhantomLauncher>();
             }
             else
             {
-                type = ModContent.ProjectileType<HeavyClawSidearm>();
+                type = ModContent.ProjectileType<ThePhantomSidearm>();
             }
         }
-       
-        //Dropped by skeletron prime vice sometimes
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient<ShadowBlaster>(stack: 1)
+                .AddIngredient(ItemID.LunarBar, stack: 15)
+                .AddIngredient(ItemID.Obsidian, stack: 80)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
     }
-    public class HeavyClawLauncher : EBFLauncher
+    public class ThePhantomLauncher : EBFLauncher
     {
-        public override string Texture => "EBF/Items/Ranged/Guns/HeavyClaw";
+        public override string Texture => "EBF/Items/Ranged/Guns/ThePhantom";
         public override void SetDefaults()
         {
-            Projectile.width = 96;
-            Projectile.height = 52;
+            Projectile.width = 82;
+            Projectile.height = 38;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
@@ -77,15 +81,17 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, ProjectileID.RocketI, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            int explosionID = ModContent.ProjectileType<ShadowBlaster_AntimatterFissure>();
+            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, ModContent.ProjectileType<ShadowBlaster_DarkShot>(), Projectile.damage, Projectile.knockBack, Projectile.owner, explosionID);
+            proj.timeLeft = 45;
         }
     }
-    public class HeavyClawSidearm : EBFSidearm
+    public class ThePhantomSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {
             Projectile.width = 48;
-            Projectile.height = 30;
+            Projectile.height = 22;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
@@ -93,7 +99,14 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            int explosionID = 0;
+            if (type == ProjectileID.Bullet)
+            {
+                explosionID = ModContent.ProjectileType<ShadowBlaster_DarkExplosionSmall>(); //Sending hit effects through AI params so I can reuse the dark shot.
+                type = ModContent.ProjectileType<ShadowBlaster_DarkShot>();
+            }
+
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner, explosionID);
         }
     }
 }

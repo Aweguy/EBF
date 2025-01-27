@@ -115,7 +115,7 @@ namespace EBF.Extensions
         public static void LookAt(this Projectile projectile, Vector2 target)
         {
             //Initial rotation
-            projectile.velocity = Vector2.Normalize(target - projectile.position) * projectile.velocity.Length();
+            projectile.velocity = Vector2.Normalize(target - projectile.Center) * projectile.velocity.Length();
             projectile.rotation = projectile.velocity.ToRotation();
 
             //Account for directions

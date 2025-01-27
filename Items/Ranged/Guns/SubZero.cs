@@ -2,7 +2,6 @@
 using EBF.Buffs.Cooldowns;
 using EBF.Extensions;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -11,22 +10,22 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class DeepBlue : ModItem, ILocalizedModType
+    public class SubZero : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 80;
-            Item.height = 30;
+            Item.width = 48;
+            Item.height = 28;
 
-            Item.useTime = 28;
-            Item.useAnimation = 28;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 21;
+            Item.damage = 60;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 70, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Green;
             Item.autoReuse = true;
 
@@ -54,30 +53,31 @@ namespace EBF.Items.Ranged.Guns
             if (player.altFunctionUse == 2)
             {
                 player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 3);
-                type = ModContent.ProjectileType<DeepBlueLauncher>();
+                type = ModContent.ProjectileType<SubZeroLauncher>();
             }
             else
             {
-                type = ModContent.ProjectileType<DeepBlueSidearm>();
+                type = ModContent.ProjectileType<SubZeroSidearm>();
             }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.Coral, stack: 5)
-                .AddIngredient(ItemID.PlatinumBar, stack: 10)
-                .AddIngredient(ItemID.Sapphire, stack: 5)
+                .AddIngredient<DeepBlue>(stack: 1)
+                .AddIngredient(ItemID.IceBlock, stack: 50)
+                .AddIngredient(ItemID.HallowedBar, stack: 10)
+                .AddIngredient(ItemID.FrostCore, stack: 1)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
     }
-    public class DeepBlueLauncher : EBFMagicLauncher
+    public class SubZeroLauncher : EBFMagicLauncher
     {
-        public override string Texture => "EBF/Items/Ranged/Guns/DeepBlue";
+        public override string Texture => "EBF/Items/Ranged/Guns/SubZero";
         public override void SetDefaults()
         {
-            Projectile.width = 80;
-            Projectile.height = 30;
+            Projectile.width = 100;
+            Projectile.height = 56;
 
             Projectile.penetrate = -1;
             Projectile.friendly = false;
@@ -90,13 +90,13 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.Center))
+            if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center))
             {
                 //Get ground below target
                 Vector2 position = GetGroundPosition(target.Center);
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<IcebergSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
         private static Vector2 GetGroundPosition(Vector2 checkPosition)
@@ -107,12 +107,12 @@ namespace EBF.Items.Ranged.Guns
             return new Vector2(pos.X * 16 + 8, pos.Y * 16);
         }
     }
-    public class DeepBlueSidearm : EBFSidearm
+    public class SubZeroSidearm : EBFSidearm
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
-            Projectile.height = 24;
+            Projectile.width = 48;
+            Projectile.height = 28;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
@@ -124,15 +124,19 @@ namespace EBF.Items.Ranged.Guns
         }
     }
 
-    public class GeyserSpell : ModProjectile
+    public class IcebergSpell : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
+        public override string Texture => "EBF/Items/Ranged/Guns/SubZero_Iceberg";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 4;
+        }
         public override void SetDefaults()
         {
-            Projectile.width = 64;
-            Projectile.height = 2;
+            Projectile.width = 128;
+            Projectile.height = 8; //Height is set later because it affects ground placement logic
 
-            Projectile.timeLeft = 30;
+            Projectile.timeLeft = 90;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Generic;
@@ -140,27 +144,45 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
-            for (int i = 0; i < 10; i++)
+            SoundEngine.PlaySound(SoundID.Item30, Projectile.Center);
+
+            for (int i = 0; i < 15; i++)
             {
                 //Spawn dirt dust
-                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 5f);
+                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 8f);
                 dust.noGravity = true;
             }
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 10; i++)
             {
-                //Spawn water dust
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.GemSapphire, SpeedX: 0, SpeedY: Main.rand.Next(-8, -3), Scale: 3f);
+                //Spawn ice dust
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.Ice, SpeedX: 0, SpeedY: Main.rand.Next(-14, 0), Scale: 3f);
                 dust.noGravity = true;
                 dust.noLight = true;
             }
+
+            //Move into place
+            Projectile.height = 256;
+            Projectile.position.Y -= Projectile.height + 16;
         }
         public override void AI()
         {
-            //Shoot up from the ground
-            if (Projectile.height < 120)
+            if(Main.GameUpdateCount % 4 == 0)
             {
-                Projectile.position.Y -= 5;
-                Projectile.height += 5;
+                //Handle animation
+                Projectile.frame++;
+                if (Projectile.frame > 3)
+                {
+                    Projectile.frame = 3;
+                }
+            }
+        }
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item27, Projectile.Center);
+
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, SpeedX: 0, SpeedY: 0, Scale: 2f); 
             }
         }
     }

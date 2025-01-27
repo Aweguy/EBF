@@ -131,6 +131,16 @@ Projectiles: {
 	CoconutShooterLauncher.DisplayName: Coconut Shooter Launcher
 	CoconutShooterSidearm.DisplayName: Coconut Shooter Sidearm
 	CoconutProjectile.DisplayName: Coconut Projectile
+	IcebergSpell.DisplayName: Iceberg Spell
+	SubZeroLauncher.DisplayName: Sub Zero Launcher
+	SubZeroSidearm.DisplayName: Sub Zero Sidearm
+	QuakeMakerLauncher.DisplayName: Quake Maker Launcher
+	QuakeMakerSidearm.DisplayName: Quake Maker Sidearm
+	SandSpell.DisplayName: Sand Spell
+	GodHandLauncher.DisplayName: God Hand Launcher
+	GodHandSidearm.DisplayName: God Hand Sidearm
+	ThePhantomLauncher.DisplayName: The Phantom Launcher
+	ThePhantomSidearm.DisplayName: The Phantom Sidearm
 }
 
 NPCs: {
@@ -495,56 +505,131 @@ Items: {
 			Guns: {
 				HeavyClaw: {
 					DisplayName: Heavy Claw
-					Tooltip: Right click launches a devastating missile.
+					Tooltip:
+						'''
+						Right click launches a devastating missile.
+						'Can hold three tons of metal in its grip, at least until your back gives out.'
+						'''
 				}
 
 				SteelShark: {
 					DisplayName: Steel Shark
-					Tooltip: Right click makes the shark shoot a lot of bullets at once.
+					Tooltip:
+						'''
+						Right click makes the shark shoot a lot of bullets at once.
+						'Preferred weapon of the dreaded robo-pirate techno-mage.'
+						'''
 				}
 
 				DeepBlue: {
 					DisplayName: Deep Blue
-					Tooltip: Right click plants the gun into the ground, causing a geyser to erupt below the closest foe.
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing a torrent of water.
+						'Almost as good at crushing as it is shooting.'
+						'''
 				}
 
 				BiohazardBlaster: {
 					DisplayName: Biohazard Blaster
-					Tooltip: Right click to launch a lingering noxious cloud, which poisons and venoms foes.
+					Tooltip:
+						'''
+						Bullets burst into damaging fumes.
+						Right click fires a blast of lingering gas clouds that inflict Poison, Ichor and Venom on foes.
+						'Fight biohazards with even worse biohazards!'
+						'''
 				}
 
 				DesertScorpion: {
 					DisplayName: Desert Scorpion
-					Tooltip: Right click plants the gun into the ground, causing a sand dune to erupt below the closest foe.
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing a sand dune to scour foes.
+						'Brings the desert with it.'
+						'''
 				}
 
 				PositronRifle: {
 					DisplayName: Positron Rifle
-					Tooltip: ""
+					Tooltip:
+						'''
+						Bullets turn into lethal plasma shots.
+						Right click fires a bolt that bursts into a wide wave of plasma.
+						'A handheld railgun that fires electrifying shots.'
+						'''
 				}
 
 				ShadowBlaster: {
 					DisplayName: Shadow Blaster
-					Tooltip: ""
+					Tooltip:
+						'''
+						Right click fires a blast that bursts into an antimatter flux.
+						'Oh my god, it's full of stars.'
+						'''
 				}
 
 				Destroyer: {
 					DisplayName: Destroyer
-					Tooltip: ""
+					Tooltip:
+						'''
+						Right click fires a blast of lingering gas clouds that inflict Poison on foes.
+						'Gas mask is optional.'
+						'''
 				}
 
 				CrystalWing: {
 					DisplayName: Crystal Wing
-					Tooltip: ""
+					Tooltip:
+						'''
+						Right click charges up Hyper Beam. Right click again to unleash angelic might.
+						'Crafted by futuristic Seraphim. Use holy water when cleaning.'
+						'''
 				}
 
 				Exterminator: {
 					DisplayName: Exterminator
-					Tooltip: ""
+					Tooltip:
+						'''
+						Right click fires a blast of lingering gas clouds that inflict Poison and Ichor on foes.
+						'Makes every problem into 'just a pest problem'!'
+						'''
 				}
 
 				CoconutShooter: {
 					DisplayName: Coconut Shooter
+					Tooltip:
+						'''
+						Bullets turn into arcing seeds.
+						Right click launches a bouncy coconut.
+						'A gorilla's bazooka. Beat your chest with open palms before use.'
+						'''
+				}
+
+				SubZero: {
+					DisplayName: Sub Zero
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing an iceberg beneath the nearest foe.
+						'It keeps fridges cool by day! It freezes foes by night!'
+						'''
+				}
+
+				QuakeMaker: {
+					DisplayName: Quake Maker
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing an eruption of sand.
+						'They feel tremors from right beneath.'
+						'''
+				}
+
+				GodHand: {
+					DisplayName: God Hand
+					Tooltip: ""
+				}
+
+				ThePhantom: {
+					DisplayName: The Phantom
 					Tooltip: ""
 				}
 			}

@@ -60,6 +60,7 @@ namespace EBF.Items.Ranged.Guns
                 type = ModContent.ProjectileType<SteelSharkSidearm>();
             }
         }
+        //Obtained from opening iron crates
     }
     public class SteelSharkLauncher : EBFLauncher
     {
