@@ -62,7 +62,7 @@ namespace EBF.Items.Magic
     }
     public class Seraphim_Judgement : ModProjectile
     {
-        public static readonly SoundStyle JudgementSound = new("EBF/Assets/Sounds/Custom/Judgement")
+        public static readonly SoundStyle JudgementSound = new("EBF/Assets/Sfx/Judgement")
         {
             Volume = 0.8f,
             PitchVariance = 1f
