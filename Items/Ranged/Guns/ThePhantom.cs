@@ -12,8 +12,8 @@ namespace EBF.Items.Ranged.Guns
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 50;
-            Item.height = 30;
+            Item.width = 48;
+            Item.height = 22;
 
             Item.useTime = 14;
             Item.useAnimation = 14;
@@ -72,8 +72,8 @@ namespace EBF.Items.Ranged.Guns
         public override string Texture => "EBF/Items/Ranged/Guns/ThePhantom";
         public override void SetDefaults()
         {
-            Projectile.width = 100;
-            Projectile.height = 52;
+            Projectile.width = 82;
+            Projectile.height = 38;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
@@ -90,8 +90,8 @@ namespace EBF.Items.Ranged.Guns
     {
         public override void SetDefaults()
         {
-            Projectile.width = 50;
-            Projectile.height = 30;
+            Projectile.width = 48;
+            Projectile.height = 22;
 
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
