@@ -141,6 +141,8 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
+
             for (int i = 0; i < 15; i++)
             {
                 //Spawn dirt dust

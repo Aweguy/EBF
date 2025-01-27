@@ -78,6 +78,9 @@ namespace EBF.Items.Ranged.Guns
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
+
+            ChargeSound = SoundID.Item117;
+            ShootSound = SoundID.Item73;
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {

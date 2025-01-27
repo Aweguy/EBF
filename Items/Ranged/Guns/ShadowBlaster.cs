@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -82,6 +83,9 @@ namespace EBF.Items.Ranged.Guns
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
+
+            ChargeSound = SoundID.Item117;
+            ShootSound = SoundID.Item73;
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
@@ -186,6 +190,10 @@ namespace EBF.Items.Ranged.Guns
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
+        }
         public override void AI()
         {
             if (Main.GameUpdateCount % 2 == 0)
@@ -214,7 +222,6 @@ namespace EBF.Items.Ranged.Guns
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.timeLeft = 65;
             Projectile.tileCollide = false;
 
             Projectile.usesLocalNPCImmunity = true;
@@ -222,6 +229,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item82, Projectile.Center);
             explosionID = ModContent.ProjectileType<ShadowBlaster_DarkExplosionSmall>();
         }
         public override void AI()

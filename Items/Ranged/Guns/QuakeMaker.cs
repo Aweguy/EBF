@@ -3,6 +3,7 @@ using EBF.Buffs.Cooldowns;
 using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -138,6 +139,8 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item66, Projectile.Center);
+
             for (int i = 0; i < 10; i++)
             {
                 //Spawn dirt dust
