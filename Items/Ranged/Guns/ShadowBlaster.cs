@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 24;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 72;
+            Item.damage = 69;
             Item.knockBack = 2;
 
             Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 5, platinum: 0);
@@ -247,12 +247,12 @@ namespace EBF.Items.Ranged.Guns
             }
 
             //Run once per 5 frames
-            if (Main.GameUpdateCount % 5 == 0)
+            if (Main.GameUpdateCount % 8 == 0)
             {
                 Projectile.frame++;
                 if (Projectile.frame >= 12)
                 {
-                    Projectile.frame = 0;
+                    Projectile.Kill();
                 }
             }
         }
