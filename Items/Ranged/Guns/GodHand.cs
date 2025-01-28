@@ -51,7 +51,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 60);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 30);
                 type = ModContent.ProjectileType<GodHandLauncher>();
             }
             else
