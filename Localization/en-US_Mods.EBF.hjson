@@ -563,6 +563,7 @@ Items: {
 					DisplayName: Shadow Blaster
 					Tooltip:
 						'''
+						Bullets turn into a dark shot.
 						Right click fires a blast that bursts into an antimatter flux.
 						'Oh my god, it's full of stars.'
 						'''
@@ -625,12 +626,22 @@ Items: {
 
 				GodHand: {
 					DisplayName: God Hand
-					Tooltip: ""
+					Tooltip:
+						'''
+						Shoot four bullets at once.
+						Right click charges up Hyper Beam. Right click again to unleash divine retribution.
+						'Forged from the remains of the Kitten Kingdom. An echo of catkind's hubris.'
+						'''
 				}
 
 				ThePhantom: {
 					DisplayName: The Phantom
-					Tooltip: ""
+					Tooltip:
+						'''
+						Bullets turn into a dark shot.
+						Right click fires a blast that bursts into an antimatter flux.
+						'Manufactured using illegal and sacrilegious technology. Crackles with dark magic.'
+						'''
 				}
 			}
 		}
