@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,6 +13,7 @@ namespace EBF.Items.Melee
         {
             Item.width = 48;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 48;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.scale = 1.1f;
 
             Item.damage = 14;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -25,11 +28,16 @@ namespace EBF.Items.Melee
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
         }
-
-        /* TODO: Increase player movement speed while holding the weapon.
-         * also, add recipe group for silver/tungsten.
-         */
-
+        public override void MeleeEffects(Player player, Rectangle hitbox)
+        {
+            if (Main.rand.NextBool(3))
+            {
+                Vector2 position = hitbox.Center.ToVector2() + ProjectileExtensions.GetRandomVector() * 20;
+                Vector2 velocity = Vector2.UnitX * player.direction * 0.33f;
+                Dust dust = Dust.NewDustPerfect(position, DustID.TintableDustLighted, velocity, 0, Color.WhiteSmoke);
+                dust.noLight = true;
+            }
+        }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)

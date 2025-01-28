@@ -37,6 +37,16 @@ Buffs: {
 		DisplayName: Regeneration
 		Description: Quickly regenerating health
 	}
+
+	Overheated: {
+		DisplayName: Overheated
+		Description: Your launcher is too hot to use.
+	}
+
+	Charged: {
+		DisplayName: Charged
+		Description: You feel ready to unleash hell upon whoever is in your way.
+	}
 }
 
 Projectiles: {
@@ -70,7 +80,7 @@ Projectiles: {
 	Star.DisplayName: Star
 	CrimsonDragon_CrimsonArrow.DisplayName: Crimson Dragon Arrow
 	Seraphim_LightExplosion.DisplayName: Seraphim Light Explosion
-	Inferno_Proj.DisplayName: Inferno_ Proj
+	Inferno_Proj.DisplayName: Inferno Proj
 	EagleEye_Arrow.DisplayName: Eagle Eye Arrow
 	FairyBow_Arrow.DisplayName: Fairy Bow Arrow
 	Sharanga_Arrow.DisplayName: Sharanga Arrow
@@ -86,6 +96,51 @@ Projectiles: {
 	TheStinger_Arrow.DisplayName: The Stinger Arrow
 	ThornBow_Arrow.DisplayName: Thorn Bow Arrow
 	GaiaSeed.DisplayName: Gaia Seed
+	HeavyClawLauncher.DisplayName: Heavy Claw Launcher
+	HeavyClawSidearm.DisplayName: Heavy Claw Sidearm
+	SteelSharkLauncher.DisplayName: Steel Shark Launcher
+	SteelSharkSidearm.DisplayName: Steel Shark Sidearm
+	DeepBlueLauncher.DisplayName: Deep Blue Launcher
+	DeepBlueSidearm.DisplayName: Deep Blue Sidearm
+	GeyserSpell.DisplayName: Geyser Spell
+	SoulEater_SwingProjectile.DisplayName: Soul Eater_ Swing Projectile
+	BiohazardBlasterLauncher.DisplayName: Biohazard Blaster Launcher
+	BiohazardBlasterSidearm.DisplayName: Biohazard Blaster Sidearm
+	PoisonCloud.DisplayName: Poison Cloud
+	BiohazardCloud.DisplayName: Biohazard Cloud
+	DesertScorpionLauncher.DisplayName: Desert Scorpion Launcher
+	DesertScorpionSidearm.DisplayName: Desert Scorpion Sidearm
+	SandDuneSpell.DisplayName: Sand Dune Spell
+	PositronRifleLauncher.DisplayName: Positron Rifle Launcher
+	PositronRifleSidearm.DisplayName: Positron Rifle Sidearm
+	ShadowBlasterLauncher.DisplayName: Shadow Blaster Launcher
+	ShadowBlasterSidearm.DisplayName: Shadow Blaster Sidearm
+	ShadowBlaster_DarkExplosionSmall.DisplayName: Shadow Blaster Dark Explosion Small
+	ShadowBlaster_DarkShot.DisplayName: Shadow Blaster Dark Shot
+	ShadowBlaster_AntimatterFissure.DisplayName: Shadow Blaster_ Antimatter Fissure
+	PositronRifle_PlasmaBurst.DisplayName: Positron Rifle_ Plasma Burst
+	PositronRifle_PlasmaShot.DisplayName: Positron Rifle_ Plasma Shot
+	PositronRifle_PlasmaWave.DisplayName: Positron Rifle_ Plasma Wave
+	DestroyerLauncher.DisplayName: Destroyer Launcher
+	DestroyerSidearm.DisplayName: Destroyer Sidearm
+	CrystalWingLauncher.DisplayName: Crystal Wing Launcher
+	CrystalWingSidearm.DisplayName: Crystal Wing Sidearm
+	GasBullet.DisplayName: Gas Bullet
+	ExterminatorLauncher.DisplayName: Exterminator Launcher
+	ExterminatorSidearm.DisplayName: Exterminator Sidearm
+	CoconutShooterLauncher.DisplayName: Coconut Shooter Launcher
+	CoconutShooterSidearm.DisplayName: Coconut Shooter Sidearm
+	CoconutProjectile.DisplayName: Coconut Projectile
+	IcebergSpell.DisplayName: Iceberg Spell
+	SubZeroLauncher.DisplayName: Sub Zero Launcher
+	SubZeroSidearm.DisplayName: Sub Zero Sidearm
+	QuakeMakerLauncher.DisplayName: Quake Maker Launcher
+	QuakeMakerSidearm.DisplayName: Quake Maker Sidearm
+	SandSpell.DisplayName: Sand Spell
+	GodHandLauncher.DisplayName: God Hand Launcher
+	GodHandSidearm.DisplayName: God Hand Sidearm
+	ThePhantomLauncher.DisplayName: The Phantom Launcher
+	ThePhantomSidearm.DisplayName: The Phantom Sidearm
 }
 
 NPCs: {
@@ -118,7 +173,11 @@ Items: {
 	Weapons: {
 		Melee: {
 			Berzerker: {
-				Tooltip: Launches a boulder.
+				Tooltip:
+					'''
+					Unleashes boulders.
+					'A heavy weapon with a stone edge and unyielding rage.'
+					'''
 				DisplayName: Berzerker
 			}
 
@@ -126,7 +185,7 @@ Items: {
 				Tooltip:
 					'''
 					Grows stronger as health decreases.
-					For every scar, for every dishonor, the Avenger sharpens its edge. 
+					'For every scar, for every dishonor, the Avenger sharpens its edge.'
 					'''
 				DisplayName: Avenger
 			}
@@ -135,28 +194,45 @@ Items: {
 				Tooltip:
 					'''
 					Reduced defense while held.
-					Grows stronger at low health.
+					Becomes stronger at low health.
+					'Hack, slash, and rock out!'
 					'''
 				DisplayName: Anarchy
 			}
 
 			BlackFang: {
-				Tooltip: "'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt"
+				Tooltip:
+					'''
+					Inflicts poison and heals the user.
+					'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt
+					'''
 				DisplayName: Black Fang
 			}
 
 			Blizzard: {
-				Tooltip: Shoots an additional bolt of frost at the cost of some accuracy.
+				Tooltip:
+					'''
+					Flings a pair of inaccurate icy bolts.
+					'A blade of glistening ice, said to have slain an ancient demon.'
+					'''
 				DisplayName: Blizzard
 			}
 
 			BloodBlade: {
-				Tooltip: Drains the health of hit foes.
+				Tooltip:
+					'''
+					Drains life from foes.
+					'A gruesome blade forged with the very blood it spills.'
+					'''
 				DisplayName: Blood Blade
 			}
 
 			DragonsFeather: {
-				Tooltip: You feel swift like the wind.
+				Tooltip:
+					'''
+					Grants enhanced swiftness while held.
+					'Dance like a feather in the wind!'
+					'''
 				DisplayName: Dragons Feather
 			}
 
@@ -164,13 +240,17 @@ Items: {
 				Tooltip:
 					'''
 					Shoots a homing bullet bob.
-					Modeled after the weapons used by the MILITIA branch.
+					'Modeled after the weapons used by the MILITIA branch.'
 					'''
 				DisplayName: Fusion Blade
 			}
 
 			HeavensGate: {
-				Tooltip: A legendary sword belonging to a line of famed corsairs.
+				Tooltip:
+					'''
+					Sends a blade of light to hack at foes.
+					'A legendary sword belonging to a line of famed corsairs.'
+					'''
 				DisplayName: Heavens Gate
 			}
 
@@ -178,7 +258,7 @@ Items: {
 				Tooltip:
 					'''
 					Burns foes.
-					Wreathed in scorching flames. 
+					'Wreathed in scorching flames.'
 					'''
 				DisplayName: Inferno
 			}
@@ -187,7 +267,7 @@ Items: {
 				Tooltip:
 					'''
 					Striking a foe has a chance to spawn damaging auras on nearby foes.
-					A sword made for healing, not fighting.
+					'A sword made for healing, not fighting.'
 					'''
 				DisplayName: Love Blade
 			}
@@ -196,7 +276,7 @@ Items: {
 				Tooltip:
 					'''
 					Deals massive damage but reduces your defense by 50% when held.
-					Honestly, it could have been worse. It could kill you instantly.
+					'Honestly, it could have been worse. It could kill you instantly.'
 					'''
 				DisplayName: Soul Eater
 			}
@@ -207,7 +287,7 @@ Items: {
 			}
 
 			SwiftBrand: {
-				Tooltip: "'It's so easy to swing around!' - Matt"
+				Tooltip: Lightweight, easy to use, and awfully sharp.
 				DisplayName: Swift Brand
 			}
 
@@ -220,7 +300,7 @@ Items: {
 				Tooltip:
 					'''
 					Launches a javelin that explodes into homing snowflakes.
-					Used in only the most painful of snowball fights.
+					'Used in only the most painful of snowball fights.'
 					'''
 				DisplayName: Ice Needle
 			}
@@ -256,7 +336,11 @@ Items: {
 			}
 
 			Seraphim: {
-				Tooltip: A glorious staff used by gorgeous angels.
+				Tooltip:
+					'''
+					Creates a massive sky piercing laser from the ground.
+					'A glorious staff used by gorgeous angels.'
+					'''
 				DisplayName: Seraphim
 			}
 
@@ -264,7 +348,7 @@ Items: {
 				Tooltip:
 					'''
 					Every third use summons a firestorm.
-					A common but powerful staff, used by mages to scorch foes.
+					'A common but powerful staff, used by mages to scorch foes.'
 					'''
 				DisplayName: Flameheart
 			}
@@ -273,7 +357,7 @@ Items: {
 				Tooltip:
 					'''
 					Creates a growing black hole that pulls everything and explodes upon being released.
-					An ancient black magic staff used for Dark elemental magic. 
+					'An ancient black magic staff used for Dark elemental magic.'
 					'''
 				DisplayName: Dark Tooth
 			}
@@ -282,7 +366,7 @@ Items: {
 				Tooltip:
 					'''
 					Left click to drop a big bomb from the sky, right click to drop 3 weaker bombs at once.
-					Bombs away!!!!
+					'Bombs away!!!!'
 					'''
 				DisplayName: Airstrike Remote
 			}
@@ -291,47 +375,75 @@ Items: {
 		Ranged: {
 			Bows: {
 				CrimsonDragon: {
-					Tooltip: Converts wooden arrows into Dragon arrows that regularly throws out flaming bats.
+					Tooltip:
+						'''
+						Converts wooden arrows into Dragon arrows that spew flaming bats.
+						'Incredibly ornate, but houses unimaginable heat all the same.'
+						'''
 					DisplayName: Crimson Dragon
 				}
 
 				EagleEye: {
 					DisplayName: Eagle Eye
-					Tooltip: Wooden arrows turn into chargeable, piercing arrows.
+					Tooltip:
+						'''
+						Wooden arrows turn into chargeable, piercing arrows.
+						Putting a different spin on 'Got you in my sights.'
+						'''
 				}
 
 				FairyBow: {
 					DisplayName: Fairy Bow
-					Tooltip: Fully charged wooden arrows launch with additional damaging leaves.
+					Tooltip:
+						'''
+						Fully charged wooden arrows launch with additional damaging leaves.
+						'A simple yet quality bow given to Greenwood's defenders.'
+						'''
 				}
 
 				Sharanga: {
 					DisplayName: Sharanga
-					Tooltip: Wooden arrows turn into chargeable, piercing sharanga arrows.
+					Tooltip:
+						'''
+						Wooden arrows turn into chargeable energy arrows with high pierce and velocity.
+						'A cosmic bow said to have been found in a fallen star.'
+						'''
 				}
 
 				BlackWidow: {
 					DisplayName: Black Widow
-					Tooltip: Fully charged wooden arrows break into spiders that chase foes.
+					Tooltip:
+						'''
+						Fully charged wooden arrows break into spiders that chase foes.
+						'A creepy bow only used by the most fiendish of huntresses.'
+						'''
 				}
 
 				AlchemistBow: {
 					DisplayName: Alchemist Bow
-					Tooltip: Fully charged wooden arrows launch with three additional random arrows.
+					Tooltip:
+						'''
+						Fully charged wooden arrows launch with three additional random arrows.
+						'The archer's fruitcake.'
+						'''
 				}
 
 				Juggernaut: {
 					DisplayName: Juggernaut
 					Tooltip:
 						'''
-						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
-						Heavy enough to block a blade.
+						Wooden arrows turn into chargeable hellfire arrows.
+						'A pain to use, but boasts low recoil for such explosive firepower.'
 						'''
 				}
 
 				GaiasGift: {
 					DisplayName: Gaias Gift
-					Tooltip: Fully charged wooden arrows have life stealing capabilities and spawn a big poisonous gaia seed on hit foes.
+					Tooltip:
+						'''
+						Fully charged wooden arrows drain health and spawn a Gaia Bloom on hit that poisons foes.
+						'A gift from Gaia to her Ores, dotted with peridot and emerald.'
+						'''
 				}
 
 				RegalTurtle: {
@@ -339,13 +451,17 @@ Items: {
 					Tooltip:
 						'''
 						Wooden arrows turn into massive, chargable regal arrows.
-						This unwieldy bow requires some serious leg muscles.
+						'This unwieldy bow requires some serious leg muscles.'
 						'''
 				}
 
 				IronTusk: {
 					DisplayName: Iron Tusk
-					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+					Tooltip:
+						'''
+						Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
+						'A girthy nest of twisted metal. Effectively a hand-cannon at this point.'
+						'''
 				}
 
 				ThorsHammer: {
@@ -355,22 +471,177 @@ Items: {
 
 				IronTooth: {
 					DisplayName: Iron Tooth
-					Tooltip: Wooden arrows turn into chargeable hellfire arrows.
+					Tooltip: Fully charged wooden arrows are converted into hellfire arrows.
 				}
 
 				GaiasBow: {
 					DisplayName: Gaias Bow
-					Tooltip: Fully charged wooden arrows spawn a poisonous gaia seed on hit foes.
+					Tooltip:
+						'''
+						Fully charged wooden arrows spawn a poisonous gaia seed on hit foes.
+						'Forged from mud and blessed by nature.'
+						'''
 				}
 
 				TheStinger: {
 					DisplayName: The Stinger
-					Tooltip: Like the Thorn Bow, but a whole lot more painful.
+					Tooltip:
+						'''
+						Wooden arrows turn into a flurry of three toxic stingers.
+						'Held by the king of the jungle; law dictates only the strongest may wield it.'
+						'''
 				}
 
 				ThornBow: {
 					DisplayName: Thorn Bow
-					Tooltip: Fully charged wooden arrows turn into three poisonous stingers.
+					Tooltip:
+						'''
+						Fully charged wooden arrows turn into three poisonous thorns.
+						'Rallies weeds to your cause.'
+						'''
+				}
+			}
+
+			Guns: {
+				HeavyClaw: {
+					DisplayName: Heavy Claw
+					Tooltip:
+						'''
+						Right click launches a devastating missile.
+						'Can hold three tons of metal in its grip, at least until your back gives out.'
+						'''
+				}
+
+				SteelShark: {
+					DisplayName: Steel Shark
+					Tooltip:
+						'''
+						Right click makes the shark shoot a lot of bullets at once.
+						'Preferred weapon of the dreaded robo-pirate techno-mage.'
+						'''
+				}
+
+				DeepBlue: {
+					DisplayName: Deep Blue
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing a torrent of water.
+						'Almost as good at crushing as it is shooting.'
+						'''
+				}
+
+				BiohazardBlaster: {
+					DisplayName: Biohazard Blaster
+					Tooltip:
+						'''
+						Bullets burst into damaging fumes.
+						Right click fires a blast of lingering gas clouds that inflict Poison, Ichor and Venom on foes.
+						'Fight biohazards with even worse biohazards!'
+						'''
+				}
+
+				DesertScorpion: {
+					DisplayName: Desert Scorpion
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing a sand dune to scour foes.
+						'Brings the desert with it.'
+						'''
+				}
+
+				PositronRifle: {
+					DisplayName: Positron Rifle
+					Tooltip:
+						'''
+						Bullets turn into lethal plasma shots.
+						Right click fires a bolt that bursts into a wide wave of plasma.
+						'A handheld railgun that fires electrifying shots.'
+						'''
+				}
+
+				ShadowBlaster: {
+					DisplayName: Shadow Blaster
+					Tooltip:
+						'''
+						Bullets turn into a dark shot.
+						Right click fires a blast that bursts into an antimatter flux.
+						'Oh my god, it's full of stars.'
+						'''
+				}
+
+				Destroyer: {
+					DisplayName: Destroyer
+					Tooltip:
+						'''
+						Right click fires a blast of lingering gas clouds that inflict Poison on foes.
+						'Gas mask is optional.'
+						'''
+				}
+
+				CrystalWing: {
+					DisplayName: Crystal Wing
+					Tooltip:
+						'''
+						Right click charges up Hyper Beam. Right click again to unleash angelic might.
+						'Crafted by futuristic Seraphim. Use holy water when cleaning.'
+						'''
+				}
+
+				Exterminator: {
+					DisplayName: Exterminator
+					Tooltip:
+						'''
+						Right click fires a blast of lingering gas clouds that inflict Poison and Ichor on foes.
+						'Makes every problem into 'just a pest problem'!'
+						'''
+				}
+
+				CoconutShooter: {
+					DisplayName: Coconut Shooter
+					Tooltip:
+						'''
+						Bullets turn into arcing seeds.
+						Right click launches a bouncy coconut.
+						'A gorilla's bazooka. Beat your chest with open palms before use.'
+						'''
+				}
+
+				SubZero: {
+					DisplayName: Sub Zero
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing an iceberg beneath the nearest foe.
+						'It keeps fridges cool by day! It freezes foes by night!'
+						'''
+				}
+
+				QuakeMaker: {
+					DisplayName: Quake Maker
+					Tooltip:
+						'''
+						Right click slams the weapon into the ground, unleashing an eruption of sand.
+						'They feel tremors from right beneath.'
+						'''
+				}
+
+				GodHand: {
+					DisplayName: God Hand
+					Tooltip:
+						'''
+						Shoot four bullets at once.
+						Right click charges up Hyper Beam. Right click again to unleash divine retribution.
+						'Forged from the remains of the Kitten Kingdom. An echo of catkind's hubris.'
+						'''
+				}
+
+				ThePhantom: {
+					DisplayName: The Phantom
+					Tooltip:
+						'''
+						Bullets turn into a dark shot.
+						Right click fires a blast that bursts into an antimatter flux.
+						'Manufactured using illegal and sacrilegious technology. Crackles with dark magic.'
+						'''
 				}
 			}
 		}
@@ -382,7 +653,7 @@ Items: {
 				'''
 				Increases critical chance by 4%.
 				Increases enemy aggression.
-				Somehow putting a target on yourself makes you a better shot, who knew?
+				'Somehow putting a target on yourself makes you a better shot, who knew?'
 				'''
 			DisplayName: Target Badge
 		}
@@ -391,7 +662,7 @@ Items: {
 			Tooltip:
 				'''
 				Increases Ranged and Melee damage by 15%.
-				True might is the mark of discipline, honor and courage.
+				'True might is the mark of discipline, honor and courage.'
 				'''
 			DisplayName: Sword Medal
 		}
@@ -405,7 +676,7 @@ Items: {
 			Tooltip:
 				'''
 				Boosts ranged damage by 8%.
-				A war medal which offers protection. Lance's favourite flair.
+				'A war medal which offers protection. Lance's favourite flair.'
 				'''
 			DisplayName: Iron Cross
 		}
@@ -414,7 +685,7 @@ Items: {
 			Tooltip:
 				'''
 				Regenerates 5% of your maximum health every 10 seconds.
-				A Geneva-Convention-friendly pin which boasts regenerative properties.
+				'A Geneva-Convention-friendly pin which boasts regenerative properties.'
 				'''
 			DisplayName: Green Cross
 		}
@@ -425,7 +696,7 @@ Items: {
 				Increases maximum health and mana by 10.
 				Increases movement, attack speed, damage and crit chance by 5%.
 				Increases max minion slots by 1.
-				Represents pure equilibrium and bestows a wealth of boosts.
+				'Represents pure equilibrium and bestows a wealth of boosts.'
 				'''
 			DisplayName: Balance Badge
 		}
@@ -435,7 +706,7 @@ Items: {
 				'''
 				Increases critical chance by 8%.
 				Increases enemy aggression.
-				Wearing this makes you so angry, you want something to be BLAMMED!
+				'Wearing this makes you so angry, you want something to be BLAMMED!'
 				'''
 			DisplayName: Angry Faic
 		}

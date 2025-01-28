@@ -89,7 +89,7 @@ namespace EBF.Items.Ranged.Bows
                 Projectile.Kill();
                 for (int i = 0; i < 3; i++)
                 {
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
         }

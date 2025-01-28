@@ -34,8 +34,8 @@ namespace EBF.Items.Melee
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.5f, type, damage, knockback);
-            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.5f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.66f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.66f, type, damage, knockback);
             return false;
         }
 

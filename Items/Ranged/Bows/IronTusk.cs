@@ -14,15 +14,15 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 34;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 24;//Item's base damage value
-            Item.knockBack = 4f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.damage = 41;//Item's base damage value
+            Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 4, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 10, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
@@ -47,10 +47,11 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient<IronTooth>(stack: 1)
-                .AddIngredient(ItemID.HellstoneBar, stack: 20)
-                .AddIngredient(ItemID.Grenade, stack: 15)
-                .AddTile(TileID.Anvils)
+                .AddIngredient<Juggernaut>(stack: 1)
+                .AddIngredient(ItemID.HallowedBar, stack: 10)
+                .AddIngredient(ItemID.Bomb, stack: 20)
+                .AddIngredient(ItemID.SoulofMight, stack: 10)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
@@ -70,10 +71,10 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 60;
-            MinimumDrawTime = 15;
+            MaximumDrawTime = 50;
+            MinimumDrawTime = 10;
 
-            DamageScale = 1.5f;
+            DamageScale = 2f;
             VelocityScale = 2f;
             ReleaseSound = SoundID.Item10;
 
@@ -94,7 +95,7 @@ namespace EBF.Items.Ranged.Bows
         public override void OnKill(int timeLeft)
         {
             //Generate explosion
-            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.HellfireArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.Stynger, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
             proj.Kill();
         }
     }
