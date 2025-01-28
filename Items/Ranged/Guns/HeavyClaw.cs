@@ -22,7 +22,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 24;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 62;
+            Item.damage = 72;
             Item.knockBack = 2;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
@@ -61,7 +61,7 @@ namespace EBF.Items.Ranged.Guns
             }
         }
        
-        //Dropped by skeletron prime vice sometimes
+        //Dropped by skeletron prime vice at 25% chance
     }
     public class HeavyClawLauncher : EBFLauncher
     {

@@ -64,7 +64,7 @@ namespace EBF.Items.Ranged.Guns
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.Amber, stack: 5)
-                .AddIngredient(ItemID.DemoniteBar, stack: 10)
+                .AddIngredient(ItemID.GoldBar, stack: 10)
                 .AddIngredient(ItemID.ScarabBomb, stack: 5)
                 .AddTile(TileID.Anvils)
                 .Register();
