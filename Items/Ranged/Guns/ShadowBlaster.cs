@@ -54,7 +54,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 8);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 15);
                 type = ModContent.ProjectileType<ShadowBlasterLauncher>();
             }
             else

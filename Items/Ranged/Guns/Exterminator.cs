@@ -49,7 +49,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 12);
                 type = ModContent.ProjectileType<ExterminatorLauncher>();
             }
             else
