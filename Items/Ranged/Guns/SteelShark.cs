@@ -22,10 +22,10 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 20;
+            Item.damage = 16;
             Item.knockBack = 2;
 
-            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 0, platinum: 0);
+            Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 2, platinum: 0);
             Item.rare = ItemRarityID.Green;
             Item.autoReuse = true;
 
@@ -52,7 +52,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 15);
                 type = ModContent.ProjectileType<SteelSharkLauncher>();
             }
             else
@@ -60,7 +60,7 @@ namespace EBF.Items.Ranged.Guns
                 type = ModContent.ProjectileType<SteelSharkSidearm>();
             }
         }
-        //Obtained from opening iron crates
+        //Obtained from opening iron crates at 10%
     }
     public class SteelSharkLauncher : EBFLauncher
     {

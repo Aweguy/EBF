@@ -40,21 +40,20 @@
     <None Remove="Items\Ranged\Guns\ThePhantomSidearm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Remove="Assets\Sounds\NPCHit\**" />
+    <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />
     <AdditionalFiles Remove="Gores\**" />
     <AdditionalFiles Remove="Items\Limit Breaks\**" />
-    <Compile Remove="Assets\Sounds\NPCHit\**" />
+    <Compile Remove="Assets\Sfx\NPCHit\**" />
     <Compile Remove="Gores\**" />
     <Compile Remove="Items\Limit Breaks\**" />
-    <EmbeddedResource Remove="Assets\Sounds\NPCHit\**" />
+    <EmbeddedResource Remove="Assets\Sfx\NPCHit\**" />
     <EmbeddedResource Remove="Gores\**" />
     <EmbeddedResource Remove="Items\Limit Breaks\**" />
-    <None Remove="Assets\Sounds\NPCHit\**" />
+    <None Remove="Assets\Sfx\NPCHit\**" />
     <None Remove="Gores\**" />
     <None Remove="Items\Limit Breaks\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Sounds\Custom\" />
     <Folder Include="Players\" />
     <Folder Include="Projectiles\" />
   </ItemGroup>

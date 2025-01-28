@@ -53,7 +53,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 3);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 6);
                 type = ModContent.ProjectileType<DeepBlueLauncher>();
             }
             else
@@ -140,6 +140,8 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item21, Projectile.Center);
+
             for (int i = 0; i < 10; i++)
             {
                 //Spawn dirt dust

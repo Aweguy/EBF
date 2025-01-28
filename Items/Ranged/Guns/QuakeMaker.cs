@@ -3,6 +3,7 @@ using EBF.Buffs.Cooldowns;
 using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -51,7 +52,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 3);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 6);
                 type = ModContent.ProjectileType<QuakeMakerLauncher>();
             }
             else
@@ -63,7 +64,7 @@ namespace EBF.Items.Ranged.Guns
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.Amber, stack: 5)
-                .AddIngredient(ItemID.DemoniteBar, stack: 10)
+                .AddIngredient(ItemID.GoldBar, stack: 10)
                 .AddIngredient(ItemID.ScarabBomb, stack: 5)
                 .AddTile(TileID.Anvils)
                 .Register();
@@ -138,6 +139,8 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item66, Projectile.Center);
+
             for (int i = 0; i < 10; i++)
             {
                 //Spawn dirt dust

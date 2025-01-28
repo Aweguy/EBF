@@ -51,7 +51,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 8);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
                 type = ModContent.ProjectileType<PositronRifleLauncher>();
             }
             else
@@ -80,6 +80,9 @@ namespace EBF.Items.Ranged.Guns
             Projectile.friendly = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
+
+            ChargeSound = SoundID.Item113;
+            ShootSound = SoundID.Item92;
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
@@ -99,6 +102,7 @@ namespace EBF.Items.Ranged.Guns
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
 
+            ShootSound = SoundID.Item114;
             ActiveTime = 30;
         }
         public override void WhileShoot(Vector2 barrelEnd, int type)
@@ -184,6 +188,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item132, Projectile.Center);
             Projectile.rotation = MathHelper.PiOver4 * Main.rand.Next(1, 5);
         }
         public override void AI()
@@ -219,6 +224,10 @@ namespace EBF.Items.Ranged.Guns
 
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item94, Projectile.Center);
         }
         public override void AI()
         {
