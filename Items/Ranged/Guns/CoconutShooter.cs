@@ -83,7 +83,7 @@ namespace EBF.Items.Ranged.Guns
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
             type = ModContent.ProjectileType<CoconutProjectile>();
-            Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage * 2, Projectile.knockBack * 2, Projectile.owner);
             p.friendly = true;
         }
     }
@@ -100,7 +100,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnShoot(Vector2 barrelEnd, int type)
         {
-            if(type == ProjectileID.Bullet)
+            if (type == ProjectileID.Bullet)
             {
                 type = ProjectileID.Seed;
             }
@@ -111,10 +111,16 @@ namespace EBF.Items.Ranged.Guns
 
     public class CoconutProjectile : ModProjectile
     {
+        private int jumpHeight = 8; //Lets the coconut bounce less per hit
         public override string Texture => $"Terraria/Images/Item_{ItemID.Coconut}";
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 3;
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            Projectile.velocity = new Vector2(-Projectile.velocity.X * 0.25f, -jumpHeight);
+            jumpHeight -= 2;
         }
         public override void SetDefaults()
         {
@@ -122,7 +128,7 @@ namespace EBF.Items.Ranged.Guns
             Projectile.height = 16;
 
             Projectile.aiStyle = ProjAIStyleID.Bounce;
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 5;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = true;
