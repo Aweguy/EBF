@@ -68,7 +68,12 @@ namespace EBF.Items.Melee
             Projectile.velocity = Projectile.velocity.RotatedBy(rotationOffset);
             Projectile.rotation += rotationOffset;
         }
-        public override void PostAI() //Post because otherwise the shortsword aiStyle would override any changes
+        public override bool PreAI()
+        {
+            Lighting.AddLight(Projectile.Center, TorchID.Torch);
+            return true;
+        }
+        public override void PostAI() //Post because otherwise the shortsword aiStyle would override any changes to position
         {
             Projectile.position += Vector2.Normalize(Projectile.velocity) * positionOffset;
         }
