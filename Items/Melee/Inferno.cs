@@ -25,7 +25,7 @@ namespace EBF.Items.Melee
             Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.useTurn = true;//Boolean, if the player's direction can change while using the item
+            Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
             Item.noUseGraphic = true; // Important, because otherwise you'd sometimes see a duplicate item sprite
             Item.shoot = ModContent.ProjectileType<Inferno_Proj>();
