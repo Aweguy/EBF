@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,8 +31,9 @@ namespace EBF.Items.Melee
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.LihzahrdBrick, stack: 30)
-                .AddIngredient(ItemID.ChlorophyteBar, stack: 10)
+                .AddIngredient(ItemID.BeetleHusk, stack: 15)
+                .AddIngredient(ItemID.Silk, stack: 5)
+                .AddIngredient(ItemID.LunarTabletFragment, stack: 5)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
