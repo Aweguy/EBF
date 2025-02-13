@@ -123,6 +123,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
+            Projectile.knockBack = 2f;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;

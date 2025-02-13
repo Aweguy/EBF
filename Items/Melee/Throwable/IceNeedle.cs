@@ -20,7 +20,7 @@ namespace EBF.Items.Melee.Throwable
             Item.height = 72;
 
             Item.damage = 126;
-            Item.knockBack = 1f;
+            Item.knockBack = 3f;
             Item.DamageType = DamageClass.Melee;
 
             Item.useTime = 26;

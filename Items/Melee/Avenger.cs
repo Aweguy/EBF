@@ -13,7 +13,7 @@ namespace EBF.Items.Melee
             Item.height = 52;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 23;//Item's base damage value
-            Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
             Item.useTime = 26;//How fast the item is used
