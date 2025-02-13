@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -115,7 +116,7 @@ namespace EBF.Items.Magic
         public override bool PreAI()
         {
             //Tile collision
-            HandleTileEnabling();
+            Projectile.HandleTileEnable(clickPosition);
 
             //Gravity & Terminal velocity
             Projectile.velocity.Y += 0.15f;
@@ -148,18 +149,6 @@ namespace EBF.Items.Magic
         public override void OnKill(int timeLeft)
         {
             SpawnDusts(dustsOnDeath);
-        }
-        private void HandleTileEnabling()
-        {
-            if (Projectile.position.Y >= clickPosition.Y)
-            {
-                Tile tile = Framing.GetTileSafely((int)(Projectile.position.X / 16), (int)(Projectile.position.Y / 16));
-
-                if (tile == null || !tile.HasTile)
-                {
-                    Projectile.tileCollide = true;
-                }
-            }
         }
         private void SpawnDusts(int amount)
         {
