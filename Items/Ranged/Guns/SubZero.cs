@@ -90,7 +90,7 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center))
+            if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
                 Vector2 position = GetGroundPosition(target.Center);
