@@ -17,7 +17,7 @@ namespace EBF.Items.Melee
             Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 95;//Item's base damage value
-            Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
             Item.useTime = 22;//How fast the item is used
@@ -27,7 +27,7 @@ namespace EBF.Items.Melee
             Item.rare = ItemRarityID.Lime;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.useTurn = true;//Boolean, if the player's direction can change while using the item
+            Item.useTurn = false;//Boolean, if the player's direction can change while using the item
         }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {

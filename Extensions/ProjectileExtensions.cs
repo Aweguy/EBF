@@ -131,5 +131,24 @@ namespace EBF.Extensions
             //Player facing direction
             Main.player[projectile.owner].ChangeDir(projectile.direction);
         }
+
+        /// <summary>
+        /// Enables the projectile's tile collision once it passes by the clicked position and is not currently touching a tile.
+        /// <br>Often used by projectiles that appear from the sky.</br>
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="clickPosition">The clicked position, which is used to determine when the projectile should begin attempting to gain tile collision.</param>
+        /// <param name="offset">The projectile will begin attempting to gain tile collision this many pixel above the clicked position. This makes the detection feel more consistent.</param>
+        public static void HandleTileEnable(this Projectile projectile, Vector2 clickPosition, float offset = 32)
+        {
+            if (projectile.position.Y >= clickPosition.Y - offset)
+            {
+                Tile tile = Framing.GetTileSafely((int)(projectile.position.X / 16), (int)(projectile.position.Y / 16));
+                if (tile == null || !tile.HasTile)
+                {
+                    projectile.tileCollide = true;
+                }
+            }
+        }
     }
 }
