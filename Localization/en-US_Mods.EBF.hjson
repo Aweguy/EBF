@@ -141,6 +141,7 @@ Projectiles: {
 	GodHandSidearm.DisplayName: God Hand Sidearm
 	ThePhantomLauncher.DisplayName: The Phantom Launcher
 	ThePhantomSidearm.DisplayName: The Phantom Sidearm
+	DragonWings_Projectile.DisplayName: Dragon Wings_ Projectile
 }
 
 NPCs: {
@@ -369,6 +370,11 @@ Items: {
 					'Bombs away!!!!'
 					'''
 				DisplayName: Airstrike Remote
+			}
+
+			DragonWings: {
+				DisplayName: Dragon Wings
+				Tooltip: ""
 			}
 		}
 
