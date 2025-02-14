@@ -1,4 +1,5 @@
-﻿using EBF.Dusts;
+﻿using EBF.Abstract_Classes;
+using EBF.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -12,19 +13,18 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class Seraphim : ModItem, ILocalizedModType
+    public class Seraphim : EBFStaff, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
             Item.width = 90;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 90;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 108;//Item's base damage value
-            Item.knockBack = 0f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 1f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 36;//The amount of mana this item consumes on use
-            Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
@@ -35,12 +35,6 @@ namespace EBF.Items.Magic
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<Seraphim_Judgement>();
-            Item.shootSpeed = 1f;//The held item requires shootSpeed > 0 in order to rotate on use.
-            Item.noMelee = true;//Prevents damage from being dealt by the item itself
-        }
-        public override void UseStyle(Player player, Rectangle heldItemFrame)
-        {
-            player.itemLocation -= new Vector2(player.direction * 16, 2);
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
