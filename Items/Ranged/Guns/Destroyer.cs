@@ -20,7 +20,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 32;
-            Item.knockBack = 2;
+            Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 80, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Orange;

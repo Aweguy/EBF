@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -17,7 +18,7 @@ namespace EBF.Items.Magic
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 36;//Item's base damage value
-            Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 8;//The amount of mana this item consumes on use
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -115,7 +116,7 @@ namespace EBF.Items.Magic
         public override bool PreAI()
         {
             //Tile collision
-            HandleTileEnabling();
+            Projectile.HandleTileEnable(clickPosition);
 
             //Gravity & Terminal velocity
             Projectile.velocity.Y += 0.15f;
@@ -148,18 +149,6 @@ namespace EBF.Items.Magic
         public override void OnKill(int timeLeft)
         {
             SpawnDusts(dustsOnDeath);
-        }
-        private void HandleTileEnabling()
-        {
-            if (Projectile.position.Y >= clickPosition.Y)
-            {
-                Tile tile = Framing.GetTileSafely((int)(Projectile.position.X / 16), (int)(Projectile.position.Y / 16));
-
-                if (tile == null || !tile.HasTile)
-                {
-                    Projectile.tileCollide = true;
-                }
-            }
         }
         private void SpawnDusts(int amount)
         {

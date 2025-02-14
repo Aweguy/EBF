@@ -123,6 +123,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
+            Projectile.knockBack = 2f;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
@@ -163,7 +164,7 @@ namespace EBF.Items.Magic.Airstrike
         public override bool PreAI()
         {
             //Tile collision
-            HandleTileEnabling();
+            Projectile.HandleTileEnable(clickPosition);
 
             if (inGround)
             {
@@ -226,18 +227,6 @@ namespace EBF.Items.Magic.Airstrike
             for (int g = 0; g < 4; g++)
             {
                 Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.Center, ProjectileExtensions.GetRandomVector() * 1.5f, Main.rand.Next(61, 64), Scale: 1.5f);
-            }
-        }
-        private void HandleTileEnabling()
-        {
-            if (Projectile.position.Y >= clickPosition.Y)
-            {
-                Tile tile = Framing.GetTileSafely((int)(Projectile.position.X / 16), (int)(Projectile.position.Y / 16));
-
-                if (tile == null || !tile.HasTile)
-                {
-                    Projectile.tileCollide = true;
-                }
             }
         }
         private void Shake()
