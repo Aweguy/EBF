@@ -134,7 +134,7 @@ namespace EBF.Items.Ranged.Guns
         public override void SetDefaults()
         {
             Projectile.width = 128;
-            Projectile.height = 256;
+            Projectile.height = 280;
 
             Projectile.timeLeft = 90;
             Projectile.penetrate = -1;
