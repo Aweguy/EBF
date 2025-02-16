@@ -18,6 +18,7 @@
     <None Remove="Items\Magic\Seraphim_LightExplosion.png" />
     <None Remove="Items\Magic\ShootingStar.png" />
     <None Remove="Items\Magic\Star.png" />
+    <None Remove="Items\Magic\Tribolt.png" />
     <None Remove="Items\Melee\BloodBlade.png" />
     <None Remove="Items\Melee\DeathScythe.png" />
     <None Remove="Items\Melee\Inferno_Fireball.png" />
