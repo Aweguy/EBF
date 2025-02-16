@@ -12,7 +12,7 @@ namespace EBF.Items.Magic.Flameheart
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
-        int ChargeStacks = 0;
+        private int chargeStacks = 0; //Used to cast firestorm every third use.
         public override void SetDefaultsSafe()
         {
             Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
@@ -35,10 +35,11 @@ namespace EBF.Items.Magic.Flameheart
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (++ChargeStacks >= 3)
+            chargeStacks++;
+            if (chargeStacks >= 3)
             {
                 type = ModContent.ProjectileType<Flameheart_Firestorm>();
-                ChargeStacks = 0;
+                chargeStacks = 0;
             }
             position = Main.MouseWorld;
         }
@@ -148,17 +149,17 @@ namespace EBF.Items.Magic.Flameheart
         }
         public override void AI()
         {
+            //Spawn dust
             if (Main.rand.NextBool(3))
             {
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                Vector2 position = Projectile.position;
-                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
+                Dust.NewDustDirect(Projectile.Center, Projectile.width, Projectile.height, DustID.Pixie, 0, -2, 0, new Color(255, 251, 0), 1.25f);
             }
 
-            if (++Projectile.frameCounter > 3)
+            //Animate
+            if (Main.GameUpdateCount % 3 == 0)
             {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 14)
+                Projectile.frame++;
+                if (Projectile.frame >= 14)
                 {
                     Projectile.Kill();
                 }
