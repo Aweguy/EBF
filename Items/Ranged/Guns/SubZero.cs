@@ -126,12 +126,6 @@ namespace EBF.Items.Ranged.Guns
 
     public class IcebergSpell : ModProjectile
     {
-        public static readonly SoundStyle IcebergSound = new("EBF/Assets/Sfx/Iceberg")
-        {
-            Volume = 0.8f,
-            PitchVariance = 0.0f
-        };
-
         public override string Texture => "EBF/Items/Ranged/Guns/SubZero_Iceberg";
         public override void SetStaticDefaults()
         {
@@ -151,7 +145,8 @@ namespace EBF.Items.Ranged.Guns
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.position.Y -= Projectile.height / 2;
-            SoundEngine.PlaySound(IcebergSound, Projectile.Center);
+            SoundStyle attackSound = SoundID.DeerclopsIceAttack with { Volume = 1.5f };
+            SoundEngine.PlaySound(attackSound, Projectile.Center);
 
             for (int i = 0; i < 15; i++)
             {
