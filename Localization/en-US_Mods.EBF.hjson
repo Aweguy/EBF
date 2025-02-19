@@ -144,6 +144,7 @@ Projectiles: {
 	DragonWings_Projectile.DisplayName: Dragon Wings_ Projectile
 	Tribolt_Projectile.DisplayName: Tribolt_ Projectile
 	WrathOfZeus_ThunderBall.DisplayName: Wrath Of Zeus_ Thunder Ball
+	ArcticWind_Icecicle.DisplayName: Arctic Wind_ Icecicle
 }
 
 NPCs: {
@@ -386,6 +387,11 @@ Items: {
 
 			WrathOfZeus: {
 				DisplayName: Wrath Of Zeus
+				Tooltip: ""
+			}
+
+			ArcticWind: {
+				DisplayName: Arctic Wind
 				Tooltip: ""
 			}
 		}
