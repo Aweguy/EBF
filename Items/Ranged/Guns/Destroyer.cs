@@ -12,7 +12,7 @@ namespace EBF.Items.Ranged.Guns
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 36;
+            Item.width = 40;
             Item.height = 24;
 
             Item.useTime = 24;
@@ -92,7 +92,7 @@ namespace EBF.Items.Ranged.Guns
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
+            Projectile.width = 40;
             Projectile.height = 24;
 
             Projectile.friendly = false;

@@ -11,8 +11,8 @@ namespace EBF.Items.Melee.Spears
 
         public override void SetDefaults()
         {
-            Item.width = 140;
-            Item.height = 140;
+            Item.width = 74;
+            Item.height = 74;
 
             Item.damage = 71;
             Item.knockBack = 6.5f;

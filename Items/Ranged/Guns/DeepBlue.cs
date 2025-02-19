@@ -111,7 +111,7 @@ namespace EBF.Items.Ranged.Guns
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
+            Projectile.width = 46;
             Projectile.height = 24;
 
             Projectile.friendly = false;
