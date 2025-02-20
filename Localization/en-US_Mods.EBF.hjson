@@ -725,14 +725,14 @@ Items: {
 			DisplayName: Balance Badge
 		}
 
-		AngryFaic: {
+		AgnryFaic: {
 			Tooltip:
 				'''
 				Increases critical chance by 8%.
 				Increases enemy aggression.
 				'Wearing this makes you so angry, you want something to be BLAMMED!'
 				'''
-			DisplayName: Angry Faic
+			DisplayName: Agnry Faic
 		}
 	}
 }

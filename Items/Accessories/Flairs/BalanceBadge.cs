@@ -4,7 +4,7 @@ using Terraria;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class BalanceBadge  : ModItem, ILocalizedModType
+    public class BalanceBadge : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
         public override void SetDefaults()
@@ -31,7 +31,7 @@ namespace EBF.Items.Accessories.Flairs
             CreateRecipe(amount: 1)
                 .AddIngredient<SwordMedal>(stack: 1)
                 .AddIngredient<ShieldMedal>(stack: 1)
-                .AddIngredient<AngryFaic>(stack: 1)
+                .AddIngredient<AgnryFaic>(stack: 1)
                 .AddIngredient<GreenCross>(stack: 1)
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();
