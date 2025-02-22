@@ -216,7 +216,7 @@ Items: {
 			Blizzard: {
 				Tooltip:
 					'''
-					Flings a pair of inaccurate icy bolts.
+					Flings three inaccurate icy bolts.
 					'A blade of glistening ice, said to have slain an ancient demon.'
 					'''
 				DisplayName: Blizzard
