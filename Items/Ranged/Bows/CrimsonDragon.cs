@@ -69,7 +69,6 @@ namespace EBF.Items.Ranged.Bows
 
             MinimumDrawTime = 10;
             MaximumDrawTime = 40;
-            AutoRelease = true;
             ReleaseSound = SoundID.DD2_FlameburstTowerShot;
 
             DamageScale = 2.5f;

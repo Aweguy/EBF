@@ -27,7 +27,7 @@ namespace EBF.Items.Ranged.Bows
             Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 8, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
-            Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
+            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
             
             Item.useAmmo = AmmoID.Arrow;
@@ -75,7 +75,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 100;
+            MaximumDrawTime = 120;
             MinimumDrawTime = 20;
 
             DamageScale = 2.5f;

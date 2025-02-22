@@ -44,9 +44,9 @@ namespace EBF.Abstract_Classes
 
         /// <summary>
         /// Automatically release arrows that are fully charged.
-        /// <para>Defaults to false.</para>
+        /// <para>Defaults to true.</para>
         /// </summary>
-        protected bool AutoRelease { get; set; } = false;
+        protected bool AutoRelease { get; set; } = true;
 
         /// <summary>
         /// Check to indicate that the projectile has been released from the weapon. Use this to handle logic that should only play while the projectile is flying.
