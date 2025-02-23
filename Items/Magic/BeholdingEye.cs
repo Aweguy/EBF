@@ -24,8 +24,8 @@ namespace EBF.Items.Magic
             Item.useTime = 8;//How fast the item is used
             Item.useAnimation = 24;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 0, platinum: 0);//Item's value when sold
-            Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
+            Item.value = Item.sellPrice(copper: 66, silver: 66, gold: 0, platinum: 0);//Item's value when sold
+            Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
@@ -50,8 +50,8 @@ namespace EBF.Items.Magic
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.Coral, stack: 20)
-                .AddIngredient(ItemID.Sapphire, stack: 8)
+                .AddIngredient(ItemID.CrimtaneBar, stack: 16)
+                .AddIngredient(ItemID.AshWood, stack: 30)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
