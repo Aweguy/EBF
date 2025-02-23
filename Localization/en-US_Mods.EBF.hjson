@@ -145,6 +145,8 @@ Projectiles: {
 	Tribolt_Projectile.DisplayName: Tribolt_ Projectile
 	WrathOfZeus_ThunderBall.DisplayName: Wrath Of Zeus_ Thunder Ball
 	ArcticWind_Icecicle.DisplayName: Arctic Wind_ Icecicle
+	NimbusRod_Bubble.DisplayName: Nimbus Rod_ Bubble
+	BeholdingEye_Projectile.DisplayName: Beholding Eye_ Projectile
 }
 
 NPCs: {
@@ -392,6 +394,16 @@ Items: {
 
 			ArcticWind: {
 				DisplayName: Arctic Wind
+				Tooltip: ""
+			}
+
+			NimbusRod: {
+				DisplayName: Dank Nimbus
+				Tooltip: ""
+			}
+
+			BeholdingEye: {
+				DisplayName: Beholding Eye
 				Tooltip: ""
 			}
 		}
