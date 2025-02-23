@@ -1,7 +1,6 @@
 ﻿using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -23,8 +22,9 @@ namespace EBF.Items.Magic.Airstrike
             Item.width = 24;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 32;//Height of the hitbox of the item (usually the item's sprite height)
 
+            Item.mana = 15;
             Item.damage = 120;//Item's base damage value
-            Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 4f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.HoldUp;//The animation of the item when used
             Item.useTime = 40;//How fast the item is used
@@ -36,6 +36,7 @@ namespace EBF.Items.Magic.Airstrike
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
+            Item.shootSpeed = 20f; //This line only exists so the stats show up correctly
             Item.noMelee = true;
         }
         public override bool AltFunctionUse(Player player)
@@ -48,15 +49,13 @@ namespace EBF.Items.Magic.Airstrike
             {
                 Item.useTime = 60;
                 Item.useAnimation = 60;
-                Item.mana = 30;
                 Item.shoot = ModContent.ProjectileType<Airstrike_SmallBomb>();
-                Item.shootSpeed = 24f;
+                Item.shootSpeed = 22f;
             }
             else
             {
                 Item.useTime = 40;
                 Item.useAnimation = 40;
-                Item.mana = 10;
                 Item.shoot = ModContent.ProjectileType<Airstrike_Bomb>();
                 Item.shootSpeed = 16f;
             }
@@ -123,7 +122,6 @@ namespace EBF.Items.Magic.Airstrike
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
-            Projectile.knockBack = 2f;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;

@@ -12,10 +12,10 @@ namespace EBF.Items.Melee
         public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
-            Item.width = 88;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 88;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 78;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 78;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 51;//Item's base damage value
+            Item.damage = 54;//Item's base damage value
             Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
@@ -31,11 +31,11 @@ namespace EBF.Items.Melee
             Item.shoot = ProjectileID.FrostBlastFriendly;
             Item.shootSpeed = 4;
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.66f, type, damage, knockback);
-            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.66f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.75f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.75f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.75f, type, damage, knockback);
             return false;
         }
 

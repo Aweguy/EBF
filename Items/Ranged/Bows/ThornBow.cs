@@ -72,7 +72,6 @@ namespace EBF.Items.Ranged.Bows
 
             MaximumDrawTime = 50;
             MinimumDrawTime = 20;
-            AutoRelease = true;
 
             DamageScale = 1.0f;
             VelocityScale = 1.33f;

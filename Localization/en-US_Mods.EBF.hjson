@@ -218,7 +218,7 @@ Items: {
 			Blizzard: {
 				Tooltip:
 					'''
-					Flings a pair of inaccurate icy bolts.
+					Flings three inaccurate icy bolts.
 					'A blade of glistening ice, said to have slain an ancient demon.'
 					'''
 				DisplayName: Blizzard
@@ -737,14 +737,14 @@ Items: {
 			DisplayName: Balance Badge
 		}
 
-		AngryFaic: {
+		AgnryFaic: {
 			Tooltip:
 				'''
 				Increases critical chance by 8%.
 				Increases enemy aggression.
 				'Wearing this makes you so angry, you want something to be BLAMMED!'
 				'''
-			DisplayName: Angry Faic
+			DisplayName: Agnry Faic
 		}
 	}
 }

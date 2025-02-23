@@ -76,7 +76,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 80;
+            MaximumDrawTime = 100;
             MinimumDrawTime = 20;
             ReleaseSound = SoundID.Item92;
 
