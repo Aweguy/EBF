@@ -147,6 +147,7 @@ Projectiles: {
 	ArcticWind_Icecicle.DisplayName: Arctic Wind_ Icecicle
 	NimbusRod_Bubble.DisplayName: Nimbus Rod_ Bubble
 	BeholdingEye_Projectile.DisplayName: Beholding Eye_ Projectile
+	ArcticTrident_Icecicle.DisplayName: Arctic Trident_ Icecicle
 }
 
 NPCs: {
@@ -404,6 +405,11 @@ Items: {
 
 			BeholdingEye: {
 				DisplayName: Beholding Eye
+				Tooltip: ""
+			}
+
+			ArcticTrident: {
+				DisplayName: Arctic Trident
 				Tooltip: ""
 			}
 		}
