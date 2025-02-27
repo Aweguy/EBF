@@ -68,6 +68,7 @@ namespace EBF.Items.Magic
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = true;
+            Projectile.timeLeft = 300;
         }
         public override void OnSpawn(IEntitySource source)
         {
