@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using System;
 using Terraria;
 using Microsoft.Xna.Framework;
 
@@ -139,6 +131,11 @@ namespace EBF.Extensions
             projectile.position -= projectile.Size * 0.5f;
         }
 
+        /// <summary>
+        /// Rotates a projectile's sprite and velocity toward a target, and also changes player facing direction (which should be moved out of this method)
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="target"></param>
         public static void LookAt(this Projectile projectile, Vector2 target)
         {
             //Initial rotation
