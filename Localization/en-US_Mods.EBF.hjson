@@ -147,6 +147,11 @@ Projectiles: {
 	ArcticWind_Icecicle.DisplayName: Arctic Wind_ Icecicle
 	NimbusRod_Bubble.DisplayName: Nimbus Rod_ Bubble
 	BeholdingEye_Projectile.DisplayName: Beholding Eye_ Projectile
+	ArcticTrident_Icecicle.DisplayName: Arctic Trident_ Icecicle
+	OakStaff_Idol.DisplayName: Oak Staff_ Idol
+	Razorwind_Projectile.DisplayName: Razorwind_ Projectile
+	OakStaff_RollerProjectile.DisplayName: Oak Staff_ Roller Projectile
+	OakStaff_LogSpell.DisplayName: Oak Staff_ Log Spell
 }
 
 NPCs: {
@@ -404,6 +409,21 @@ Items: {
 
 			BeholdingEye: {
 				DisplayName: Beholding Eye
+				Tooltip: ""
+			}
+
+			ArcticTrident: {
+				DisplayName: Arctic Trident
+				Tooltip: ""
+			}
+
+			OakStaff: {
+				DisplayName: Oak Staff
+				Tooltip: ""
+			}
+
+			Razorwind: {
+				DisplayName: Razorwind
 				Tooltip: ""
 			}
 		}
