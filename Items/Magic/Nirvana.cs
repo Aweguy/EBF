@@ -49,7 +49,7 @@ namespace EBF.Items.Magic
                 .AddIngredient<DruidStaff>(stack: 1)
                 .AddIngredient(ItemID.SpookyWood, stack: 40)
                 .AddIngredient(ItemID.Stinger, stack: 8)
-                .AddTile(TileID.Anvils)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
