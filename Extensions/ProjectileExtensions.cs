@@ -1,12 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using System;
 using Terraria;
 using Microsoft.Xna.Framework;
 
@@ -81,6 +73,33 @@ namespace EBF.Extensions
         }
 
         /// <summary>
+        /// Basic homing method that adjusts the projectile's velocity slightly towards the target on each call.
+        /// <br>Often combined with ProjectileExtensions.ClosestNPC() to home towards the nearest valid target.</br>
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="target">The npc this projectile should home towards.</param>
+        /// <param name="strength">How significantly the velocity should be adjusted per step. Only accepts values above 0.</param>
+        /// <param name="maxSpeed">The upper limit of how fast the projectile can become. Only accepts values between 0 and 100.</param>
+        /// <returns>True if the projectile is currently homing towards a target, otherwise returns false.</returns>
+        public static bool HomeTowards(this Projectile projectile, NPC target, float strength = 1, float maxSpeed = 100)
+        {
+            //Guard clauses
+            if (target == null) return false;
+            if (strength <= 0 || maxSpeed <= 0) return false;
+
+            //Update velocity
+            Vector2 towardsNPC = target.Center - projectile.Center;
+            projectile.velocity += Vector2.Normalize(towardsNPC) * strength;
+
+            //Limit speed if a valid speed is set.
+            if(maxSpeed < 100 && projectile.velocity.Length() > maxSpeed)
+            {
+                projectile.velocity = Vector2.Normalize(projectile.velocity) * maxSpeed;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Converts polar vectors into cartesian vectors.
         /// </summary>
         /// <param name="radius">The length of the vector.</param>
@@ -112,6 +131,11 @@ namespace EBF.Extensions
             projectile.position -= projectile.Size * 0.5f;
         }
 
+        /// <summary>
+        /// Rotates a projectile's sprite and velocity toward a target, and also changes player facing direction (which should be moved out of this method)
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="target"></param>
         public static void LookAt(this Projectile projectile, Vector2 target)
         {
             //Initial rotation
@@ -130,6 +154,25 @@ namespace EBF.Extensions
 
             //Player facing direction
             Main.player[projectile.owner].ChangeDir(projectile.direction);
+        }
+
+        /// <summary>
+        /// Enables the projectile's tile collision once it passes by the clicked position and is not currently touching a tile.
+        /// <br>Often used by projectiles that appear from the sky.</br>
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="clickPosition">The clicked position, which is used to determine when the projectile should begin attempting to gain tile collision.</param>
+        /// <param name="offset">The projectile will begin attempting to gain tile collision this many pixel above the clicked position. This makes the detection feel more consistent.</param>
+        public static void HandleTileEnable(this Projectile projectile, Vector2 clickPosition, float offset = 32)
+        {
+            if (projectile.position.Y >= clickPosition.Y - offset)
+            {
+                Tile tile = Framing.GetTileSafely((int)(projectile.position.X / 16), (int)(projectile.position.Y / 16));
+                if (tile == null || !tile.HasTile)
+                {
+                    projectile.tileCollide = true;
+                }
+            }
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+
+using EBF.Extensions;
+﻿using EBF.Abstract_Classes;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -6,21 +9,20 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class ShootingStar : ModItem, ILocalizedModType
+    public class ShootingStar : EBFStaff, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
         private const int spread = 250;
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 36;//Item's base damage value
-            Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 8;//The amount of mana this item consumes on use
-            Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+
             Item.useTime = 28;//How fast the item is used
             Item.useAnimation = 28;//How long the animation lasts. For swords it should stay the same as UseTime
 
@@ -29,9 +31,9 @@ namespace EBF.Items.Magic
             Item.UseSound = SoundID.Item43;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
-            Item.shootSpeed = 5f;
+            
             Item.shoot = ModContent.ProjectileType<Star>();
-            Item.noMelee = true;//Prevents damage from being dealt by the item itself
+            Item.shootSpeed = 5f;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -115,7 +117,7 @@ namespace EBF.Items.Magic
         public override bool PreAI()
         {
             //Tile collision
-            HandleTileEnabling();
+            Projectile.HandleTileEnable(clickPosition);
 
             //Gravity & Terminal velocity
             Projectile.velocity.Y += 0.15f;
@@ -148,18 +150,6 @@ namespace EBF.Items.Magic
         public override void OnKill(int timeLeft)
         {
             SpawnDusts(dustsOnDeath);
-        }
-        private void HandleTileEnabling()
-        {
-            if (Projectile.position.Y >= clickPosition.Y)
-            {
-                Tile tile = Framing.GetTileSafely((int)(Projectile.position.X / 16), (int)(Projectile.position.Y / 16));
-
-                if (tile == null || !tile.HasTile)
-                {
-                    Projectile.tileCollide = true;
-                }
-            }
         }
         private void SpawnDusts(int amount)
         {

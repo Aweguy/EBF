@@ -1,4 +1,5 @@
-﻿using EBF.Extensions;
+﻿using EBF.Abstract_Classes;
+using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -11,12 +12,12 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
-    public class DarkTooth : ModItem, ILocalizedModType
+    public class DarkTooth : EBFStaff, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
         int manaDrainTimer; //Used to reduce how often mana is drained
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
             Item.width = 54;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 54;//Height of the hitbox of the item (usually the item's sprite height)
@@ -24,8 +25,7 @@ namespace EBF.Items.Magic
             Item.damage = 40;//Item's base damage value
             Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 40;//The amount of mana this item consumes on use
-            Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+
             Item.useTime = 50;//How fast the item is used
             Item.useAnimation = 50;//How long the animation lasts. For swords it should stay the same as UseTime
             Item.channel = true;//Channeling the item when held
@@ -35,14 +35,8 @@ namespace EBF.Items.Magic
             Item.UseSound = SoundID.Item88;//The item's sound when it's used
             Item.autoReuse = false;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
-            Item.noMelee = true;
 
             Item.shoot = ModContent.ProjectileType<DarkTooth_BlackHole>();
-            Item.shootSpeed = 0.01f; //Must be > 0 to make the held item rotate when used
-        }
-        public override void UseStyle(Player player, Rectangle heldItemFrame)
-        {
-            player.itemLocation -= new Vector2(player.direction * 16, 2);
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Accessories.Flairs
 {
-    public class AngryFaic : ModItem, ILocalizedModType
+    public class AgnryFaic : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Accessories";
         public override void SetDefaults()

@@ -12,7 +12,7 @@ namespace EBF.Items.Ranged.Guns
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
-            Item.width = 36;
+            Item.width = 40;
             Item.height = 24;
 
             Item.useTime = 24;
@@ -20,7 +20,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 32;
-            Item.knockBack = 2;
+            Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 80, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Orange;
@@ -92,7 +92,7 @@ namespace EBF.Items.Ranged.Guns
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
+            Projectile.width = 40;
             Projectile.height = 24;
 
             Projectile.friendly = false;

@@ -1,4 +1,5 @@
-﻿using EBF.Extensions;
+﻿using EBF.Abstract_Classes;
+using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -7,12 +8,12 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Magic.Flameheart
 {
-    public class Flameheart : ModItem, ILocalizedModType
+    public class Flameheart : EBFStaff, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
-        int ChargeStacks = 0;
-        public override void SetDefaults()
+        private int chargeStacks = 0; //Used to cast firestorm every third use.
+        public override void SetDefaultsSafe()
         {
             Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 60;//Height of the hitbox of the item (usually the item's sprite height)
@@ -20,8 +21,7 @@ namespace EBF.Items.Magic.Flameheart
             Item.damage = 36;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 16;//The amount of mana this item consumes on use
-            Item.DamageType = DamageClass.Magic;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
+
             Item.useTime = 20;//How fast the item is used
             Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
@@ -32,19 +32,14 @@ namespace EBF.Items.Magic.Flameheart
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<Flameheart_Fireball>();
-            Item.shootSpeed = 1f;//Required for item rotating towards cursor
-            Item.noMelee = true;//Prevents damage from being dealt by the item itself
-        }
-        public override void UseStyle(Player player, Rectangle heldItemFrame)
-        {
-            player.itemLocation -= new Vector2(player.direction * 20, 0);
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (++ChargeStacks >= 3)
+            chargeStacks++;
+            if (chargeStacks >= 3)
             {
                 type = ModContent.ProjectileType<Flameheart_Firestorm>();
-                ChargeStacks = 0;
+                chargeStacks = 0;
             }
             position = Main.MouseWorld;
         }
@@ -154,17 +149,17 @@ namespace EBF.Items.Magic.Flameheart
         }
         public override void AI()
         {
+            //Spawn dust
             if (Main.rand.NextBool(3))
             {
-                // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
-                Vector2 position = Projectile.position;
-                Dust.NewDustDirect(position, Projectile.width, Projectile.height, DustID.Pixie, 0.2631578f, -2.368421f, 0, new Color(255, 251, 0), 1.25f);
+                Dust.NewDustDirect(Projectile.Center, Projectile.width, Projectile.height, DustID.Pixie, 0, -2, 0, new Color(255, 251, 0), 1.25f);
             }
 
-            if (++Projectile.frameCounter > 3)
+            //Animate
+            if (Main.GameUpdateCount % 3 == 0)
             {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= 14)
+                Projectile.frame++;
+                if (Projectile.frame >= 14)
                 {
                     Projectile.Kill();
                 }

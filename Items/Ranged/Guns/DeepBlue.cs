@@ -24,7 +24,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 21;
-            Item.knockBack = 2;
+            Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 70, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Green;
@@ -90,7 +90,7 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.Center))
+            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
                 Vector2 position = GetGroundPosition(target.Center);
@@ -111,7 +111,7 @@ namespace EBF.Items.Ranged.Guns
     {
         public override void SetDefaults()
         {
-            Projectile.width = 36;
+            Projectile.width = 46;
             Projectile.height = 24;
 
             Projectile.friendly = false;

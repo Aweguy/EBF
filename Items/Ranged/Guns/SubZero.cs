@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 60;
-            Item.knockBack = 2;
+            Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 8, platinum: 0);
             Item.rare = ItemRarityID.Pink;
@@ -90,7 +90,7 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center))
+            if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
                 Vector2 position = GetGroundPosition(target.Center);
@@ -134,7 +134,7 @@ namespace EBF.Items.Ranged.Guns
         public override void SetDefaults()
         {
             Projectile.width = 128;
-            Projectile.height = 8; //Height is set later because it affects ground placement logic
+            Projectile.height = 280;
 
             Projectile.timeLeft = 90;
             Projectile.penetrate = -1;
@@ -144,25 +144,23 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void OnSpawn(IEntitySource source)
         {
-            SoundEngine.PlaySound(SoundID.Item30, Projectile.Center);
+            Projectile.position.Y -= Projectile.height / 2;
+            SoundStyle attackSound = SoundID.DeerclopsIceAttack with { Volume = 1.2f };
+            SoundEngine.PlaySound(attackSound, Projectile.Center);
 
             for (int i = 0; i < 15; i++)
             {
                 //Spawn dirt dust
-                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3)), DustID.Dirt, Vector2.Zero, 0, default, 8f);
+                Dust dust = Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(-2, 3) + Projectile.height), DustID.Dirt, Vector2.Zero, 0, default, 8f);
                 dust.noGravity = true;
             }
             for (int i = 0; i < 10; i++)
             {
                 //Spawn ice dust
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, 0, DustID.Ice, SpeedX: 0, SpeedY: Main.rand.Next(-14, 0), Scale: 3f);
+                Dust dust = Dust.NewDustDirect(Projectile.position + new Vector2(0, Projectile.height), Projectile.width, 0, DustID.Ice, SpeedX: 0, SpeedY: Main.rand.Next(-14, 0), Scale: 3f);
                 dust.noGravity = true;
                 dust.noLight = true;
             }
-
-            //Move into place
-            Projectile.height = 256;
-            Projectile.position.Y -= Projectile.height + 16;
         }
         public override void AI()
         {

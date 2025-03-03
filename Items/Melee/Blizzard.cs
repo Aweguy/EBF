@@ -12,11 +12,11 @@ namespace EBF.Items.Melee
         public new string LocalizationCategory => "Items.Weapons.Melee";
         public override void SetDefaults()
         {
-            Item.width = 88;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 88;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 78;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 78;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 51;//Item's base damage value
-            Item.knockBack = 4.5f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.damage = 54;//Item's base damage value
+            Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
             Item.useTime = 34;//How fast the item is used
@@ -26,16 +26,16 @@ namespace EBF.Items.Melee
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.useTurn = true;//Boolean, if the player's direction can change while using the item
+            Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ProjectileID.FrostBlastFriendly;
             Item.shootSpeed = 4;
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.66f, type, damage, knockback);
-            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.66f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.75f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.75f, type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + ProjectileExtensions.GetRandomVector() * 0.75f, type, damage, knockback);
             return false;
         }
 
