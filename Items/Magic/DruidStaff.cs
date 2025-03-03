@@ -29,6 +29,7 @@ namespace EBF.Items.Magic
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
 
+            Item.UseSound = SoundID.Item17;
             Item.shoot = ModContent.ProjectileType<DruidStaff_Projectile>();
             Item.shootSpeed = 6f;
         }
@@ -38,7 +39,6 @@ namespace EBF.Items.Magic
             velocity.Y -= 4f;
 
             //Spawn the projecile
-            SoundEngine.PlaySound(SoundID.Item9, player.Center);
             Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
