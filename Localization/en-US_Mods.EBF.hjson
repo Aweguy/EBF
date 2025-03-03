@@ -152,6 +152,8 @@ Projectiles: {
 	Razorwind_Projectile.DisplayName: Razorwind_ Projectile
 	OakStaff_RollerProjectile.DisplayName: Oak Staff_ Roller Projectile
 	OakStaff_LogSpell.DisplayName: Oak Staff_ Log Spell
+	DruidStaff_Projectile.DisplayName: Druid Staff_ Projectile
+	DruidStaff_Thorn.DisplayName: Druid Staff_ Thorn
 }
 
 NPCs: {
@@ -424,6 +426,11 @@ Items: {
 
 			Razorwind: {
 				DisplayName: Razorwind
+				Tooltip: ""
+			}
+
+			DruidStaff: {
+				DisplayName: Druid Staff
 				Tooltip: ""
 			}
 		}
