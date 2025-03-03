@@ -154,6 +154,8 @@ Projectiles: {
 	OakStaff_LogSpell.DisplayName: Oak Staff_ Log Spell
 	DruidStaff_Projectile.DisplayName: Druid Staff_ Projectile
 	DruidStaff_Thorn.DisplayName: Druid Staff_ Thorn
+	Nirvana_Projectile.DisplayName: Nirvana_ Projectile
+	Nirvana_MonsterVine.DisplayName: Nirvana_ Monster Vine
 }
 
 NPCs: {
@@ -345,7 +347,7 @@ Items: {
 
 			ShootingStar: {
 				DisplayName: Shooting Star
-				Tooltip: 
+				Tooltip:
 					'''
 					Summons a bouncy star from the heavens.
 					'Star light, star bright, first to smite my foes tonight.'
@@ -476,6 +478,15 @@ Items: {
 					'''
 					Sends a vine to snake through the earth towards foes.
 					'Crafted from the gnarled roots of Lankyroot Jungle.'
+					'''
+			}
+
+			Nirvana: {
+				DisplayName: Nirvana
+				Tooltip:
+					'''
+					Tosses out a massive thorn ball which unleashes Monster Vines in every direction.
+					'There is no self, only a point on the circle of life.'
 					'''
 			}
 		}
