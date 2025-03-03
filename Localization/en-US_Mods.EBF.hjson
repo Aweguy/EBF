@@ -326,42 +326,46 @@ Items: {
 
 		Magic: {
 			SpellRegeneration: {
+				DisplayName: Spell Regeneration
 				Tooltip:
 					'''
 					Costs a lot of mana and has a big cooldown.
 					This spell vastly increases your regeneration.
 					'''
-				DisplayName: Spell Regeneration
 			}
 
 			SpellProtect: {
+				DisplayName: Spell Protect
 				Tooltip:
 					'''
 					Blocks 25% of the damage received.
 					This spell vastly protects you from enemy attacks.
 					'''
-				DisplayName: Spell Protect
 			}
 
 			ShootingStar: {
-				Tooltip: Summons a bouncy star from the heavens.
 				DisplayName: Shooting Star
+				Tooltip: 
+					'''
+					Summons a bouncy star from the heavens.
+					'Star light, star bright, first to smite my foes tonight.'
+					'''
 			}
 
 			Seraphim: {
+				DisplayName: Seraphim
 				Tooltip:
 					'''
 					Creates a massive sky piercing laser from the ground.
 					'A glorious staff used by gorgeous angels.'
 					'''
-				DisplayName: Seraphim
 			}
 
 			Flameheart: {
 				Tooltip:
 					'''
 					Every third use summons a firestorm.
-					'A common but powerful staff, used by mages to scorch foes.'
+					'A staff of twisted crystal meant to scorch and torch foes.'
 					'''
 				DisplayName: Flameheart
 			}
@@ -379,59 +383,100 @@ Items: {
 				Tooltip:
 					'''
 					Left click to drop a big bomb from the sky, right click to drop 3 weaker bombs at once.
-					'Bombs away!!!!'
+					'Bombs away!'
 					'''
 				DisplayName: Airstrike Remote
 			}
 
 			DragonWings: {
 				DisplayName: Dragon Wings
-				Tooltip: ""
+				Tooltip:
+					'''
+					Calls forth dragon fire that seeks out foes.
+					'Be purged by the flames of the Omega Dragon!'
+					'''
 			}
 
 			Tribolt: {
 				DisplayName: Tribolt
-				Tooltip: ""
+				Tooltip:
+					'''
+					Fires Thunder at targets near the cursor.
+					'The third bolt missed his bus today.'
+					'''
 			}
 
 			WrathOfZeus: {
 				DisplayName: Wrath Of Zeus
-				Tooltip: ""
+				Tooltip:
+					'''
+					Sends a charged orb to the cursor which attracts a Thunderstorm.
+					'Thunderbolts and lightning, very very frightening!'
+					'''
 			}
 
 			ArcticWind: {
 				DisplayName: Arctic Wind
-				Tooltip: ""
+				Tooltip:
+					'''
+					Shoots icicles.
+					'Ice and crispy.'
+					'''
 			}
 
 			NimbusRod: {
 				DisplayName: Dank Nimbus
-				Tooltip: ""
+				Tooltip:
+					'''
+					Casts Bubbles that rise up and pop.
+					'Somewhere, under the rainbow...'
+					'''
 			}
 
 			BeholdingEye: {
 				DisplayName: Beholding Eye
-				Tooltip: ""
+				Tooltip:
+					'''
+					Sends writhing tentacles to lash at nearby foes.
+					'I see dead people.'
+					'''
 			}
 
 			ArcticTrident: {
 				DisplayName: Arctic Trident
-				Tooltip: ""
+				Tooltip:
+					'''
+					Creates a chunk of ice that splinters into three Iceshards.
+					'Not approved for use in igloo construction.'
+					'''
 			}
 
 			OakStaff: {
 				DisplayName: Oak Staff
-				Tooltip: ""
+				Tooltip:
+					'''
+					Flings Wooden Idols to assault foes.
+					May launch a rolling log that triggers the Log spell on hit.
+					'Wood you lend me a hand?'
+					'''
 			}
 
 			Razorwind: {
 				DisplayName: Razorwind
-				Tooltip: ""
+				Tooltip:
+					'''
+					Hold to lob hovering glaciers. On release, each glacier bursts into chunks that splinter into icicles.
+					'They didn't say it would hail tonight.'
+					'''
 			}
 
 			DruidStaff: {
 				DisplayName: Druid Staff
-				Tooltip: ""
+				Tooltip:
+					'''
+					Sends a vine to snake through the earth towards foes.
+					'Crafted from the gnarled roots of Lankyroot Jungle.'
+					'''
 			}
 		}
 
