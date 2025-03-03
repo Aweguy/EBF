@@ -114,42 +114,42 @@ namespace EBF.Items.Magic
                 dust.noGravity = true;
             }
         }
-        public class Nirvana_MonsterVine : ModProjectile
+    }
+    public class Nirvana_MonsterVine : ModProjectile
+    {
+        private int[] frameSequence = { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0 };
+        public override void SetStaticDefaults()
         {
-            private int[] frameSequence = { 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0 };
-            public override void SetStaticDefaults()
+            Main.projFrames[Projectile.type] = 6;
+            ProjectileID.Sets.DontAttachHideToAlpha[Projectile.type] = true;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 32;
+            Projectile.height = 96;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.penetrate = -1;
+            Projectile.hide = true;
+        }
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindProjectiles.Add(index);
+        }
+        public override void AI()
+        {
+            //Handle animation
+            if (Main.GameUpdateCount % 2 == 0)
             {
-                Main.projFrames[Projectile.type] = 6;
-                ProjectileID.Sets.DontAttachHideToAlpha[Projectile.type] = true;
-            }
-            public override void SetDefaults()
-            {
-                Projectile.width = 32;
-                Projectile.height = 96;
-                Projectile.friendly = true;
-                Projectile.tileCollide = false;
-                Projectile.DamageType = DamageClass.Generic;
-                Projectile.penetrate = -1;
-                Projectile.hide = true;
-            }
-            public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-            {
-                behindProjectiles.Add(index);
-            }
-            public override void AI()
-            {
-                //Handle animation
-                if (Main.GameUpdateCount % 2 == 0)
+                Projectile.frameCounter++;
+                if (Projectile.frameCounter > 10)
                 {
-                    Projectile.frameCounter++;
-                    if (Projectile.frameCounter > 10)
-                    {
-                        Projectile.Kill();
-                    }
-                    else
-                    {
-                        Projectile.frame = frameSequence[Projectile.frameCounter];
-                    }
+                    Projectile.Kill();
+                }
+                else
+                {
+                    Projectile.frame = frameSequence[Projectile.frameCounter];
                 }
             }
         }
