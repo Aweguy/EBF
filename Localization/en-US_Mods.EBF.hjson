@@ -829,5 +829,13 @@ Items: {
 				'''
 			DisplayName: Agnry Faic
 		}
+
+		GoldStar: {
+			Tooltip:
+			'''
+			Increases Magic and Summon damage by 15%.
+			'You're a good noodle!'
+			'''
+		}
 	}
 }
