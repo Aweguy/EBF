@@ -156,6 +156,8 @@ Projectiles: {
 	DruidStaff_Thorn.DisplayName: Druid Staff_ Thorn
 	Nirvana_Projectile.DisplayName: Nirvana_ Projectile
 	Nirvana_MonsterVine.DisplayName: Nirvana_ Monster Vine
+	AngelMirrorMinion.DisplayName: Angel Mirror Minion
+	GodlyBookStab.DisplayName: Godly Book Stab
 }
 
 NPCs: {
@@ -764,6 +766,16 @@ Items: {
 				}
 			}
 		}
+
+		Summon: {
+			GodlyBook: {
+				DisplayName: Godly Book
+				Tooltip:
+					'''
+					Holding the toy summons an Angelic Mirror.
+					Stabbing a foe will significantly increase the attack speed of your Angelic Mirror for a while.
+					'''
+			}
 	}
 
 	Accessories: {
