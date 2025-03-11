@@ -157,7 +157,9 @@ Projectiles: {
 	Nirvana_Projectile.DisplayName: Nirvana_ Projectile
 	Nirvana_MonsterVine.DisplayName: Nirvana_ Monster Vine
 	AngelMirrorMinion.DisplayName: Angel Mirror Minion
+	CatSoldierMinion.DisplayName: Cat Soldier Minion
 	GodlyBookStab.DisplayName: Godly Book Stab
+	SteelBucklerStab.DisplayName: Steel Buckler Stab
 }
 
 NPCs: {
@@ -776,6 +778,16 @@ Items: {
 					Stabbing a foe will significantly increase the attack speed of your Angelic Mirror for a while.
 					'''
 			}
+
+			SteelBuckler: {
+				DisplayName: Steel Buckler
+				Tooltip:
+					'''
+					Holding the toy summons a Cat Soldier.
+					Stabbing a foe will grant guaranteed critical hits to your Cat Soldier.
+					'''
+			}
+		}
 	}
 
 	Accessories: {
