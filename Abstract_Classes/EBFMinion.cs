@@ -149,6 +149,8 @@ namespace EBF.Abstract_Classes
             //Slight lean towards movement
             Projectile.direction = Projectile.spriteDirection = Math.Sign(-Projectile.velocity.X);
             Projectile.rotation = Projectile.velocity.X * 0.05f;
+
+            AISafe();
         }
 
         private void PushOverlappingMinions()
@@ -252,7 +254,7 @@ namespace EBF.Abstract_Classes
                 }
             }
         }
-        private void JumpTo(Vector2 targetPosition)
+        protected void JumpTo(Vector2 targetPosition)
         {
             Tile tile = Framing.GetTileSafely(Projectile.Bottom + Vector2.UnitY * 8);
             if (tile.HasTile && Main.tileSolid[tile.TileType])
