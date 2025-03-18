@@ -163,6 +163,10 @@ Projectiles: {
 	IcecreamSandwich_WaferProjectile.DisplayName: Icecream Sandwich_ Wafer Projectile
 	IcecreamSandwichStab.DisplayName: Icecream Sandwich Stab
 	IcecreamSlime.DisplayName: Icecream Slime
+	RedFlybotMinion.DisplayName: Red Flybot Minion
+	RiotShieldStab.DisplayName: Riot Shield Stab
+	RedFlybotCannon.DisplayName: Red Flybot Cannon
+	RedFlybotLaser.DisplayName: Red Flybot Laser
 }
 
 NPCs: {
@@ -797,6 +801,15 @@ Items: {
 					'''
 					Holding the toy summons an Icecream Slime.
 					Stabbing a foe inflicts frostburn and grants extra damage, pierce and velocity to your Icecream Slime's projectiles.
+					'''
+			}
+
+			RiotShield: {
+				DisplayName: Riot Shield
+				Tooltip:
+					'''
+					Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
+					Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
 					'''
 			}
 		}
