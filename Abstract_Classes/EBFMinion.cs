@@ -70,6 +70,12 @@ namespace EBF.Abstract_Classes
         /// </summary>
         public bool IsBoosted => BoostTime > 0;
 
+        /// <summary>
+        /// A reference to the NPC that the minion is currently targetting.
+        /// </summary>
+        public NPC Target => target;
+        private NPC target = null;
+
         #endregion Properties
 
         #region Hooks
@@ -134,7 +140,7 @@ namespace EBF.Abstract_Classes
             HandleTeleportToPlayer(idlePosition);
 
             //Locate and attack nearest target. (isFlying == UseHoverAI) prevents ground minions from targetting while flying.
-            NPC target = null;
+            target = null;
             if (isFlying == UseHoverAI && ProjectileExtensions.ClosestNPC(ref target, DetectRange, Projectile.position, ignoreTiles: isFlying))
             {
                 HandleTargetLogic(target);
@@ -161,7 +167,7 @@ namespace EBF.Abstract_Classes
                 Projectile other = Main.projectile[i];
 
                 //Check if both minions are owned by the same player, and if they're overlapping
-                if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && (Projectile.position - other.position).Length() < Projectile.width)
+                if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && other.ModProjectile is EBFMinion && (Projectile.position - other.position).Length() < Projectile.width)
                 {
                     //Nudge the minion
                     Projectile.velocity.X += (Projectile.position.X > other.position.X) ? overlapVelocity : -overlapVelocity;
