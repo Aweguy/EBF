@@ -29,7 +29,7 @@ namespace EBF.Abstract_Classes
         public virtual void HoldItemSafe(Player player)
         { }
 
-        public override void SetDefaults()
+        public sealed override void SetDefaults()
         {
             Item.DamageType = DamageClass.Summon;
             Item.useStyle = ItemUseStyleID.Rapier;
@@ -41,7 +41,7 @@ namespace EBF.Abstract_Classes
 
             SetDefaultsSafe();
         }
-        public override void HoldItem(Player player)
+        public sealed override void HoldItem(Player player)
         {
             if (BonusMinion > 0)
             {

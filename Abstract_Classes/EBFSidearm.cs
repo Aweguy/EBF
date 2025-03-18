@@ -64,6 +64,8 @@ namespace EBF.Abstract_Classes
             Projectile.position = playerCenter - Projectile.Size * 0.5f;
 
             Projectile.LookAt(Main.MouseWorld);
+            Main.player[Projectile.owner].ChangeDir(Projectile.direction);
+
             Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
         }
         private void HandleShoot(Player player) 
