@@ -832,10 +832,20 @@ Items: {
 
 		GoldStar: {
 			Tooltip:
-			'''
-			Increases Magic and Summon damage by 15%.
-			'You're a good noodle!'
-			'''
+				'''
+				Increases Magic and Summon damage by 15%.
+				'You're a good noodle!'
+				'''
+			DisplayName: Gold Star
+		}
+
+		Tetromino: {
+			Tooltip:
+				'''
+				Any damage taken that ends with '4' will be set to 4.
+				'Bet you didn't know these blocks had a name, did you?'
+				'''
+			DisplayName: Tetromino
 		}
 	}
 }
