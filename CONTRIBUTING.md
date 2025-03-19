@@ -20,6 +20,7 @@ Finally, you will use your git client to clone the repository from GitHub down t
 
 ## Step 2, making changes:
 First, you should ensure that your fork of the mod is up to date. Go to your forked repository on GitHub and check the "Sync" button. Ideally, your master branch should be up to date with the EBF mod's master branch.
+Additionally, you must create an "Update" branch so that you can be in sync with any changes that have not yet been published to tModloader.
 
 Once that's checked, go into your git client and create a new branch for whatever work you wish to do. From there, you can begin programming. Please do also take a moment to familiarize yourself with the EBF mod files. If your programming environment doesn't recognize the necessary libraries, try to go into tModLoader and build the mod.
 
