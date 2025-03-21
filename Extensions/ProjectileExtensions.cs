@@ -132,7 +132,7 @@ namespace EBF.Extensions
         }
 
         /// <summary>
-        /// Rotates a projectile's sprite and velocity toward a target, and also changes player facing direction (which should be moved out of this method)
+        /// Rotates a projectile's sprite and velocity toward a target.
         /// </summary>
         /// <param name="projectile"></param>
         /// <param name="target"></param>
@@ -151,9 +151,6 @@ namespace EBF.Extensions
 
             if (projectile.spriteDirection != oldDirection)
                 projectile.rotation -= MathHelper.Pi;
-
-            //Player facing direction
-            Main.player[projectile.owner].ChangeDir(projectile.direction);
         }
 
         /// <summary>

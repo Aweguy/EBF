@@ -156,6 +156,17 @@ Projectiles: {
 	DruidStaff_Thorn.DisplayName: Druid Staff_ Thorn
 	Nirvana_Projectile.DisplayName: Nirvana_ Projectile
 	Nirvana_MonsterVine.DisplayName: Nirvana_ Monster Vine
+	AngelMirrorMinion.DisplayName: Angel Mirror Minion
+	CatSoldierMinion.DisplayName: Cat Soldier Minion
+	GodlyBookStab.DisplayName: Godly Book Stab
+	SteelBucklerStab.DisplayName: Steel Buckler Stab
+	IcecreamSandwich_WaferProjectile.DisplayName: Icecream Sandwich_ Wafer Projectile
+	IcecreamSandwichStab.DisplayName: Icecream Sandwich Stab
+	IcecreamSlime.DisplayName: Icecream Slime
+	RedFlybotMinion.DisplayName: Red Flybot Minion
+	RiotShieldStab.DisplayName: Riot Shield Stab
+	RedFlybotCannon.DisplayName: Red Flybot Cannon
+	RedFlybotLaser.DisplayName: Red Flybot Laser
 }
 
 NPCs: {
@@ -764,6 +775,44 @@ Items: {
 				}
 			}
 		}
+
+		Summon: {
+			GodlyBook: {
+				DisplayName: Godly Book
+				Tooltip:
+					'''
+					Holding the toy summons an Angelic Mirror.
+					Stabbing a foe will significantly increase the attack speed of your Angelic Mirror for a while.
+					'''
+			}
+
+			SteelBuckler: {
+				DisplayName: Steel Buckler
+				Tooltip:
+					'''
+					Holding the toy summons a Cat Soldier.
+					Stabbing a foe will grant guaranteed critical hits to your Cat Soldier.
+					'''
+			}
+
+			IcecreamSandwich: {
+				DisplayName: Icecream Sandwich
+				Tooltip:
+					'''
+					Holding the toy summons an Icecream Slime.
+					Stabbing a foe inflicts frostburn and grants extra damage, pierce and velocity to your Icecream Slime's projectiles.
+					'''
+			}
+
+			RiotShield: {
+				DisplayName: Riot Shield
+				Tooltip:
+					'''
+					Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
+					Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
+					'''
+			}
+		}
 	}
 
 	Accessories: {
@@ -831,11 +880,13 @@ Items: {
 		}
 
 		GoldStar: {
+
 			Tooltip:
 				'''
 				Increases Magic and Summon damage by 15%.
 				'You're a good noodle!'
 				'''
+
 			DisplayName: Gold Star
 		}
 
@@ -846,6 +897,7 @@ Items: {
 				'Bet you didn't know these blocks had a name, did you?'
 				'''
 			DisplayName: Tetromino
+
 		}
 	}
 }
