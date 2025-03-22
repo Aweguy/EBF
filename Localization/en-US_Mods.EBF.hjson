@@ -167,6 +167,8 @@ Projectiles: {
 	RiotShieldStab.DisplayName: Riot Shield Stab
 	RedFlybotCannon.DisplayName: Red Flybot Cannon
 	RedFlybotLaser.DisplayName: Red Flybot Laser
+	StarHammerStab.DisplayName: Star Hammer Stab
+	StarHammerMinion.DisplayName: Star Hammer Minion
 }
 
 NPCs: {
@@ -810,6 +812,15 @@ Items: {
 					'''
 					Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
 					Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
+					'''
+			}
+
+			StarHammer: {
+				DisplayName: Star Hammer
+				Tooltip:
+					'''
+					Holding the toy summons a Shooting Star.
+					Stabbing a foe will make your Shooting Star minion shoot three sets of projectiles in a star pattern.
 					'''
 			}
 		}
