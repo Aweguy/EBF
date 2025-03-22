@@ -167,6 +167,8 @@ Projectiles: {
 	RiotShieldStab.DisplayName: Riot Shield Stab
 	RedFlybotCannon.DisplayName: Red Flybot Cannon
 	RedFlybotLaser.DisplayName: Red Flybot Laser
+	StarHammerStab.DisplayName: Star Hammer Stab
+	StarHammerMinion.DisplayName: Star Hammer Minion
 	LeafShieldStab.DisplayName: Leaf Shield Stab
 	WoodenIdolMinion.DisplayName: Wooden Idol Minion
 }
@@ -815,12 +817,25 @@ Items: {
 					'''
 			}
 
+
+			StarHammer: {
+				DisplayName: Star Hammer
+				Tooltip:
+					'''
+					Holding the toy summons a Shooting Star.
+					Stabbing a foe will make your Shooting Star minion shoot three sets of projectiles in a star pattern.
+          
+          '''
+      }
+      
+      
 			LeafShield: {
 				DisplayName: Leaf Shield
 				Tooltip:
 					'''
 					Holding the toy summons a Wooden Idol.
 					Stabbing a foe grants you Dryad's Blessing for a while.
+
 					'''
 			}
 		}
