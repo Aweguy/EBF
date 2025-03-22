@@ -5,6 +5,7 @@ using EBF.Items.Ranged.Bows;
 using EBF.Items.Ranged.Guns;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
+using EBF.Items.Summon;
 
 namespace EBF.NPCs
 {
@@ -33,6 +34,10 @@ namespace EBF.NPCs
 
                 case NPCID.WitchDoctor:
                     shop.Add<GaiasBow>();
+                    break;
+
+                case NPCID.Dryad:
+                    shop.Add<LeafShield>();
                     break;
             }
         }

@@ -167,6 +167,8 @@ Projectiles: {
 	RiotShieldStab.DisplayName: Riot Shield Stab
 	RedFlybotCannon.DisplayName: Red Flybot Cannon
 	RedFlybotLaser.DisplayName: Red Flybot Laser
+	LeafShieldStab.DisplayName: Leaf Shield Stab
+	WoodenIdolMinion.DisplayName: Wooden Idol Minion
 }
 
 NPCs: {
@@ -810,6 +812,15 @@ Items: {
 					'''
 					Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
 					Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
+					'''
+			}
+
+			LeafShield: {
+				DisplayName: Leaf Shield
+				Tooltip:
+					'''
+					Holding the toy summons a Wooden Idol.
+					Stabbing a foe grants you Dryad's Blessing for a while.
 					'''
 			}
 		}
