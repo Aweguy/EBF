@@ -2,10 +2,11 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.GameContent.Drawing;
+using Terraria.DataStructures;
 
 namespace EBF.Items.Summon
 {
@@ -26,9 +27,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.defense = 2;
 
             Item.shoot = ModContent.ProjectileType<IcecreamSandwichStab>();
             BonusMinion = ModContent.ProjectileType<IcecreamSlime>();
+        }
+        public override void HoldItemSafe(Player player)
+        {
+            player.statDefense += 2;
         }
         public override void AddRecipes()
         {
@@ -43,15 +49,17 @@ namespace EBF.Items.Summon
 
     public class IcecreamSandwichStab : ModProjectile
     {
+        private const int projOffset = 6;
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 
-            DrawOffsetX = -6;
+            DrawOffsetX = 0;
             DrawOriginOffsetY = -6;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -66,21 +74,40 @@ namespace EBF.Items.Summon
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
         }
+        public override void PostAI()
+        {
+            Projectile.position += Projectile.velocity * projOffset;
+        }
     }
 
     public class IcecreamSlime : EBFMinion
     {
         public override string Texture => "EBF/Items/Summon/IcecreamSandwich_IcecreamSlimeMinion";
+        public override void SetStaticDefaultsSafe()
+        {
+            Main.projFrames[Projectile.type] = 5;
+        }
         public override void SetDefaultsSafe()
         {
-            Projectile.width = 40;
-            Projectile.height = 40;
+            Projectile.width = 44;
+            Projectile.height = 48;
             AttackRange = 350;
             AttackTime = 40;
             MoveSpeed = 5f;
         }
+        public override void OnSpawnSafe(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item154, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Cloud);
+            }
+        }
         public override void OnAttack(NPC target)
         {
+            Projectile.frame = 2;
+            Projectile.frameCounter = 1;
+
             var shootSound = SoundID.Item5;
             var velocity = Projectile.Center.DirectionTo(target.Top) * 8;
             var type = ModContent.ProjectileType<IcecreamSandwich_WaferProjectile>();
@@ -92,14 +119,7 @@ namespace EBF.Items.Summon
                 damage *= 4;
                 shootSound = SoundID.Item42;
 
-                //Spawn dust in circle
-                int numberOfProjectiles = 8;
-                for (float theta = 0; theta <= Math.Tau; theta += (float)Math.Tau / numberOfProjectiles)
-                {
-                    Vector2 vel = Vector2.UnitX.RotatedBy(theta) * 2;
-                    Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.RedTorch, vel, Scale: 2f);
-                    dust.noGravity = true;
-                }
+                BoostedEffect();
             }
 
             SoundEngine.PlaySound(shootSound, Projectile.Center);
@@ -114,6 +134,40 @@ namespace EBF.Items.Summon
             if (Math.Abs(Projectile.velocity.X) > 2f && !InAttackRange)
             {
                 JumpTo(Projectile.Center - Vector2.UnitY * 8);
+            }
+
+            Animate();
+        }
+        private void Animate()
+        {
+            if (Main.GameUpdateCount % 6 == 0)
+            {
+                Projectile.frame++;
+
+                //Idle animation
+                if(Projectile.frameCounter == 0 && Projectile.frame > 1)
+                {
+                    Projectile.frame = 0;
+                }
+
+                //Attacking animation, initial frame set in OnAttack()
+                if(Projectile.frameCounter == 1 && Projectile.frame > 4)
+                {
+                    Projectile.frame = 0;
+                    Projectile.frameCounter = 0;
+                }
+            }
+        }
+        
+        private void BoostedEffect()
+        {
+            //Spawn dust in circle
+            int numberOfProjectiles = 8;
+            for (float theta = 0; theta <= Math.Tau; theta += (float)Math.Tau / numberOfProjectiles)
+            {
+                Vector2 vel = Vector2.UnitX.RotatedBy(theta) * 2;
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.RedTorch, vel, Scale: 2f);
+                dust.noGravity = true;
             }
         }
     }

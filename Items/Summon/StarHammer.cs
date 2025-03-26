@@ -2,6 +2,8 @@
 using EBF.Extensions;
 using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,9 +27,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.defense = 12;
 
             Item.shoot = ModContent.ProjectileType<StarHammerStab>();
             BonusMinion = ModContent.ProjectileType<StarHammerMinion>();
+        }
+        public override void HoldItemSafe(Player player)
+        {
+            player.statDefense += 12;
         }
         public override void AddRecipes()
         {
@@ -43,15 +50,17 @@ namespace EBF.Items.Summon
 
     public class StarHammerStab : ModProjectile
     {
+        private const int projOffset = 8;
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 
-            DrawOffsetX = -6;
+            DrawOffsetX = -12;
             DrawOriginOffsetY = -6;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -64,6 +73,10 @@ namespace EBF.Items.Summon
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
+        }
+        public override void PostAI()
+        {
+            Projectile.position += Projectile.velocity * projOffset;
         }
     }
 
@@ -82,7 +95,14 @@ namespace EBF.Items.Summon
             DetectRange = 800;
             MoveSpeed = 10f;
         }
-
+        public override void OnSpawnSafe(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item9, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowStarDust);
+            }
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (cooldownFrames > 0)

@@ -29,13 +29,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.defense = 10;
 
             Item.shoot = ModContent.ProjectileType<RiotShieldStab>();
             BonusMinion = ModContent.ProjectileType<RedFlybotMinion>();
         }
         public override void HoldItemSafe(Player player)
         {
-            player.statDefense *= 1.25f;
+            player.statDefense += 10;
             player.velocity.X = MathHelper.Clamp(player.velocity.X, -5.5f, 5.5f);
             player.velocity.Y = MathHelper.Clamp(player.velocity.Y, -8f, 12f);
         }
@@ -53,15 +54,17 @@ namespace EBF.Items.Summon
 
     public class RiotShieldStab : ModProjectile
     {
+        private const int projOffset = 4;
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 
-            DrawOffsetX = -6;
+            DrawOffsetX = 0;
             DrawOriginOffsetY = -6;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -74,6 +77,10 @@ namespace EBF.Items.Summon
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
+        }
+        public override void PostAI()
+        {
+            Projectile.position += Projectile.velocity * projOffset;
         }
     }
 
@@ -98,6 +105,12 @@ namespace EBF.Items.Summon
         }
         public override void OnSpawnSafe(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item113, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
+            }
+
             //Spawn and store the cannons
             int type = ModContent.ProjectileType<RedFlybotCannon>();
 
