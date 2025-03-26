@@ -171,6 +171,9 @@ Projectiles: {
 	StarHammerMinion.DisplayName: Star Hammer Minion
 	LeafShieldStab.DisplayName: Leaf Shield Stab
 	WoodenIdolMinion.DisplayName: Wooden Idol Minion
+	BloodBankStab.DisplayName: Blood Bank Stab
+	BloodBatMinion.DisplayName: Blood Bat Minion
+	BloodBatHealProjectile.DisplayName: Blood Bat Heal Projectile
 }
 
 NPCs: {
@@ -817,18 +820,15 @@ Items: {
 					'''
 			}
 
-
 			StarHammer: {
 				DisplayName: Star Hammer
 				Tooltip:
 					'''
 					Holding the toy summons a Shooting Star.
-					Stabbing a foe will make your Shooting Star minion shoot three sets of projectiles in a star pattern.
-          
-          '''
-      }
-      
-      
+					Stabbing a foe will make your Shooting Star minion shoot three sets of projectiles in a star pattern. 
+					'''
+			}
+
 			LeafShield: {
 				DisplayName: Leaf Shield
 				Tooltip:
@@ -836,6 +836,15 @@ Items: {
 					Holding the toy summons a Wooden Idol.
 					Stabbing a foe grants you Dryad's Blessing for a while.
 
+					'''
+			}
+
+			BloodBank: {
+				DisplayName: Blood Bank
+				Tooltip:
+					'''
+					Holding the toy summons a Blood Bat.
+					Stabbing a foe will temporarily empower the lifesteal of your Blood Bat.
 					'''
 			}
 		}
