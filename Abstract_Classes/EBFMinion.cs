@@ -107,6 +107,8 @@ namespace EBF.Abstract_Classes
         {
             Projectile.minion = true;
             Projectile.penetrate = -1;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10;
             SetDefaultsSafe();
         }
         public override bool? CanCutTiles() => false;
