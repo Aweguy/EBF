@@ -50,6 +50,7 @@ namespace EBF.Items.Summon
             Projectile.height = 16;
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 
             DrawOffsetX = -4;
