@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
@@ -26,9 +27,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.defense = 2;
 
             Item.shoot = ModContent.ProjectileType<LeafShieldStab>();
             BonusMinion = ModContent.ProjectileType<WoodenIdolMinion>();
+        }
+        public override void HoldItemSafe(Player player)
+        {
+            player.statDefense += 2;
         }
 
         //Sold by dryad
@@ -36,16 +42,17 @@ namespace EBF.Items.Summon
 
     public class LeafShieldStab : ModProjectile
     {
-        private const int projOffset = 10;
+        private const int projOffset = 2;
         public override void SetDefaults()
         {
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.aiStyle = ProjAIStyleID.ShortSword;
             Projectile.friendly = true;
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 
-            DrawOffsetX = -6;
+            DrawOffsetX = -4;
             DrawOriginOffsetY = -6;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -79,6 +86,12 @@ namespace EBF.Items.Summon
         public override void OnSpawnSafe(IEntitySource source)
         {
             Projectile.frame = Main.rand.Next(3);
+
+            SoundEngine.PlaySound(SoundID.Item140 with { Pitch = 1.0f }, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.WoodFurniture);
+            }
         }
         public override void AISafe()
         {
