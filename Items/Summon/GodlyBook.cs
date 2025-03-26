@@ -1,6 +1,8 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,9 +26,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.defense = 5;
 
             Item.shoot = ModContent.ProjectileType<GodlyBookStab>();
             BonusMinion = ModContent.ProjectileType<AngelMirrorMinion>();
+        }
+        public override void HoldItemSafe(Player player)
+        {
+            player.statDefense += 5;
         }
         public override void AddRecipes()
         {
@@ -76,6 +83,14 @@ namespace EBF.Items.Summon
             UseHoverAI = true;
             AttackRange = 300;
             AttackTime = 40;
+        }
+        public override void OnSpawnSafe(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item53, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Gold);
+            }
         }
         public override void OnAttack(NPC target)
         {
