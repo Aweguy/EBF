@@ -16,10 +16,14 @@ namespace EBF.NPCs
             //For anyone editing this, please try to keep it alphabetical
             switch (npc.type)
             {
-                //Prime Vice:
                 //Heavy Claw at 25%
                 case NPCID.PrimeVice:
                     npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HeavyClaw>(), 4));
+                    break;
+
+                //Blood Bank at 20%
+                case NPCID.ZombieMerman:
+                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodBank>(), 5));
                     break;
             }
         }
