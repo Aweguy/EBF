@@ -27,9 +27,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
+            Item.defense = 2;
 
             Item.shoot = ModContent.ProjectileType<SteelBucklerStab>();
             BonusMinion = ModContent.ProjectileType<CatSoldierMinion>();
+        }
+        public override void HoldItemSafe(Player player)
+        {
+            player.statDefense += 2;
         }
         public override void AddRecipes()
         {
@@ -58,7 +63,7 @@ namespace EBF.Items.Summon
             Projectile.friendly = true;
             Projectile.penetrate = -1;
 
-            DrawOffsetX = -6;
+            DrawOffsetX = -2;
             DrawOriginOffsetY = -6;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -88,6 +93,14 @@ namespace EBF.Items.Summon
             Projectile.friendly = true;
             Projectile.tileCollide = true;
             UseHoverAI = false;
+        }
+        public override void OnSpawnSafe(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item58, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Iron);
+            }
         }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
