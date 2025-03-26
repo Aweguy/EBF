@@ -1,6 +1,7 @@
 ﻿using System;
 using Terraria;
 using Microsoft.Xna.Framework;
+using Terraria.ID;
 
 namespace EBF.Extensions
 {
@@ -169,6 +170,48 @@ namespace EBF.Extensions
                 {
                     projectile.tileCollide = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sourced from Calamity Utils. Must only be used in projectile AI methods.
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="healAmount">How much health the player should regain upon contacting this projectile.</param>
+        /// <param name="playerToHeal">The index of the player that this projectile should heal.</param>
+        /// <param name="homingVelocity">How quickly the projectile homes towards the player.</param>
+        /// <param name="inertia">How slowly the trajectory of the projectile should change.</param>
+        /// <param name="autoHomes"></param>
+        /// <param name="timeCheck"></param>
+        public static void ExecuteHealingProjectileAI(this Projectile projectile, int healAmount, int playerToHeal, float homingVelocity, float inertia, bool autoHomes = true, int timeCheck = 120)
+        {
+            Player player = Main.player[playerToHeal];
+            Vector2 playerVector = player.Center - projectile.Center;
+            float playerDist = playerVector.Length();
+
+            //Check for overlaps
+            if (playerDist < 50f && player.getRect().Intersects(projectile.getRect()))
+            {
+                if (projectile.owner == Main.myPlayer && !Main.player[Main.myPlayer].moonLeech)
+                {
+                    player.Heal(healAmount);
+                    if (player.statLife > player.statLifeMax2)
+                        player.statLife = player.statLifeMax2;
+
+                    NetMessage.SendData(MessageID.SpiritHeal, -1, -1, null, playerToHeal, healAmount, 0f, 0f, 0, 0, 0);
+                }
+                projectile.Kill();
+            }
+            
+            //Handle homing
+            if (autoHomes || (player.lifeMagnet && projectile.timeLeft < timeCheck))
+            {
+                if (player.lifeMagnet)
+                    homingVelocity *= 1.5f;
+
+                playerDist = homingVelocity / playerDist;
+                playerVector *= playerDist;
+                projectile.velocity = (projectile.velocity * inertia + playerVector) / (inertia + 1f);
             }
         }
     }
