@@ -47,6 +47,7 @@ namespace EBF.Items.Summon
 
     public class GodlyBookStab : ModProjectile
     {
+        private const int projOffset = 6;
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -69,6 +70,10 @@ namespace EBF.Items.Summon
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
+        }
+        public override void PostAI()
+        {
+            Projectile.position += Projectile.velocity * projOffset;
         }
     }
 
