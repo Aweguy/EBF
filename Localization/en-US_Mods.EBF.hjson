@@ -174,6 +174,9 @@ Projectiles: {
 	BloodBankStab.DisplayName: Blood Bank Stab
 	BloodBatMinion.DisplayName: Blood Bat Minion
 	BloodBatHealProjectile.DisplayName: Blood Bat Heal Projectile
+	BusterSwordStab.DisplayName: Buster Sword Stab
+	OrigamiDragonMinion.DisplayName: Origami Dragon Minion
+	PaperBladeProjectile.DisplayName: Paper Blade Projectile
 }
 
 NPCs: {
@@ -845,6 +848,15 @@ Items: {
 					'''
 					Holding the toy summons a Blood Bat.
 					Stabbing a foe will temporarily empower the lifesteal of your Blood Bat.
+					'''
+			}
+
+			BusterSword: {
+				DisplayName: Buster Sword
+				Tooltip:
+					'''
+					Holding the toy summons an Origami Dragon.
+					Stabbing a foe makes the Origami Dragon shoot five powerful paper blades.
 					'''
 			}
 		}
