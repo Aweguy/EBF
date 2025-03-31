@@ -789,7 +789,7 @@ Items: {
 				Tooltip:
 					'''
 					Holding the toy summons an Angelic Mirror.
-					Stabbing a foe will significantly increase the attack speed of your Angelic Mirror for a while.
+					Stabbing a foe will make your Angelic Mirror shoot a burst of shots.
 					'''
 			}
 
