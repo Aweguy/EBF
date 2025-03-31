@@ -19,7 +19,7 @@ namespace EBF.Items.Summon
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 12;//Item's base damage value
-            Item.knockBack = 13f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.useTime = 15;//How fast the item is used
             Item.useAnimation = 15;//How long the animation lasts. For swords it should stay the same as UseTime
 
