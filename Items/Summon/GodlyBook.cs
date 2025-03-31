@@ -47,6 +47,7 @@ namespace EBF.Items.Summon
 
     public class GodlyBookStab : ModProjectile
     {
+        private const int projOffset = 6;
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -64,21 +65,30 @@ namespace EBF.Items.Summon
             Item item = Main.player[Projectile.owner].HeldItem;
             if (item.ModItem is EBFCatToy toy)
             {
-                toy.ApplyBoost(120);
+                toy.ApplyBoost(180);
 
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
+        }
+        public override void PostAI()
+        {
+            Projectile.position += Projectile.velocity * projOffset;
         }
     }
 
     public class AngelMirrorMinion : EBFMinion
     {
         public override string Texture => "EBF/Items/Summon/GodlyBook_AngelMirrorMinion";
+        public float AnimationState { get { return Projectile.ai[0]; } set { Projectile.ai[0] = value; } } //Used in Animate() to determine when to reset frame.
+        public override void SetStaticDefaultsSafe()
+        {
+            Main.projFrames[Projectile.type] = 13;
+        }
         public override void SetDefaultsSafe()
         {
-            Projectile.width = 84;
-            Projectile.height = 66;
+            Projectile.width = 62;
+            Projectile.height = 46;
             Projectile.friendly = false;
             Projectile.tileCollide = true;
             UseHoverAI = true;
@@ -93,22 +103,73 @@ namespace EBF.Items.Summon
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Gold);
             }
         }
+        public override void AISafe()
+        {
+            Animate();
+        }
         public override void OnAttack(NPC target)
         {
+            Projectile proj;
             Vector2 velocity = Projectile.DirectionTo(target.Center) * 8f;
+
             if (IsBoosted)
             {
-                velocity = velocity.RotateRandom(0.4f);
-                AttackTime = 8;
+                BoostTime = 0;
+                AnimationState = 2;
+                Projectile.frame = 6;
+
+                for (int i = 0; i < 5; i++)
+                {
+                    velocity = velocity.RotateRandom(0.4f);
+
+                    proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.DiamondBolt, Projectile.damage, 0);
+                    proj.usesLocalNPCImmunity = true;
+                    proj.localNPCHitCooldown = -1;
+                }
             }
             else
             {
-                AttackTime = 40;
+                AnimationState = 1;
+                Projectile.frame = 3;
+
+                proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.DiamondBolt, Projectile.damage, 0);
+                proj.usesLocalNPCImmunity = true;
+                proj.localNPCHitCooldown = -1;
             }
 
-            var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.DiamondBolt, Projectile.damage, 0);
-            proj.usesLocalNPCImmunity = true;
-            proj.localNPCHitCooldown = -1;
+            AttackTime = 40;
+        }
+        private void Animate()
+        {
+            if(Main.GameUpdateCount % 6 == 0)
+            {
+                Projectile.frame++;
+                switch (AnimationState)
+                {
+                    case 0: //Idle
+                        if (Projectile.frame > 2)
+                        {
+                            Projectile.frame = 0;
+                        }
+                        break;
+
+                    case 1: //Regular attack
+                        if(Projectile.frame > 5)
+                        {
+                            Projectile.frame = 0;
+                            AnimationState = 0;
+                        }
+                        break;
+                        
+                    case 2: //Boosted attack
+                        if (Projectile.frame > 12)
+                        {
+                            Projectile.frame = 0;
+                            AnimationState = 0;
+                        }
+                        break;
+                }
+            }
         }
     }
 }
