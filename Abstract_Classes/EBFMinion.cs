@@ -60,7 +60,7 @@ namespace EBF.Abstract_Classes
 
         /// <summary>
         /// This property lets the minion receive an effect when its cat toy weapon manages to hit something. 
-        /// <br>Do not modify this value, go to EBFCatToy.BoostDuration instead.</br>
+        /// <br>Non-minions should not use this property, go to EBFCatToy.BoostDuration and ApplyBoost instead.</br>
         /// <para>Defaults to 0.</para>
         /// </summary>
         public int BoostTime { get; set; } = 0;
@@ -80,7 +80,7 @@ namespace EBF.Abstract_Classes
 
         #region Hooks
         /// <summary>
-        /// When the minion is within attacking range (specified by the ProjectileRange property) and the attack cooldown is done (specified by the AttackSpeed property), this hook is called.
+        /// When the minion is within attacking range (specified by the AttackRange property) and the attack cooldown is done (specified by the AttackSpeed property), this hook is called.
         /// </summary>
         public virtual void OnAttack(NPC target)
         { }
@@ -218,11 +218,11 @@ namespace EBF.Abstract_Classes
                 //Move towards enemy
                 if (isFlying)
                 {
-                    Projectile.velocity += Projectile.Center.DirectionTo(target.Center) * 0.33f;
+                    Projectile.velocity += Projectile.Center.DirectionTo(target.Center) * 0.33f * (1 + MoveSpeed * 0.05f);
                 }
                 else
                 {
-                    Projectile.velocity.X += Projectile.Center.DirectionTo(target.Center).X * 0.33f;
+                    Projectile.velocity.X += Projectile.Center.DirectionTo(target.Center).X * 0.33f * (1 + MoveSpeed * 0.05f);
                     JumpTo(target.Center);
                 }
             }
