@@ -10,19 +10,14 @@ namespace EBF.Abstract_Classes
 {
     public abstract class EBFCatToy : ModItem
     {
-        private int minionTimer = 0;
+        private int minion = 0;
+        private const int minionLingerDuration = 60;
 
         /// <summary>
         /// This property determines which minion appears while the cat toy is held.
         /// <para>Defaults to 0, meaning no minion is spawned.</para>
         /// </summary>
         public int BonusMinion { get; set; } = 0;
-
-        /// <summary>
-        /// How long the minion lasts after switching weapons (in ticks).
-        /// <para>Defaults to 60 ticks (1 second).</para>
-        /// </summary>
-        public int MinionDuration { get; set; } = 60;
 
         public virtual void SetDefaultsSafe()
         { }
@@ -59,54 +54,27 @@ namespace EBF.Abstract_Classes
                     }
 
                     //Spawn new minion
-                    Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Top, Vector2.Zero, BonusMinion, Item.damage, Item.knockBack, player.whoAmI);
+                    minion = Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Top, Vector2.Zero, BonusMinion, Item.damage, Item.knockBack, player.whoAmI);
                 }
 
                 //Keep minion alive
-                minionTimer = MinionDuration;
+                Main.projectile[minion].timeLeft = minionLingerDuration;
             }
 
             HoldItemSafe(player);
         }
-        public override void UpdateInventory(Player player) => CheckAndDespawnMinion(player);
-        public override void PostUpdate() => CheckAndDespawnMinion(Main.LocalPlayer);
-        
+
         /// <summary>
         /// Use this method in the shortsword projectile to give the minion some boosted time.
         /// </summary>
         /// <param name="duration">How many ticks the boost will last.</param>
         public void ApplyBoost(int duration)
         {
-            Player player = Main.LocalPlayer;
-            SoundEngine.PlaySound(SoundID.MaxMana, player.position);
+            SoundEngine.PlaySound(SoundID.MaxMana, Main.LocalPlayer.position);
 
-            foreach (int proj in player.ownedProjectileCounts)
+            if (Main.projectile[minion].ModProjectile is EBFMinion m)
             {
-                if (Main.projectile[proj].ModProjectile is EBFMinion minion)
-                {
-                    minion.BoostTime = duration;
-                    return;
-                }
-            }
-        }
-        private void CheckAndDespawnMinion(Player player)
-        {
-            // Drain minion time
-            if (minionTimer > 0)
-            {
-                minionTimer--;
-            }
-
-            // Despawn the minion when the timer expires
-            if (minionTimer <= 0 && BonusMinion > 0 && player.ownedProjectileCounts[BonusMinion] > 0)
-            {
-                foreach (Projectile proj in Main.projectile)
-                {
-                    if (proj.active && proj.owner == player.whoAmI && proj.type == BonusMinion)
-                    {
-                        proj.Kill();
-                    }
-                }
+                m.BoostTime = duration;
             }
         }
     }
