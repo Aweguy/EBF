@@ -177,6 +177,7 @@ Projectiles: {
 	BusterSwordStab.DisplayName: Buster Sword Stab
 	OrigamiDragonMinion.DisplayName: Origami Dragon Minion
 	PaperBladeProjectile.DisplayName: Paper Blade Projectile
+	PowerPawPunch.DisplayName: Power Paw Punch
 }
 
 NPCs: {
@@ -858,6 +859,11 @@ Items: {
 					Holding the toy summons an Origami Dragon.
 					Stabbing a foe makes the Origami Dragon shoot five powerful paper blades.
 					'''
+			}
+
+			PowerPaw: {
+				DisplayName: Power Paw
+				Tooltip: ""
 			}
 		}
 	}
