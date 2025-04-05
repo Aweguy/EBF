@@ -18,7 +18,7 @@ namespace EBF.Items.Summon
             Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 12;//Item's base damage value
+            Item.damage = 14;//Item's base damage value
             Item.knockBack = 3f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.useTime = 15;//How fast the item is used
             Item.useAnimation = 15;//How long the animation lasts. For swords it should stay the same as UseTime
@@ -70,10 +70,10 @@ namespace EBF.Items.Summon
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Item item = Main.player[Projectile.owner].HeldItem;
-            if(item.ModItem is EBFCatToy toy)
+            if (item.ModItem is EBFCatToy toy)
             {
                 toy.ApplyBoost(180);
-                
+
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
@@ -87,13 +87,18 @@ namespace EBF.Items.Summon
     public class CatSoldierMinion : EBFMinion
     {
         public override string Texture => "EBF/Items/Summon/SteelBuckler_CatSoldierMinion";
+        public override void SetStaticDefaultsSafe()
+        {
+            Main.projFrames[Projectile.type] = 11;
+        }
         public override void SetDefaultsSafe()
         {
-            Projectile.width = 30;
-            Projectile.height = 38;
+            Projectile.width = 50;
+            Projectile.height = 40;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
             UseHoverAI = false;
+            Projectile.localNPCHitCooldown = 15;
         }
         public override void OnSpawnSafe(IEntitySource source)
         {
@@ -112,10 +117,14 @@ namespace EBF.Items.Summon
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            //Use attack animation
+            Projectile.ai[0] = 2;
+            Projectile.frame = 8;
+
             if (IsBoosted)
             {
                 SoundEngine.PlaySound(SoundID.AbigailAttack, Projectile.Center);
-                
+
                 //Spawn dust in circle
                 int numberOfProjectiles = 8;
                 for (float theta = 0; theta <= Math.Tau; theta += (float)Math.Tau / numberOfProjectiles)
@@ -123,6 +132,54 @@ namespace EBF.Items.Summon
                     Vector2 velocity = Vector2.UnitX.RotatedBy(theta) * 2;
                     Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.RedTorch, velocity, Scale: 2f);
                     dust.noGravity = true;
+                }
+            }
+        }
+        public override void AISafe()
+        {
+            //Transitions between idle and walk
+            if (Math.Abs(Projectile.velocity.X) > 1.5f && Projectile.ai[0] == 0)
+            {
+                Projectile.ai[0] = 1;
+                Projectile.frame = 4;
+            }
+            else if (Math.Abs(Projectile.velocity.X) < 1f && Projectile.ai[0] == 1)
+            {
+                Projectile.ai[0] = 0;
+                Projectile.frame = 0;
+            }
+
+            Animate();
+        }
+        private void Animate()
+        {
+            if (Main.GameUpdateCount % 6 == 0)
+            {
+                Projectile.frame++;
+                switch (Projectile.ai[0])
+                {
+                    case 0: //Idle animation
+                        if (Projectile.frame >= 4)
+                        {
+                            Projectile.frame = 0;
+                        }
+                        break;
+
+                    case 1: //Walk animation
+                        if (Projectile.frame >= 8)
+                        {
+                            Projectile.frame = 4;
+                        }
+                        break;
+
+                    case 2: //Attack animation
+                        if (Projectile.frame >= 11)
+                        {
+                            Projectile.frame = 0;
+                            Projectile.ai[0] = 0;
+                        }
+                        break;
+
                 }
             }
         }
