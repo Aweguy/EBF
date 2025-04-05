@@ -1,10 +1,9 @@
 ﻿using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using EBF.Extensions;
-using Terraria.DataStructures;
 
 namespace EBF.Abstract_Classes
 {
@@ -97,14 +96,12 @@ namespace EBF.Abstract_Classes
         #region Base Behavior
         public sealed override void SetStaticDefaults()
         {
-            ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-            ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-
             Main.projPet[Projectile.type] = true;
             SetStaticDefaultsSafe();
         }
         public sealed override void SetDefaults()
         {
+            Projectile.timeLeft = 60;
             Projectile.minion = true;
             Projectile.penetrate = -1;
             Projectile.usesLocalNPCImmunity = true;
