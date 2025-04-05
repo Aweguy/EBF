@@ -178,6 +178,7 @@ Projectiles: {
 	OrigamiDragonMinion.DisplayName: Origami Dragon Minion
 	PaperBladeProjectile.DisplayName: Paper Blade Projectile
 	PowerPawPunch.DisplayName: Power Paw Punch
+	GunslingerMinion.DisplayName: Gunslinger Minion
 }
 
 NPCs: {

@@ -31,7 +31,7 @@ namespace EBF.Items.Summon
             Item.defense = 4;
 
             Item.shoot = ModContent.ProjectileType<PowerPawPunch>();
-            BonusMinion = ModContent.ProjectileType<OrigamiDragonMinion>();
+            BonusMinion = ModContent.ProjectileType<GunslingerMinion>();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -102,6 +102,55 @@ namespace EBF.Items.Summon
                 else if(Projectile.frame >= 12)
                 {
                     Projectile.Kill();
+                }
+            }
+        }
+    }
+
+    public class GunslingerMinion : EBFMinion
+    {
+        public override string Texture => "EBF/Items/Summon/PowerPaw_GunSlingerMinion";
+        public override void SetStaticDefaultsSafe()
+        {
+            Main.projFrames[Projectile.type] = 8;
+        }
+        public override void SetDefaultsSafe()
+        {
+            Projectile.width = 56;
+            Projectile.height = 78;
+            Projectile.friendly = false;
+            Projectile.tileCollide = false;
+            UseHoverAI = true;
+            DetectRange = 700;
+            AttackRange = 600;
+            AttackTime = 20;
+            MoveSpeed = 4f;
+        }
+        public override void OnSpawnSafe(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item113, Projectile.Center);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Sand);
+            }
+        }
+        public override void AISafe()
+        {
+            Animate();
+        }
+        public override void OnAttack(NPC target)
+        {
+            Vector2 velocity = Projectile.DirectionTo(target.Center) * 8;
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.BulletHighVelocity, Projectile.damage, Projectile.knockBack, Projectile.owner);
+        }
+        private void Animate()
+        {
+            if(Main.GameUpdateCount % 6 == 0)
+            {
+                Projectile.frame++;
+                if(Projectile.frame >= 8)
+                {
+                    Projectile.frame = 0;
                 }
             }
         }
