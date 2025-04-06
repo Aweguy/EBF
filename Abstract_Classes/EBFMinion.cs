@@ -143,6 +143,7 @@ namespace EBF.Abstract_Classes
 
             //Locate and attack nearest target. (isFlying == UseHoverAI) prevents ground minions from targetting while flying.
             target = null;
+            InAttackRange = false;
             if (isFlying == UseHoverAI && ProjectileExtensions.ClosestNPC(ref target, DetectRange, Projectile.position, ignoreTiles: isFlying))
             {
                 HandleTargetLogic(target);
@@ -190,7 +191,6 @@ namespace EBF.Abstract_Classes
         private void HandleTargetLogic(NPC target)
         {
             //Attack enemy in range
-            InAttackRange = false;
             if ((target.Center - Projectile.Center).Length() < AttackRange)
             {
                 InAttackRange = true;
