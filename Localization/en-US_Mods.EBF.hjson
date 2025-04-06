@@ -156,6 +156,29 @@ Projectiles: {
 	DruidStaff_Thorn.DisplayName: Druid Staff_ Thorn
 	Nirvana_Projectile.DisplayName: Nirvana_ Projectile
 	Nirvana_MonsterVine.DisplayName: Nirvana_ Monster Vine
+	AngelMirrorMinion.DisplayName: Angel Mirror Minion
+	CatSoldierMinion.DisplayName: Cat Soldier Minion
+	GodlyBookStab.DisplayName: Godly Book Stab
+	SteelBucklerStab.DisplayName: Steel Buckler Stab
+	IcecreamSandwich_WaferProjectile.DisplayName: Icecream Sandwich_ Wafer Projectile
+	IcecreamSandwichStab.DisplayName: Icecream Sandwich Stab
+	IcecreamSlime.DisplayName: Icecream Slime
+	RedFlybotMinion.DisplayName: Red Flybot Minion
+	RiotShieldStab.DisplayName: Riot Shield Stab
+	RedFlybotCannon.DisplayName: Red Flybot Cannon
+	RedFlybotLaser.DisplayName: Red Flybot Laser
+	StarHammerStab.DisplayName: Star Hammer Stab
+	StarHammerMinion.DisplayName: Star Hammer Minion
+	LeafShieldStab.DisplayName: Leaf Shield Stab
+	WoodenIdolMinion.DisplayName: Wooden Idol Minion
+	BloodBankStab.DisplayName: Blood Bank Stab
+	BloodBatMinion.DisplayName: Blood Bat Minion
+	BloodBatHealProjectile.DisplayName: Blood Bat Heal Projectile
+	BusterSwordStab.DisplayName: Buster Sword Stab
+	OrigamiDragonMinion.DisplayName: Origami Dragon Minion
+	PaperBladeProjectile.DisplayName: Paper Blade Projectile
+	PowerPawPunch.DisplayName: Power Paw Punch
+	GunslingerMinion.DisplayName: Gunslinger Minion
 }
 
 NPCs: {
@@ -764,6 +787,90 @@ Items: {
 				}
 			}
 		}
+
+		Summon: {
+			GodlyBook: {
+				DisplayName: Godly Book
+				Tooltip:
+					'''
+					Holding the toy summons an Angelic Mirror.
+					Stabbing a foe will make your Angelic Mirror shoot a burst of shots.
+					'''
+			}
+
+			SteelBuckler: {
+				DisplayName: Steel Buckler
+				Tooltip:
+					'''
+					Holding the toy summons a Cat Soldier.
+					Stabbing a foe will grant guaranteed critical hits to your Cat Soldier.
+					'''
+			}
+
+			IcecreamSandwich: {
+				DisplayName: Icecream Sandwich
+				Tooltip:
+					'''
+					Holding the toy summons an Icecream Slime.
+					Stabbing a foe inflicts frostburn and grants extra damage, pierce and velocity to your Icecream Slime's projectiles.
+					'''
+			}
+
+			RiotShield: {
+				DisplayName: Riot Shield
+				Tooltip:
+					'''
+					Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
+					Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
+					'''
+			}
+
+			StarHammer: {
+				DisplayName: Star Hammer
+				Tooltip:
+					'''
+					Holding the toy summons a Shooting Star.
+					Stabbing a foe will make your Shooting Star minion shoot three sets of projectiles in a star pattern. 
+					'''
+			}
+
+			LeafShield: {
+				DisplayName: Leaf Shield
+				Tooltip:
+					'''
+					Holding the toy summons a Wooden Idol.
+					Stabbing a foe grants you Dryad's Blessing for a while.
+
+					'''
+			}
+
+			BloodBank: {
+				DisplayName: Blood Bank
+				Tooltip:
+					'''
+					Holding the toy summons a Blood Bat.
+					Stabbing a foe will temporarily empower the lifesteal of your Blood Bat.
+					'''
+			}
+
+			BusterSword: {
+				DisplayName: Buster Sword
+				Tooltip:
+					'''
+					Holding the toy summons an Origami Dragon.
+					Stabbing a foe makes the Origami Dragon shoot five powerful paper blades.
+					'''
+			}
+
+			PowerPaw: {
+				DisplayName: Power Paw
+				Tooltip:
+					'''
+					Holding the toy summons a Gunslinger.
+					Stabbing a foe will briefly replace the Gunslinger's bullets with rockets.
+					'''
+			}
+		}
 	}
 
 	Accessories: {
@@ -828,6 +935,24 @@ Items: {
 				'Wearing this makes you so angry, you want something to be BLAMMED!'
 				'''
 			DisplayName: Agnry Faic
+		}
+
+		GoldStar: {
+			Tooltip:
+				'''
+				Increases Magic and Summon damage by 15%.
+				'You're a good noodle!'
+				'''
+			DisplayName: Gold Star
+		}
+
+		Tetromino: {
+			Tooltip:
+				'''
+				Any damage taken that ends with '4' will be set to 4.
+				'Bet you didn't know these blocks had a name, did you?'
+				'''
+			DisplayName: Tetromino
 		}
 	}
 }

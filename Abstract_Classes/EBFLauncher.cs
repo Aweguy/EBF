@@ -89,6 +89,7 @@ namespace EBF.Abstract_Classes
             Projectile.position = playerCenter - Projectile.Size * 0.5f;
 
             Projectile.LookAt(Main.MouseWorld);
+            Main.player[Projectile.owner].ChangeDir(Projectile.direction);
         }
         private void HandleCharge(Player player)
         {

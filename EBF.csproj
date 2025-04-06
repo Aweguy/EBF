@@ -39,6 +39,8 @@
     <None Remove="Items\Ranged\Guns\QuakeMakerSidearm.png" />
     <None Remove="Items\Ranged\Guns\ThePhantom.png" />
     <None Remove="Items\Ranged\Guns\ThePhantomSidearm.png" />
+    <None Remove="Items\Summon\BusterSword_OrigamiDragonMinion.png" />
+    <None Remove="Items\Summon\BusterSword_PaperBladeProjectile.png" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />
