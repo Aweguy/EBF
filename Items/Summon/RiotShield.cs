@@ -43,10 +43,10 @@ namespace EBF.Items.Summon
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.HallowedBar, stack: 10)
                 .AddIngredient(ItemID.SoulofMight, stack: 5)
                 .AddIngredient(ItemID.SoulofSight, stack: 5)
                 .AddIngredient(ItemID.SoulofFright, stack: 5)
-                .AddIngredient(ItemID.HallowedBar, stack: 10)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
