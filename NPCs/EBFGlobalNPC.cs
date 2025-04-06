@@ -43,6 +43,10 @@ namespace EBF.NPCs
                 case NPCID.Dryad:
                     shop.Add<LeafShield>();
                     break;
+
+                case NPCID.ArmsDealer:
+                    shop.Add<PowerPaw>(Condition.DownedPlantera);
+                    break;
             }
         }
     }

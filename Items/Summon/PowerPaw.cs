@@ -26,7 +26,7 @@ namespace EBF.Items.Summon
             Item.useTime = 16;//How fast the item is used
             Item.useAnimation = 16;//How long the animation lasts. For swords it should stay the same as UseTime
 
-            Item.value = Item.sellPrice(copper: 0, silver: 50, gold: 3, platinum: 0);//Item's value when sold
+            Item.value = Item.buyPrice(copper: 0, silver: 0, gold: 40, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
@@ -45,15 +45,7 @@ namespace EBF.Items.Summon
         {
             player.statDefense += 6;
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.BambooBlock, stack: 200)
-                .AddIngredient(ItemID.TatteredCloth, stack: 3)
-                .AddIngredient(ItemID.SoulofMight, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
+        //Bought by Arms Dealer after defeating plantera
     }
 
     public class PowerPawPunch : ModProjectile
