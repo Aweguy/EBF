@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
 using EBF.Extensions;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EBF.Items.Summon
 {
@@ -109,6 +111,7 @@ namespace EBF.Items.Summon
 
     public class GunslingerMinion : EBFMinion
     {
+        private Texture2D gunTexture;
         public override string Texture => "EBF/Items/Summon/PowerPaw_GunSlingerMinion";
         public override void SetStaticDefaultsSafe()
         {
@@ -125,6 +128,7 @@ namespace EBF.Items.Summon
             AttackRange = 600;
             AttackTime = 20;
             MoveSpeed = 4f;
+            gunTexture = ModContent.Request<Texture2D>("EBF/Items/Summon/PowerPaw_GunSlingerGun").Value;
         }
         public override void OnSpawnSafe(IEntitySource source)
         {
@@ -137,6 +141,18 @@ namespace EBF.Items.Summon
         public override void AISafe()
         {
             Animate();
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            if (InAttackRange)
+            {
+                var sourceRect = gunTexture.Bounds;
+                var vectorToTarget = Projectile.DirectionTo(Target.Center);
+                var drawPos = (Projectile.Center - Main.screenPosition) + (vectorToTarget * 20) + (Vector2.UnitY * 8);
+                var rotation = vectorToTarget.ToRotation();
+                var spriteFX = vectorToTarget.X < 0 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                Main.EntitySpriteDraw(gunTexture, drawPos, sourceRect, Color.White, rotation, gunTexture.Size() / 2, 1, spriteFX);
+            }
         }
         public override void OnAttack(NPC target)
         {
