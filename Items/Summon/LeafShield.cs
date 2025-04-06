@@ -57,10 +57,13 @@ namespace EBF.Items.Summon
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Main.player[Projectile.owner].AddBuff(BuffID.DryadsWard, 300);
+            if (!target.immortal)
+            {
+                Main.player[Projectile.owner].AddBuff(BuffID.DryadsWard, 300);
 
-            //Spawn fancy hit particle
-            ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
+                //Spawn fancy hit particle
+                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
+            }
         }
         public override void PostAI()
         {
