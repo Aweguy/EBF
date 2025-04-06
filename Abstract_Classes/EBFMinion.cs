@@ -140,6 +140,7 @@ namespace EBF.Abstract_Classes
 
             //Locate and attack nearest target. (isFlying == UseHoverAI) prevents ground minions from targetting while flying.
             target = null;
+            InAttackRange = false;
             if (isFlying == UseHoverAI && ProjectileExtensions.ClosestNPC(ref target, DetectRange, Projectile.position, ignoreTiles: isFlying))
             {
                 HandleTargetLogic(target);
@@ -152,7 +153,6 @@ namespace EBF.Abstract_Classes
             }
 
             //Slight lean towards movement
-            Projectile.direction = Projectile.spriteDirection = Math.Sign(-Projectile.velocity.X);
             Projectile.rotation = Projectile.velocity.X * 0.05f;
 
             AISafe();
@@ -188,7 +188,6 @@ namespace EBF.Abstract_Classes
         private void HandleTargetLogic(NPC target)
         {
             //Attack enemy in range
-            InAttackRange = false;
             if ((target.Center - Projectile.Center).Length() < AttackRange)
             {
                 InAttackRange = true;
@@ -223,6 +222,8 @@ namespace EBF.Abstract_Classes
                     JumpTo(target.Center);
                 }
             }
+
+            Projectile.direction = Projectile.spriteDirection = Math.Sign(-Projectile.DirectionTo(target.position).X);
         }
         private void HandleIdleLogic(Vector2 idlePosition)
         {
@@ -258,6 +259,8 @@ namespace EBF.Abstract_Classes
                     Projectile.velocity.Y = (Projectile.velocity.Y * (inertia - 1) + vectorToIdlePosition.Y) / inertia;
                 }
             }
+
+            Projectile.direction = Projectile.spriteDirection = Math.Sign(-Projectile.velocity.X);
         }
         protected void JumpTo(Vector2 targetPosition)
         {
