@@ -76,7 +76,7 @@ namespace EBF.Items.Summon
             Item item = Main.player[Projectile.owner].HeldItem;
             if (item.ModItem is EBFCatToy toy)
             {
-                toy.ApplyBoost(60);
+                toy.ApplyBoost(180);
 
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
@@ -156,8 +156,20 @@ namespace EBF.Items.Summon
         }
         public override void OnAttack(NPC target)
         {
+            int type = ProjectileID.BulletHighVelocity;
             Vector2 velocity = Projectile.DirectionTo(target.Center) * 8;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.BulletHighVelocity, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            var sfx = SoundID.Item11;
+
+            if (IsBoosted)
+            {
+                type = ProjectileID.RocketI;
+                velocity *= 2;
+                sfx = SoundID.Item99;
+            }
+
+            SoundEngine.PlaySound(sfx, Projectile.position);
+            var p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            p.friendly = true;
         }
         private void Animate()
         {
