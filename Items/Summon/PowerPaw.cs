@@ -113,7 +113,6 @@ namespace EBF.Items.Summon
         {
             Projectile.width = 56;
             Projectile.height = 78;
-            Projectile.friendly = false;
             Projectile.tileCollide = false;
             UseHoverAI = true;
             DetectRange = 700;

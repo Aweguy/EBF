@@ -86,6 +86,7 @@ namespace EBF.Items.Summon
         private const int paperBladeOffset = 150;
         private const float maxSpeed = 10;
         public override string Texture => "EBF/Items/Summon/BusterSword_OrigamiDragonMinion";
+        public override bool MinionContactDamage() => true;
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Projectile.type] = 5;
@@ -94,7 +95,6 @@ namespace EBF.Items.Summon
         {
             Projectile.width = 74;
             Projectile.height = 74;
-            Projectile.friendly = true;
             Projectile.tileCollide = true;
             UseHoverAI = true;
             AttackRange = 80;
@@ -117,6 +117,7 @@ namespace EBF.Items.Summon
                 Projectile.velocity *= maxSpeed;
             }
 
+            Projectile.friendly = Target != null;
             Animate();
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

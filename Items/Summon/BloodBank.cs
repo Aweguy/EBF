@@ -78,7 +78,7 @@ namespace EBF.Items.Summon
         private const int dashSpeed = 5;
         private int healCooldownFrames = 60;
         public override string Texture => "EBF/Items/Summon/BloodBank_BloodBatMinion";
-
+        public override bool MinionContactDamage() => true;
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Projectile.type] = 6;
@@ -124,6 +124,8 @@ namespace EBF.Items.Summon
             {
                 Projectile.velocity *= 0.9f;
             }
+
+            Projectile.friendly = Target != null;
         }
         public override void OnAttack(NPC target)
         {

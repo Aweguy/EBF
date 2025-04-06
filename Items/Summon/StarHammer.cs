@@ -84,6 +84,7 @@ namespace EBF.Items.Summon
     {
         private int cooldownFrames = 0;
         public override string Texture => "EBF/Items/Summon/StarHammer_ShootingStarMinion";
+        public override bool MinionContactDamage() => true;
         public override void SetDefaultsSafe()
         {
             Projectile.width = 48;
@@ -126,6 +127,8 @@ namespace EBF.Items.Summon
             {
                 Projectile.velocity *= 0.9f;
             }
+
+            Projectile.friendly = Target != null;
         }
 
         private void ShootStarPattern()

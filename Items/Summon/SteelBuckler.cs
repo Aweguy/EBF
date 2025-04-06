@@ -87,6 +87,7 @@ namespace EBF.Items.Summon
     public class CatSoldierMinion : EBFMinion
     {
         public override string Texture => "EBF/Items/Summon/SteelBuckler_CatSoldierMinion";
+        public override bool MinionContactDamage() => true;
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Projectile.type] = 11;
@@ -149,6 +150,7 @@ namespace EBF.Items.Summon
                 Projectile.frame = 0;
             }
 
+            Projectile.friendly = Target != null;
             Animate();
         }
         private void Animate()

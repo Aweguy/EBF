@@ -71,6 +71,7 @@ namespace EBF.Items.Summon
     public class WoodenIdolMinion : EBFMinion
     {
         public override string Texture => "EBF/Items/Summon/LeafShield_WoodenIdolMinion";
+        public override bool MinionContactDamage() => true;
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Projectile.type] = 3;
@@ -99,6 +100,8 @@ namespace EBF.Items.Summon
             {
                 JumpTo(Projectile.Center - Vector2.UnitY * 32);
             }
+
+            Projectile.friendly = Target != null;
         }
     }
 }
