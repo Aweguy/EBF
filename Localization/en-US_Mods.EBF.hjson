@@ -864,7 +864,11 @@ Items: {
 
 			PowerPaw: {
 				DisplayName: Power Paw
-				Tooltip: ""
+				Tooltip:
+					'''
+					Holding the toy summons a Gunslinger.
+					Stabbing a foe will briefly replace the Gunslinger's bullets with rockets.
+					'''
 			}
 		}
 	}
