@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using EBF.Extensions;
+using Terraria.ID;
 
 namespace EBF.Abstract_Classes
 {
@@ -96,6 +97,7 @@ namespace EBF.Abstract_Classes
         #region Base Behavior
         public sealed override void SetStaticDefaults()
         {
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
             Main.projPet[Projectile.type] = true;
             SetStaticDefaultsSafe();
         }
@@ -109,7 +111,6 @@ namespace EBF.Abstract_Classes
             SetDefaultsSafe();
         }
         public override bool? CanCutTiles() => false;
-        public override bool MinionContactDamage() => true;
         public sealed override void OnSpawn(IEntitySource source)
         {
             attackTimer = AttackTime;

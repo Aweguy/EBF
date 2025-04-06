@@ -63,7 +63,7 @@ namespace EBF.Items.Summon
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy)
+            if (item.ModItem is EBFCatToy toy && !target.immortal)
             {
                 toy.ApplyBoost(180);
 
@@ -89,7 +89,6 @@ namespace EBF.Items.Summon
         {
             Projectile.width = 62;
             Projectile.height = 46;
-            Projectile.friendly = false;
             Projectile.tileCollide = true;
             UseHoverAI = true;
             AttackRange = 300;

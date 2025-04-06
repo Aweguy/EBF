@@ -31,11 +31,11 @@ namespace EBF.Items.Accessories.Flairs
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.AdamantiteBar, stack: 15)
-                .AddTile(TileID.Anvils)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.TitaniumBar, stack: 15)
-                .AddTile(TileID.Anvils)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }

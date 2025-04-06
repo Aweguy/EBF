@@ -32,20 +32,20 @@ namespace EBF.NPCs
             //For anyone editing this, please try to keep it alphabetical
             switch (shop.NpcType)
             {
-                case NPCID.Princess:
-                    shop.Add<LoveBlade>();
-                    break;
-
-                case NPCID.WitchDoctor:
-                    shop.Add<GaiasBow>();
+                case NPCID.ArmsDealer:
+                    shop.Add<PowerPaw>(Condition.DownedPlantera);
                     break;
 
                 case NPCID.Dryad:
                     shop.Add<LeafShield>();
                     break;
 
-                case NPCID.ArmsDealer:
-                    shop.Add<PowerPaw>(Condition.DownedPlantera);
+                case NPCID.Princess:
+                    shop.Add<LoveBlade>();
+                    break;
+
+                case NPCID.WitchDoctor:
+                    shop.Add<GaiasBow>();
                     break;
             }
         }

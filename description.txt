@@ -1,9 +1,10 @@
 EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
-As of version 1.3, the mod adds 72 items:
+As of version 1.4, the mod adds 83 items:
 - 17 Melee weapons
 - 30 Ranged weapon
 - 18 Magic weapons
-- 7 Accessories
+- 9 Summon weapons
+- 9 Accessories
 
 
 V1.1 Bows Update (15/01/2025)
@@ -28,5 +29,12 @@ V1.3 Staff Update (03/03/2025)
 - Guns that slam the ground are no longer blocked by line of sight.
 - All bows now have autofire, but take longer to draw.
 Details in the changelog on our discord server.
+
+V1.4 Cat Toy Update (06/04/2025)
+
+- 9 cat toys added as summon weapons.
+- 2 new accessories added.
+- Fixed sold weapons being too expensive.
+That is all.
 
 If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf

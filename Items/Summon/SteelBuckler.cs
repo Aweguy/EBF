@@ -70,7 +70,7 @@ namespace EBF.Items.Summon
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy)
+            if (item.ModItem is EBFCatToy toy && !target.immortal)
             {
                 toy.ApplyBoost(180);
 
@@ -87,6 +87,7 @@ namespace EBF.Items.Summon
     public class CatSoldierMinion : EBFMinion
     {
         public override string Texture => "EBF/Items/Summon/SteelBuckler_CatSoldierMinion";
+        public override bool MinionContactDamage() => true;
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Projectile.type] = 11;
@@ -149,6 +150,7 @@ namespace EBF.Items.Summon
                 Projectile.frame = 0;
             }
 
+            Projectile.friendly = Target != null;
             Animate();
         }
         private void Animate()
