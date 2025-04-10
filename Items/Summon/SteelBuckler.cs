@@ -103,7 +103,7 @@ namespace EBF.Items.Summon
         }
         public override void OnSpawnSafe(IEntitySource source)
         {
-            SoundEngine.PlaySound(SoundID.Item58, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.Item58.WithVolumeScale(0.3f), Projectile.Center);
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Iron);
