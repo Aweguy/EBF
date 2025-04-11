@@ -44,16 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />
-    <AdditionalFiles Remove="Gores\**" />
     <AdditionalFiles Remove="Items\Limit Breaks\**" />
     <Compile Remove="Assets\Sfx\NPCHit\**" />
-    <Compile Remove="Gores\**" />
     <Compile Remove="Items\Limit Breaks\**" />
     <EmbeddedResource Remove="Assets\Sfx\NPCHit\**" />
-    <EmbeddedResource Remove="Gores\**" />
     <EmbeddedResource Remove="Items\Limit Breaks\**" />
     <None Remove="Assets\Sfx\NPCHit\**" />
-    <None Remove="Gores\**" />
     <None Remove="Items\Limit Breaks\**" />
   </ItemGroup>
   <ItemGroup>

@@ -181,32 +181,6 @@ Projectiles: {
 	GunslingerMinion.DisplayName: Gunslinger Minion
 }
 
-NPCs: {
-	AmethystOre.DisplayName: Amethyst Ore
-	PeridotOre.DisplayName: Peridot Ore
-	QuartzOre.DisplayName: Quartz Ore
-	RubyOre.DisplayName: Ruby Ore
-	SapphireOre.DisplayName: Sapphire Ore
-	TopazOre.DisplayName: Topaz Ore
-	ZirconOre.DisplayName: Zircon Ore
-	AmethystOre_Dark.DisplayName: Amethyst Ore
-	WoodenIdol_1.DisplayName: Wooden Idol
-	WoodenIdol_2.DisplayName: Wooden Idol
-	WoodenIdol_3.DisplayName: Wooden Idol
-	StoneIdol_1.DisplayName: Stone Idol_1
-	StoneIdol_2.DisplayName: Stone Idol_2
-	StoneIdol_3.DisplayName: Stone Idol_3
-	IceIdol_1.DisplayName: Ice Idol_1
-	IceIdol_2.DisplayName: Ice Idol_2
-	IceIdol_3.DisplayName: Ice Idol_3
-	MarbleIdol_1.DisplayName: Marble Idol_1
-	MarbleIdol_2.DisplayName: Marble Idol_2
-	MarbleIdol_3.DisplayName: Marble Idol_3
-	ObsidianIdol_1.DisplayName: Obsidian Idol_1
-	ObsidianIdol_2.DisplayName: Obsidian Idol_2
-	ObsidianIdol_3.DisplayName: Obsidian Idol_3
-}
-
 Items: {
 	Weapons: {
 		Melee: {
