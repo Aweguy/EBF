@@ -1,0 +1,52 @@
+Matt: {
+	DisplayName: Matt
+
+	Chat: {
+		Graveyard1: I've heard of mood lighting, but this is on another level.
+		Graveyard2: If anything steals my loot I�ll smack 'em with a Seiken!
+		Dungeon1: I'd love a good dungeon crawl... but all these boneheads won't stop attacking me!
+		BloodMoon1: There are so many of them, can't we just sleep through this?
+		BloodMoon2: I wanted to fish until this is over, but something stared at me underwater... Screw this, I'm out!
+		Homeless1: You wouldn't happen to have a house, would you? I won't steal your stuff, promise.
+		WindyDay1: Check it out! The wind is blowing enemies right into my sword!
+		WindyDay2: Perfect weather to practice Tempest!
+		Rain1: Come to think of it, I've never seen it rain at Hope Harbor.
+		Rain2: Hey, how many raindrops do you think I can slice through? I'm trying to test my reflexes.
+		Storm1: I wonder if my thunder swords can act as lightning rods...?
+		Storm2: Even I'm not dumb enough to swing a big metal stick during this kind of weather!
+		Day1: The sun is shining, the birds are singing... Time to get grinding for rare loot!
+		Night1: Mmm... huh, night time? I'll get off my game soon, give me a minute or two.
+		Night2: Man, nothing beats coming home from a quest with a fat sack of loot!
+		Party1: Woo, party! Everyone�s going to love my Sandworm truffle barbecue!
+		Normal1: I'm not a pirate, I am a Canadian of Piratical Descent.
+		Normal2: Have you ever been to Hope Harbor? It's a nice place, especially at sunset.
+		Normal3: Jeff? Who's Jeff?
+		Normal4: This is a sword!
+		Normal5: You can't be the main character on an empty stomach! Do you want anything?
+		Normal6: It's not easy for me to find the code either!
+		Hardmode1: I stumbled onto a few pirates recently. I wonder if they are holding on to something good.
+		Corrupt1: This place should be for raiding, not sleeping! Get me out of here!
+		Natalie1: I've known Natz for as long as I can remember. She's super reliable and smart!
+		Lance1: Lance might be a crook, and a villain, and top 10 worst people I've ever met, but we're bros! Bros!
+		Anna1: Anna's more than a little green when it comes to adventuring, but dang if she isn't good at trapping and hunting!
+		NoLegs1: NoLegs is my best friend! We've been through thick and thin together!
+	}
+
+	TownNPCMood: {
+		Content: I dunno what else to say, I guess I'm doing okay right now.
+		NoHome: I know people call me a homeless tramp, but is this actually what it's like not having a house? I don't think I'm a fan.
+		FarFromHome: I think even Hope Harbor might be closer than my current digs.
+		LoveSpace: I get to have all this space to myself? Sweet! Now I can keep all my stuff here!
+		DislikeCrowded: Can't you do something about all these guys? I feel like they're gonna steal some of the loot in my stash!
+		HateCrowded: It's so crowded there's no quiet spot for me to game in!
+		LikeBiome_Snow: There's something oddly nostalgic about the cool weather. I like it!
+		LikeBiome_Ocean: It's like I'm back at home, here by the Ocean!
+		LikeNPC_Princess: It's a ton of fun to play video games with {NPCName}! She keeps calling my Wii retro though...
+		Princess_LovesNPC: Have you met Sir {NPCName}? Hehe, I decided to make him an honorary knight!
+		DislikeBiome: There's nowhere to dock even a raft in the Desert...
+		LikeBiome: It's like I'm back at home, here by the Ocean!
+		LikeNPC: The stories {NPCName} tells always crack me up, they're great to have around for a feast!
+		DislikeNPC: Natalie's one thing, but I can't make heads or tails of what {NPCName}'s saying!
+		HateNPC: That {NPCName} keeps trying to tell me what to do. I just can't stand it!
+	}
+}
