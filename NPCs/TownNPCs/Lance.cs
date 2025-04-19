@@ -58,6 +58,9 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<HeavyClaw>())
+                .Add(ItemID.Radar)
+                .Add(ItemID.MetalDetector)
+                .Add(ItemID.MusketBall)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;
