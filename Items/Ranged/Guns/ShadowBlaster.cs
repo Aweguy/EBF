@@ -147,6 +147,12 @@ namespace EBF.Items.Ranged.Guns
             {
                 Projectile.friendly = false;
             }
+
+            //Use small explosion if no ID was provided
+            if((int)Projectile.ai[0] == 0)
+            {
+                Projectile.ai[0] = ModContent.ProjectileType<ShadowBlaster_DarkExplosionSmall>();
+            }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

@@ -18,21 +18,19 @@ namespace EBF.Abstract_Classes
         public virtual WeightedRandom<string> GetChatSafe(WeightedRandom<string> dialogue) { return dialogue; }
         #endregion Hooks
 
-        private static Profiles.StackedNPCProfile NPCProfile; // Profiles are texture variants for shimmered and/or partying npcs.
-        public override ITownNPCProfile TownNPCProfile() => NPCProfile;
+
         public override void Load()
         {
             //Load heads to be used in housing banners and in the housing npc list.
             Mod.AddNPCHeadTexture(Type, Texture + "_Head");
             Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
         }
+        //This adds the shimmer and party variants to the npcs.
+        public sealed override ITownNPCProfile TownNPCProfile() => new Profiles.StackedNPCProfile(
+            new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
+            new Profiles.DefaultNPCProfile(Texture + "_Shimmer", NPCHeadLoader.GetHeadSlot(Texture + "_Shimmer_Head"), Texture + "_Shimmer_Party"));
         public sealed override void SetStaticDefaults()
         {
-            NPCProfile = new Profiles.StackedNPCProfile(
-                new Profiles.DefaultNPCProfile(Texture, NPCHeadLoader.GetHeadSlot(HeadTexture), Texture + "_Party"),
-                new Profiles.DefaultNPCProfile(Texture + "_Shimmer", NPCHeadLoader.GetHeadSlot(Texture + "_Shimmer_Head"), Texture + "_Shimmer_Party")
-            );
-
             NPCID.Sets.ActsLikeTownNPC[Type] = true;
             NPCID.Sets.ShimmerTownTransform[Type] = true; // Makes this NPC transform when touching shimmer liquid, instead of becoming invisible.
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new() { Velocity = 1f }; //Draws the npc walking in the bestiary.
@@ -40,7 +38,6 @@ namespace EBF.Abstract_Classes
             
             SetStaticDefaultsSafe();
         }
-
         public sealed override void SetDefaults()
         {
             NPC.townNPC = true;
