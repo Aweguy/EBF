@@ -9,6 +9,7 @@ using Terraria.GameContent.Drawing;
 using EBF.Extensions;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework.Graphics;
+using EBF.Buffs;
 
 namespace EBF.Items.Summon
 {
@@ -48,31 +49,20 @@ namespace EBF.Items.Summon
         //Bought by Arms Dealer after defeating plantera
     }
 
-    public class PowerPawPunch : ModProjectile
+    public class PowerPawPunch : EBFToyStab
     {
-        private const int projOffset = 4;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 12;
         }
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
             Projectile.width = 64;
             Projectile.height = 64;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy && !target.immortal)
-            {
-                toy.ApplyBoost(180);
 
-                //Spawn fancy hit particle
-                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
-            }
+            ProjOffset = 4;
+            BoostDuration = 180;
+            TagDamage = 5;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -81,19 +71,14 @@ namespace EBF.Items.Summon
         }
         public override void AI()
         {
-            Projectile.Center = Main.LocalPlayer.Center + Projectile.velocity * projOffset;
-            Animate();
-        }
-        private void Animate()
-        {
             if (Main.GameUpdateCount % 3 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame >= 6 && Projectile.ai[0] == 0)
+                if (Projectile.frame >= 6 && Projectile.ai[0] == 0)
                 {
                     Projectile.Kill();
                 }
-                else if(Projectile.frame >= 12)
+                else if (Projectile.frame >= 12)
                 {
                     Projectile.Kill();
                 }
