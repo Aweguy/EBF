@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using EBF.Buffs;
 using EBF.NPCs;
+using Terraria.Audio;
 
 namespace EBF.Abstract_Classes
 {
@@ -42,7 +43,7 @@ namespace EBF.Abstract_Classes
             Item item = Main.player[Projectile.owner].HeldItem;
             if (item.ModItem is EBFCatToy toy && !target.immortal)
             {
-                if(BoostDuration > 0)
+                if (BoostDuration > 0)
                 {
                     toy.ApplyBoost(BoostDuration);
                 }
@@ -53,6 +54,7 @@ namespace EBF.Abstract_Classes
 
                 //Spawn fancy hit particle
                 ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
+                SoundEngine.PlaySound(SoundID.MaxMana, Main.LocalPlayer.position);
             }
 
             OnHitNPCSafe(target, hit, damageDone);
