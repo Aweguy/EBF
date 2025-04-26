@@ -17,12 +17,12 @@ namespace EBF.Items.Magic
             Item.width = 54;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 54;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 18;//Item's base damage value
+            Item.damage = 16;//Item's base damage value
             Item.knockBack = 4;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 7;//The amount of mana this item consumes on use
 
-            Item.useTime = 20;//How fast the item is used
-            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 22;//How fast the item is used
+            Item.useAnimation = 22;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 80, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Green;//Item's name colour, this is hardcoded by the modder and should be based on progression
