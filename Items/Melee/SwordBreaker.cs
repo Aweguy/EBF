@@ -44,7 +44,7 @@ namespace EBF.Items.Melee
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.DemoniteBar, stack: 15)
                 .AddIngredient(ItemID.ShadowScale, stack: 10)
-                .AddIngredient(ItemID.Bone, stack: 15)
+                .AddIngredient(ItemID.VilePowder, stack: 15)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
