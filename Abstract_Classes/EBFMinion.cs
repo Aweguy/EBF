@@ -278,7 +278,7 @@ namespace EBF.Abstract_Classes
         {
             if (isFlying != UseHoverAI && Math.Abs(player.velocity.Y) < 2f)
             {
-                if (Collision.SolidTiles(player.BottomLeft, player.width, player.height * 2))
+                if (Collision.SolidTiles(player.BottomLeft, player.width, player.height * 2, true))
                 {
                     isFlying = false;
                 }
