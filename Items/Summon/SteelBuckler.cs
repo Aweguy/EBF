@@ -1,4 +1,5 @@
 ﻿using EBF.Abstract_Classes;
+using EBF.Buffs;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -52,35 +53,16 @@ namespace EBF.Items.Summon
         }
     }
 
-    public class SteelBucklerStab : ModProjectile
+    public class SteelBucklerStab : EBFToyStab
     {
-        private const int projOffset = 10;
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.aiStyle = ProjAIStyleID.ShortSword;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-
             DrawOffsetX = -2;
             DrawOriginOffsetY = -6;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy && !target.immortal)
-            {
-                toy.ApplyBoost(180);
 
-                //Spawn fancy hit particle
-                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
-            }
-        }
-        public override void PostAI()
-        {
-            Projectile.position += Projectile.velocity * projOffset;
+            ProjOffset = 10;
+            BoostDuration = 180;
+            TagDamage = 2;
         }
     }
 

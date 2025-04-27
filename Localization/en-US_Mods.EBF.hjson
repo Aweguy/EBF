@@ -47,6 +47,11 @@ Buffs: {
 		DisplayName: Charged
 		Description: You feel ready to unleash hell upon whoever is in your way.
 	}
+
+	TagDebuff: {
+		DisplayName: Tag Debuff
+		Description: Mods.EBF.Buffs.TagDebuff.Description
+	}
 }
 
 Projectiles: {

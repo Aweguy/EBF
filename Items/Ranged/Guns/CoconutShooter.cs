@@ -20,7 +20,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 6;
+            Item.damage = 5;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 25, gold: 0, platinum: 0);
@@ -61,8 +61,8 @@ namespace EBF.Items.Ranged.Guns
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddRecipeGroup(RecipeGroupID.Wood, stack: 80)
-                .AddIngredient(ItemID.Rope, stack: 40)
+                .AddRecipeGroup(RecipeGroupID.Wood, stack: 160)
+                .AddIngredient(ItemID.Rope, stack: 50)
                 .AddTile(TileID.WorkBenches)
                 .Register();
         }

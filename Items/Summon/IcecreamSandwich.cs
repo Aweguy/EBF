@@ -7,6 +7,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.GameContent.Drawing;
 using Terraria.DataStructures;
+using EBF.Buffs;
 
 namespace EBF.Items.Summon
 {
@@ -47,36 +48,20 @@ namespace EBF.Items.Summon
         }
     }
 
-    public class IcecreamSandwichStab : ModProjectile
+    public class IcecreamSandwichStab : EBFToyStab
     {
-        private const int projOffset = 6;
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.aiStyle = ProjAIStyleID.ShortSword;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-
             DrawOffsetX = 0;
             DrawOriginOffsetY = -6;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy && !target.immortal)
-            {
-                toy.ApplyBoost(180);
-                target.AddBuff(BuffID.Frostburn, 360);
 
-                //Spawn fancy hit particle
-                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
-            }
+            ProjOffset = 6;
+            BoostDuration = 180;
+            TagDamage = 2;
         }
-        public override void PostAI()
+        public override void OnHitNPCSafe(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.position += Projectile.velocity * projOffset;
+            target.AddBuff(BuffID.Frostburn, BoostDuration * 2);
         }
     }
 

@@ -4,7 +4,6 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -48,35 +47,16 @@ namespace EBF.Items.Summon
         }
     }
 
-    public class StarHammerStab : ModProjectile
+    public class StarHammerStab : EBFToyStab
     {
-        private const int projOffset = 8;
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.aiStyle = ProjAIStyleID.ShortSword;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-
             DrawOffsetX = -12;
             DrawOriginOffsetY = -6;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy && !target.immortal)
-            {
-                toy.ApplyBoost(120);
 
-                //Spawn fancy hit particle
-                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
-            }
-        }
-        public override void PostAI()
-        {
-            Projectile.position += Projectile.velocity * projOffset;
+            ProjOffset = 8;
+            BoostDuration = 120;
+            TagDamage = 6;
         }
     }
 
@@ -117,9 +97,10 @@ namespace EBF.Items.Summon
         {
             cooldownFrames--;
 
-            if (IsBoosted && Main.GameUpdateCount % 40 == 0)
+            if (IsBoosted)
             {
-                ShootStarPattern();
+                ShootBoostedStarPattern();
+                BoostTime = 0;
             }
 
             //Max speed, which should probably be moved to base class.
@@ -136,11 +117,35 @@ namespace EBF.Items.Summon
             int type = ProjectileID.SuperStar;
             float delta = (float)(Math.Tau / 5);
             float randomOffset = Main.rand.NextFloat(0, delta);
+            IEntitySource source = Projectile.GetSource_FromThis();
 
             for (float theta = randomOffset; theta < Math.Tau; theta += delta)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, ProjectileExtensions.PolarVector(6, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, ProjectileExtensions.PolarVector(10, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(source, Projectile.Center, ProjectileExtensions.PolarVector(6, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(source, Projectile.Center, ProjectileExtensions.PolarVector(10, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
+        }
+        private void ShootBoostedStarPattern()
+        {
+            int type = ProjectileID.SuperStar;
+            float delta = (float)(Math.Tau / 5);
+            float randomOffset = Main.rand.NextFloat(0, delta);
+            IEntitySource source = Projectile.GetSource_FromThis();
+            Projectile proj;
+
+            for (float theta = randomOffset; theta < Math.Tau; theta += delta)
+            {
+                proj = Projectile.NewProjectileDirect(source, Projectile.Center, ProjectileExtensions.PolarVector(36, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                proj.aiStyle = ProjAIStyleID.FlamingJack;
+                proj.localNPCHitCooldown = 20;
+                proj.penetrate = 2;
+                proj.timeLeft = 180;
+
+                proj = Projectile.NewProjectileDirect(source, Projectile.Center, ProjectileExtensions.PolarVector(50, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                proj.aiStyle = ProjAIStyleID.FlamingJack;
+                proj.localNPCHitCooldown = 20;
+                proj.penetrate = 2;
+                proj.timeLeft = 180;
             }
         }
     }
