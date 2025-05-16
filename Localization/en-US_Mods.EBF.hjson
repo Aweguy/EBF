@@ -934,4 +934,9 @@ Items: {
 			DisplayName: Tetromino
 		}
 	}
+
+	NeonKeychain: {
+		DisplayName: Neon Keychain
+		Tooltip: ""
+	}
 }
