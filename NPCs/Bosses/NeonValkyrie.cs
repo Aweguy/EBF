@@ -10,6 +10,7 @@ using ReLogic.Content;
 using EBF.Extensions;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using EBF.NPCs.Machines;
 
 namespace EBF.NPCs.Bosses
 {
@@ -29,6 +30,7 @@ namespace EBF.NPCs.Bosses
         private ref float JumpCooldown => ref NPC.localAI[1];
         public override void SetStaticDefaults()
         {
+            NPCID.Sets.DontDoHardmodeScaling[Type] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 
@@ -51,7 +53,7 @@ namespace EBF.NPCs.Bosses
             NPC.lifeMax = 40000;
 
             NPC.noTileCollide = true;
-            NPC.HitSound = SoundID.NPCHit1;
+            NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.Roar;
             NPC.knockBackResist = 0f;
             NPC.value = Item.buyPrice(gold: 5);
@@ -100,6 +102,7 @@ namespace EBF.NPCs.Bosses
             {
                 case 0:
                     Move(player);
+                    SummonFlybots();
                     break;
                 case 1:
                     Shoot(player);
@@ -207,6 +210,22 @@ namespace EBF.NPCs.Bosses
                 Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), BarrelPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 2, 3);
                 proj.friendly = false;
                 proj.hostile = true;
+            }
+        }
+        private void SummonFlybots()
+        {
+            if (Main.rand.NextBool(100))
+            {
+                //Spawn bot
+                var pos = AttachmentBasePos.ToPoint();
+                var type = ModContent.NPCType<RedFlybot>();
+                var npc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+                npc.velocity.Y = -4;
+
+                //Extra flair
+                SoundEngine.PlaySound(SoundID.Item113, NPC.position);
+                for (int i = 0; i < 10; i++)
+                    Dust.NewDust(npc.position, npc.width, npc.height, DustID.RedTorch);
             }
         }
     }
