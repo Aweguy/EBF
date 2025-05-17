@@ -11,6 +11,7 @@ using EBF.Extensions;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using EBF.NPCs.Machines;
+using Terraria.Utilities;
 
 namespace EBF.NPCs.Bosses
 {
@@ -18,12 +19,13 @@ namespace EBF.NPCs.Bosses
     public class NeonValkyrie : ModNPC
     {
         private Asset<Texture2D> glowTexture;
+        private WeightedRandom<int> weightedRandom = new();
         private const int hoverDistance = 48;
         private const float horizontalAcceleration = 0.2f;
         private const float horizontalMaxSpeed = 6f;
         private Vector2 groundPos;
         private int state = 0;
-        private readonly int[] stateDurations = [200, 60];
+        private readonly int[] stateDurations = [200, 60, 40];
         private Vector2 BarrelPos => NPC.Center + new Vector2(75 * NPC.spriteDirection, -16);
         private Vector2 AttachmentBasePos => NPC.Center + new Vector2(-36 * NPC.spriteDirection, -20);
         private ref float StateTimer => ref NPC.localAI[0];
@@ -65,6 +67,10 @@ namespace EBF.NPCs.Bosses
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/M3CHANICAL_C0N-D4MNATION");
             glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
+
+            //Add the chances for each state
+            weightedRandom.Add(1, 2);
+            weightedRandom.Add(2, 1);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -102,10 +108,12 @@ namespace EBF.NPCs.Bosses
             {
                 case 0:
                     Move(player);
-                    SummonFlybots();
                     break;
                 case 1:
                     Shoot(player);
+                    break;
+                case 2:
+                    SummonFlybots();
                     break;
             }
 
@@ -138,10 +146,10 @@ namespace EBF.NPCs.Bosses
         private void HandleStateChanging()
         {
             StateTimer++;
-            if (StateTimer >= stateDurations[state])
+            if (StateTimer >= stateDurations[state] + Main.rand.Next(20))
             {
                 StateTimer = 0;
-                state = (state + 1) % stateDurations.Length; //Cycle states in order
+                state = state != 0 ? 0 : weightedRandom.Get();
             }
         }
         private void Hover(Player player)
@@ -149,7 +157,7 @@ namespace EBF.NPCs.Bosses
             //Skip ground search most frames cuz it is expensive
             if (Main.GameUpdateCount % 10 == 0)
             {
-                if(NPC.BottomLeft.Y < player.position.Y)
+                if (NPC.BottomLeft.Y < player.position.Y)
                 {
                     groundPos = player.BottomLeft;
                     return; //No need to hover yet
@@ -214,13 +222,15 @@ namespace EBF.NPCs.Bosses
         }
         private void SummonFlybots()
         {
-            if (Main.rand.NextBool(100))
+            NPC.velocity.X *= 0.95f;
+
+            if (Main.GameUpdateCount % 15 == 0)
             {
                 //Spawn bot
                 var pos = AttachmentBasePos.ToPoint();
                 var type = ModContent.NPCType<RedFlybot>();
                 var npc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
-                npc.velocity.Y = -4;
+                npc.velocity.Y = -5;
 
                 //Extra flair
                 SoundEngine.PlaySound(SoundID.Item113, NPC.position);
