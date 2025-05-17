@@ -43,7 +43,7 @@ namespace EBF.NPCs.Machines
         public override void OnSpawn(IEntitySource source)
         {
             //Ensure all flybots don't shoot at the same time
-            NPC.localAI[1] = Main.GameUpdateCount; 
+            NPC.localAI[1] = Main.GameUpdateCount;
         }
         public override void AI()
         {

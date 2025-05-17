@@ -101,23 +101,6 @@ namespace EBF.Extensions
         }
 
         /// <summary>
-        /// Converts polar vectors into cartesian vectors.
-        /// </summary>
-        /// <param name="radius">The length of the vector.</param>
-        /// <param name="theta">The angle of the vector.</param>
-        /// <returns>A cartesian vector (A vector that has x and y coordinates).</returns>
-        public static Vector2 PolarVector(float radius, float theta)
-        {
-            return new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta)) * radius;
-        }
-
-        /// <summary>
-        /// Generates a random vector.
-        /// </summary>
-        /// <returns>A vector where (X = -1 to 1, Y = -1 to 1).</returns>
-        public static Vector2 GetRandomVector() => new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
-
-        /// <summary>
         /// Changes the hitbox rectangle of a given projectile.
         /// <br>From Calamity Utilities.</br>
         /// </summary>

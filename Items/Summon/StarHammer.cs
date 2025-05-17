@@ -121,8 +121,8 @@ namespace EBF.Items.Summon
 
             for (float theta = randomOffset; theta < Math.Tau; theta += delta)
             {
-                Projectile.NewProjectile(source, Projectile.Center, ProjectileExtensions.PolarVector(6, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(source, Projectile.Center, ProjectileExtensions.PolarVector(10, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(source, Projectile.Center, VectorUtils.Polar(6, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(source, Projectile.Center, VectorUtils.Polar(10, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
         private void ShootBoostedStarPattern()
@@ -135,13 +135,13 @@ namespace EBF.Items.Summon
 
             for (float theta = randomOffset; theta < Math.Tau; theta += delta)
             {
-                proj = Projectile.NewProjectileDirect(source, Projectile.Center, ProjectileExtensions.PolarVector(36, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                proj = Projectile.NewProjectileDirect(source, Projectile.Center, VectorUtils.Polar(36, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 proj.aiStyle = ProjAIStyleID.FlamingJack;
                 proj.localNPCHitCooldown = 20;
                 proj.penetrate = 2;
                 proj.timeLeft = 180;
 
-                proj = Projectile.NewProjectileDirect(source, Projectile.Center, ProjectileExtensions.PolarVector(50, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                proj = Projectile.NewProjectileDirect(source, Projectile.Center, VectorUtils.Polar(50, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 proj.aiStyle = ProjAIStyleID.FlamingJack;
                 proj.localNPCHitCooldown = 20;
                 proj.penetrate = 2;

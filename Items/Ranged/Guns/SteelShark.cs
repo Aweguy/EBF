@@ -82,7 +82,7 @@ namespace EBF.Items.Ranged.Guns
         public override bool PreAISafe()
         {
             //Add some offset cuz the sprite is small
-            Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
+            Projectile.position += VectorUtils.Polar(Projectile.width / 2, Projectile.velocity.ToRotation());
             return false;
         }
         public override void WhileShoot(Vector2 barrelEnd, int type)

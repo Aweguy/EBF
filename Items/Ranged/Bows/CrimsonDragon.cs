@@ -90,7 +90,7 @@ namespace EBF.Items.Ranged.Bows
                 //Run this code x times per second
                 if (Main.GameUpdateCount % (60 / batSpawnRate) == 0)
                 {
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + ProjectileExtensions.GetRandomVector(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
+                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + VectorUtils.Random(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
                     proj.timeLeft = 120;
                 }
             }

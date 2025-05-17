@@ -110,7 +110,7 @@ namespace EBF.Abstract_Classes
                 if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
                 {
                     //Get the barrel's estimated position
-                    Vector2 barrelOffset = ProjectileExtensions.PolarVector(Projectile.width / 3, Projectile.velocity.ToRotation());
+                    Vector2 barrelOffset = VectorUtils.Polar(Projectile.width / 3, Projectile.velocity.ToRotation());
 
                     //Run only once
                     if (Projectile.localAI[0] == 0)

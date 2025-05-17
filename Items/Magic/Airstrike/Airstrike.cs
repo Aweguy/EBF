@@ -224,7 +224,7 @@ namespace EBF.Items.Magic.Airstrike
             // Large Smoke Gore spawn
             for (int g = 0; g < 4; g++)
             {
-                Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.Center, ProjectileExtensions.GetRandomVector() * 1.5f, Main.rand.Next(61, 64), Scale: 1.5f);
+                Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.Center, VectorUtils.Random(1.5f), Main.rand.Next(61, 64), Scale: 1.5f);
             }
         }
         private void Shake()

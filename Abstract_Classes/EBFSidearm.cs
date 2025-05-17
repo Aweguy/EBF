@@ -66,7 +66,7 @@ namespace EBF.Abstract_Classes
             Projectile.LookAt(Main.MouseWorld);
             Main.player[Projectile.owner].ChangeDir(Projectile.direction);
 
-            Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
+            Projectile.position += VectorUtils.Polar(Projectile.width / 2, Projectile.velocity.ToRotation());
         }
         private void HandleShoot(Player player) 
         {
@@ -78,11 +78,11 @@ namespace EBF.Abstract_Classes
                 {
                     Projectile.localAI[0] = 1;
                     SoundEngine.PlaySound(ShootSound, Projectile.position);
-                    OnShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+                    OnShoot(Projectile.Center + VectorUtils.Polar(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
                 }
 
                 //Run every frame (Note that this method runs after OnShoot, in case it is relevant for you)
-                WhileShoot(Projectile.Center + ProjectileExtensions.PolarVector(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
+                WhileShoot(Projectile.Center + VectorUtils.Polar(Projectile.width / 4, Projectile.velocity.ToRotation()), type);
             }
         }
         private void HandleTimeLeft(Player player)
