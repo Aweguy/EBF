@@ -18,8 +18,7 @@ namespace EBF.NPCs.Machines
         private Asset<Texture2D> bodyTexture;
         private Asset<Texture2D> glowTexture;
         private Rectangle baseRect;
-        private Vector2 targetPos;
-        private bool lasering = false;
+        private ref float IsLasering => ref NPC.ai[0]; //This value is also read by Neon Valkyrie so it doesn't do BS maneuvers.
         private ref float Timer => ref NPC.localAI[0];
         public override void SetStaticDefaults()
         {
@@ -31,10 +30,11 @@ namespace EBF.NPCs.Machines
             NPC.height = 56;
             NPC.damage = 30;
             NPC.defense = 18;
-            NPC.lifeMax = 400;
+            NPC.lifeMax = 2000;
             NPC.value = 100;
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;
+            NPC.knockBackResist = 0;
 
             baseTexture = ModContent.Request<Texture2D>("EBF/NPCs/Machines/NV_TurretBase");
             bodyTexture = ModContent.Request<Texture2D>(Texture);
@@ -56,19 +56,19 @@ namespace EBF.NPCs.Machines
             Player player = Main.player[NPC.target];
 
             //Handle rotation
-            if (lasering)
+            if (IsLasering == 1)
             {
                 TurnTowardsTarget(player);
                 Timer++;
                 if (Timer >= 90)
                 {
-                    lasering = false;
+                    IsLasering = 0;
                     Timer = 0;
                 }
             }
             else
             {
-                RotateAheadOfPlayer(player);
+                RotateAheadOfTarget(player);
             }
             
             //Handle shooting
@@ -116,10 +116,9 @@ namespace EBF.NPCs.Machines
             SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
             var velocity = (NPC.rotation + MathHelper.Pi).ToRotationVector2();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<LaserTurret_Laser>(), NPC.damage, 3, -1, NPC.target);
-            lasering = true;
+            IsLasering = 1;
         }
-        
-        private void RotateAheadOfPlayer(Player player)
+        private void RotateAheadOfTarget(Player player)
         {
             Vector2 toPlayer = player.Center - NPC.Center;
             float baseAngle = toPlayer.ToRotation();

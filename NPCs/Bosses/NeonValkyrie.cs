@@ -1,35 +1,52 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Audio;
+using Terraria.Utilities;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using EBF.Extensions;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using EBF.NPCs.Machines;
-using Terraria.Utilities;
 
 namespace EBF.NPCs.Bosses
 {
     [AutoloadBossHead]
     public class NeonValkyrie : ModNPC
     {
-        private Asset<Texture2D> glowTexture;
-        private WeightedRandom<int> weightedRandom = new();
+        #region Fields & Properties
+
+
+        //Movement
         private const int hoverDistance = 48;
         private const float horizontalAcceleration = 0.2f;
         private const float horizontalMaxSpeed = 6f;
         private Vector2 groundPos;
-        private int state = 0;
-        private readonly int[] stateDurations = [200, 60, 40];
-        private Vector2 BarrelPos => NPC.Center + new Vector2(75 * NPC.spriteDirection, -16);
-        private Vector2 AttachmentBasePos => NPC.Center + new Vector2(-36 * NPC.spriteDirection, -20);
-        private ref float StateTimer => ref NPC.localAI[0];
         private ref float JumpCooldown => ref NPC.localAI[1];
+
+        //AI
+        private int state = 0;
+        private readonly int[] stateDurations = [200, 60, 40, 1];
+        private readonly WeightedRandom<int> weightedRandom = new();
+        private ref float StateTimer => ref NPC.localAI[0];
+
+        //Attachment
+        private NPC attachedNPC;
+        private bool HasAttachment => attachedNPC != null && attachedNPC.active;
+        private bool AttachmentIsShooting => HasAttachment && attachedNPC.ai[0] == 1;
+        private Vector2 AttachmentBasePos => NPC.Center + new Vector2(32 * -NPC.spriteDirection, -20);
+
+        //Other
+        private Asset<Texture2D> glowTexture;
+        private Vector2 BarrelPos => NPC.Center + new Vector2(75 * NPC.spriteDirection, -16);
+        
+        
+        #endregion Fields & Properties
+
         public override void SetStaticDefaults()
         {
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
@@ -69,8 +86,9 @@ namespace EBF.NPCs.Bosses
             glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
 
             //Add the chances for each state
-            weightedRandom.Add(1, 2);
-            weightedRandom.Add(2, 1);
+            weightedRandom.Add(1, 2.0f);
+            weightedRandom.Add(2, 0.5f);
+            weightedRandom.Add(3, 0.5f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -102,18 +120,29 @@ namespace EBF.NPCs.Bosses
                 return;
             }
 
+            if (HasAttachment)
+            {
+                attachedNPC.Bottom = AttachmentBasePos;
+            }
+
             Hover(player);
 
             switch (state)
             {
                 case 0:
-                    Move(player);
+                    if (!AttachmentIsShooting)
+                        Move(player);
                     break;
                 case 1:
                     Shoot(player);
                     break;
                 case 2:
-                    SummonFlybots();
+                    if(!HasAttachment)
+                        SummonFlybots();
+                    break;
+                case 3:
+                    if (!HasAttachment)
+                        SummonAttachment();
                     break;
             }
 
@@ -146,10 +175,18 @@ namespace EBF.NPCs.Bosses
         private void HandleStateChanging()
         {
             StateTimer++;
-            if (StateTimer >= stateDurations[state] + Main.rand.Next(20))
+            if (StateTimer >= stateDurations[state])
             {
                 StateTimer = 0;
-                state = state != 0 ? 0 : weightedRandom.Get();
+                if(state != 0)
+                {
+                    state = 0;
+                    StateTimer -= Main.rand.Next(120);
+                }
+                else
+                {
+                    state = weightedRandom.Get();
+                }
             }
         }
         private void Hover(Player player)
@@ -197,7 +234,7 @@ namespace EBF.NPCs.Bosses
         }
         private void Jump(Player player)
         {
-            if (JumpCooldown > 0)
+            if (JumpCooldown > 0 || AttachmentIsShooting)
                 return;
 
             JumpCooldown = 120;
@@ -212,6 +249,12 @@ namespace EBF.NPCs.Bosses
 
             if (Main.GameUpdateCount % 3 == 0)
             {
+                //Pseudo-random state duration
+                if (Main.rand.NextBool(2))
+                {
+                    StateTimer++;
+                }
+
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
 
                 var velocity = BarrelPos.DirectionTo(player.Center) * 10;
@@ -237,6 +280,11 @@ namespace EBF.NPCs.Bosses
                 for (int i = 0; i < 10; i++)
                     Dust.NewDust(npc.position, npc.width, npc.height, DustID.RedTorch);
             }
+        }
+        private void SummonAttachment()
+        {
+            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, ModContent.NPCType<LaserTurret>());
+            attachedNPC.Bottom = AttachmentBasePos;
         }
     }
 }
