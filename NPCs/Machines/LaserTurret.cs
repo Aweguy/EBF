@@ -51,7 +51,7 @@ namespace EBF.NPCs.Machines
             NPC.TargetClosest(false); // only if not shooting. We don't want it to flip while laserbeaming.
 
             //Flip direction based on rotation
-            NPC.direction = Math.Sign(-NPC.rotation.ToRotationVector2().X);
+            NPC.direction = Math.Sign(NPC.rotation.ToRotationVector2().X);
             if (NPC.direction == 0)
                 NPC.direction = 1;
 
@@ -119,13 +119,14 @@ namespace EBF.NPCs.Machines
             //Draw body
             position = NPC.Center + new Vector2(0, -10) - screenPos - (funnyOffset * NPC.direction);
             origin = bodyTexture.Size() * 0.5f + funnyOffset;
+            var realRotation = NPC.rotation + MathHelper.Pi;
             var flipY = NPC.direction == 1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-            spriteBatch.Draw(bodyTexture.Value, position, null, drawColor, NPC.rotation, origin, 1f, flipY, 0);
+            spriteBatch.Draw(bodyTexture.Value, position, null, drawColor, realRotation, origin, 1f, flipY, 0);
 
             //Draw glow
             var pulse = (float)Math.Abs(Math.Sin(Main.time * 0.02f));
             var color = new Color(pulse, pulse, pulse);
-            spriteBatch.Draw(glowTexture.Value, position, null, color, NPC.rotation, origin, 1f, flipY, 0);
+            spriteBatch.Draw(glowTexture.Value, position, null, color, realRotation, origin, 1f, flipY, 0);
 
             //Draw base front
             baseRect.Y += baseRect.Height;
@@ -142,7 +143,7 @@ namespace EBF.NPCs.Machines
             {
                 //Shoot projectile
                 var speed = 12 + Main.rand.NextFloat(-1f, 1f);
-                var vel = (NPC.rotation - MathHelper.Pi).ToRotationVector2().RotatedByRandom(1f) * speed;
+                var vel = NPC.rotation.ToRotationVector2().RotatedByRandom(1f) * speed;
                 var type = ModContent.ProjectileType<LaserTurret_Ball>();
                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3);
 
@@ -161,21 +162,21 @@ namespace EBF.NPCs.Machines
         #region LaserAI
         private void ShootLaser()
         {
-            var velocity = (NPC.rotation + MathHelper.Pi).ToRotationVector2();
+            var velocity = NPC.rotation.ToRotationVector2();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<LaserTurret_Laser>(), NPC.damage, 3, -1, NPC.target);
 
             SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
         }
         private void ChargeUpDust()
         {
-            var pos = NPC.Center + (NPC.rotation + MathHelper.Pi).ToRotationVector2().RotatedByRandom(0.5f) * 64;
+            var pos = NPC.Center + NPC.rotation.ToRotationVector2().RotatedByRandom(0.5f) * 64;
             var vel = pos.DirectionTo(NPC.Center);
             var dust = Dust.NewDustPerfect(pos, DustID.AmberBolt, vel, 0, default, 1.25f);
             dust.noGravity = true;
         }
         private void RotateToTarget(Player player)
         {
-            float angleToPlayer = NPC.DirectionTo(player.Center).ToRotation() + MathHelper.Pi;
+            float angleToPlayer = NPC.DirectionTo(player.Center).ToRotation();
             float angleDiff = MathHelper.WrapAngle(angleToPlayer - NPC.rotation);
             NPC.rotation += angleDiff * 0.1f;
         }
@@ -189,7 +190,7 @@ namespace EBF.NPCs.Machines
 
             // Step 2: Offset angle in tangential direction
             float angleOffset = MathHelper.Pi / 4f; // degrees
-            float targetAngle = baseAngle + tangentialDir * angleOffset + MathHelper.Pi;
+            float targetAngle = baseAngle + tangentialDir * angleOffset;
 
             // Step 3: Smooth rotation toward targetAngle
             float angleDiff = MathHelper.WrapAngle(targetAngle - NPC.rotation);
@@ -197,7 +198,7 @@ namespace EBF.NPCs.Machines
         }
         private void TurnTowardsTarget(Player player)
         {
-            var currentAngle = NPC.rotation - MathHelper.Pi;
+            var currentAngle = NPC.rotation;
             var targetAngle = NPC.AngleTo(player.Center);
 
             // Normalize the angle difference to [-π, π]
@@ -207,7 +208,7 @@ namespace EBF.NPCs.Machines
             float turnSpeed = 0.005f;
             float newAngle = currentAngle + MathF.Sign(delta) * turnSpeed;
 
-            NPC.rotation = newAngle + MathHelper.Pi;
+            NPC.rotation = newAngle;
         }
         #endregion
     }
