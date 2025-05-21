@@ -11,34 +11,18 @@ using EBF.Items.Summon;
 
 namespace EBF.NPCs.Machines
 {
-    public class RedFlybot : ModNPC
+    public class RedFlybot : Flybot
     {
-        private Asset<Texture2D> bodyTexture;
-        private Asset<Texture2D> cannonTexture;
-        private const float maxSpeedH = 4f, maxSpeedV = 3f, accelH = 1f, accelV = 1f;
-        private Vector2[] cannonOffsets = new Vector2[2];
-        private Vector2 CannonPosA => NPC.Center + new Vector2(16 * NPC.direction, 10) + cannonOffsets[0];
-        private Vector2 CannonPosB => NPC.Center + new Vector2(-16 * NPC.direction, 10) + cannonOffsets[1];
-        private ref float CannonIndexToUse => ref NPC.localAI[0];
-        public override string Texture => "EBF/Items/Summon/RiotShield_RedFlybotMinion";
-        public override void SetStaticDefaults()
+        public override void SetDefaultsSafe()
         {
-            NPCID.Sets.DontDoHardmodeScaling[Type] = true;
-            Main.npcFrameCount[Type] = 3;
-        }
-        public override void SetDefaults()
-        {
-            NPC.width = 68;
-            NPC.height = 54;
             NPC.damage = 30;
             NPC.defense = 18;
             NPC.lifeMax = 400;
-            NPC.value = 100;
-            NPC.noGravity = true;
-            NPC.HitSound = SoundID.NPCHit4;
 
-            bodyTexture = ModContent.Request<Texture2D>(Texture);
-            cannonTexture = ModContent.Request<Texture2D>(Texture.Replace("Minion", "_Cannon"));
+            maxSpeedH = 4f;
+            maxSpeedV = 3f;
+            accelH = 1f; 
+            accelV = 1f;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -63,93 +47,14 @@ namespace EBF.NPCs.Machines
             for (int i = 0; i < 2; i++)
                 cannonOffsets[i] *= 0.9f;
         }
-        public override void FindFrame(int frameHeight)
-        {
-            //Animation
-            if (Main.GameUpdateCount % 4 == 0)
-            {
-                NPC.frame.Y += frameHeight;
-                if (NPC.frame.Y > 2 * frameHeight)
-                {
-                    NPC.frame.Y = 0 * frameHeight;
-                }
-            }
-        }
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (!cannonTexture.IsLoaded)
-                return false;
-
-            var player = Main.player[NPC.target];
-
-            //Draw back cannon
-            var position = CannonPosA - screenPos;
-            var rotation = CannonPosA.AngleTo(player.Center);
-            var origin = cannonTexture.Value.Size() * 0.5f;
-            spriteBatch.Draw(cannonTexture.Value, position, null, drawColor, rotation, origin, 1f, SpriteEffects.None, 0);
-
-            //Draw body
-            position = NPC.Center - screenPos;
-            origin = NPC.frame.Size() * 0.5f;
-            var flip = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(bodyTexture.Value, position, NPC.frame, drawColor, 0f, origin, 1f, flip, 0);
-
-            //Draw front cannon
-            position = CannonPosB - screenPos;
-            rotation = CannonPosB.AngleTo(player.Center);
-            origin = cannonTexture.Value.Size() * 0.5f;
-            spriteBatch.Draw(cannonTexture.Value, position, null, drawColor, rotation, origin, 1f, SpriteEffects.None, 0);
-
-            return false;
-        }
-
-        private void Move(Player player)
-        {
-            //Upon collision, flip velocity and add extra if low.
-            if (NPC.collideX)
-            {
-                NPC.velocity.X = NPC.oldVelocity.X * -0.5f;
-                if (Math.Abs(NPC.velocity.X) < 1f)
-                {
-                    NPC.velocity.X = Math.Sign(NPC.velocity.X) * 2;
-                }
-            }
-            if (NPC.collideY)
-            {
-                NPC.velocity.Y = NPC.oldVelocity.Y * -0.5f;
-                if (Math.Abs(NPC.velocity.Y) < 1f)
-                {
-                    NPC.velocity.Y = Math.Sign(NPC.velocity.Y);
-                }
-            }
-
-            //Add force towards target
-            Vector2 dir = NPC.DirectionTo(player.position);
-            NPC.velocity.X = Math.Clamp(NPC.velocity.X + dir.X * accelH * 0.05f, -maxSpeedH, maxSpeedH);
-            NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + dir.Y * accelV * 0.02f, -maxSpeedV, maxSpeedV);
-
-            //Add drag if flying away from target
-            if (Math.Sign(dir.X) != Math.Sign(NPC.velocity.X))
-            {
-                NPC.velocity.X *= 0.95f;
-            }
-            if(Math.Sign(dir.Y) != Math.Sign(NPC.velocity.Y))
-            {
-                NPC.velocity.Y *= 0.95f;
-            }
-
-            if (NPC.wet)
-            {
-                NPC.velocity.Y -= 0.5f;
-            }
-        }
+        
         private void Shoot(Player player)
         {
             SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
 
             //Create projectile
             var velocity = NPC.DirectionTo(player.position) * 14;
-            var type = ModContent.ProjectileType<RedFlybotLaser>();
+            var type = ModContent.ProjectileType<RedFlybot_Laser>();
             var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3);
             proj.friendly = false;
             proj.hostile = true;
@@ -163,6 +68,27 @@ namespace EBF.NPCs.Machines
             {
                 Dust dust = Dust.NewDustDirect(NPC.Center, 0, 0, DustID.RedTorch, velocity.X, velocity.Y, Scale: 2.5f);
                 dust.noGravity = true;
+            }
+        }
+    }
+    public class RedFlybot_Laser : ModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.friendly = true;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+        }
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item89, Projectile.Center);
+            for (int i = 0; i < 8; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworkFountain_Red);
             }
         }
     }

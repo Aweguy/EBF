@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.Audio;
 using EBF.Buffs;
+using EBF.NPCs.Machines;
 
 namespace EBF.Items.Summon
 {
@@ -70,7 +71,7 @@ namespace EBF.Items.Summon
     {
         private int gunToUse;
         private RedFlybotCannon[] cannons = new RedFlybotCannon[2];
-        public override string Texture => "EBF/Items/Summon/RiotShield_RedFlybotMinion";
+        public override string Texture => "EBF/NPCs/Machines/RedFlybot";
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Projectile.type] = 3;
@@ -136,7 +137,7 @@ namespace EBF.Items.Summon
         private Vector2 recoilOffset;
         public RedFlybotMinion Parent { get; set; }
 
-        public override string Texture => "EBF/Items/Summon/RiotShield_RedFlybot_Cannon";
+        public override string Texture => "EBF/NPCs/Machines/RedFlybot_Cannon";
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
@@ -191,7 +192,7 @@ namespace EBF.Items.Summon
         public void Shoot(NPC target)
         {
             Vector2 velocity = Projectile.Center.DirectionTo(target.Center) * 14;
-            int type = ModContent.ProjectileType<RedFlybotLaser>();
+            int type = ModContent.ProjectileType<RedFlybot_Laser>();
 
             SoundEngine.PlaySound(SoundID.Item158, Projectile.Center);
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
@@ -202,29 +203,6 @@ namespace EBF.Items.Summon
             {
                 Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.RedTorch, velocity.X, velocity.Y, Scale: 2.5f);
                 dust.noGravity = true;
-            }
-        }
-    }
-
-    public class RedFlybotLaser : ModProjectile
-    {
-        public override string Texture => "EBF/Items/Summon/RiotShield_RedFlybot_Laser";
-        public override void SetDefaults()
-        {
-            Projectile.width = 10;
-            Projectile.height = 10;
-            Projectile.friendly = true;
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-        }
-        public override void OnKill(int timeLeft)
-        {
-            SoundEngine.PlaySound(SoundID.Item89, Projectile.Center);
-            for (int i = 0; i < 8; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworkFountain_Red);
             }
         }
     }
