@@ -82,6 +82,11 @@ namespace EBF.NPCs.Machines
                     return;
                 }
 
+                if(Timer == 240)
+                {
+                    SoundEngine.PlaySound(SoundID.NPCDeath58, NPC.Center);
+                }
+
                 ChargeUpDust();
                 RotateAheadOfTarget(player);
                 return;
@@ -147,7 +152,7 @@ namespace EBF.NPCs.Machines
                 var type = ModContent.ProjectileType<LaserTurret_Ball>();
                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3);
 
-                SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
+                SoundEngine.PlaySound(SoundID.Item157, NPC.Center);
 
                 BallsFired++;
                 if(BallsFired >= 3)
@@ -165,7 +170,10 @@ namespace EBF.NPCs.Machines
             var velocity = NPC.rotation.ToRotationVector2();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<LaserTurret_Laser>(), NPC.damage, 3, -1, NPC.target);
 
-            SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
+            var sound = SoundID.Zombie104; // Moon Lord deathray sound
+            sound.Pitch = 1.4f;
+            sound.Volume = 0.3f;
+            SoundEngine.PlaySound(sound, NPC.Center);
         }
         private void ChargeUpDust()
         {

@@ -12,6 +12,8 @@ using Terraria.Graphics.CameraModifiers;
 using ReLogic.Content;
 using EBF.Extensions;
 using EBF.NPCs.Machines;
+using System.Collections.Generic;
+using Terraria.Physics;
 
 namespace EBF.NPCs.Bosses
 {
@@ -29,20 +31,27 @@ namespace EBF.NPCs.Bosses
         private ref float JumpCooldown => ref NPC.localAI[1];
 
         //AI
-        private int state = 0;
-        private readonly int[] stateDurations = [200, 60, 40, 1];
-        private readonly WeightedRandom<int> weightedRandom = new();
+        private enum State : byte { Move, Shoot, SummonFlybots, SummonTurret }
+        private State currentState = State.Move;
+        private readonly Dictionary<State, int> stateDurations = new()
+        {
+            [State.Move] = 200,
+            [State.Shoot] = 60,
+            [State.SummonFlybots] = 40,
+            [State.SummonTurret] = 1
+        };
+        private readonly WeightedRandom<State> weightedRandom = new();
         private ref float StateTimer => ref NPC.localAI[0];
 
         //Attachment
         private NPC attachedNPC;
         private bool HasAttachment => attachedNPC != null && attachedNPC.active;
-        private bool AttachmentIsShooting => HasAttachment && attachedNPC.ai[0] == 1;
+        private bool IsAttachmentShooting => HasAttachment && attachedNPC.ai[0] == 1;
         private Vector2 AttachmentBasePos => NPC.Center + new Vector2(32 * -NPC.spriteDirection, -20);
 
         //Other
         private Asset<Texture2D> glowTexture;
-        private Vector2 BarrelPos => NPC.Center + new Vector2(75 * NPC.spriteDirection, -16);
+        private Vector2 GunTipPos => NPC.Center + new Vector2(75 * NPC.spriteDirection, -16);
         
         
         #endregion Fields & Properties
@@ -73,7 +82,7 @@ namespace EBF.NPCs.Bosses
 
             NPC.noTileCollide = true;
             NPC.HitSound = SoundID.NPCHit4;
-            NPC.DeathSound = SoundID.Roar;
+            NPC.DeathSound = SoundID.NPCDeath14;
             NPC.knockBackResist = 0f;
             NPC.value = Item.buyPrice(gold: 5);
             NPC.SpawnWithHigherTime(30);
@@ -86,9 +95,9 @@ namespace EBF.NPCs.Bosses
             glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
 
             //Add the chances for each state
-            weightedRandom.Add(1, 2.0f);
-            weightedRandom.Add(2, 0.5f);
-            weightedRandom.Add(3, 0.5f);
+            weightedRandom.Add(State.Shoot, 2.0f);
+            weightedRandom.Add(State.SummonFlybots, 0.5f);
+            weightedRandom.Add(State.SummonTurret, 0.5f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -127,20 +136,20 @@ namespace EBF.NPCs.Bosses
 
             Hover(player);
 
-            switch (state)
+            switch (currentState)
             {
-                case 0:
-                    if (!AttachmentIsShooting)
+                case State.Move:
+                    if (!IsAttachmentShooting)
                         Move(player);
                     break;
-                case 1:
+                case State.Shoot:
                     Shoot(player);
                     break;
-                case 2:
+                case State.SummonFlybots:
                     if(!HasAttachment)
                         SummonFlybots();
                     break;
-                case 3:
+                case State.SummonTurret:
                     if (!HasAttachment)
                         SummonAttachment();
                     break;
@@ -165,6 +174,9 @@ namespace EBF.NPCs.Bosses
         }
         public override void OnKill()
         {
+            if(HasAttachment)
+                attachedNPC.StrikeInstantKill();
+
             //Gore.NewGore(NPC.GetSource_Death(), NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), ModContent.GoreType<NeonValkyrieGore>());
 
             // Screen shake
@@ -175,18 +187,20 @@ namespace EBF.NPCs.Bosses
         private void HandleStateChanging()
         {
             StateTimer++;
-            if (StateTimer >= stateDurations[state])
+            if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                if(state != 0)
+                currentState = currentState != State.Move ? State.Move : weightedRandom.Get();
+
+                //Slightly randomize timing to make it more interesting
+                if(currentState != State.SummonTurret)
                 {
-                    state = 0;
-                    StateTimer -= Main.rand.Next(120);
+                    StateTimer -= Main.rand.Next(40);
                 }
-                else
-                {
-                    state = weightedRandom.Get();
-                }
+
+                var sound = Main.rand.NextBool(2) ? SoundID.Zombie48 : SoundID.Zombie49; //deadly sphere idle
+                sound.Volume = 2.0f;
+                SoundEngine.PlaySound(sound, NPC.position);
             }
         }
         private void Hover(Player player)
@@ -234,7 +248,7 @@ namespace EBF.NPCs.Bosses
         }
         private void Jump(Player player)
         {
-            if (JumpCooldown > 0 || AttachmentIsShooting)
+            if (JumpCooldown > 0 || IsAttachmentShooting)
                 return;
 
             JumpCooldown = 120;
@@ -249,16 +263,10 @@ namespace EBF.NPCs.Bosses
 
             if (Main.GameUpdateCount % 3 == 0)
             {
-                //Pseudo-random state duration
-                if (Main.rand.NextBool(2))
-                {
-                    StateTimer++;
-                }
-
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
 
-                var velocity = BarrelPos.DirectionTo(player.Center) * 10;
-                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), BarrelPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 2, 3);
+                var velocity = GunTipPos.DirectionTo(player.Center) * 10;
+                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 2, 3);
                 proj.friendly = false;
                 proj.hostile = true;
             }
