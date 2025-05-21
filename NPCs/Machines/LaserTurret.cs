@@ -47,34 +47,49 @@ namespace EBF.NPCs.Machines
         public override void AI()
         {
             NPC.TargetClosest(false); // only if not shooting. We don't want it to flip while laserbeaming.
-            
+
             //Flip direction based on rotation
             NPC.direction = Math.Sign(-NPC.rotation.ToRotationVector2().X);
             if (NPC.direction == 0)
                 NPC.direction = 1;
 
             Player player = Main.player[NPC.target];
+            Timer++;
 
-            //Handle rotation
             if (IsLasering == 1)
             {
                 TurnTowardsTarget(player);
-                Timer++;
                 if (Timer >= 90)
                 {
                     IsLasering = 0;
-                    Timer = 0;
                 }
+                return;
             }
-            else
+
+            if (Timer < 200)
             {
+                RotateToTarget(player);
+                return;
+            }
+
+            if (Timer < 260)
+            {
+                ChargeUpDust();
                 RotateAheadOfTarget(player);
+                return;
             }
-            
-            //Handle shooting
-            if (Main.GameUpdateCount % 250 == 0 && Vector2.Distance(NPC.position, player.position) < 800)
+
+            if (Timer < 300)
             {
-                Shoot(player);
+                ChargeUpDust();
+                return;
+            }
+
+            Timer = 0;
+            if (Vector2.Distance(NPC.position, player.position) < 1000)
+            {
+                Shoot();
+                IsLasering = 1;
             }
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -83,7 +98,7 @@ namespace EBF.NPCs.Machines
                 return false;
 
             // Adjusts the pivot point, so the turret rotates around the attachment and not its center.
-            var funnyOffset = Vector2.UnitX * 12; 
+            var funnyOffset = Vector2.UnitX * 12;
 
             //Draw base back
             baseRect.Y = 0;
@@ -111,12 +126,25 @@ namespace EBF.NPCs.Machines
 
             return false;
         }
-        private void Shoot(Player player)
+        private void Shoot()
         {
-            SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
             var velocity = (NPC.rotation + MathHelper.Pi).ToRotationVector2();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<LaserTurret_Laser>(), NPC.damage, 3, -1, NPC.target);
-            IsLasering = 1;
+
+            SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
+        }
+        private void ChargeUpDust()
+        {
+            var pos = NPC.Center + (NPC.rotation + MathHelper.Pi).ToRotationVector2().RotatedByRandom(0.5f) * 64;
+            var vel = pos.DirectionTo(NPC.Center);
+            var dust = Dust.NewDustPerfect(pos, DustID.AmberBolt, vel, 0, default, 1.25f);
+            dust.noGravity = true;
+        }
+        private void RotateToTarget(Player player)
+        {
+            float angleToPlayer = NPC.DirectionTo(player.Center).ToRotation() + MathHelper.Pi;
+            float angleDiff = MathHelper.WrapAngle(angleToPlayer - NPC.rotation);
+            NPC.rotation += angleDiff * 0.1f;
         }
         private void RotateAheadOfTarget(Player player)
         {
@@ -127,7 +155,7 @@ namespace EBF.NPCs.Machines
             float tangentialDir = MathF.Sign(Vector2.Dot(player.velocity, toPlayer.RotatedBy(MathHelper.PiOver2)));
 
             // Step 2: Offset angle in tangential direction
-            float angleOffset = MathHelper.Pi / 3f; // degrees
+            float angleOffset = MathHelper.Pi / 4f; // degrees
             float targetAngle = baseAngle + tangentialDir * angleOffset + MathHelper.Pi;
 
             // Step 3: Smooth rotation toward targetAngle
@@ -154,8 +182,9 @@ namespace EBF.NPCs.Machines
     {
         private NPC owner;
         private Player target;
-        public override void OnSpawn(IEntitySource source)
+        public override void OnSpawnSafe(IEntitySource source)
         {
+            lightColor = Color.Orange.ToVector3();
             target = Main.player[(int)Projectile.ai[0]];
             ProjectileExtensions.ClosestNPC(ref owner, 400, Projectile.position, true);
         }

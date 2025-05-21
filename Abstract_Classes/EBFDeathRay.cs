@@ -6,23 +6,28 @@ using Terraria.Enums;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using System;
+using Terraria.DataStructures;
 
 namespace EBF.Abstract_Classes
 {
     /// <summary>
     /// This base class handles most logic required for a death ray.
-    /// <br>Sourced from FargoWiltaSouls public github repos.</br>
+    /// <br>Originally sourced from FargoWiltaSouls public github repos.</br>
     /// </summary>
     public abstract class EBFDeathRay : ModProjectile
     {
-        protected int MaxTime { get; set; } = 90;
+        private Texture2D beamTexture;
         protected float hitboxModifier = 1f;
-        protected int drawDistance = 3000; //Used in SetStaticDefaults
+        protected int drawDistance = 3000;
+        protected int maxTime = 90;
+        protected Vector3 lightColor = Vector3.One;
         protected ref float Timer => ref Projectile.localAI[0];
         protected ref float BeamLength => ref Projectile.localAI[1];
+        protected Vector2 BeamEnd => Projectile.Center + Projectile.velocity * BeamLength;
 
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
+        public virtual void OnSpawnSafe(IEntitySource source) { }
         public virtual void AISafe() { }
         public sealed override void SetStaticDefaults()
         {
@@ -37,35 +42,39 @@ namespace EBF.Abstract_Classes
             Projectile.alpha = 0;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false; //only beam start has the hitbox, rest don't care
-            Projectile.timeLeft = MaxTime;
+            Projectile.timeLeft = maxTime;
 
             SetDefaultsSafe();
+        }
+        public sealed override void OnSpawn(IEntitySource source)
+        {
+            beamTexture = TextureAssets.Projectile[Type].Value;
+            OnSpawnSafe(source);
         }
         public sealed override void AI()
         {
             // Sine wave scaling for pulsating beam effect (enter and exit scale effect)
             Timer += 1f;
-            Projectile.scale = Math.Min(MathF.Sin(Timer * MathF.PI / MaxTime) * 3f, 1);
+            Projectile.scale = Math.Min(MathF.Sin(Timer * MathF.PI / maxTime) * 3f, 1);
 
             // Align beam to velocity
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
             // Grow beam length from zero to max (prevents drawing many segments when scale is tiny)
             BeamLength = MathHelper.Lerp(BeamLength, drawDistance, 0.5f);
-
+            CastLights();
             AISafe();
         }
-        public override Color? GetAlpha(Color lightColor) => new Color(255, 255, 255, 50) * 0.95f;
-        public override bool PreDraw(ref Color lightColor)
+        public sealed override Color? GetAlpha(Color lightColor) => new Color(255, 255, 255, 50) * 0.95f;
+        public sealed override bool PreDraw(ref Color lightColor)
         {
             // Don't draw if the projectile isn't moving.
-            if (Projectile.velocity == Vector2.Zero || Projectile.velocity.HasNaNs())
+            if (Projectile.velocity == Vector2.Zero || Projectile.velocity.HasNaNs() || beamTexture == null)
             {
                 return false;
             }
 
             // Load textures and frames.
-            Texture2D beamTexture = TextureAssets.Projectile[Type].Value;
             Rectangle beamBegFrame = beamTexture.Frame(verticalFrames: 3, frameY: 0);
             Rectangle beamMidFrame = beamTexture.Frame(verticalFrames: 3, frameY: 1);
             Rectangle beamEndFrame = beamTexture.Frame(verticalFrames: 3, frameY: 2);
@@ -135,27 +144,32 @@ namespace EBF.Abstract_Classes
 
             return false;
         }
-        public override void CutTiles()
+        public sealed override void CutTiles()
         {
             DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
-            var end = Projectile.Center + Projectile.velocity * BeamLength;
             var width = Projectile.width * Projectile.scale;
-            Utils.PlotTileLine(Projectile.Center, end, width, DelegateMethods.CutTiles);
+            Utils.PlotTileLine(Projectile.Center, BeamEnd, width, DelegateMethods.CutTiles);
         }
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        public sealed override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projHitbox.Intersects(targetHitbox))
             {
                 return true;
             }
-            var lineEnd = Projectile.Center + Projectile.velocity * BeamLength;
-            var lineWidth = 22f * Projectile.scale * hitboxModifier;
+
+            var lineWidth = beamTexture.Width * 0.66f * Projectile.scale * hitboxModifier;
             var _ = 0f;
-            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, lineEnd, lineWidth, ref _))
+            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, BeamEnd, lineWidth, ref _))
             {
                 return true;
             }
             return false;
+        }
+        private void CastLights()
+        {
+            // Cast a light along the line of the laser
+            DelegateMethods.v3_1 = lightColor;
+            Utils.PlotTileLine(Projectile.Center, BeamEnd, beamTexture.Width, DelegateMethods.CastLight);
         }
     }
 }
