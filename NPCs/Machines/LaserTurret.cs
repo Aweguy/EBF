@@ -20,6 +20,8 @@ namespace EBF.NPCs.Machines
         private Rectangle baseRect;
         private ref float IsLasering => ref NPC.ai[0]; //This value is also read by Neon Valkyrie so it doesn't do BS maneuvers.
         private ref float Timer => ref NPC.localAI[0];
+        private ref float AttackChoice => ref NPC.localAI[1];
+        private ref float BallsFired => ref NPC.localAI[2];
         public override void SetStaticDefaults()
         {
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
@@ -66,20 +68,26 @@ namespace EBF.NPCs.Machines
                 return;
             }
 
-            if (Timer < 200)
+            if (Timer < 240)
             {
                 RotateToTarget(player);
                 return;
             }
 
-            if (Timer < 260)
+            if (Timer < 300)
             {
+                if(AttackChoice == 0)
+                {
+                    ShootBalls();
+                    return;
+                }
+
                 ChargeUpDust();
                 RotateAheadOfTarget(player);
                 return;
             }
 
-            if (Timer < 300)
+            if (Timer < 340)
             {
                 ChargeUpDust();
                 return;
@@ -88,8 +96,9 @@ namespace EBF.NPCs.Machines
             Timer = 0;
             if (Vector2.Distance(NPC.position, player.position) < 1000)
             {
-                Shoot();
+                ShootLaser();
                 IsLasering = 1;
+                AttackChoice = Main.rand.Next(2);
             }
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -126,7 +135,31 @@ namespace EBF.NPCs.Machines
 
             return false;
         }
-        private void Shoot()
+
+        private void ShootBalls()
+        {
+            if(Main.GameUpdateCount % 10 == 0)
+            {
+                //Shoot projectile
+                var speed = 12 + Main.rand.NextFloat(-1f, 1f);
+                var vel = (NPC.rotation - MathHelper.Pi).ToRotationVector2().RotatedByRandom(1f) * speed;
+                var type = ModContent.ProjectileType<LaserTurret_Ball>();
+                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3);
+
+                SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
+
+                BallsFired++;
+                if(BallsFired >= 3)
+                {
+                    Timer = 0;
+                    BallsFired = 0;
+                    AttackChoice = Main.rand.Next(2);
+                }
+            }
+        }
+
+        #region LaserAI
+        private void ShootLaser()
         {
             var velocity = (NPC.rotation + MathHelper.Pi).ToRotationVector2();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<LaserTurret_Laser>(), NPC.damage, 3, -1, NPC.target);
@@ -176,8 +209,37 @@ namespace EBF.NPCs.Machines
 
             NPC.rotation = newAngle + MathHelper.Pi;
         }
+        #endregion
     }
+    public class LaserTurret_Ball : ModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.hostile = true;
+            Projectile.timeLeft = 300;
+        }
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.Center, TorchID.Yellow);
+            var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
+            dust.noGravity = true;
 
+            //Homing
+            Player target = Main.player[Player.FindClosest(Projectile.Center, Projectile.width, Projectile.height)];
+            Vector2 toTarget = Projectile.DirectionTo(target.Center);
+            float newRotation = ProjectileExtensions.SlowRotation(Projectile.velocity.ToRotation(), toTarget.ToRotation(), 0.33f);
+            Projectile.velocity = newRotation.ToRotationVector2() * Projectile.velocity.Length();
+        }
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
+            }
+        }
+    }
     public class LaserTurret_Laser : EBFDeathRay
     {
         private NPC owner;

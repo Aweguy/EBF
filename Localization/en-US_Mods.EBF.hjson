@@ -185,6 +185,7 @@ Projectiles: {
 	PowerPawPunch.DisplayName: Power Paw Punch
 	GunslingerMinion.DisplayName: Gunslinger Minion
 	LaserTurret_Laser.DisplayName: Laser Turret_ Laser
+	LaserTurret_Ball.DisplayName: Laser Turret_ Ball
 }
 
 Items: {
