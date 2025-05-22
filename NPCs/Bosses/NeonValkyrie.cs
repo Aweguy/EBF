@@ -208,9 +208,9 @@ namespace EBF.NPCs.Bosses
             //Skip ground search most frames cuz it is expensive
             if (Main.GameUpdateCount % 10 == 0)
             {
-                if (NPC.BottomLeft.Y < player.position.Y)
+                if (NPC.BottomLeft.Y < player.position.Y && NPC.DirectionTo(player.position).Y > 0.4f)
                 {
-                    groundPos = player.BottomLeft;
+                    groundPos = VectorUtils.GetGroundPosition(player.BottomLeft);
                     return; //No need to hover yet
                 }
                 else
