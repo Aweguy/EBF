@@ -45,9 +45,11 @@ namespace EBF.NPCs.Bosses
 
         //Attachment
         private NPC attachedNPC;
+        private const int minimumAttachmentDowntime = 900;
         private bool HasAttachment => attachedNPC != null && attachedNPC.active;
         private bool IsAttachmentShooting => HasAttachment && attachedNPC.ai[0] == 1;
         private Vector2 AttachmentBasePos => NPC.Center + new Vector2(32 * -NPC.spriteDirection, -20);
+        private ref float TimePassedWithoutAttachment => ref NPC.localAI[2];
 
         //Other
         private Asset<Texture2D> glowTexture;
@@ -97,7 +99,7 @@ namespace EBF.NPCs.Bosses
             //Add the chances for each state
             weightedRandom.Add(State.Shoot, 2.0f);
             weightedRandom.Add(State.SummonFlybots, 0.5f);
-            weightedRandom.Add(State.SummonTurret, 0.5f);
+            weightedRandom.Add(State.SummonTurret, 1.0f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -131,7 +133,12 @@ namespace EBF.NPCs.Bosses
 
             if (HasAttachment)
             {
+                TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
+            }
+            else
+            {
+                TimePassedWithoutAttachment++;
             }
 
             Hover(player);
@@ -150,7 +157,7 @@ namespace EBF.NPCs.Bosses
                         SummonFlybots();
                     break;
                 case State.SummonTurret:
-                    if (!HasAttachment)
+                    if (TimePassedWithoutAttachment > minimumAttachmentDowntime)
                         SummonAttachment();
                     break;
             }
