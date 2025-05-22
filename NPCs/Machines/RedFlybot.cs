@@ -29,7 +29,7 @@ namespace EBF.NPCs.Machines
             //Ensure all flybots don't shoot at the same time
             NPC.localAI[1] = Main.GameUpdateCount;
         }
-        public override void AI()
+        public override void AISafe()
         {
             NPC.TargetClosest();
 

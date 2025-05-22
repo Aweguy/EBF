@@ -186,6 +186,7 @@ Projectiles: {
 	LaserTurret_Laser.DisplayName: Laser Turret_ Laser
 	LaserTurret_Ball.DisplayName: Laser Turret_ Ball
 	RedFlybot_Laser.DisplayName: Red Flybot_ Laser
+	BlueFlybot_Bubble.DisplayName: Blue Flybot_ Bubble
 }
 
 Items: {

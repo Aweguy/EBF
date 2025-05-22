@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Abstract_Classes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -20,6 +21,7 @@ namespace EBF.NPCs.Machines
 
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
+        public virtual void AISafe() { }
         public sealed override void SetStaticDefaults()
         {
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
@@ -49,6 +51,11 @@ namespace EBF.NPCs.Machines
                     NPC.frame.Y = 0 * frameHeight;
                 }
             }
+        }
+        public sealed override void AI()
+        {
+            PushOverlappingFlybots();
+            AISafe();
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -115,6 +122,20 @@ namespace EBF.NPCs.Machines
             if (NPC.wet)
             {
                 NPC.velocity.Y -= 0.5f;
+            }
+        }
+        private void PushOverlappingFlybots()
+        {
+            float overlapVelocity = 0.04f;
+            for (int i = 0; i < Main.npc.Length; i++)
+            {
+                NPC other = Main.npc[i];
+                if (i != NPC.whoAmI && other.active && other.ModNPC is Flybot && (NPC.position - other.position).Length() < NPC.width)
+                {
+                    //Nudge the flybot
+                    NPC.velocity.X += (NPC.position.X > other.position.X) ? overlapVelocity : -overlapVelocity;
+                    NPC.velocity.Y += (NPC.position.Y > other.position.Y) ? overlapVelocity : -overlapVelocity;
+                }
             }
         }
     }

@@ -279,7 +279,7 @@ namespace EBF.NPCs.Bosses
             {
                 //Spawn bot
                 var pos = AttachmentBasePos.ToPoint();
-                var type = ModContent.NPCType<RedFlybot>();
+                var type = Main.rand.NextBool(2) ? ModContent.NPCType<RedFlybot>() : ModContent.NPCType<BlueFlybot>();
                 var npc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
                 npc.velocity.Y = -5;
 
