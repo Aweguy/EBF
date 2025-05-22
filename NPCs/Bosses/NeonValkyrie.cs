@@ -114,7 +114,7 @@ namespace EBF.NPCs.Bosses
         public override void OnSpawn(IEntitySource source)
         {
             NPC.TargetClosest(false);
-            groundPos = VectorUtils.GetGroundPosition(Main.player[NPC.target].position);
+            groundPos = VectorUtils.GetGroundPosition(NPC.position);
         }
         public override void AI()
         {
@@ -237,7 +237,7 @@ namespace EBF.NPCs.Bosses
             }
 
             float dist = groundPos.Y - NPC.BottomLeft.Y;
-            if (dist < hoverDistance)
+            if (dist >= 0 && dist < hoverDistance)
             {
                 //Hard brake if very close and falling
                 if (dist < hoverDistance / 2 && NPC.velocity.Y > 0)
