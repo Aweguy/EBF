@@ -177,7 +177,23 @@ namespace EBF.NPCs.Bosses
             if(HasAttachment)
                 attachedNPC.StrikeInstantKill();
 
-            //Gore.NewGore(NPC.GetSource_Death(), NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), ModContent.GoreType<NeonValkyrieGore>());
+            CreateExplosionEffect();
+
+            var sound = SoundID.NPCDeath37; //37, 56
+            sound.Pitch = -1f;
+            sound.Volume = 1.0f;
+            SoundEngine.PlaySound(sound, NPC.position);
+
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore0").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore0").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore1").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore2").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore3").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore3").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore4").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore4").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore5").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore5").Type, NPC.scale);
 
             // Screen shake
             var modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
@@ -293,6 +309,28 @@ namespace EBF.NPCs.Bosses
         {
             attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, ModContent.NPCType<LaserTurret>());
             attachedNPC.Bottom = AttachmentBasePos;
+        }
+        private void CreateExplosionEffect()
+        {
+            Dust dust;
+
+            // Smoke Dust spawn
+            for (int i = 0; i < 20; i++)
+            {
+                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Smoke, Alpha: 100, Scale: 3f);
+                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 8;
+            }
+            // Fire Dust spawn
+            for (int i = 0; i < 50; i++)
+            {
+                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 4f));
+                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 3;
+            }
+            // Large Smoke Gore spawn
+            for (int g = 0; g < 4; g++)
+            {
+                Gore.NewGoreDirect(NPC.GetSource_Death(), NPC.Center, VectorUtils.Random(1.5f), Main.rand.Next(61, 64), Scale: 1.5f);
+            }
         }
     }
 }
