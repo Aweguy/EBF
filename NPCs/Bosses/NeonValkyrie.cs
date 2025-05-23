@@ -142,6 +142,10 @@ namespace EBF.NPCs.Bosses
                 NPC.defense = 70;
                 TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
+
+                //Enrage attached turret
+                if (InSecondPhase == 1)
+                    attachedNPC.ai[1] = 1;
             }
             else
             {
@@ -329,7 +333,7 @@ namespace EBF.NPCs.Bosses
         }
         private void SummonAttachment()
         {
-            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, ModContent.NPCType<LaserTurret>());
+            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, ModContent.NPCType<LaserTurret>(), 0, 0, InSecondPhase);
             attachedNPC.Bottom = AttachmentBasePos;
         }
         private void TransitionToSecondStage()

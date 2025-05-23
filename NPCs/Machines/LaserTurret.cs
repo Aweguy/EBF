@@ -14,7 +14,6 @@ namespace EBF.NPCs.Machines
 {
     public class LaserTurret : Turret
     {
-        private ref float IsLasering => ref NPC.ai[0]; //This value is also read by Neon Valkyrie so it doesn't do BS maneuvers.
         private ref float Timer => ref NPC.localAI[0];
         private ref float AttackChoice => ref NPC.localAI[1];
         private ref float BallsFired => ref NPC.localAI[2];
@@ -31,12 +30,12 @@ namespace EBF.NPCs.Machines
             Player player = Main.player[NPC.target];
             Timer++;
 
-            if (IsLasering == 1)
+            if (IsShooting == 1)
             {
                 TurnTowardsTarget(player);
                 if (Timer >= 90)
                 {
-                    IsLasering = 0;
+                    IsShooting = 0;
                 }
                 return;
             }
@@ -75,7 +74,7 @@ namespace EBF.NPCs.Machines
             if (Vector2.Distance(NPC.position, player.position) < 1000)
             {
                 ShootLaser();
-                IsLasering = 1;
+                IsShooting = 1;
                 AttackChoice = Main.rand.Next(2);
             }
         }
@@ -91,8 +90,9 @@ namespace EBF.NPCs.Machines
 
                 SoundEngine.PlaySound(SoundID.Item157, NPC.Center);
 
+                var maxBallCount = IsEnraged == 0 ? 3 : 4;
                 BallsFired++;
-                if(BallsFired >= 3)
+                if(BallsFired >= maxBallCount)
                 {
                     Timer = 0;
                     BallsFired = 0;
@@ -143,6 +143,7 @@ namespace EBF.NPCs.Machines
 
             // Turn toward the target
             float turnSpeed = 0.005f;
+            if (IsEnraged == 1) turnSpeed = 0.007f;
             float newAngle = currentAngle + MathF.Sign(delta) * turnSpeed;
 
             NPC.rotation = newAngle;
@@ -181,6 +182,7 @@ namespace EBF.NPCs.Machines
     {
         private NPC owner;
         private Player target;
+        private ref float IsOwnerEnraged => ref owner.ai[1];
         public override void OnSpawnSafe(IEntitySource source)
         {
             lightColor = Color.Orange.ToVector3();
@@ -211,6 +213,7 @@ namespace EBF.NPCs.Machines
 
             // Turn toward the target
             float turnSpeed = 0.005f;
+            if (IsOwnerEnraged == 1) turnSpeed = 0.007f;
             float newAngle = currentAngle + MathF.Sign(delta) * turnSpeed;
 
             Projectile.velocity = newAngle.ToRotationVector2();
