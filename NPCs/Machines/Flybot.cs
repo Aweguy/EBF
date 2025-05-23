@@ -11,8 +11,7 @@ namespace EBF.NPCs.Machines
 {
     public abstract class Flybot : ModNPC
     {
-        protected Asset<Texture2D> bodyTexture;
-        protected Asset<Texture2D> cannonTexture;
+        protected Asset<Texture2D> bodyTexture, glowTexture, cannonTexture, cannonGlowTexture;
         protected float maxSpeedH = 1f, maxSpeedV = 1f, accelH = 1f, accelV = 1f;
         protected Vector2[] cannonOffsets = new Vector2[2];
         protected Vector2 CannonPosA => NPC.Center + new Vector2(16 * NPC.direction, 10) + cannonOffsets[0];
@@ -37,7 +36,9 @@ namespace EBF.NPCs.Machines
             NPC.HitSound = SoundID.NPCHit4;
 
             bodyTexture = ModContent.Request<Texture2D>(Texture);
+            glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
             cannonTexture = ModContent.Request<Texture2D>(Texture + "_Cannon");
+            cannonGlowTexture = ModContent.Request<Texture2D>(Texture + "_Cannon_Glow");
             SetDefaultsSafe();
         }
         public sealed override void FindFrame(int frameHeight)
@@ -64,23 +65,30 @@ namespace EBF.NPCs.Machines
 
             var player = Main.player[NPC.target];
 
+            //Glow color
+            var pulse = (float)Math.Abs(Math.Sin(Main.time * 0.02f));
+            var glowColor = new Color(pulse, pulse, pulse);
+
             //Draw back cannon
             var position = CannonPosA - screenPos;
             var rotation = CannonPosA.AngleTo(player.Center);
             var origin = cannonTexture.Value.Size() * 0.5f;
             spriteBatch.Draw(cannonTexture.Value, position, null, drawColor, rotation, origin, 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(cannonGlowTexture.Value, position, null, glowColor, rotation, origin, 1f, SpriteEffects.None, 0);
 
             //Draw body
             position = NPC.Center - screenPos;
             origin = NPC.frame.Size() * 0.5f;
             var flip = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(bodyTexture.Value, position, NPC.frame, drawColor, 0f, origin, 1f, flip, 0);
+            spriteBatch.Draw(glowTexture.Value, position, NPC.frame, glowColor, 0f, origin, 1f, flip, 0);
 
             //Draw front cannon
             position = CannonPosB - screenPos;
             rotation = CannonPosB.AngleTo(player.Center);
             origin = cannonTexture.Value.Size() * 0.5f;
             spriteBatch.Draw(cannonTexture.Value, position, null, drawColor, rotation, origin, 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(cannonGlowTexture.Value, position, null, glowColor, rotation, origin, 1f, SpriteEffects.None, 0);
 
             return false;
         }
