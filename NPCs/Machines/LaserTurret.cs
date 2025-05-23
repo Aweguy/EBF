@@ -78,6 +78,11 @@ namespace EBF.NPCs.Machines
                 AttackChoice = Main.rand.Next(2);
             }
         }
+        public override void OnKillSafe()
+        {
+            for (int i = 0; i < 4; i++)
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore{i}").Type, NPC.scale);
+        }
         private void ShootBalls()
         {
             if(Main.GameUpdateCount % 10 == 0)

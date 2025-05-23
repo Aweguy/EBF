@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -22,6 +23,7 @@ namespace EBF.NPCs.Machines
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
         public virtual void AISafe() { }
+        public virtual void OnKillSafe() { }
         public sealed override void SetStaticDefaults()
         {
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
@@ -32,6 +34,7 @@ namespace EBF.NPCs.Machines
             NPC.value = 100;
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;
+            NPC.DeathSound = SoundID.NPCDeath14;
             NPC.knockBackResist = 0;
 
             baseTexture = ModContent.Request<Texture2D>("EBF/NPCs/Machines/NV_TurretBase");
@@ -87,12 +90,44 @@ namespace EBF.NPCs.Machines
 
             return false;
         }
+        public sealed override void OnKill()
+        {
+            CreateExplosionEffect();
+
+            for (int i = 0; i < 2; i++)
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"TurretBase_Gore0").Type, NPC.scale);
+            
+            OnKillSafe();
+        }
 
         protected void LerpRotationToTarget(Player player, float lerpSpeed)
         {
             float angleToPlayer = NPC.DirectionTo(player.Center).ToRotation();
             float angleDiff = MathHelper.WrapAngle(angleToPlayer - NPC.rotation);
             NPC.rotation += angleDiff * lerpSpeed;
+        }
+
+        private void CreateExplosionEffect()
+        {
+            Dust dust;
+
+            // Smoke Dust spawn
+            for (int i = 0; i < 8; i++)
+            {
+                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Smoke, Alpha: 100, Scale: 2f);
+                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 6;
+            }
+            // Fire Dust spawn
+            for (int i = 0; i < 20; i++)
+            {
+                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 2f));
+                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 2;
+            }
+            // Large Smoke Gore spawn
+            for (int g = 0; g < 3; g++)
+            {
+                Gore.NewGoreDirect(NPC.GetSource_Death(), NPC.Center, VectorUtils.Random(1.5f), Main.rand.Next(61, 64), Scale: 1f);
+            }
         }
     }
 }
