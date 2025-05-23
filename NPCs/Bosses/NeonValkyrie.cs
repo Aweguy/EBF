@@ -259,7 +259,7 @@ namespace EBF.NPCs.Bosses
             }
 
             float dist = groundPos.Y - NPC.BottomLeft.Y;
-            if (dist >= 0 && dist < hoverDistance)
+            if (dist >= -16 && dist < hoverDistance) // -16 because found ground can be inside Neon Valk and result in small negative values, limited to tile size.
             {
                 //Hard brake if very close and falling
                 if (dist < hoverDistance / 2 && NPC.velocity.Y > 0)
