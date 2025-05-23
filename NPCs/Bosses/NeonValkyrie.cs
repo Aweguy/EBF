@@ -13,7 +13,6 @@ using ReLogic.Content;
 using EBF.Extensions;
 using EBF.NPCs.Machines;
 using System.Collections.Generic;
-using Terraria.Physics;
 
 namespace EBF.NPCs.Bosses
 {
@@ -25,23 +24,25 @@ namespace EBF.NPCs.Bosses
 
         //Movement
         private const int hoverDistance = 48;
-        private const float horizontalAcceleration = 0.2f;
-        private const float horizontalMaxSpeed = 6f;
+        private float horizontalAcceleration = 0.2f;
+        private float horizontalMaxSpeed = 6f;
         private Vector2 groundPos;
         private ref float JumpCooldown => ref NPC.localAI[1];
 
         //AI
-        private enum State : byte { Move, Shoot, SummonFlybots, SummonTurret }
+        private enum State : byte { Move, Shoot, SummonFlybots, SummonTurret, RevUp }
         private State currentState = State.Move;
         private readonly Dictionary<State, int> stateDurations = new()
         {
             [State.Move] = 200,
             [State.Shoot] = 60,
             [State.SummonFlybots] = 40,
-            [State.SummonTurret] = 1
+            [State.SummonTurret] = 1,
+            [State.RevUp] = 140
         };
         private readonly WeightedRandom<State> weightedRandom = new();
         private ref float StateTimer => ref NPC.localAI[0];
+        private ref float InSecondPhase => ref NPC.ai[0];
 
         //Attachment
         private NPC attachedNPC;
@@ -54,8 +55,8 @@ namespace EBF.NPCs.Bosses
         //Other
         private Asset<Texture2D> glowTexture;
         private Vector2 GunTipPos => NPC.Center + new Vector2(75 * NPC.spriteDirection, -16);
-        
-        
+
+
         #endregion Fields & Properties
 
         public override void SetStaticDefaults()
@@ -79,7 +80,7 @@ namespace EBF.NPCs.Bosses
             NPC.width = 300;
             NPC.height = 64;
             NPC.damage = 50;
-            NPC.defense = 24;
+            NPC.defense = 20;
             NPC.lifeMax = 40000;
 
             NPC.noTileCollide = true;
@@ -131,13 +132,20 @@ namespace EBF.NPCs.Bosses
                 return;
             }
 
+            if (InSecondPhase == 1)
+            {
+                SecondStageSmokeEffect();
+            }
+
             if (HasAttachment)
             {
+                NPC.defense = 70;
                 TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
             }
             else
             {
+                NPC.defense = 20;
                 TimePassedWithoutAttachment++;
             }
 
@@ -145,20 +153,20 @@ namespace EBF.NPCs.Bosses
 
             switch (currentState)
             {
-                case State.Move:
-                    if (!IsAttachmentShooting)
-                        Move(player);
+                case State.Move when !IsAttachmentShooting:
+                    Move(player);
                     break;
                 case State.Shoot:
                     Shoot(player);
                     break;
-                case State.SummonFlybots:
-                    if(!HasAttachment)
-                        SummonFlybots();
+                case State.SummonFlybots when !HasAttachment:
+                    SummonFlybots();
                     break;
-                case State.SummonTurret:
-                    if (TimePassedWithoutAttachment > minimumAttachmentDowntime)
-                        SummonAttachment();
+                case State.SummonTurret when TimePassedWithoutAttachment > minimumAttachmentDowntime:
+                    SummonAttachment();
+                    break;
+                case State.RevUp:
+                    TransitionToSecondStage();
                     break;
             }
 
@@ -181,7 +189,7 @@ namespace EBF.NPCs.Bosses
         }
         public override void OnKill()
         {
-            if(HasAttachment)
+            if (HasAttachment)
                 attachedNPC.StrikeInstantKill();
 
             CreateExplosionEffect();
@@ -216,7 +224,7 @@ namespace EBF.NPCs.Bosses
                 currentState = currentState != State.Move ? State.Move : weightedRandom.Get();
 
                 //Slightly randomize timing to make it more interesting
-                if(currentState != State.SummonTurret)
+                if (currentState != State.SummonTurret)
                 {
                     StateTimer -= Main.rand.Next(40);
                 }
@@ -224,6 +232,13 @@ namespace EBF.NPCs.Bosses
                 var sound = Main.rand.NextBool(2) ? SoundID.Zombie48 : SoundID.Zombie49; //deadly sphere idle
                 sound.Volume = 2.0f;
                 SoundEngine.PlaySound(sound, NPC.position);
+            }
+
+            //Go into 2nd phase
+            if (InSecondPhase == 0 && NPC.life < NPC.lifeMax / 2)
+            {
+                StateTimer = 0;
+                currentState = State.RevUp;
             }
         }
         private void Hover(Player player)
@@ -316,6 +331,55 @@ namespace EBF.NPCs.Bosses
         {
             attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, ModContent.NPCType<LaserTurret>());
             attachedNPC.Bottom = AttachmentBasePos;
+        }
+        private void TransitionToSecondStage()
+        {
+            NPC.velocity.X *= 0.9f;
+            InSecondPhase = 1;
+
+            if (StateTimer < 30) //Give some time to brake.
+                return;
+
+            if (StateTimer == 30)
+            {
+                var revSound = new SoundStyle("EBF/Assets/Sfx/NeonValkyrie_RevUp") { Volume = 0.5f };
+                SoundEngine.PlaySound(revSound, NPC.position);
+            }
+            else if (StateTimer >= 139)
+            {
+                //Adjust stats
+                NPC.color = new Color(255, 200, 200);
+                stateDurations[State.Move] = 160;
+                stateDurations[State.Shoot] = 70;
+                stateDurations[State.SummonFlybots] = 50;
+                horizontalAcceleration *= 1.5f;
+                horizontalMaxSpeed *= 1.25f;
+            }
+
+            //Color effect (increases, then decreases)
+            var midPoint = (stateDurations[State.RevUp] - 30) / 2;
+            var percentage = (StateTimer - 30) / midPoint;
+            if (percentage > 1) percentage = 1 - (StateTimer - 90) / midPoint;
+            NPC.color = Color.Lerp(Color.White, Color.Red, percentage);
+
+            //Shake
+            var intensity = 8;
+            var dir = StateTimer % 2 == 0 ? 1 : -1;
+            NPC.position += new Vector2(dir * percentage * intensity, 0);
+
+            //Smoke effect
+            var pos = NPC.position + Main.rand.NextVector2FromRectangle(NPC.frame);
+            var gore = Gore.NewGoreDirect(NPC.GetSource_FromAI(), pos, -Vector2.UnitY, GoreID.Smoke1 + Main.rand.Next(3));
+            gore.alpha = 125;
+        }
+        private void SecondStageSmokeEffect()
+        {
+            if (Main.GameUpdateCount % 10 == 0)
+            {
+                var pos = NPC.position + Main.rand.NextVector2FromRectangle(NPC.frame);
+                var gore = Gore.NewGoreDirect(NPC.GetSource_FromAI(), pos, -Vector2.UnitY, GoreID.Smoke1 + Main.rand.Next(3));
+                gore.alpha = 185;
+            }
         }
         private void CreateExplosionEffect()
         {
