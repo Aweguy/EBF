@@ -19,7 +19,7 @@ namespace EBF.NPCs.Machines
         private Vector2 originOffset = Vector2.UnitX * 12; // Adjusts the pivot point, so the turret rotates around the attachment and not its center.
         protected ref float IsShooting => ref NPC.ai[0]; // This value is read by Neon Valkyrie so she won't jump.
         protected ref float IsEnraged => ref NPC.ai[1]; // This is set to true by Neon Valkyrie in her second phase.
-
+        
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
         public virtual void AISafe() { }
@@ -40,11 +40,13 @@ namespace EBF.NPCs.Machines
             baseTexture = ModContent.Request<Texture2D>("EBF/NPCs/Machines/NV_TurretBase");
             bodyTexture = ModContent.Request<Texture2D>(Texture);
             glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
+            DrawOffsetY = bodyTexture.Height();
 
             SetDefaultsSafe();
         }
         public sealed override void OnSpawn(IEntitySource source)
         {
+            NPC.rotation = -MathHelper.PiOver2;
             baseRect = new Rectangle(0, 0, baseTexture.Width(), baseTexture.Height() / 2);
         }
         public sealed override void AI()
@@ -56,6 +58,10 @@ namespace EBF.NPCs.Machines
             if (NPC.direction == 0)
                 NPC.direction = 1;
 
+            //Move up animation after spawning
+            if (DrawOffsetY > 0)
+                DrawOffsetY--;
+
             AISafe();
         }
         public sealed override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -65,13 +71,13 @@ namespace EBF.NPCs.Machines
 
             //Draw base back
             baseRect.Y = 0;
-            var position = NPC.Center + new Vector2(0, (NPC.height - baseRect.Height) / 2) - screenPos;
+            var position = NPC.Center + new Vector2(0, (baseRect.Height / 2) + DrawOffsetY) - screenPos;
             var origin = baseRect.Size() * 0.5f;
             var flipX = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             spriteBatch.Draw(baseTexture.Value, position, baseRect, drawColor, 0f, origin, 1f, flipX, 0);
 
             //Draw body
-            position = NPC.Center + new Vector2(0, -10) - screenPos - (originOffset * NPC.direction);
+            position = NPC.Center + new Vector2(0, -10 + DrawOffsetY) - screenPos - (originOffset * NPC.direction);
             origin = bodyTexture.Size() * 0.5f + originOffset;
             var realRotation = NPC.rotation + MathHelper.Pi;
             var flipY = NPC.direction == 1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
@@ -84,7 +90,7 @@ namespace EBF.NPCs.Machines
 
             //Draw base front
             baseRect.Y += baseRect.Height;
-            position = NPC.Center + new Vector2(0, (NPC.height - baseRect.Height) / 2) - screenPos;
+            position = NPC.Center + new Vector2(0, (baseRect.Height / 2) + DrawOffsetY) - screenPos;
             origin = baseRect.Size() * 0.5f;
             spriteBatch.Draw(baseTexture.Value, position, baseRect, drawColor, 0f, origin, 1f, flipX, 0);
 
@@ -106,7 +112,6 @@ namespace EBF.NPCs.Machines
             float angleDiff = MathHelper.WrapAngle(angleToPlayer - NPC.rotation);
             NPC.rotation += angleDiff * lerpSpeed;
         }
-
         private void CreateExplosionEffect()
         {
             Dust dust;
