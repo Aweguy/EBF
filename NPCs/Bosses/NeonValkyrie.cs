@@ -337,7 +337,9 @@ namespace EBF.NPCs.Bosses
         }
         private void SummonAttachment()
         {
-            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, ModContent.NPCType<LaserTurret>(), 0, 0, InSecondPhase);
+            var type = Main.rand.NextBool(2) ? ModContent.NPCType<LaserTurret>() : ModContent.NPCType<CannonTurret>();
+
+            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type, 0, 0, InSecondPhase);
             attachedNPC.Bottom = AttachmentBasePos;
         }
         private void TransitionToSecondStage()
