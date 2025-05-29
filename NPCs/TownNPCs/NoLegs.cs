@@ -17,13 +17,8 @@ namespace EBF.NPCs.TownNPCs
         public override void SetStaticDefaultsSafe()
         {
             Main.npcFrameCount[NPC.type] = 18;
-            NPCID.Sets.ExtraFramesCount[NPC.type] = 0;
-            NPCID.Sets.AttackFrameCount[NPC.type] = 0;
             NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 5;
-            NPCID.Sets.AttackType[NPC.type] = -1;
-            NPCID.Sets.AttackTime[NPC.type] = -1;
-            NPCID.Sets.AttackAverageChance[NPC.type] = 1;
-            NPCID.Sets.HatOffsetY[NPC.type] = 8;
+            NPCID.Sets.HatOffsetY[NPC.type] = 12;
 
             //The following line requires an emote bubble asset for Matt
             //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
@@ -36,7 +31,7 @@ namespace EBF.NPCs.TownNPCs
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
-            NPC.height = 50;
+            NPC.height = 40;
             NPC.damage = 30;
             NPC.GivenName = "NoLegs";
         }
@@ -90,6 +85,12 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<SteelBuckler>())
+                .Add(ModContent.ItemType<GodlyBook>(), Condition.Hardmode)
+                .Add(ItemID.MilkCarton)
+                .Add(ItemID.CookedFish)
+                .Add(ItemID.LeopardSkin, Condition.MoonPhaseFull)
+                .Add(ItemID.ZebraSkin, Condition.MoonPhaseNew)
+                .Add(ItemID.TigerSkin, Condition.MoonPhaseThirdQuarter)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;
