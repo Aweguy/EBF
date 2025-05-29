@@ -102,3 +102,55 @@ Lance: {
 		HateNPC: There's something... off about that {NPCName} guy... I can't tell what, but he just gives me the creeps.
 	}
 }
+
+Anna: {
+	Chat: {
+		Graveyard1: This place would be very peaceful if it wasn’t so creepy!
+		Graveyard2: Better watch your soles. You never know if the dead will try sneak attacks from below us.
+		Dungeon1: I bet I know a certain demon who would love this place... Me? Not so much!
+		BloodMoon1: You shouldn't bug a hunter in a bad mood. Now leave me alone!
+		BloodMoon2: Have you ever gutted a Mud Slime? You have to do it slowly or it'll burst and scald you. C'mere, I'll show you!
+		Homeless1: It's pretty lonely not having anywhere to go back to.
+		WindyDay1: I love this weather! It's a nice breeze from home.
+		WindyDay2: The wind keeps blowing my arrows off course!
+		Rain1: The trees just love this rain!
+		Rain2: Time to get out my big galoshes!
+		Storm1: Don't hide under trees if it's thundering! Lightning will take the path of least resistance to the ground: you!
+		Storm2: When I said I wanted to try Spark Shower, this isn't what I meant!
+		Day1: Remember, the early bird gets snagged by the early hunter!
+		Night1: I like to take the evening to relax and care for my garden.
+		Night2: Did you know that some plants only bloom at night? It seems strange to me too.
+		Party1: These townfolk have been loving my party tricks so far. Who knew my skills could apply indoors like this.
+		Normal1: I’ve had the Fairy Bow the longest, but I have a good feeling about the Alchemist’s Bow.
+		Normal2: Did we ever put the Sacred Jewels back? I can’t remember what happened after Godcat.
+		Normal3: No, I’m not selling generic healing potions. Why would I be?
+		Normal4: How does my new perfume smell? I asked Natz, but she just started blushing.
+		Normal5: Normal5
+		Normal6: What do you think of our sprites? I made them myself!
+		Hardmode1: Yeesh! I went hunting in the Jungle and almost got run over by a Giant Tortoise!
+		Corrupt1: This place is a crime against nature! If I knew any Fire skills I'd burn it down myself!
+		Crimson1: This place is a crime against nature! If I knew any Fire skills I'd burn it down myself!
+		Matt1: Matt's brain is small, so it can dodge arrows!
+		Natalie1: Natalie says there are no cats with legs, but I could have sworn I saw a small yellow one the other day.
+		Lance1: Listen, Lance is a bumhole, but he's our bumhole, alright? ...but if he tries anything, I'll tie him to the roof again.
+		NoLegs1: Don't you think NoLegs is just adorable? At least, he's cuter than the wild cats I've seen around here.
+	}
+
+	TownNPCMood: {
+		DislikeNPC: I dislike {NPCName}.
+		LoveNPC: I love {NPCName}.
+		DislikeBiome: Being stuck underground makes me feel awful. At least there's moss, dirt, and, uh... More moss?
+		LikeBiome: The Forest is where I belong!
+		HateCrowded: I would like it if you had somewhere with fewer people. I can't sleep with all the constant chatter.
+		DislikeCrowded: It's a bit crowded here. I can't get any target practice in without worrying about someone getting in the way.
+		LoveSpace: I am loving all this open space! I can practice my archery all I want!
+		FarFromHome: I think I've been trekking a little too far from my usual hunting grounds.
+		NoHome: I'm used to being out in the wild, but I'd still like a place for all my gear.
+		Content: This place isn't half bad.
+		HateNPC: I hate {NPCName}.
+		LikeNPC_Princess: Wow, {NPCName} is great at tracking Slime Bunnies through the woods!
+		Princess_LovesNPC: Anna is such a skilled ranger, and just as kind a soul as myself!
+	}
+
+	DisplayName: Anna
+}
