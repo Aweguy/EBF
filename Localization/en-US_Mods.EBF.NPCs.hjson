@@ -152,6 +152,7 @@ NoLegs: {
 	}
 
 	DisplayName: No Legs
+}
 
 Natalie: {
 	DisplayName: Natalie
