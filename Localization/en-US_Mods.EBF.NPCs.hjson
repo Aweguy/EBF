@@ -103,6 +103,56 @@ Lance: {
 	}
 }
 
+NoLegs: {
+	Chat: {
+		Graveyard1: *glancing around for the vengeful dead*
+		Graveyard2: *listening to the walking bones*
+		Dungeon1: *stares at a skull with cold dead eyes*
+		BloodMoon1: Mraaaohr! Ryaaaah! Hissssss!
+		BloodMoon2: Mraaawr! *craving immense violence*
+		Homeless1: *displeased at the absence of anywhere to loaf*
+		WindyDay1: *wishing he had claws to keep himself grounded*
+		WindyDay2: *flailing the Tornado Tantrum*
+		Rain1: *fussy about being totally drenched*
+		Rain2: *waltzing the Water Whirl*
+		Storm1: *gleefully listening to thunderclaps*
+		Storm2: *dancing the Bolt Boogie*
+		Day1: *rolls around in a sunny spot*
+		Night1: *feeling especially eepy at this time of day*
+		Night2: *dancing the Twilight Tango*
+		Party1: *partying like it's 1999*
+		Normal1: *stares at you profusely*
+		Normal2: *looks at you with the world's most punchable face*
+		Normal3: *eyes dart around for shinies*
+		Normal4: *discretely puts away ritualistic paraphernalia*
+		Normal5: Prrrr? Mrrph.
+		Normal6: Mrenh!
+		Hardmode1: *frantically checking for fairies*
+		Corrupt1: *spits a hairball at the purple stuff*
+		Crimson1: *uneasily pokes a slab of meat-like substance*
+		Matt1: *thinks about loafing on Matt's chair*
+		Natalie1: *ponders scritches from Natalie*
+		Lance1: *cautiously hides a torn up Lance Doll*
+		Anna1: *reminisces about hiking with Anna*
+	}
+
+	TownNPCMood: {
+		Princess_LovesNPC: I think NoLegs is just the cutest little guy in the world!
+		LikeNPC_Princess: *shows off the paper crown [Princess] made him and purrs*
+		LikeNPC: *gestures at a sketch of {NPCName} and snickers smugly*
+		HateNPC: *sneezing his head off because of all the spores {NPCName} is leaving around*
+		DislikeBiome: *is baking uncomfortably in the Desert heat*
+		LikeBiome: *gleefully looking for Slime Bunnies to hunt in the Forest*
+		HateCrowded: *secretly preparing a weapon of mass destruction in order to get some peace and quiet*
+		DislikeCrowded: *feeling claustrophobic with all the other people nearby*
+		LoveSpace: *happy to have so much space to run-- er, waddle around in*
+		FarFromHome: *is completely lost*
+		NoHome: *stares at you with a face that says "please take me home"*
+		Content: *is at peace*
+	}
+
+	DisplayName: No Legs
+
 Natalie: {
 	DisplayName: Natalie
 
