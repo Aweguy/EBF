@@ -58,7 +58,27 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<NimbusRod>())
-                .Add(ItemID.SparkyPainting)
+                .Add(ItemID.FruitSalad)
+                .Add(ItemID.Marshmallow)
+                .Add(ItemID.FancyDishes)
+                .Add(ItemID.TheGuardiansGaze, Condition.MoonPhaseFirstQuarter)
+                .Add(ItemID.TheTwinsHaveAwoken, Condition.MoonPhaseFull)
+                .Add(ItemID.Dryadisque, Condition.MoonPhaseNew)
+                .Add(ItemID.PoweredbyBirds, Condition.MoonPhases04)
+                .Add(ItemID.StarryNight, Condition.MoonPhases15)
+                .Add(ItemID.TheCreationoftheGuide, Condition.MoonPhases26)
+                .Add(ItemID.TheEyeSeestheEnd, Condition.MoonPhases37)
+                .Add(ItemID.TheScreamer, Condition.MoonPhasesEven)
+                .Add(ItemID.Impact, Condition.MoonPhasesEvenQuarters)
+                .Add(ItemID.UnicornCrossingtheHallows, Condition.MoonPhasesHalf0)
+                .Add(ItemID.FacingtheCerebralMastermind, Condition.MoonPhasesHalf1)
+                .Add(ItemID.SparkyPainting, Condition.MoonPhasesNearNew)
+                .Add(ItemID.SomethingEvilisWatchingYou, Condition.MoonPhasesOdd)
+                .Add(ItemID.GoblinsPlayingPoker, Condition.MoonPhasesOddQuarters)
+                .Add(ItemID.TheDestroyer, Condition.MoonPhasesQuarter0)
+                .Add(ItemID.GreatWave, Condition.MoonPhasesQuarter1)
+                .Add(ItemID.TrioSuperHeroes, Condition.MoonPhasesQuarter2)
+                .Add(ItemID.ThePersistencyofEyes, Condition.MoonPhasesQuarter3)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
