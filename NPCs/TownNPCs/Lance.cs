@@ -9,6 +9,8 @@ using EBF.Items.Ranged.Guns;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
+using Terraria.Utilities;
+using EBF.Systems;
 
 namespace EBF.NPCs.TownNPCs
 {
@@ -65,6 +67,20 @@ namespace EBF.NPCs.TownNPCs
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;
         public override bool CanTownNPCSpawn(int numTownNPCs) => Main.hardMode;
+        public override WeightedRandom<string> GetChatSafe(WeightedRandom<string> dialogue)
+        {
+            if (DownedBossSystem.downedNeonValk)
+            {
+                // Check if we've heard the line before
+                var modPlayer = Main.LocalPlayer.GetModPlayer<EBFPlayer>();
+                if (!modPlayer.hasHeardDownedNeonValkLine)
+                {
+                    modPlayer.hasHeardDownedNeonValkLine = true;
+                    dialogue.Add(this.GetLocalizedValue("Chat.DownedNeonValk"), weight: 9999);
+                }
+            }
+            return dialogue;
+        }
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
             if (firstButton)

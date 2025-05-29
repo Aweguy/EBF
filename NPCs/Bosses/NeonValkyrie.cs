@@ -13,6 +13,7 @@ using ReLogic.Content;
 using EBF.Extensions;
 using EBF.NPCs.Machines;
 using System.Collections.Generic;
+using EBF.Systems;
 
 namespace EBF.NPCs.Bosses
 {
@@ -217,6 +218,9 @@ namespace EBF.NPCs.Bosses
             // Screen shake
             var modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
             Main.instance.CameraModifiers.Add(modifier);
+
+            //Let the world know the boss is dead
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1); 
         }
 
         private void HandleStateChanging()

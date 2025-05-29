@@ -3,10 +3,10 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.Localization;
 
-namespace EBF
+namespace EBF.Systems
 {
-	public class RecipeSystem : ModSystem
-	{
+    public class RecipeSystem : ModSystem
+    {
         public override void AddRecipeGroups()
         {
             RecipeGroup anyTitanium = new(() => Language.GetTextValue("LegacyMisc.37") + " Titanium Bar", [ItemID.TitaniumBar, ItemID.AdamantiteBar]);
