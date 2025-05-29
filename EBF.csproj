@@ -45,6 +45,12 @@
     <None Remove="Localization\en-US_Mods.EBF.Bestiary.hjson" />
     <None Remove="localization\en-US_Mods.EBF.NPCs.hjson" />
     <None Remove="NPCs\TownNPCs\NoLegs.png" />
+    <None Remove="NPCs\TownNPCs\Natalie.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Head.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Party.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Shimmer.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Shimmer_Head.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Shimmer_Party.png" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />
