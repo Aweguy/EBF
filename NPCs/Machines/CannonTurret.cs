@@ -13,8 +13,8 @@ namespace EBF.NPCs.Machines
         private ref float ShotsFired => ref NPC.localAI[1];
         public override void SetDefaultsSafe()
         {
-            NPC.width = 70;
-            NPC.height = 56;
+            NPC.width = 104;
+            NPC.height = 46;
             NPC.damage = 30;
             NPC.defense = 18;
             NPC.lifeMax = 2000;

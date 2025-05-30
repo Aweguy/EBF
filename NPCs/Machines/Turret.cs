@@ -78,10 +78,10 @@ namespace EBF.NPCs.Machines
 
             //Draw body
             position = NPC.Center + new Vector2(0, -10 + DrawOffsetY) - screenPos - (originOffset * NPC.direction);
-            origin = bodyTexture.Size() * 0.5f + originOffset;
+            origin = NPC.Size * 0.5f + originOffset;
             var realRotation = NPC.rotation + MathHelper.Pi;
             var flipY = NPC.direction == 1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-            spriteBatch.Draw(bodyTexture.Value, position, null, drawColor, realRotation, origin, 1f, flipY, 0);
+            spriteBatch.Draw(bodyTexture.Value, position, NPC.frame, drawColor, realRotation, origin, 1f, flipY, 0);
 
             //Draw glow
             var pulse = (float)Math.Abs(Math.Sin(Main.time * 0.02f));
