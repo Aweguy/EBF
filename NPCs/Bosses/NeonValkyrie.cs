@@ -197,7 +197,7 @@ namespace EBF.NPCs.Bosses
             if (HasAttachment)
                 attachedNPC.StrikeInstantKill();
 
-            CreateExplosionEffect();
+            NPC.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
 
             var sound = SoundID.NPCDeath37; //37, 56
             sound.Pitch = -1f;
@@ -389,28 +389,6 @@ namespace EBF.NPCs.Bosses
                 var pos = NPC.position + Main.rand.NextVector2FromRectangle(NPC.frame);
                 var gore = Gore.NewGoreDirect(NPC.GetSource_FromAI(), pos, -Vector2.UnitY, GoreID.Smoke1 + Main.rand.Next(3));
                 gore.alpha = 185;
-            }
-        }
-        private void CreateExplosionEffect()
-        {
-            Dust dust;
-
-            // Smoke Dust spawn
-            for (int i = 0; i < 20; i++)
-            {
-                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Smoke, Alpha: 100, Scale: 3f);
-                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 8;
-            }
-            // Fire Dust spawn
-            for (int i = 0; i < 50; i++)
-            {
-                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 4f));
-                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 3;
-            }
-            // Large Smoke Gore spawn
-            for (int g = 0; g < 4; g++)
-            {
-                Gore.NewGoreDirect(NPC.GetSource_Death(), NPC.Center, VectorUtils.Random(1.5f), Main.rand.Next(61, 64), Scale: 1.5f);
             }
         }
     }

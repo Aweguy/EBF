@@ -96,7 +96,7 @@ namespace EBF.NPCs.Machines
         }
         public override void OnKill()
         {
-            CreateExplosionEffect();
+            NPC.CreateExplosionEffect();
 
             //Flybot
             for (int i = 0; i < 4; i++)
@@ -158,28 +158,6 @@ namespace EBF.NPCs.Machines
                     NPC.velocity.X += (NPC.position.X > other.position.X) ? overlapVelocity : -overlapVelocity;
                     NPC.velocity.Y += (NPC.position.Y > other.position.Y) ? overlapVelocity : -overlapVelocity;
                 }
-            }
-        }
-        private void CreateExplosionEffect()
-        {
-            Dust dust;
-
-            // Smoke Dust spawn
-            for (int i = 0; i < 8; i++)
-            {
-                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Smoke, Alpha: 100, Scale: 2f);
-                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 6;
-            }
-            // Fire Dust spawn
-            for (int i = 0; i < 20; i++)
-            {
-                dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 2f));
-                dust.velocity += Vector2.Normalize(dust.position - NPC.Center) * 2;
-            }
-            // Large Smoke Gore spawn
-            for (int g = 0; g < 3; g++)
-            {
-                Gore.NewGoreDirect(NPC.GetSource_Death(), NPC.Center, VectorUtils.Random(1.5f), Main.rand.Next(61, 64), Scale: 1f);
             }
         }
     }
