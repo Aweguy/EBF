@@ -69,6 +69,10 @@ namespace EBF.NPCs.TownNPCs
 
                 NPC.frame.Y = frameHeight * idleSequence[(int)NPC.frameCounter];
             }
+            else
+            {
+                NPC.frame.Y = frameHeight * 6; //fall frame
+            }
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
