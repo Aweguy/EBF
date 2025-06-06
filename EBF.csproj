@@ -47,6 +47,8 @@
     <None Remove="localization\en-US_Mods.EBF.NPCs.hjson" />
     <None Remove="NPCs\Bosses\NeonValkyrie.png" />
     <None Remove="NPCs\Bosses\NeonValkyrie_Glow.png" />
+    <None Remove="NPCs\Machines\NuclearBomb.png" />
+    <None Remove="NPCs\Machines\NukeStand.png" />
     <None Remove="NPCs\Machines\RedFlybot.png" />
     <None Remove="NPCs\Machines\RedFlybot_Cannon.png" />
   </ItemGroup>

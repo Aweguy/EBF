@@ -6,7 +6,7 @@ namespace EBF.Extensions
 {
     public static partial class Utils
     {
-        public enum ExplosionSize { Small, Medium, Large }
+        public enum ExplosionSize { Small, Medium, Large, Huge }
 
         /// <summary>
         /// Creates a bunch of dust and gore to simulate an explosion effect.
@@ -31,6 +31,7 @@ namespace EBF.Extensions
                 ExplosionSize.Small => (1, 12, 6, 2, 4),
                 ExplosionSize.Medium => (2, 20, 8, 3, 6),
                 ExplosionSize.Large => (3, 50, 20, 4, 8),
+                ExplosionSize.Huge => (4, 200, 60, 8, 10),
                 _ => throw new System.NotImplementedException(),
             };
 
