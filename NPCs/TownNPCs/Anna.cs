@@ -59,7 +59,15 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<GaiasBow>())
-                .Add(ItemID.Radar)
+                .Add(ModContent.ItemType<AlchemistBow>(), Condition.Hardmode)
+                .Add(ItemID.Peach)
+                .Add(ItemID.AshGrassSeeds)
+                .Add(ItemID.PotSuspended)
+                .Add(ItemID.PottedLavaPlantPalm, Condition.BloodMoon)
+                .Add(ItemID.PottedLavaPlantBush, Condition.BloodMoon)
+                .Add(ItemID.PottedLavaPlantBramble, Condition.BloodMoon)
+                .Add(ItemID.PottedLavaPlantBulb, Condition.BloodMoon)
+                .Add(ItemID.PottedLavaPlantTendrils, Condition.BloodMoon)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
