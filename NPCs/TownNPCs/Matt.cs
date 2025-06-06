@@ -62,8 +62,11 @@ namespace EBF.NPCs.TownNPCs
             .Add(ItemID.PirateMap, Condition.InBeach, Condition.Hardmode)
             .Add(ItemID.ShellPileBlock, Condition.InBeach)
             .Add(ItemID.ShrimpPoBoy, Condition.InBeach)
+            .Add(ItemID.PotatoChips, Condition.InBeach)
+            .Add(ItemID.ShuckedOyster, Condition.InDesert)
             .Add(ItemID.GrilledSquirrel)
             .Add(ItemID.RoastedBird)
+            .Add(ItemID.ShipInABottle, Condition.HappyEnough)
 
             .Add(ItemID.Amethyst, Condition.MoonPhaseNew)
             .Add(ItemID.Topaz, Condition.MoonPhaseFirstQuarter)

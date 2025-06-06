@@ -58,9 +58,13 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<HeavyClaw>())
+                .Add(ModContent.ItemType<ShadowBlaster>(), Condition.DownedDestroyer)
+                .Add(ItemID.MusketBall)
+                .Add(ItemID.UltrabrightTorch)
+                .Add(ItemID.SpicyPepper)
                 .Add(ItemID.Radar)
                 .Add(ItemID.MetalDetector)
-                .Add(ItemID.MusketBall)
+                .Add(ItemID.AmmoBox, Condition.BloodMoon)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;

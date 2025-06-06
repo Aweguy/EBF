@@ -63,11 +63,11 @@ namespace EBF.NPCs.TownNPCs
                 .Add(ItemID.Peach)
                 .Add(ItemID.AshGrassSeeds)
                 .Add(ItemID.PotSuspended)
-                .Add(ItemID.PottedLavaPlantPalm, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantBush, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantBramble, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantBulb, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantTendrils, Condition.BloodMoon)
+                .Add(ItemID.PottedLavaPlantPalm, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBush, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBramble, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBulb, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantTendrils, Condition.IsNpcShimmered)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;

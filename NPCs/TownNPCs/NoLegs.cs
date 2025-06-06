@@ -86,8 +86,10 @@ namespace EBF.NPCs.TownNPCs
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<SteelBuckler>())
                 .Add(ModContent.ItemType<GodlyBook>(), Condition.Hardmode)
+                .Add(ItemID.GoldenDelight, Condition.Hardmode, Condition.DownedMoonLord, Condition.IsNpcShimmered)
                 .Add(ItemID.MilkCarton)
                 .Add(ItemID.CookedFish)
+                .Add(ItemID.SauteedFrogLegs, Condition.InJungle)
                 .Add(ItemID.LeopardSkin, Condition.MoonPhaseFull)
                 .Add(ItemID.ZebraSkin, Condition.MoonPhaseNew)
                 .Add(ItemID.TigerSkin, Condition.MoonPhaseThirdQuarter)
