@@ -153,4 +153,107 @@ Anna: {
 	}
 
 	DisplayName: Anna
+
+NoLegs: {
+	Chat: {
+		Graveyard1: *glancing around for the vengeful dead*
+		Graveyard2: *listening to the walking bones*
+		Dungeon1: *stares at a skull with cold dead eyes*
+		BloodMoon1: Mraaaohr! Ryaaaah! Hissssss!
+		BloodMoon2: Mraaawr! *craving immense violence*
+		Homeless1: *displeased at the absence of anywhere to loaf*
+		WindyDay1: *wishing he had claws to keep himself grounded*
+		WindyDay2: *flailing the Tornado Tantrum*
+		Rain1: *fussy about being totally drenched*
+		Rain2: *waltzing the Water Whirl*
+		Storm1: *gleefully listening to thunderclaps*
+		Storm2: *dancing the Bolt Boogie*
+		Day1: *rolls around in a sunny spot*
+		Night1: *feeling especially eepy at this time of day*
+		Night2: *dancing the Twilight Tango*
+		Party1: *partying like it's 1999*
+		Normal1: *stares at you profusely*
+		Normal2: *looks at you with the world's most punchable face*
+		Normal3: *eyes dart around for shinies*
+		Normal4: *discretely puts away ritualistic paraphernalia*
+		Normal5: Prrrr? Mrrph.
+		Normal6: Mrenh!
+		Hardmode1: *frantically checking for fairies*
+		Corrupt1: *spits a hairball at the purple stuff*
+		Crimson1: *uneasily pokes a slab of meat-like substance*
+		Matt1: *thinks about loafing on Matt's chair*
+		Natalie1: *ponders scritches from Natalie*
+		Lance1: *cautiously hides a torn up Lance Doll*
+		Anna1: *reminisces about hiking with Anna*
+	}
+
+	TownNPCMood: {
+		Princess_LovesNPC: I think NoLegs is just the cutest little guy in the world!
+		LikeNPC_Princess: *shows off the paper crown [Princess] made him and purrs*
+		LikeNPC: *gestures at a sketch of {NPCName} and snickers smugly*
+		HateNPC: *sneezing his head off because of all the spores {NPCName} is leaving around*
+		DislikeBiome: *is baking uncomfortably in the Desert heat*
+		LikeBiome: *gleefully looking for Slime Bunnies to hunt in the Forest*
+		HateCrowded: *secretly preparing a weapon of mass destruction in order to get some peace and quiet*
+		DislikeCrowded: *feeling claustrophobic with all the other people nearby*
+		LoveSpace: *happy to have so much space to run-- er, waddle around in*
+		FarFromHome: *is completely lost*
+		NoHome: *stares at you with a face that says "please take me home"*
+		Content: *is at peace*
+	}
+
+	DisplayName: No Legs
+}
+
+Natalie: {
+	DisplayName: Natalie
+
+	Chat: {
+		Graveyard1: Pfft, you guys are wimps. This place isn’t scary at all.
+		Graveyard2: Geez, it’s like I’m back in my goth phase.
+		Dungeon1: This place is rife with dark magic! We'd better get back to safety!
+		BloodMoon1: Bring up the Cow Costume again! I dare you!
+		BloodMoon2: Have you seen my knife? Knife, knife, knife...
+		Homeless1: I don't mind camping out in the wilds, but... Okay, I really do mind!
+		WindyDay1: KYAA–! My skirt!
+		WindyDay2: I knew I should've worn shorts today!
+		Rain1: Seriously, is there no one here who will sell an umbrella?
+		Rain2: Perfect weather to stay inside and work on my fanfict- er... Research!
+		Storm1: Oof! I'm not going outside if I can help it!
+		Storm2: Don't look at me; my strongest spells are called Storms but I've got nothing to do with this.
+		Day1: Hello! What are you up to today?
+		Night1: Eek! Y-you didn't see that notebook I was writing in, did you? You better not peek!
+		Night2: I'm having trouble falling asleep... You think I could use Matt as a pillow?
+		Party1: Lemme know if the cake gets here! I've been craving sweets for a while now.
+		Normal1: I think the scenery here could make for some great art for the Grand Gallery!
+		Normal2: Yeah yeah, I know I look pretty, you can stop staring now.
+		Normal3: Did you ever see the Kitten Kingdom Ruins? I wrote a paper on those, but they’re still shrouded in mystery.
+		Normal4: Man, you know what I'd love? Some nice Whitefall Creme Brulee.
+		Normal5: ...ha! Managed to beat that level! ...oh, sorry, did you need something?
+		Normal6: What device are you usually playing on? I don't go anywhere without my Nint•ndo TS.
+		Hardmode1: The Hallow is full of rainbows and unicorns and cuppycakes! ...too pastel for me.
+		Corrupt1: Ewwww, why is this place full of rotting dead things!? It's disgusting!
+		Crimson1: Ewwww, why is this place full of gross fleshy things!? It's disgusting!
+		Matt1: Matt and I go way back. I guess you could... call us life partners? Haha! ...d-don't tell him I said that.
+		Lance1: I'd keep an eye on Lance if I were you. He's pretty shady, and he can't help but peep on girls. I should know.
+		Anna1: Why is everyone telling me to give my Red Dress to Anna? Will it even fit her?
+		NoLegs1: NoLegs is smarter than you think. He's a rascal, but very well-read.
+	}
+
+	TownNPCMood: {
+		Content: I'm doing just fine, thank you for asking.
+		NoHome: Can we please go somewhere with a decent internet connection? I'm not exactly the outdoorsy type.
+		FarFromHome: I think I left my computer running at home. I should check up on that!
+		LoveSpace: Ah, some peace and quiet. Want hot cocoa?
+		DislikeCrowded: Hey guys, I could use some privacy. Would you mind?
+		HateCrowded: I like having a party of three. Can the rest of you go to backup please?
+		LikeNPC_Princess: Most nobility is a pain in the rear, but {NPCName} is just a delight to hang out with!
+		Princess_LovesNPC: Natalie is such a beauty, isn't she? She is also an exceptional mage, and a scholar too!
+		DislikeBiome: Bleh! I hate the Jungle! There's bugs and vines and it's way too hot!
+		LikeBiome: I just love seeing the Snow fall with friends.
+		LoveNPC: Matt and I have been together for as long as I can remember. There's nobody I'd trust my life with more than him!
+		LikeNPC: I like how {NPCName} has such an eye for fashion. I should come by her place and ask for some advice.
+		DislikeNPC: Jeez, {NPCName} is always bugging me about how many Cloudberries I've been eating.
+		HateNPC: Ugh, {NPCName} keeps making crude comments towards me. I get enough of that from Lance...
+	}
 }
