@@ -11,6 +11,7 @@ using EBF.Items.Magic;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Natalie : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()

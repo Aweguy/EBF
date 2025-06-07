@@ -11,6 +11,7 @@ using EBF.Items.Melee;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Matt : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()

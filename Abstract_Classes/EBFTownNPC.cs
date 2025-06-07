@@ -22,7 +22,7 @@ namespace EBF.Abstract_Classes
         public override void Load()
         {
             //Load heads to be used in housing banners and in the housing npc list.
-            Mod.AddNPCHeadTexture(Type, Texture + "_Head");
+            //Normal head texture is automatically loaded via [AutoloadHead]
             Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
         }
         //This adds the shimmer and party variants to the npcs.

@@ -9,6 +9,7 @@ using EBF.Items.Summon;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class NoLegs : EBFTownNPC
     {
         private readonly int[] walkSequence = [0, 1, 2, 3, 4, 5];

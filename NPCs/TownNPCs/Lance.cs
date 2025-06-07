@@ -12,6 +12,7 @@ using Terraria.GameContent;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Lance : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()

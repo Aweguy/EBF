@@ -13,6 +13,7 @@ using EBF.Items.Ranged.Bows;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Anna : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()
