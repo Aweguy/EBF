@@ -27,6 +27,10 @@ namespace EBF.NPCs.TownNPCs
             NPC.Happiness
                 .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Matt>(), AffectionLevel.Like)
+                .SetNPCAffection(ModContent.NPCType<Natalie>(), AffectionLevel.Like)
+                .SetNPCAffection(ModContent.NPCType<Lance>(), AffectionLevel.Like)
+                .SetNPCAffection(ModContent.NPCType<Anna>(), AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Truffle, AffectionLevel.Hate);
         }
         public override void SetDefaultsSafe()

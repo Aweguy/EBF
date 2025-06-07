@@ -33,6 +33,7 @@ namespace EBF.NPCs.TownNPCs
                 .SetBiomeAffection<MushroomBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<OceanBiome>(AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.PartyGirl, AffectionLevel.Love)
+                .SetNPCAffection(ModContent.NPCType<Anna>(), AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Cyborg, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.Clothier, AffectionLevel.Hate);
         }

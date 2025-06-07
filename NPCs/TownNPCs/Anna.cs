@@ -5,7 +5,6 @@ using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.Localization;
 using EBF.Abstract_Classes;
-using EBF.Items.Ranged.Guns;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
@@ -33,6 +32,7 @@ namespace EBF.NPCs.TownNPCs
             NPC.Happiness
                 .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<UndergroundBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Lance>(), AffectionLevel.Like)
                 .SetNPCAffection(NPCID.BestiaryGirl, AffectionLevel.Love)
                 .SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.Merchant, AffectionLevel.Hate);

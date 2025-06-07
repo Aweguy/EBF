@@ -32,6 +32,7 @@ namespace EBF.NPCs.TownNPCs
                 .SetBiomeAffection<OceanBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<SnowBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Natalie>(), AffectionLevel.Love)
                 .SetNPCAffection(NPCID.DD2Bartender, AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Wizard, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.Guide, AffectionLevel.Hate);
