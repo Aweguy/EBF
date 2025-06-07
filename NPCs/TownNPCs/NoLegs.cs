@@ -20,9 +20,7 @@ namespace EBF.NPCs.TownNPCs
             Main.npcFrameCount[NPC.type] = 18;
             NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 5;
             NPCID.Sets.HatOffsetY[NPC.type] = 12;
-
-            //The following line requires an emote bubble asset for Matt
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<NoLegsEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)

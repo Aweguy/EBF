@@ -935,3 +935,11 @@ Items: {
 		}
 	}
 }
+
+Emotes: {
+	AnnaEmote.Command: annaemote
+	LanceEmote.Command: lanceemote
+	MattEmote.Command: mattemote
+	NatalieEmote.Command: natalieemote
+	NoLegsEmote.Command: nolegsemote
+}

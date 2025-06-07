@@ -24,9 +24,7 @@ namespace EBF.NPCs.TownNPCs
             NPCID.Sets.AttackTime[NPC.type] = 30;
             NPCID.Sets.AttackAverageChance[NPC.type] = 30;
             NPCID.Sets.HatOffsetY[NPC.type] = 4;
-
-            //The following line requires an emote bubble asset for Lance
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<NatalieEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<SnowBiome>(AffectionLevel.Like)
