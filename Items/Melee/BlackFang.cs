@@ -55,7 +55,7 @@ namespace EBF.Items.Melee
                 .Register();
 
             CreateRecipe(amount: 1)
-                .AddIngredient<SwordBreaker>(stack: 1)
+                .AddIngredient<DarkStalker>(stack: 1)
                 .AddIngredient(ItemID.SpiderFang, stack: 8)
                 .AddRecipeGroup("TitaniumBar", stack: 12)
                 .AddTile(TileID.MythrilAnvil)

@@ -309,7 +309,7 @@ Items: {
 			}
 
 			SwordBreaker: {
-				Tooltip: 
+				Tooltip:
 					'''
 					Applies weak to hit foes.
 					'Forged by an eccentric mangaka to disarm foes.'
@@ -329,6 +329,11 @@ Items: {
 			UltraPro9000X: {
 				Tooltip: "'I can use this old hockey stick as a weapon. I think that should be enough equipment for now.' - Matt"
 				DisplayName: UltraPro9000X
+			}
+
+			DarkStalker: {
+				DisplayName: Dark Stalker
+				Tooltip: Applies weak to hit foes.
 			}
 		}
 
@@ -690,7 +695,7 @@ Items: {
 						'''
 						Bullets turn into a dark shot.
 						Right click fires a blast that bursts into an antimatter flux.
-						'My god, it’s full of stars.'
+						'My god, it's full of stars.'
 						'''
 				}
 
