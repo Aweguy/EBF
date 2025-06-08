@@ -309,7 +309,11 @@ Items: {
 			}
 
 			SwordBreaker: {
-				Tooltip: Applies weak to hit foes.
+				Tooltip: 
+					'''
+					Applies weak to hit foes.
+					'Forged by an eccentric mangaka to disarm foes.'
+					'''
 				DisplayName: Sword Breaker
 			}
 
@@ -509,7 +513,7 @@ Items: {
 					Tooltip:
 						'''
 						Wooden arrows turn into chargeable, piercing arrows.
-						Putting a different spin on 'Got you in my sights.'
+						Giving a new meaning to 'Got you in my sights.'
 						'''
 				}
 
@@ -686,7 +690,7 @@ Items: {
 						'''
 						Bullets turn into a dark shot.
 						Right click fires a blast that bursts into an antimatter flux.
-						'Oh my god, it's full of stars.'
+						'My god, it’s full of stars.'
 						'''
 				}
 
@@ -695,7 +699,7 @@ Items: {
 					Tooltip:
 						'''
 						Right click fires a blast of lingering gas clouds that inflict Poison on foes.
-						'Gas mask is optional.'
+						'Gas mask sold separately.'
 						'''
 				}
 
@@ -774,6 +778,7 @@ Items: {
 					'''
 					Holding the toy summons an Angelic Mirror.
 					Stabbing a foe will make your Angelic Mirror shoot a burst of shots.
+					'An incredible work of fiction second only to Don Quixote.'
 					'''
 			}
 
@@ -783,6 +788,7 @@ Items: {
 					'''
 					Holding the toy summons a Cat Soldier.
 					Stabbing a foe will grant guaranteed critical hits to your Cat Soldier.
+					'A sturdy sword and shield fit for a warrior of Godcat, or a devout brigand.'
 					'''
 			}
 
@@ -792,6 +798,7 @@ Items: {
 					'''
 					Holding the toy summons an Icecream Slime.
 					Stabbing a foe inflicts frostburn and grants extra damage, pierce and velocity to your Icecream Slime's projectiles.
+					'Tastes like bubblegum and freezer burn.'
 					'''
 			}
 
@@ -801,6 +808,7 @@ Items: {
 					'''
 					Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
 					Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
+					'Perfect for a relaxing evening oppressing dissidents.'
 					'''
 			}
 
@@ -809,7 +817,8 @@ Items: {
 				Tooltip:
 					'''
 					Holding the toy summons a Shooting Star.
-					Stabbing a foe will make your Shooting Star minion shoot three sets of projectiles in a star pattern. 
+					Stabbing a foe will make your Shooting Star minion shoot a set of homing stars.
+					'The hammer you should know, for the king of the show!'
 					'''
 			}
 
@@ -819,7 +828,7 @@ Items: {
 					'''
 					Holding the toy summons a Wooden Idol.
 					Stabbing a foe grants you Dryad's Blessing for a while.
-
+					'The druids of the Mystic Woods are peaceful, but NOT pacifists.'
 					'''
 			}
 
@@ -829,6 +838,7 @@ Items: {
 					'''
 					Holding the toy summons a Blood Bat.
 					Stabbing a foe will temporarily empower the lifesteal of your Blood Bat.
+					'It's actually just fruit punch.'
 					'''
 			}
 
@@ -838,6 +848,7 @@ Items: {
 					'''
 					Holding the toy summons an Origami Dragon.
 					Stabbing a foe makes the Origami Dragon shoot five powerful paper blades.
+					'Made from the finest cardboardium alloy.'
 					'''
 			}
 
@@ -847,6 +858,7 @@ Items: {
 					'''
 					Holding the toy summons a Gunslinger.
 					Stabbing a foe will briefly replace the Gunslinger's bullets with rockets.
+					'Give 'em the old X+Y+Down+Up!'
 					'''
 			}
 		}
