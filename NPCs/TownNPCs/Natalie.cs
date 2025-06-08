@@ -37,7 +37,7 @@ namespace EBF.NPCs.TownNPCs
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
-            NPC.height = 50;
+            NPC.height = 48;
             NPC.damage = 30;
             NPC.GivenName = "Natalie";
             AnimationType = NPCID.Guide;
