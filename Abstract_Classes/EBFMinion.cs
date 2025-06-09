@@ -149,7 +149,7 @@ namespace EBF.Abstract_Classes
             else
             {
                 HandleIdleLogic(idlePosition);
-                TryCancelGroundMinionFlying();
+                TryCancelGroundMinionFlying(player);
                 NudgeStationaryHoverMinions();
             }
 
@@ -274,12 +274,11 @@ namespace EBF.Abstract_Classes
                 Projectile.velocity.Y = -Math.Min(jumpVelocityY, maxJumpHeight);
             }
         }
-        private void TryCancelGroundMinionFlying()
+        private void TryCancelGroundMinionFlying(Player player)
         {
-            if (isFlying != UseHoverAI)
+            if (isFlying != UseHoverAI && Math.Abs(player.velocity.Y) < 2f)
             {
-                Player player = Main.player[Projectile.owner];
-                if (player.velocity.Y == 0f && Collision.SolidTiles(player.position, player.width, player.height + 2))
+                if (Collision.SolidTiles(player.BottomLeft, player.width, player.height * 2, true))
                 {
                     isFlying = false;
                 }

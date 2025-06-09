@@ -70,8 +70,6 @@ namespace EBF.Abstract_Classes
         /// <param name="duration">How many ticks the boost will last.</param>
         public void ApplyBoost(int duration)
         {
-            SoundEngine.PlaySound(SoundID.MaxMana, Main.LocalPlayer.position);
-
             if (Main.projectile[minion].ModProjectile is EBFMinion m)
             {
                 m.BoostTime = duration;

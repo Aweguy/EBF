@@ -7,6 +7,7 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
+using EBF.Buffs;
 
 namespace EBF.Items.Summon
 {
@@ -47,35 +48,16 @@ namespace EBF.Items.Summon
         }
     }
 
-    public class BusterSwordStab : ModProjectile
+    public class BusterSwordStab : EBFToyStab
     {
-        private const int projOffset = 8;
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.aiStyle = ProjAIStyleID.ShortSword;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-
             DrawOffsetX = -4;
             DrawOriginOffsetY = -6;
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Item item = Main.player[Projectile.owner].HeldItem;
-            if (item.ModItem is EBFCatToy toy && !target.immortal)
-            {
-                toy.ApplyBoost(60);
 
-                //Spawn fancy hit particle
-                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
-            }
-        }
-        public override void PostAI()
-        {
-            Projectile.position += Projectile.velocity * projOffset;
+            ProjOffset = 8;
+            BoostDuration = 60;
+            TagDamage = 5;
         }
     }
 

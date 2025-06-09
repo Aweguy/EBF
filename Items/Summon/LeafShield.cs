@@ -40,34 +40,23 @@ namespace EBF.Items.Summon
         //Sold by dryad
     }
 
-    public class LeafShieldStab : ModProjectile
+    public class LeafShieldStab : EBFToyStab
     {
-        private const int projOffset = 2;
-        public override void SetDefaults()
+        public override void SetDefaultsSafe()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
-            Projectile.aiStyle = ProjAIStyleID.ShortSword;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-
             DrawOffsetX = -4;
             DrawOriginOffsetY = -6;
+
+            ProjOffset = 2;
+            BoostDuration = 0;
+            TagDamage = 2;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSafe(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (!target.immortal)
             {
                 Main.player[Projectile.owner].AddBuff(BuffID.DryadsWard, 300);
-
-                //Spawn fancy hit particle
-                ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings { PositionInWorld = Projectile.Center });
             }
-        }
-        public override void PostAI()
-        {
-            Projectile.position += Projectile.velocity * projOffset;
         }
     }
 

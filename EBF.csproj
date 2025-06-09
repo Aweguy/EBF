@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Buffs\Charged.png" />
+    <None Remove="Buffs\TagDebuff.png" />
     <None Remove="Items\BlitzNeedle.png" />
     <None Remove="Items\BlitzNeedleProjectile.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_Bomb.png" />
@@ -41,19 +42,24 @@
     <None Remove="Items\Ranged\Guns\ThePhantomSidearm.png" />
     <None Remove="Items\Summon\BusterSword_OrigamiDragonMinion.png" />
     <None Remove="Items\Summon\BusterSword_PaperBladeProjectile.png" />
+    <None Remove="Localization\en-US_Mods.EBF.Bestiary.hjson" />
+    <None Remove="localization\en-US_Mods.EBF.NPCs.hjson" />
+    <None Remove="NPCs\TownNPCs\NoLegs.png" />
+    <None Remove="NPCs\TownNPCs\Natalie.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Head.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Party.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Shimmer.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Shimmer_Head.png" />
+    <None Remove="NPCs\TownNPCs\Natalie_Shimmer_Party.png" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />
-    <AdditionalFiles Remove="Gores\**" />
     <AdditionalFiles Remove="Items\Limit Breaks\**" />
     <Compile Remove="Assets\Sfx\NPCHit\**" />
-    <Compile Remove="Gores\**" />
     <Compile Remove="Items\Limit Breaks\**" />
     <EmbeddedResource Remove="Assets\Sfx\NPCHit\**" />
-    <EmbeddedResource Remove="Gores\**" />
     <EmbeddedResource Remove="Items\Limit Breaks\**" />
     <None Remove="Assets\Sfx\NPCHit\**" />
-    <None Remove="Gores\**" />
     <None Remove="Items\Limit Breaks\**" />
   </ItemGroup>
   <ItemGroup>
