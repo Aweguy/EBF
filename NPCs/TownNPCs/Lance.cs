@@ -12,6 +12,7 @@ using Terraria.GameContent;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Lance : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()
@@ -24,21 +25,20 @@ namespace EBF.NPCs.TownNPCs
             NPCID.Sets.AttackTime[NPC.type] = 30;
             NPCID.Sets.AttackAverageChance[NPC.type] = 30;
             NPCID.Sets.HatOffsetY[NPC.type] = 8;
-
-            //The following line requires an emote bubble asset for Lance
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<LanceEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<MushroomBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<OceanBiome>(AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.PartyGirl, AffectionLevel.Love)
+                .SetNPCAffection(ModContent.NPCType<Anna>(), AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Cyborg, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.Clothier, AffectionLevel.Hate);
         }
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
-            NPC.height = 50;
+            NPC.height = 48;
             NPC.damage = 30;
             NPC.GivenName = "Lance";
             AnimationType = NPCID.Guide;
@@ -58,9 +58,13 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<HeavyClaw>())
+                .Add(ModContent.ItemType<ShadowBlaster>(), Condition.DownedDestroyer)
+                .Add(ItemID.MusketBall)
+                .Add(ItemID.UltrabrightTorch)
+                .Add(ItemID.SpicyPepper)
                 .Add(ItemID.Radar)
                 .Add(ItemID.MetalDetector)
-                .Add(ItemID.MusketBall)
+                .Add(ItemID.AmmoBox, Condition.BloodMoon)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;

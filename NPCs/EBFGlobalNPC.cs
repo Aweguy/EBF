@@ -43,10 +43,6 @@ namespace EBF.NPCs
                 case NPCID.Princess:
                     shop.Add<LoveBlade>();
                     break;
-
-                case NPCID.WitchDoctor:
-                    shop.Add<GaiasBow>();
-                    break;
             }
         }
     }

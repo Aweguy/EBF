@@ -44,6 +44,7 @@ Matt: {
 		Princess_LovesNPC: Have you met Sir {NPCName}? Hehe, I decided to make him an honorary knight!
 		DislikeBiome: There's nowhere to dock even a raft in the Desert...
 		LikeBiome: It's like I'm back at home, here by the Ocean!
+		LoveNPC: Natz and I are like peanut butter and marshmallow fluff! There's no one I'd rather have around than her!
 		LikeNPC: The stories {NPCName} tells always crack me up, they're great to have around for a feast!
 		DislikeNPC: Natalie's one thing, but I can't make heads or tails of what {NPCName}'s saying!
 		HateNPC: That {NPCName} keeps trying to tell me what to do. I just can't stand it!
@@ -97,7 +98,7 @@ Lance: {
 		DislikeBiome: I don't like the Ocean... Gunpowder won't ignite in water, and I'm surrounded by it.
 		LikeBiome: These Mushrooms are perfect for researching new munitions!
 		LoveNPC: I can't believe how much {NPCName} knows about pyrotechnics and explosives! She's incredible!
-		LikeNPC: I like {NPCName}
+		LikeNPC: I like to see how Anna handles my machinery. I figured she would lose interest after a while, but it's nice that she sticks around.
 		DislikeNPC: I don't trust {NPCName}... he could be a double agent for the AI apocalypse, for all I know.
 		HateNPC: There's something... off about that {NPCName} guy... I can't tell what, but he just gives me the creeps.
 	}
@@ -137,8 +138,9 @@ Anna: {
 	}
 
 	TownNPCMood: {
-		DislikeNPC: I dislike {NPCName}.
-		LoveNPC: I love {NPCName}.
+		DislikeNPC: Okay, {NPCName} wouldn't be so bad if he just knew how to keep the noise down.
+		LoveNPC: I love how tuned in {NPCName} is to her surroundings. We always have something to talk about!
+		LikeNPC: I'm glad Lance makes time between his coding sessions to let me play with his gadgets, he's really fun to be around when he isn't on a rant.
 		DislikeBiome: Being stuck underground makes me feel awful. At least there's moss, dirt, and, uh... More moss?
 		LikeBiome: The Forest is where I belong!
 		HateCrowded: I would like it if you had somewhere with fewer people. I can't sleep with all the constant chatter.
@@ -147,7 +149,7 @@ Anna: {
 		FarFromHome: I think I've been trekking a little too far from my usual hunting grounds.
 		NoHome: I'm used to being out in the wild, but I'd still like a place for all my gear.
 		Content: This place isn't half bad.
-		HateNPC: I hate {NPCName}.
+		HateNPC: Ugh, {NPCName} keeps trying to make a profit off of the forest, and he belittles me every time I try to talk him out of it!
 		LikeNPC_Princess: Wow, {NPCName} is great at tracking Slime Bunnies through the woods!
 		Princess_LovesNPC: Anna is such a skilled ranger, and just as kind a soul as myself!
 	}
@@ -203,7 +205,7 @@ NoLegs: {
 		Content: *is at peace*
 	}
 
-	DisplayName: No Legs
+	DisplayName: NoLegs
 }
 
 Natalie: {

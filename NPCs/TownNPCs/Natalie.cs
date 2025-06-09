@@ -11,6 +11,7 @@ using EBF.Items.Magic;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Natalie : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()
@@ -23,9 +24,7 @@ namespace EBF.NPCs.TownNPCs
             NPCID.Sets.AttackTime[NPC.type] = 30;
             NPCID.Sets.AttackAverageChance[NPC.type] = 30;
             NPCID.Sets.HatOffsetY[NPC.type] = 4;
-
-            //The following line requires an emote bubble asset for Lance
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<NatalieEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<SnowBiome>(AffectionLevel.Like)
@@ -38,7 +37,7 @@ namespace EBF.NPCs.TownNPCs
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
-            NPC.height = 50;
+            NPC.height = 48;
             NPC.damage = 30;
             NPC.GivenName = "Natalie";
             AnimationType = NPCID.Guide;
@@ -46,7 +45,7 @@ namespace EBF.NPCs.TownNPCs
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.SurfaceMushroom,
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Snow,
                 new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Natalie")
             ]);
         }

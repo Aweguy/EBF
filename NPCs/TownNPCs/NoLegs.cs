@@ -9,6 +9,7 @@ using EBF.Items.Summon;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class NoLegs : EBFTownNPC
     {
         private readonly int[] walkSequence = [0, 1, 2, 3, 4, 5];
@@ -19,13 +20,15 @@ namespace EBF.NPCs.TownNPCs
             Main.npcFrameCount[NPC.type] = 18;
             NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 5;
             NPCID.Sets.HatOffsetY[NPC.type] = 12;
-
-            //The following line requires an emote bubble asset for Matt
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<NoLegsEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Matt>(), AffectionLevel.Like)
+                .SetNPCAffection(ModContent.NPCType<Natalie>(), AffectionLevel.Like)
+                .SetNPCAffection(ModContent.NPCType<Lance>(), AffectionLevel.Like)
+                .SetNPCAffection(ModContent.NPCType<Anna>(), AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Truffle, AffectionLevel.Hate);
         }
         public override void SetDefaultsSafe()
@@ -69,6 +72,10 @@ namespace EBF.NPCs.TownNPCs
 
                 NPC.frame.Y = frameHeight * idleSequence[(int)NPC.frameCounter];
             }
+            else
+            {
+                NPC.frame.Y = frameHeight * 6; //fall frame
+            }
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -86,8 +93,10 @@ namespace EBF.NPCs.TownNPCs
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<SteelBuckler>())
                 .Add(ModContent.ItemType<GodlyBook>(), Condition.Hardmode)
+                .Add(ItemID.GoldenDelight, Condition.Hardmode, Condition.DownedMoonLord, Condition.IsNpcShimmered)
                 .Add(ItemID.MilkCarton)
                 .Add(ItemID.CookedFish)
+                .Add(ItemID.SauteedFrogLegs, Condition.InJungle)
                 .Add(ItemID.LeopardSkin, Condition.MoonPhaseFull)
                 .Add(ItemID.ZebraSkin, Condition.MoonPhaseNew)
                 .Add(ItemID.TigerSkin, Condition.MoonPhaseThirdQuarter)

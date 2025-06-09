@@ -5,7 +5,6 @@ using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.Localization;
 using EBF.Abstract_Classes;
-using EBF.Items.Ranged.Guns;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
@@ -13,6 +12,7 @@ using EBF.Items.Ranged.Bows;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Anna : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()
@@ -25,13 +25,12 @@ namespace EBF.NPCs.TownNPCs
             NPCID.Sets.AttackTime[NPC.type] = 30;
             NPCID.Sets.AttackAverageChance[NPC.type] = 30;
             NPCID.Sets.HatOffsetY[NPC.type] = 8;
-
-            //The following line requires an emote bubble asset for Lance
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<AnnaEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<UndergroundBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Lance>(), AffectionLevel.Like)
                 .SetNPCAffection(NPCID.BestiaryGirl, AffectionLevel.Love)
                 .SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.Merchant, AffectionLevel.Hate);
@@ -39,7 +38,7 @@ namespace EBF.NPCs.TownNPCs
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
-            NPC.height = 50;
+            NPC.height = 48;
             NPC.damage = 30;
             NPC.GivenName = "Anna";
             AnimationType = NPCID.Nurse;
@@ -63,11 +62,11 @@ namespace EBF.NPCs.TownNPCs
                 .Add(ItemID.Peach)
                 .Add(ItemID.AshGrassSeeds)
                 .Add(ItemID.PotSuspended)
-                .Add(ItemID.PottedLavaPlantPalm, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantBush, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantBramble, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantBulb, Condition.BloodMoon)
-                .Add(ItemID.PottedLavaPlantTendrils, Condition.BloodMoon)
+                .Add(ItemID.PottedLavaPlantPalm, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBush, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBramble, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBulb, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantTendrils, Condition.IsNpcShimmered)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;

@@ -11,6 +11,7 @@ using EBF.Items.Melee;
 
 namespace EBF.NPCs.TownNPCs
 {
+    [AutoloadHead]
     public class Matt : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()
@@ -23,14 +24,13 @@ namespace EBF.NPCs.TownNPCs
             NPCID.Sets.AttackTime[NPC.type] = 30;
             NPCID.Sets.AttackAverageChance[NPC.type] = 30;
             NPCID.Sets.HatOffsetY[NPC.type] = 8;
-
-            //The following line requires an emote bubble asset for Matt
-            //NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<ExamplePersonEmote>(); // Makes other NPCs talk about this NPC when in the world.
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<MattEmote>();
 
             NPC.Happiness
                 .SetBiomeAffection<OceanBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<SnowBiome>(AffectionLevel.Like)
                 .SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Natalie>(), AffectionLevel.Love)
                 .SetNPCAffection(NPCID.DD2Bartender, AffectionLevel.Like)
                 .SetNPCAffection(NPCID.Wizard, AffectionLevel.Dislike)
                 .SetNPCAffection(NPCID.Guide, AffectionLevel.Hate);
@@ -38,7 +38,7 @@ namespace EBF.NPCs.TownNPCs
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
-            NPC.height = 50;
+            NPC.height = 48;
             NPC.damage = 30;
             NPC.GivenName = "Matt";
             AnimationType = NPCID.Guide;
@@ -62,8 +62,11 @@ namespace EBF.NPCs.TownNPCs
             .Add(ItemID.PirateMap, Condition.InBeach, Condition.Hardmode)
             .Add(ItemID.ShellPileBlock, Condition.InBeach)
             .Add(ItemID.ShrimpPoBoy, Condition.InBeach)
+            .Add(ItemID.PotatoChips, Condition.InBeach)
+            .Add(ItemID.ShuckedOyster, Condition.InDesert)
             .Add(ItemID.GrilledSquirrel)
             .Add(ItemID.RoastedBird)
+            .Add(ItemID.ShipInABottle, Condition.HappyEnough)
 
             .Add(ItemID.Amethyst, Condition.MoonPhaseNew)
             .Add(ItemID.Topaz, Condition.MoonPhaseFirstQuarter)
