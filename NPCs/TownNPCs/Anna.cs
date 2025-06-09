@@ -5,21 +5,19 @@ using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.Localization;
 using EBF.Abstract_Classes;
-using EBF.Items.Ranged.Guns;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
-using Terraria.Utilities;
-using EBF.Systems;
+using EBF.Items.Ranged.Bows;
 
 namespace EBF.NPCs.TownNPCs
 {
     [AutoloadHead]
-    public class Lance : EBFTownNPC
+    public class Anna : EBFTownNPC
     {
         public override void SetStaticDefaultsSafe()
         {
-            Main.npcFrameCount[NPC.type] = 25;
+            Main.npcFrameCount[NPC.type] = 23;
             NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
             NPCID.Sets.AttackFrameCount[NPC.type] = 4;
             NPCID.Sets.DangerDetectRange[NPC.type] = 16 * 30;
@@ -27,29 +25,29 @@ namespace EBF.NPCs.TownNPCs
             NPCID.Sets.AttackTime[NPC.type] = 30;
             NPCID.Sets.AttackAverageChance[NPC.type] = 30;
             NPCID.Sets.HatOffsetY[NPC.type] = 8;
-            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<LanceEmote>();
+            NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<AnnaEmote>();
 
             NPC.Happiness
-                .SetBiomeAffection<MushroomBiome>(AffectionLevel.Like)
-                .SetBiomeAffection<OceanBiome>(AffectionLevel.Dislike)
-                .SetNPCAffection(NPCID.PartyGirl, AffectionLevel.Love)
-                .SetNPCAffection(ModContent.NPCType<Anna>(), AffectionLevel.Like)
-                .SetNPCAffection(NPCID.Cyborg, AffectionLevel.Dislike)
-                .SetNPCAffection(NPCID.Clothier, AffectionLevel.Hate);
+                .SetBiomeAffection<ForestBiome>(AffectionLevel.Like)
+                .SetBiomeAffection<UndergroundBiome>(AffectionLevel.Dislike)
+                .SetNPCAffection(ModContent.NPCType<Lance>(), AffectionLevel.Like)
+                .SetNPCAffection(NPCID.BestiaryGirl, AffectionLevel.Love)
+                .SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Dislike)
+                .SetNPCAffection(NPCID.Merchant, AffectionLevel.Hate);
         }
         public override void SetDefaultsSafe()
         {
             NPC.width = 30;
             NPC.height = 48;
             NPC.damage = 30;
-            NPC.GivenName = "Lance";
-            AnimationType = NPCID.Guide;
+            NPC.GivenName = "Anna";
+            AnimationType = NPCID.Nurse;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.SurfaceMushroom,
-                new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Lance")
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Anna")
             ]);
         }
         public override void SetChatButtons(ref string button, ref string button2)
@@ -59,32 +57,20 @@ namespace EBF.NPCs.TownNPCs
         public override void AddShops()
         {
             NPCShop shop = new(Type);
-            shop.Add(ModContent.ItemType<HeavyClaw>())
-                .Add(ModContent.ItemType<ShadowBlaster>(), Condition.DownedDestroyer)
-                .Add(ItemID.MusketBall)
-                .Add(ItemID.UltrabrightTorch)
-                .Add(ItemID.SpicyPepper)
-                .Add(ItemID.Radar)
-                .Add(ItemID.MetalDetector)
-                .Add(ItemID.AmmoBox, Condition.BloodMoon)
+            shop.Add(ModContent.ItemType<GaiasBow>())
+                .Add(ModContent.ItemType<AlchemistBow>(), Condition.Hardmode)
+                .Add(ItemID.Peach)
+                .Add(ItemID.AshGrassSeeds)
+                .Add(ItemID.PotSuspended)
+                .Add(ItemID.PottedLavaPlantPalm, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBush, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBramble, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantBulb, Condition.IsNpcShimmered)
+                .Add(ItemID.PottedLavaPlantTendrils, Condition.IsNpcShimmered)
             .Register();
         }
-        public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;
-        public override bool CanTownNPCSpawn(int numTownNPCs) => Main.hardMode;
-        public override WeightedRandom<string> GetChatSafe(WeightedRandom<string> dialogue)
-        {
-            if (DownedBossSystem.downedNeonValk)
-            {
-                // Check if we've heard the line before
-                var modPlayer = Main.LocalPlayer.GetModPlayer<EBFPlayer>();
-                if (!modPlayer.hasHeardDownedNeonValkLine)
-                {
-                    modPlayer.hasHeardDownedNeonValkLine = true;
-                    dialogue.Add(this.GetLocalizedValue("Chat.DownedNeonValk"), weight: 9999);
-                }
-            }
-            return dialogue;
-        }
+        public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;
+        public override bool CanTownNPCSpawn(int numTownNPCs) => NPC.downedQueenBee;
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
             if (firstButton)
@@ -104,15 +90,14 @@ namespace EBF.NPCs.TownNPCs
         }
         public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
         {
-            var texture = TextureAssets.Projectile[ModContent.ProjectileType<ShadowBlasterSidearm>()].Value;
+            var texture = TextureAssets.Item[ModContent.ItemType<FairyBow>()].Value;
             item = texture;
             itemFrame = texture.Bounds;
-            scale = 0.8f;
             horizontalHoldoutOffset = -4;
         }
         public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
         {
-            projType = ModContent.ProjectileType<ShadowBlaster_DarkShot>();
+            projType = ProjectileID.WoodenArrowFriendly;
             attackDelay = 1;
         }
         public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)

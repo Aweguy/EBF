@@ -1,5 +1,5 @@
 EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
-As of version 1.4, the mod adds 83 items:
+As of version 1.5, the mod adds 83 items:
 - 17 Melee weapons
 - 30 Ranged weapon
 - 18 Magic weapons
@@ -36,5 +36,11 @@ V1.4 Cat Toy Update (06/04/2025)
 - 2 new accessories added.
 - Fixed sold weapons being too expensive.
 That is all.
+
+V1.5 Town NPC Update (09/06/2025)
+- Added all five EBF players as town NPCs.
+- Added tag damage to the cat toys.
+- Made grounded minions smarter.
+Details in the changelog on our discord server.
 
 If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf
