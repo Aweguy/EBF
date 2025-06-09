@@ -205,7 +205,7 @@ NoLegs: {
 		Content: *is at peace*
 	}
 
-	DisplayName: No Legs
+	DisplayName: NoLegs
 }
 
 Natalie: {
