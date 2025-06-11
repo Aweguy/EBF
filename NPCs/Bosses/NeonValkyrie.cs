@@ -14,6 +14,7 @@ using EBF.Extensions;
 using EBF.NPCs.Machines;
 using System.Collections.Generic;
 using EBF.Systems;
+using EBF.Dusts;
 
 namespace EBF.NPCs.Bosses
 {
@@ -155,6 +156,7 @@ namespace EBF.NPCs.Bosses
             }
 
             Hover(player);
+            SpawnHoverRings();
 
             switch (currentState)
             {
@@ -222,7 +224,10 @@ namespace EBF.NPCs.Bosses
             //Let the world know the boss is dead
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1); 
         }
-
+        public override void BossLoot(ref string name, ref int potionType)
+        {
+            potionType = ItemID.HealingPotion;
+        }
         private void HandleStateChanging()
         {
             StateTimer++;
@@ -281,6 +286,16 @@ namespace EBF.NPCs.Bosses
                 {
                     NPC.velocity.Y *= 0.9f;
                 }
+            }
+        }
+        private void SpawnHoverRings()
+        {
+            if(Main.GameUpdateCount % 20 == 0)
+            {
+                var type = ModContent.DustType<HoverRing>();
+                var velocity = new Vector2(NPC.velocity.X / 2, 2);
+                Dust.NewDustPerfect(NPC.Bottom + new Vector2(60, 0), type, velocity);
+                Dust.NewDustPerfect(NPC.Bottom - new Vector2(90, 0), type, velocity);
             }
         }
         private void Move(Player player)

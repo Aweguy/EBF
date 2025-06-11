@@ -102,6 +102,7 @@ namespace EBF.NPCs.Machines
         {
             var pos = Projectile.position + new Vector2(0, Projectile.height * 0.75f).RotatedBy(Projectile.rotation);
             Dust.NewDust(pos, Projectile.width, Projectile.width, DustID.Torch, Scale: 2f);
+            Dust.NewDust(pos, Projectile.width, Projectile.width, DustID.Smoke, Scale: 2f);
         }
     }
 }
