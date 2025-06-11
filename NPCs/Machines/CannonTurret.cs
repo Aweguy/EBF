@@ -51,7 +51,7 @@ namespace EBF.NPCs.Machines
 
                 SoundEngine.PlaySound(SoundID.Item11, NPC.Center);
 
-                var maxShotCount = IsEnraged == 0 ? 2 : 3;
+                var maxShotCount = 2;
                 ShotsFired++;
                 if (ShotsFired >= maxShotCount)
                 {

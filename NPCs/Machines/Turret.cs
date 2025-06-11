@@ -18,7 +18,6 @@ namespace EBF.NPCs.Machines
         private Rectangle baseRect;
         private Vector2 originOffset = Vector2.UnitX * 12; // Adjusts the pivot point, so the turret rotates around the attachment and not its center.
         protected ref float IsShooting => ref NPC.ai[0]; // This value is read by Neon Valkyrie so she won't jump.
-        protected ref float IsEnraged => ref NPC.ai[1]; // This is set to true by Neon Valkyrie in her second phase.
         
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }

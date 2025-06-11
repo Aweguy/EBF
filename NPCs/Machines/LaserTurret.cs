@@ -95,7 +95,7 @@ namespace EBF.NPCs.Machines
 
                 SoundEngine.PlaySound(SoundID.Item157, NPC.Center);
 
-                var maxBallCount = IsEnraged == 0 ? 3 : 4;
+                var maxBallCount = 3;
                 BallsFired++;
                 if(BallsFired >= maxBallCount)
                 {
@@ -148,7 +148,6 @@ namespace EBF.NPCs.Machines
 
             // Turn toward the target
             float turnSpeed = 0.005f;
-            if (IsEnraged == 1) turnSpeed = 0.007f;
             float newAngle = currentAngle + MathF.Sign(delta) * turnSpeed;
 
             NPC.rotation = newAngle;
@@ -187,7 +186,6 @@ namespace EBF.NPCs.Machines
     {
         private NPC owner;
         private Player target;
-        private ref float IsOwnerEnraged => ref owner.ai[1];
         public override void OnSpawnSafe(IEntitySource source)
         {
             lightColor = Color.Orange.ToVector3();
@@ -203,8 +201,6 @@ namespace EBF.NPCs.Machines
             }
 
             Projectile.Center = owner.Center + Projectile.velocity * 36;
-
-
             TurnTowardsTarget();
         }
 
@@ -218,7 +214,6 @@ namespace EBF.NPCs.Machines
 
             // Turn toward the target
             float turnSpeed = 0.005f;
-            if (IsOwnerEnraged == 1) turnSpeed = 0.007f;
             float newAngle = currentAngle + MathF.Sign(delta) * turnSpeed;
 
             Projectile.velocity = newAngle.ToRotationVector2();
