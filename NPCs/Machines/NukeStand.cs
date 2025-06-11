@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
 using EBF.Extensions;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EBF.NPCs.Machines
 {
@@ -15,6 +16,9 @@ namespace EBF.NPCs.Machines
     public class NukeStand : ModNPC
     {
         private bool hasLaunched = false;
+        private Texture2D glowmaskTexture;
+        private Color signalColor = Color.Red;
+        private Vector2 SignalPosition => NPC.position + new Vector2(NPC.width * 0.25f, NPC.height * 0.75f);
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 2;
@@ -26,10 +30,11 @@ namespace EBF.NPCs.Machines
             NPC.defense = 18;
             NPC.lifeMax = 3000;
 
-            NPC.value = 100;
+            NPC.value = 0;
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;
             NPC.knockBackResist = 0;
+            glowmaskTexture = ModContent.Request<Texture2D>(Texture + "_Glowmask").Value;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -42,19 +47,44 @@ namespace EBF.NPCs.Machines
         public override void AI()
         {
             NPC.frameCounter++;
-            if (NPC.frameCounter == 60 * 1)
+            if (NPC.frameCounter == 60 * 10)
+            {
+                SoundEngine.PlaySound(SoundID.Item75, NPC.position);
+                signalColor = Color.Yellow;
+            }
+            if (NPC.frameCounter == 60 * 15)
+            {
+                SoundEngine.PlaySound(SoundID.Item75, NPC.position);
+                signalColor = Color.Green;
+            }
+            if (NPC.frameCounter == 60 * 20)
             {
                 Launch();
                 hasLaunched = true;
             }
-            if (NPC.frameCounter >= 60 * 2)
+            if (NPC.frameCounter >= 60 * 21)
             {
                 NPC.StrikeInstantKill();
             }
+
+            Lighting.AddLight(SignalPosition, signalColor.ToVector3());
         }
         public override void FindFrame(int frameHeight)
         {
             NPC.frame.Y = hasLaunched ? frameHeight : 0;
+        }
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Main.spriteBatch.Draw(
+                    glowmaskTexture,
+                    NPC.Center - Main.screenPosition,
+                    new Rectangle(0, 0, glowmaskTexture.Width, glowmaskTexture.Height),
+                    signalColor,
+                    NPC.rotation,
+                    glowmaskTexture.Size() / 2,
+                    NPC.scale,
+                    SpriteEffects.None,
+                    0);
         }
         public override void OnKill()
         {
@@ -67,12 +97,16 @@ namespace EBF.NPCs.Machines
                 velocity = new Vector2(0, -2).RotatedByRandom(1f);
             }
 
-            //Gore.NewGore(NPC.GetSource_Death(), NPC.Center, velocity, Mod.Find<ModGore>($"{Name}_Gore").Type, NPC.scale);
+            //Break apart
+            for (int i = 0; i < 3; i++)
+            {
+                Gore.NewGore(NPC.GetSource_Death(), NPC.Center, velocity, Mod.Find<ModGore>($"{Name}_Gore{i}").Type, NPC.scale);
+            }
         }
         private void Launch()
         {
             var type = (int)NPC.ai[0]; // Given by the npc that created the stand.
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Top, Vector2.Zero, type, 120, 5f);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - new Vector2(0, 2), Vector2.Zero, type, 120, 5f);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace EBF.NPCs.Machines
         private Texture2D glowmaskTexture;
         private Vector2 shakeDirection = Vector2.UnitX * 1; //Increase the multiplier to make the shaking more intense
         private const float diggingDepth = 48; //How far the missile is placed into the ground upon hitting it
-        private const int explosionSize = 800; //The hitbox size of the explosion
+        private const int explosionSize = 1600; //The hitbox size of the explosion
         private ref float GlowmaskOpacity => ref Projectile.localAI[0];
 
         public override void SetDefaultsSafe()
@@ -47,6 +47,7 @@ namespace EBF.NPCs.Machines
                 //Embed projectile into ground
                 Projectile.position += Vector2.Normalize(oldVelocity) * diggingDepth;
                 Projectile.velocity = Vector2.Zero;
+                SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact, Projectile.position);
             }
 
             return false;
@@ -70,10 +71,12 @@ namespace EBF.NPCs.Machines
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            SoundEngine.PlaySound(SoundID.DeerclopsRubbleAttack, Projectile.position);
+            SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 
             //Explode
             ProjectileExtensions.ExpandHitboxBy(Projectile, explosionSize, explosionSize);
-            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Huge);
+            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Nuclear);
             Projectile.Damage();
         }
     }

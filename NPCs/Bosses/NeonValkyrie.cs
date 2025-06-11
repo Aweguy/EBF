@@ -337,8 +337,14 @@ namespace EBF.NPCs.Bosses
         }
         private void SummonAttachment()
         {
-            var type = Main.rand.NextBool(2) ? ModContent.NPCType<LaserTurret>() : ModContent.NPCType<CannonTurret>();
+            //Determine attachment
+            int type;
+            if(InSecondPhase == 1)
+                type = Main.rand.NextBool(2) ? ModContent.NPCType<LaserTurret>() : ModContent.NPCType<NukeStand>();
+            else 
+                type = Main.rand.NextBool(2) ? ModContent.NPCType<HarpoonTurret>() : ModContent.NPCType<CannonTurret>();
 
+            //Add attachment to NV
             attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type, 0, 0, InSecondPhase);
             attachedNPC.Bottom = AttachmentBasePos;
         }
