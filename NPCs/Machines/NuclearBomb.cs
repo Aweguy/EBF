@@ -30,6 +30,7 @@ namespace EBF.NPCs.Machines
                 Projectile.Center += shakeDirection;
                 shakeDirection.X = -shakeDirection.X;
 
+                //Expand
                 shakeDirection *= 1.05f;
                 Projectile.scale *= 1.01f;
 

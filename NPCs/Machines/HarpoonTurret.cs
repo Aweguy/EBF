@@ -58,6 +58,7 @@ namespace EBF.NPCs.Machines
         
             if(IsShooting == 0)
             {
+                // Create hook gore if it is on the cannon
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore2").Type, NPC.scale);
             }
         }

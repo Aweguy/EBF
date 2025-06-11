@@ -46,6 +46,7 @@ namespace EBF.NPCs.Machines
         }
         public override void AI()
         {
+            //Countdown
             NPC.frameCounter++;
             if (NPC.frameCounter == 60 * 10)
             {
@@ -57,11 +58,13 @@ namespace EBF.NPCs.Machines
                 SoundEngine.PlaySound(SoundID.Item75, NPC.position);
                 signalColor = Color.Green;
             }
+            //Launch
             if (NPC.frameCounter == 60 * 20)
             {
                 Launch();
                 hasLaunched = true;
             }
+            //Break stand
             if (NPC.frameCounter >= 60 * 21)
             {
                 NPC.StrikeInstantKill();
@@ -92,6 +95,7 @@ namespace EBF.NPCs.Machines
 
             if (!hasLaunched)
             {
+                //Explode
                 NPC.CreateExplosionEffect();
                 SoundEngine.PlaySound(SoundID.NPCDeath14, NPC.position);
                 velocity = new Vector2(0, -2).RotatedByRandom(1f);
@@ -105,7 +109,7 @@ namespace EBF.NPCs.Machines
         }
         private void Launch()
         {
-            var type = (int)NPC.ai[0]; // Given by the npc that created the stand.
+            var type = (int)NPC.ai[0]; // Nuke type is given by the npc that created the stand.
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - new Vector2(0, 2), Vector2.Zero, type, 120, 5f);
         }
     }

@@ -72,7 +72,7 @@ namespace EBF.NPCs.Machines
                     Projectile.velocity.X *= 0.98f;
                     Projectile.velocity.Y += 0.25f;
                 }
-
+                //Face moving direction
                 if (Projectile.velocity != Vector2.Zero)
                 {
                     Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
