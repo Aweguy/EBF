@@ -278,24 +278,41 @@ Items: {
 	BossSummons: {
 		NeonKeychain: {
 			DisplayName: Neon Keychain
-			Tooltip: ""
+			Tooltip:
+				'''
+				Summons Neon Valkyrie.
+				A keychain to the 90XX hovertank model known as Neon Valkyrie.
+				Activates both self-driving and automated defense mode before you even get inside!
+				'''
 		}
 	}
 
 	Materials: {
 		AtomicBattery: {
 			DisplayName: Atomic Battery
-			Tooltip: ""
+			Tooltip:
+				'''
+				A dubiously legal battery used for auxiliary power by Neon Valkyrie. 
+				Useless on its own.
+				'''
 		}
 
 		MechanicalChain: {
 			DisplayName: Mechanical Chain
-			Tooltip: ""
+			Tooltip:
+				'''
+				A fashionable key that opens the hybrid electronic and mechanical locks on Neon Valkyrie. 
+				Must be powered to operate.
+				'''
 		}
 
 		NeonCase: {
 			DisplayName: Neon Case
-			Tooltip: ""
+			Tooltip:
+				'''
+				A swanky battery-powered remote control to activate Neon Valkyrie. 
+				Needs a key to operate.
+				'''
 		}
 	}
 }
