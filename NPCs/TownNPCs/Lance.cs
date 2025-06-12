@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Terraria.Utilities;
 using EBF.Systems;
+using EBF.Items.Materials;
 
 namespace EBF.NPCs.TownNPCs
 {
@@ -67,6 +68,9 @@ namespace EBF.NPCs.TownNPCs
                 .Add(ItemID.Radar)
                 .Add(ItemID.MetalDetector)
                 .Add(ItemID.AmmoBox, Condition.BloodMoon)
+                .Add(ModContent.ItemType<AtomicBattery>(), Condition.DownedSkeletronPrime)
+                .Add(ModContent.ItemType<NeonCase>(), Condition.DownedTwins)
+                .Add(ModContent.ItemType<MechanicalChain>(), Condition.DownedDestroyer)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;

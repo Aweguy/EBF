@@ -3,12 +3,13 @@ using Terraria;
 using Terraria.ModLoader;
 using EBF.NPCs.Bosses;
 using Terraria.Audio;
+using EBF.Items.Materials;
 
-namespace EBF.Items.Consumeables
+namespace EBF.Items.BossSummons
 {
-    public class NeonKeychain : ModItem
+    public class NeonKeychain : ModItem, ILocalizedModType
     {
-        public new string LocalizationCategory => "Items.Consumeables";
+        public new string LocalizationCategory => "Items.BossSummons";
         public override void SetStaticDefaults()
         {
             ItemID.Sets.SortingPriorityBossSpawns[Type] = 12;
@@ -35,6 +36,15 @@ namespace EBF.Items.Consumeables
             NPC.SpawnOnPlayer(player.whoAmI, type);
 
             return true;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient<AtomicBattery>(stack: 1)
+                .AddIngredient<NeonCase>(stack: 1)
+                .AddIngredient<MechanicalChain>(stack: 1)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

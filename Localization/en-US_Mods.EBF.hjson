@@ -957,9 +957,28 @@ Items: {
 		}
 	}
 
-	NeonKeychain: {
-		DisplayName: Neon Keychain
-		Tooltip: ""
+	BossSummons: {
+		NeonKeychain: {
+			DisplayName: Neon Keychain
+			Tooltip: ""
+		}
+	}
+
+	Materials: {
+		AtomicBattery: {
+			DisplayName: Atomic Battery
+			Tooltip: ""
+		}
+
+		MechanicalChain: {
+			DisplayName: Mechanical Chain
+			Tooltip: ""
+		}
+
+		NeonCase: {
+			DisplayName: Neon Case
+			Tooltip: ""
+		}
 	}
 }
 
