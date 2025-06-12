@@ -44,6 +44,7 @@
     <None Remove="Items\Summon\BusterSword_OrigamiDragonMinion.png" />
     <None Remove="Items\Summon\BusterSword_PaperBladeProjectile.png" />
     <None Remove="Localization\en-US_Mods.EBF.Bestiary.hjson" />
+    <None Remove="Localization\en-US_Mods.EBF.Items.Weapons.hjson" />
     <None Remove="localization\en-US_Mods.EBF.NPCs.hjson" />
     <None Remove="NPCs\TownNPCs\NoLegs.png" />
     <None Remove="NPCs\TownNPCs\Natalie.png" />
