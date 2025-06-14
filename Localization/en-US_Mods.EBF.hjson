@@ -314,6 +314,23 @@ Items: {
 				Needs a key to operate.
 				'''
 		}
+
+		NanoFibre: {
+			DisplayName: Nano Fibre
+			Tooltip: ""
+		}
+
+		RamChip: {
+			DisplayName: Ram Chip
+			Tooltip: ""
+		}
+	}
+
+	TreasureBags: {
+		NeonValkBossBag: {
+			DisplayName: Treasure Bag (Neon Valkyrie)
+			Tooltip: ""
+		}
 	}
 }
 
@@ -324,3 +341,5 @@ Emotes: {
 	NatalieEmote.Command: natalieemote
 	NoLegsEmote.Command: nolegsemote
 }
+
+DownedNeonValk: Mods.EBF.DownedNeonValk

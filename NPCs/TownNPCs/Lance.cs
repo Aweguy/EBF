@@ -63,6 +63,7 @@ namespace EBF.NPCs.TownNPCs
             shop.Add(ModContent.ItemType<HeavyClaw>())
                 .Add(ModContent.ItemType<ShadowBlaster>(), Condition.DownedDestroyer)
                 .Add(ItemID.MusketBall)
+                .Add(ItemID.ExplosivePowder)
                 .Add(ItemID.UltrabrightTorch)
                 .Add(ItemID.SpicyPepper)
                 .Add(ItemID.Radar)
@@ -71,6 +72,8 @@ namespace EBF.NPCs.TownNPCs
                 .Add(ModContent.ItemType<AtomicBattery>(), Condition.DownedSkeletronPrime)
                 .Add(ModContent.ItemType<NeonCase>(), Condition.DownedTwins)
                 .Add(ModContent.ItemType<MechanicalChain>(), Condition.DownedDestroyer)
+                .Add(ModContent.ItemType<RamChip>(), new Condition("Mods.EBF.DownedNeonValk", () => DownedBossSystem.downedNeonValk))
+                .Add(ModContent.ItemType<NanoFibre>(), new Condition("Mods.EBF.DownedNeonValk", () => DownedBossSystem.downedNeonValk))
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;

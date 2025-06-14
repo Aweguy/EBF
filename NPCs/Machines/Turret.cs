@@ -1,10 +1,12 @@
 ﻿using EBF.Extensions;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -104,6 +106,11 @@ namespace EBF.NPCs.Machines
             
             OnKillSafe();
         }
+        public sealed override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RamChip>()));
+        }
+
 
         protected void LerpRotationToTarget(Player player, float lerpSpeed)
         {

@@ -15,6 +15,9 @@ using EBF.NPCs.Machines;
 using System.Collections.Generic;
 using EBF.Systems;
 using EBF.Dusts;
+using Terraria.GameContent.ItemDropRules;
+using EBF.Items.Materials;
+using EBF.Items.TreasureBags;
 
 namespace EBF.NPCs.Bosses
 {
@@ -227,6 +230,31 @@ namespace EBF.NPCs.Bosses
         public override void BossLoot(ref string name, ref int potionType)
         {
             potionType = ItemID.HealingPotion;
+        }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            // The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
+            // 1. Trophy
+            // 2. Classic Mode ("not expert")
+            // 3. Expert Mode (usually just the treasure bag)
+            // 4. Master Mode (relic first, pet last, everything else in between)
+
+            // Trophy
+            //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
+
+            // Classic Mode drops
+            npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<NanoFibre>(), 1, 3, 4));
+            npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<RamChip>(), 1, 6, 8));
+            npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ItemID.ExplosivePowder, 1, 28, 32));
+
+            // Treasure bag
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NeonValkBossBag>()));
+
+            // Relic
+            //npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.NeonValkRelic>()));
+
+            // Pet
+            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<NeonValkPetItem>(), 4));
         }
         private void HandleStateChanging()
         {

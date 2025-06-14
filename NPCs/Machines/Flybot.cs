@@ -1,10 +1,12 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Extensions;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -105,6 +107,10 @@ namespace EBF.NPCs.Machines
             //Cannons
             for (int i = 0; i < 2; i++)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, new Vector2(0, -2).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"Flybot_Gore4").Type, NPC.scale);
+        }
+        public sealed override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RamChip>()));
         }
         protected void Move(Player player)
         {
