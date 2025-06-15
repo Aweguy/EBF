@@ -310,6 +310,15 @@ Magic: {
 			'There is no self, only a point on the circle of life.'
 			'''
 	}
+
+	WreckingRod: {
+		DisplayName: Wrecking Rod
+		Tooltip:
+			'''
+			Lobs magical, short-fused grenades, that explode with a plasma burst.
+			'Yes Rico, kaboom.'
+			'''
+	}
 }
 
 Ranged: {

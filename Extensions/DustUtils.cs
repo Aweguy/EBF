@@ -9,7 +9,7 @@ namespace EBF.Extensions
         public enum ExplosionSize { Small, Medium, Large, Huge, Nuclear }
         
         /// <summary>
-        /// Creates a bunch of dust and gore to simulate an explosion effect.
+        /// Creates a bunch of dust and gore to simulate a medium sized explosion effect.
         /// <br>Has an overload that supports various sizes when supplied with an ExplosionSize enum.</br>
         /// <para>NOTE: This does not create a hitbox.</para>
         /// </summary>

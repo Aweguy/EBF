@@ -189,6 +189,7 @@ Projectiles: {
 	BlueFlybot_Bubble.DisplayName: Blue Flybot_ Bubble
 	HarpoonTurret_Projectile.DisplayName: Harpoon Turret_ Projectile
 	NuclearBomb.DisplayName: Nuclear Bomb
+	WreckingRod_MagicGrenade.DisplayName: Wrecking Rod_ Magic Grenade
 }
 
 Items: {
