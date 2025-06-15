@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Terraria.Audio;
 using EBF.Buffs;
 using EBF.NPCs.Machines;
+using EBF.Items.Materials;
 
 namespace EBF.Items.Summon
 {
@@ -45,10 +46,8 @@ namespace EBF.Items.Summon
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.HallowedBar, stack: 10)
-                .AddIngredient(ItemID.SoulofMight, stack: 5)
-                .AddIngredient(ItemID.SoulofSight, stack: 5)
-                .AddIngredient(ItemID.SoulofFright, stack: 5)
+                .AddIngredient(ModContent.ItemType<NanoFibre>(), stack: 2)
+                .AddIngredient(ModContent.ItemType<RamChip>(), stack: 24)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
