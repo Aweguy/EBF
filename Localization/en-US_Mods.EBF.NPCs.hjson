@@ -7,7 +7,7 @@ Matt: {
 		Dungeon1: I'd love a good dungeon crawl... but all these boneheads won't stop attacking me!
 		BloodMoon1: There are so many of them, can't we just sleep through this?
 		BloodMoon2: I wanted to fish until this is over, but something stared at me underwater... Screw this, I'm out!
-		Homeless1: You wouldn't happen to have a house, would you? I won't steal your stuff, promise.
+		Homeless1: You wouldn't happen to have a house, would you? Maybe with a free sofa?
 		WindyDay1: Check it out! The wind is blowing enemies right into my sword!
 		WindyDay2: Perfect weather to practice Tempest!
 		Rain1: Come to think of it, I've never seen it rain at Hope Harbor.
@@ -38,12 +38,12 @@ Matt: {
 		NoHome: I know people call me a homeless tramp, but is this actually what it's like not having a house? I don't think I'm a fan.
 		FarFromHome: I think even Hope Harbor might be closer than my current digs.
 		LoveSpace: I get to have all this space to myself? Sweet! Now I can keep all my stuff here!
-		DislikeCrowded: Can't you do something about all these guys? I feel like they're gonna steal some of the loot in my stash!
+		DislikeCrowded: This party's too big for me, I can't stash my loot anywhere.
 		HateCrowded: It's so crowded there's no quiet spot for me to game in!
 		LikeNPC_Princess: It's a ton of fun to play video games with {NPCName}! She keeps calling my Wii retro though...
 		Princess_LovesNPC: Have you met Sir {NPCName}? Hehe, I decided to make him an honorary knight!
 		DislikeBiome: There's nowhere to dock even a raft in the Desert...
-		LikeBiome: It's like I'm back at home, here by the Ocean!
+		LikeBiome: Being by the Ocean makes me feel right at home!
 		LoveNPC: Natz and I are like peanut butter and marshmallow fluff! There's no one I'd rather have around than her!
 		LikeNPC: The stories {NPCName} tells always crack me up, they're great to have around for a feast!
 		DislikeNPC: Natalie's one thing, but I can't make heads or tails of what {NPCName}'s saying!
@@ -58,7 +58,7 @@ Lance: {
 		Graveyard1: Corpses make great target dummies!
 		Graveyard2: …feels like home, in the most insulting way possible.
 		Dungeon1: My scanner is acting up in this Dungeon! They're... they're coming through the walls! Through the goddamn walls!
-		BloodMoon1: Where the heck are all these monsters coming from!? You didn't unleash another evil, did you?
+		BloodMoon1: Where the heck are all these monsters coming from!? We didn't unleash another evil, did we?
 		BloodMoon2: Ahhh! They’re coming! Fire! Fire everything!
 		Homeless1: I can't be out in the field all day, I need a place to establish a base camp.
 		WindyDay1: What a breeze today! Let’s go aerosailing!
@@ -81,7 +81,7 @@ Lance: {
 		Corrupt1: This Corruption is like a warzone of rot and decay. It'd be interesting if the inhabitants weren't so bloodthirsty!
 		Crimson1: This Crimson is like a warzone of gore and flesh. It'd be interesting if the inhabitants weren't so bloodthirsty!
 		Matt1: Matt might be a total meathead, but I like his brute force approach to things.
-		Natalie1: I'll just get this out of the way, Natalie is hot. She doesn't like me, but that doesn't change anything.
+		Natalie1: Hey, a word of advice about Natalie. If you see her holding an axe, run.
 		Anna1: Anna's a naive forest girl, but I respect anyone who basically carries a hand cannon all day long.
 		NoLegs1: The cat? He's a sneaky little gremlin, but I can tell he knows what's up.
 	}
@@ -98,7 +98,7 @@ Lance: {
 		DislikeBiome: I don't like the Ocean... Gunpowder won't ignite in water, and I'm surrounded by it.
 		LikeBiome: These Mushrooms are perfect for researching new munitions!
 		LoveNPC: I can't believe how much {NPCName} knows about pyrotechnics and explosives! She's incredible!
-		LikeNPC: I like to see how Anna handles my machinery. I figured she would lose interest after a while, but it's nice that she sticks around.
+		LikeNPC: I know we argue a lot, but I like having {NPCName} around.
 		DislikeNPC: I don't trust {NPCName}... he could be a double agent for the AI apocalypse, for all I know.
 		HateNPC: There's something... off about that {NPCName} guy... I can't tell what, but he just gives me the creeps.
 	}
@@ -121,12 +121,12 @@ Anna: {
 		Day1: Remember, the early bird gets snagged by the early hunter!
 		Night1: I like to take the evening to relax and care for my garden.
 		Night2: Did you know that some plants only bloom at night? It seems strange to me too.
-		Party1: These townfolk have been loving my party tricks so far. Who knew my skills could apply indoors like this.
+		Party1: Hey, want to watch me shoot a Pigronata blindfolded?
 		Normal1: I’ve had the Fairy Bow the longest, but I have a good feeling about the Alchemist’s Bow.
 		Normal2: Did we ever put the Sacred Jewels back? I can’t remember what happened after Godcat.
 		Normal3: No, I’m not selling generic healing potions. Why would I be?
 		Normal4: How does my new perfume smell? I asked Natz, but she just started blushing.
-		Normal5: Normal5
+		Normal5: I used to make Wooden Idols as a kid, but Greenwood Village stopped doing that a while back.
 		Normal6: What do you think of our sprites? I made them myself!
 		Hardmode1: Yeesh! I went hunting in the Jungle and almost got run over by a Giant Tortoise!
 		Corrupt1: This place is a crime against nature! If I knew any Fire skills I'd burn it down myself!
@@ -140,18 +140,18 @@ Anna: {
 	TownNPCMood: {
 		DislikeNPC: Okay, {NPCName} wouldn't be so bad if he just knew how to keep the noise down.
 		LoveNPC: I love how tuned in {NPCName} is to her surroundings. We always have something to talk about!
-		LikeNPC: I'm glad Lance makes time between his coding sessions to let me play with his gadgets, he's really fun to be around when he isn't on a rant.
+		LikeNPC: It's a ton of fun to hold a barbeque with {NPCName}
 		DislikeBiome: Being stuck underground makes me feel awful. At least there's moss, dirt, and, uh... More moss?
 		LikeBiome: The Forest is where I belong!
-		HateCrowded: I would like it if you had somewhere with fewer people. I can't sleep with all the constant chatter.
-		DislikeCrowded: It's a bit crowded here. I can't get any target practice in without worrying about someone getting in the way.
+		HateCrowded: Can I move somewhere quieter? I can't sleep with all the constant chatter.
+		DislikeCrowded: I can't get any target practice in without worrying about someone getting in the way.
 		LoveSpace: I am loving all this open space! I can practice my archery all I want!
 		FarFromHome: I think I've been trekking a little too far from my usual hunting grounds.
 		NoHome: I'm used to being out in the wild, but I'd still like a place for all my gear.
 		Content: This place isn't half bad.
-		HateNPC: Ugh, {NPCName} keeps trying to make a profit off of the forest, and he belittles me every time I try to talk him out of it!
+		HateNPC: Ugh, {NPCName} gave me chump change for prime slime steaks!
 		LikeNPC_Princess: Wow, {NPCName} is great at tracking Slime Bunnies through the woods!
-		Princess_LovesNPC: Anna is such a skilled ranger, and just as kind a soul as myself!
+		Princess_LovesNPC: Anna is a wonderfully skilled ranger, and a doubly kind soul!
 	}
 
 	DisplayName: Anna
@@ -193,7 +193,7 @@ NoLegs: {
 	TownNPCMood: {
 		Princess_LovesNPC: I think NoLegs is just the cutest little guy in the world!
 		LikeNPC_Princess: *shows off the paper crown [Princess] made him and purrs*
-		LikeNPC: *gestures at a sketch of {NPCName} and snickers smugly*
+		LikeNPC: *gestures at a sketch of {NPCName} and chirps happily*
 		HateNPC: *sneezing his head off because of all the spores {NPCName} is leaving around*
 		DislikeBiome: *is baking uncomfortably in the Desert heat*
 		LikeBiome: *gleefully looking for Slime Bunnies to hunt in the Forest*
@@ -219,11 +219,11 @@ Natalie: {
 		BloodMoon2: Have you seen my knife? Knife, knife, knife...
 		Homeless1: I don't mind camping out in the wilds, but... Okay, I really do mind!
 		WindyDay1: KYAA–! My skirt!
-		WindyDay2: I knew I should've worn shorts today!
+		WindyDay2: Don't get blown away out there!
 		Rain1: Seriously, is there no one here who will sell an umbrella?
 		Rain2: Perfect weather to stay inside and work on my fanfict- er... Research!
 		Storm1: Oof! I'm not going outside if I can help it!
-		Storm2: Don't look at me; my strongest spells are called Storms but I've got nothing to do with this.
+		Storm2: My strongest spells are called 'Storms', but I've got nothing on this weather!
 		Day1: Hello! What are you up to today?
 		Night1: Eek! Y-you didn't see that notebook I was writing in, did you? You better not peek!
 		Night2: I'm having trouble falling asleep... You think I could use Matt as a pillow?
@@ -255,7 +255,7 @@ Natalie: {
 		DislikeBiome: Bleh! I hate the Jungle! There's bugs and vines and it's way too hot!
 		LikeBiome: I just love seeing the Snow fall with friends.
 		LoveNPC: Matt and I have been together for as long as I can remember. There's nobody I'd trust my life with more than him!
-		LikeNPC: I like how {NPCName} has such an eye for fashion. I should come by her place and ask for some advice.
+		LikeNPC: I like {NPCName}'s taste in fashion! I should stop by their place and ask for some advice.
 		DislikeNPC: Jeez, {NPCName} is always bugging me about how many Cloudberries I've been eating.
 		HateNPC: Ugh, {NPCName} keeps making crude comments towards me. I get enough of that from Lance...
 	}
