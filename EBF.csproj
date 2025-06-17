@@ -61,6 +61,8 @@
     <None Remove="NPCs\Machines\NukeStand.png" />
     <None Remove="NPCs\Machines\RedFlybot.png" />
     <None Remove="NPCs\Machines\RedFlybot_Cannon.png" />
+    <None Remove="Tiles\Furniture\BossRelics\NeonValkRelicTile.png" />
+    <None Remove="Tiles\Furniture\BossRelics\RelicPedestal.png" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />

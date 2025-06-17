@@ -338,6 +338,11 @@ Items: {
 		DisplayName: Neon Valkyrie Trophy
 		Tooltip: ""
 	}
+
+	NeonValkRelic: {
+		DisplayName: Neon Valk Relic
+		Tooltip: ""
+	}
 }
 
 Emotes: {
