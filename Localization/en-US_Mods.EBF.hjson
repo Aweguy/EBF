@@ -333,6 +333,11 @@ Items: {
 			Tooltip: ""
 		}
 	}
+
+	NeonValkTrophy: {
+		DisplayName: Neon Valkyrie Trophy
+		Tooltip: ""
+	}
 }
 
 Emotes: {

@@ -18,6 +18,7 @@ using EBF.Dusts;
 using Terraria.GameContent.ItemDropRules;
 using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
+using EBF.Items.Placeables.Furniture.BossTrophies;
 
 namespace EBF.NPCs.Bosses
 {
@@ -240,7 +241,7 @@ namespace EBF.NPCs.Bosses
             // 4. Master Mode (relic first, pet last, everything else in between)
 
             // Trophy
-            //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NeonValkTrophy>(), 10));
 
             // Classic Mode drops
             npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<NanoFibre>(), 1, 3, 4));
