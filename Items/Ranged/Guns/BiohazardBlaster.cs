@@ -157,7 +157,7 @@ namespace EBF.Items.Ranged.Guns
                 for (int i = 0; i < 1 + Projectile.width / 50; i++)
                 {
                     Vector2 position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width);
-                    Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, ProjectileExtensions.GetRandomVector(), Type: Main.rand.Next(435, 438), Scale: 0.5f + ((float)Projectile.width * 2 / maxSize));
+                    Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, VectorUtils.Random(), Type: Main.rand.Next(435, 438), Scale: 0.5f + ((float)Projectile.width * 2 / maxSize));
                     gore.alpha = 128;
                     gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5);
                 }

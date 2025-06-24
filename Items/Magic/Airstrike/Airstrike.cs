@@ -191,41 +191,19 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override void OnKill(int timeLeft)
         {
-            //Prevent this code from happening twice
+            //Prevent this code from happening twice because it has extra updates
             if (Projectile.localAI[0] == 1)
-            {
                 return;
-            }
 
             Projectile.localAI[0] = 1;
 
             //Explode
             ProjectileExtensions.ExpandHitboxBy(Projectile, explosionSize, explosionSize);
+            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
             Projectile.Damage();
-
 
             // Play explosion sound
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-
-            Dust dust;
-
-            // Smoke Dust spawn
-            for (int i = 0; i < 20; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Alpha: 100, Scale: 3f);
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 8;
-            }
-            // Fire Dust spawn
-            for (int i = 0; i < 50; i++)
-            {
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Alpha: 100, newColor: Color.Yellow, Scale: Main.rand.NextFloat(1f, 4f));
-                dust.velocity += Vector2.Normalize(dust.position - Projectile.Center) * 3;
-            }
-            // Large Smoke Gore spawn
-            for (int g = 0; g < 4; g++)
-            {
-                Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.Center, ProjectileExtensions.GetRandomVector() * 1.5f, Main.rand.Next(61, 64), Scale: 1.5f);
-            }
         }
         private void Shake()
         {

@@ -1,4 +1,5 @@
 ﻿using EBF.Extensions;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -17,7 +18,7 @@ namespace EBF.Items.Melee
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 52;//Item's base damage value
+            Item.damage = 54;//Item's base damage value
             Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
@@ -36,9 +37,9 @@ namespace EBF.Items.Melee
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.HallowedBar, stack: 12)
+                .AddIngredient(ModContent.ItemType<NanoFibre>(), stack: 2)
+                .AddIngredient(ModContent.ItemType<RamChip>(), stack: 35)
                 .AddIngredient(ItemID.Wire, stack: 40)
-                .AddIngredient(ItemID.SoulofFright, stack: 10)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

@@ -84,6 +84,7 @@ Lance: {
 		Natalie1: Hey, a word of advice about Natalie. If you see her holding an axe, run.
 		Anna1: Anna's a naive forest girl, but I respect anyone who basically carries a hand cannon all day long.
 		NoLegs1: The cat? He's a sneaky little gremlin, but I can tell he knows what's up.
+		DownedNeonValk: NOOO!! My poor Valkyrie... You barbarian, if I didn't have the construction automated, I would charge you double! That being said, the parts are very expensive, so you better buy my wares.
 	}
 
 	TownNPCMood: {
@@ -260,3 +261,11 @@ Natalie: {
 		HateNPC: Ugh, {NPCName} keeps making crude comments towards me. I get enough of that from Lance...
 	}
 }
+
+NeonValkyrie.DisplayName: Neon Valkyrie
+RedFlybot.DisplayName: Red Flybot
+LaserTurret.DisplayName: Laser Turret
+BlueFlybot.DisplayName: Blue Flybot
+CannonTurret.DisplayName: Cannon Turret
+HarpoonTurret.DisplayName: Harpoon Turret
+NukeStand.DisplayName: Nuke Stand

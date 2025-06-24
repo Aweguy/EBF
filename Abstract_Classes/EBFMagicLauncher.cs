@@ -80,7 +80,7 @@ namespace EBF.Abstract_Classes
             float angle = MathHelper.Pi * (itemTimePercent / (player.itemTimeMax / 2));
 
             //Offset position using distance and angle
-            Projectile.position -= ProjectileExtensions.PolarVector(Projectile.direction * 30, angle * Projectile.direction);
+            Projectile.position -= VectorUtils.Polar(Projectile.direction * 30, angle * Projectile.direction);
 
             //Handle rotation
             Projectile.rotation = (angle * Projectile.direction) - MathHelper.PiOver2 * Projectile.direction;

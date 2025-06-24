@@ -9,6 +9,9 @@ using EBF.Items.Ranged.Guns;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
+using Terraria.Utilities;
+using EBF.Systems;
+using EBF.Items.Materials;
 
 namespace EBF.NPCs.TownNPCs
 {
@@ -60,15 +63,35 @@ namespace EBF.NPCs.TownNPCs
             shop.Add(ModContent.ItemType<HeavyClaw>())
                 .Add(ModContent.ItemType<ShadowBlaster>(), Condition.DownedDestroyer)
                 .Add(ItemID.MusketBall)
+                .Add(ItemID.ExplosivePowder)
                 .Add(ItemID.UltrabrightTorch)
                 .Add(ItemID.SpicyPepper)
                 .Add(ItemID.Radar)
                 .Add(ItemID.MetalDetector)
                 .Add(ItemID.AmmoBox, Condition.BloodMoon)
+                .Add(ModContent.ItemType<AtomicBattery>(), Condition.DownedSkeletronPrime)
+                .Add(ModContent.ItemType<NeonCase>(), Condition.DownedTwins)
+                .Add(ModContent.ItemType<MechanicalChain>(), Condition.DownedDestroyer)
+                .Add(ModContent.ItemType<RamChip>(), new Condition("Mods.EBF.DownedNeonValk", () => DownedBossSystem.downedNeonValk))
+                .Add(ModContent.ItemType<NanoFibre>(), new Condition("Mods.EBF.DownedNeonValk", () => DownedBossSystem.downedNeonValk))
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => toKingStatue;
         public override bool CanTownNPCSpawn(int numTownNPCs) => Main.hardMode;
+        public override WeightedRandom<string> GetChatSafe(WeightedRandom<string> dialogue)
+        {
+            if (DownedBossSystem.downedNeonValk)
+            {
+                // Check if we've heard the line before
+                var modPlayer = Main.LocalPlayer.GetModPlayer<EBFPlayer>();
+                if (!modPlayer.hasHeardDownedNeonValkLine)
+                {
+                    modPlayer.hasHeardDownedNeonValkLine = true;
+                    dialogue.Add(this.GetLocalizedValue("Chat.DownedNeonValk"), weight: 9999);
+                }
+            }
+            return dialogue;
+        }
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
             if (firstButton)

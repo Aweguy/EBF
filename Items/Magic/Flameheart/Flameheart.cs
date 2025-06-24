@@ -104,7 +104,7 @@ namespace EBF.Items.Magic.Flameheart
                 }
 
                 //Spawn projectile
-                Vector2 position = Projectile.Center + ProjectileExtensions.GetRandomVector() * 100f;
+                Vector2 position = Projectile.Center + VectorUtils.Random(100f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, chosenProjectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
