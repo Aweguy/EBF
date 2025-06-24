@@ -190,6 +190,8 @@ Projectiles: {
 	HarpoonTurret_Projectile.DisplayName: Harpoon Turret_ Projectile
 	NuclearBomb.DisplayName: Nuclear Bomb
 	WreckingRod_MagicGrenade.DisplayName: Wrecking Rod_ Magic Grenade
+	NitroBomberXLLauncher.DisplayName: Nitro Bomber X L Launcher
+	NitroBomberXLSidearm.DisplayName: Nitro Bomber X L Sidearm
 }
 
 Items: {

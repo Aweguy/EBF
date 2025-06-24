@@ -592,6 +592,16 @@ Ranged: {
 				'Manufactured using illegal and sacrilegious technology. Crackles with dark magic.'
 				'''
 		}
+
+		NitroBomberXL: {
+			DisplayName: Nitro Bomber XL
+			Tooltip:
+				'''
+				Bullets are transformed into a rockets.
+				Right click fires both a mini nuke and a cluster rocket.
+				'That and 3CD will get you a hamburger.'
+				'''
+		}
 	}
 }
 
