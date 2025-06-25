@@ -192,6 +192,7 @@ Projectiles: {
 	WreckingRod_MagicGrenade.DisplayName: Wrecking Rod_ Magic Grenade
 	NitroBomberXLLauncher.DisplayName: Nitro Bomber X L Launcher
 	NitroBomberXLSidearm.DisplayName: Nitro Bomber X L Sidearm
+	DelayedProjectile.DisplayName: Delayed Projectile
 }
 
 Items: {
