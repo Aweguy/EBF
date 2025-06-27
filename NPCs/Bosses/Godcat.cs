@@ -13,10 +13,12 @@ namespace EBF.NPCs.Bosses
     [AutoloadBossHead]
     public class Godcat : ModNPC
     {
+        private bool isDodging = false;
+        private bool hasDodged = false; // Used to display dodging frames
         public override string Texture => "EBF/NPCs/Bosses/Godcat_Light";
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[Type] = 6;
+            Main.npcFrameCount[Type] = 8;
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
@@ -67,13 +69,24 @@ namespace EBF.NPCs.Bosses
         }
         public override void FindFrame(int frameHeight)
         {
-            NPC.frameCounter += 0.1f; // Adjust the speed of the animation
-            if (NPC.frameCounter >= Main.npcFrameCount[NPC.type])
+            // Dodging frames
+            if (hasDodged)
+            {
+                NPC.frame.Y = Main.rand.Next(6, 8) * frameHeight;
+                hasDodged = false;
+                return;
+            }
+
+            // Idle frames
+            NPC.frameCounter += 0.1f;
+            if (NPC.frameCounter >= Main.npcFrameCount[NPC.type] - 2)
             {
                 NPC.frameCounter = 0;
             }
             NPC.frame.Y = (int)NPC.frameCounter * frameHeight;
         }
+        public override bool CanBeHitByNPC(NPC attacker) => !isDodging;
+        public override bool? CanBeHitByProjectile(Projectile projectile) => !isDodging;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -88,6 +101,14 @@ namespace EBF.NPCs.Bosses
 
             Move(player);
 
+            //Handle dodging
+            isDodging = Main.GameUpdateCount % 60 > 10;
+            if (isDodging)
+            {
+                DodgeOverlappingProjectile();
+            }
+
+            //Handle attacks
             if (Main.GameUpdateCount % 360 == 0)
             {
                 switch (Main.rand.Next(2))
@@ -137,6 +158,18 @@ namespace EBF.NPCs.Bosses
         {
             var preferredPosition = player.Center + new Vector2(-300 * NPC.direction, -100);
             NPC.position = Vector2.Lerp(NPC.position, preferredPosition, 0.025f);
+        }
+        private void DodgeOverlappingProjectile()
+        {
+            Rectangle npcBox = NPC.Hitbox;
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile proj = Main.projectile[i];
+                if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
+                {
+                    hasDodged = true;
+                }
+            }
         }
         private void CreateJudgementWave(Player player)
         {
