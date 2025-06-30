@@ -123,7 +123,7 @@ namespace EBF.NPCs.Bosses
         public override void OnSpawn(IEntitySource source)
         {
             NPC.TargetClosest(false);
-            groundPos = VectorUtils.GetGroundPosition(NPC.position);
+            groundPos = NPC.position.ToGroundPosition();
         }
         public override void AI()
         {
@@ -290,12 +290,12 @@ namespace EBF.NPCs.Bosses
             {
                 if (NPC.BottomLeft.Y < player.position.Y && NPC.DirectionTo(player.position).Y > 0.4f)
                 {
-                    groundPos = VectorUtils.GetGroundPosition(player.BottomLeft);
+                    groundPos = player.BottomLeft.ToGroundPosition();
                     return; //No need to hover yet
                 }
                 else
                 {
-                    bool foundGround = VectorUtils.GetGroundPosition(NPC.BottomLeft, new Vector2(NPC.width, hoverDistance * 2), out Vector2 ground, true);
+                    bool foundGround = VectorUtils.TryGetGroundPosition(NPC.BottomLeft, new Vector2(NPC.width, hoverDistance * 2), out Vector2 ground, true);
                     groundPos = foundGround ? ground : groundPos + new Vector2(0, hoverDistance * 2);
                 }
             }

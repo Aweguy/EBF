@@ -214,14 +214,14 @@ namespace EBF.NPCs.Bosses
         private void CreateJudgementAt(Vector2 position)
         {
             var type = ModContent.ProjectileType<Seraphim_Judgement>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), VectorUtils.GetGroundPosition(position), Vector2.Zero, type, NPC.damage, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position.ToGroundPosition().ToSurfacePosition(), Vector2.Zero, type, NPC.damage, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
             proj.friendly = false;
             proj.hostile = true;
         }
         private void CreateJudgementAt(Vector2 position, int delay)
         {
             var type = ModContent.ProjectileType<DelayedProjectile>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), VectorUtils.GetGroundPosition(position), Vector2.Zero, type, NPC.damage, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position.ToGroundPosition().ToSurfacePosition(), Vector2.Zero, type, NPC.damage, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
             proj.ai[0] = ModContent.ProjectileType<Seraphim_Judgement>();
             proj.timeLeft = delay;
             proj.friendly = false;

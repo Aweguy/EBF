@@ -94,7 +94,7 @@ namespace EBF.Items.Ranged.Guns
             if (ProjectileExtensions.ClosestNPC(ref target, 500, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
-                Vector2 position = VectorUtils.GetGroundPosition(target.Center);
+                Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<SandDuneSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
