@@ -192,6 +192,9 @@ Projectiles: {
 	NitroBomberXLLauncher.DisplayName: Nitro Bomber X L Launcher
 	NitroBomberXLSidearm.DisplayName: Nitro Bomber X L Sidearm
 	DelayedProjectile.DisplayName: Delayed Projectile
+	Godcat_LightBlade.DisplayName: Godcat_ Light Blade
+	Godcat_LightReturnBall.DisplayName: Godcat_ Light Return Ball
+	Godcat_LightBall.DisplayName: Godcat_ Light Ball
 }
 
 Items: {
