@@ -8,7 +8,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace EBF.NPCs.Bosses
+namespace EBF.NPCs.Bosses.Godcat
 {
     public abstract class Godcat : ModNPC
     {

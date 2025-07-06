@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 
-namespace EBF.NPCs.Bosses
+namespace EBF.NPCs.Bosses.Godcat
 {
     /// <summary>
     /// This is a projectile that delays the spawning of another projectile.
@@ -339,7 +339,7 @@ namespace EBF.NPCs.Bosses
     {
         private bool IsMiniVariant => Projectile.ai[1] == 1;
         private NPC Owner => Main.npc[(int)Projectile.ai[0]]; //Projectile.owner must be -1, otherwise it doesn't deal damage to the player. So we will pass the owner through ai
-        public override string Texture => "EBF/NPCs/Bosses/Godcat_DarkBall_Big";
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBall_Big";
         public override void SetDefaults()
         {
             Projectile.width = 20;
@@ -411,7 +411,7 @@ namespace EBF.NPCs.Bosses
     /// </summary>
     public class Godcat_DarkBall : ModProjectile
     {
-        public override string Texture => "EBF/NPCs/Bosses/Godcat_DarkBall_Small";
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBall_Small";
         public override void SetDefaults()
         {
             Projectile.width = 16;

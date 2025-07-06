@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 
-namespace EBF.NPCs.Bosses
+namespace EBF.NPCs.Bosses.Godcat
 {
     public abstract class Godcat_Vehicle : ModNPC
     {
@@ -114,7 +114,7 @@ namespace EBF.NPCs.Bosses
     [AutoloadBossHead]
     public class Godcat_Creator : Godcat_Vehicle
     {
-        public override string Texture => "EBF/NPCs/Bosses/Godcat_Destroyer";
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_Destroyer";
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
