@@ -198,6 +198,8 @@ Projectiles: {
 	Godcat_DarkBall.DisplayName: Godcat_ Dark Ball
 	Godcat_DarkBlade.DisplayName: Godcat_ Dark Blade
 	Godcat_DarkReturnBall.DisplayName: Godcat_ Dark Return Ball
+	Godcat_Creator_TurningBall.DisplayName: Godcat_ Creator_ Turning Ball
+	Godcat_Destroyer_TurningBall.DisplayName: Godcat_ Destroyer_ Turning Ball
 }
 
 Items: {
