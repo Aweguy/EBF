@@ -76,7 +76,7 @@ namespace EBF.NPCs.Machines
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 
             //Explode
-            ProjectileExtensions.ExpandHitboxBy(Projectile, explosionSize, explosionSize);
+            ProjectileExtensions.ExpandHitboxTo(Projectile, explosionSize, explosionSize);
             Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Nuclear);
             Projectile.Damage();
         }

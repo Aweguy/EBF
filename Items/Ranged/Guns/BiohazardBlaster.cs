@@ -147,7 +147,7 @@ namespace EBF.Items.Ranged.Guns
                 //Expand hitbox until max size
                 if (Projectile.width < maxSize)
                 {
-                    Projectile.ExpandHitboxBy(Projectile.width + 2, Projectile.height + 2);
+                    Projectile.ExpandHitboxTo(Projectile.width + 2, Projectile.height + 2);
                 }
 
                 //Slow down

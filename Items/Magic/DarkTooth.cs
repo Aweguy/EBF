@@ -256,7 +256,7 @@ namespace EBF.Items.Magic
                 suckRange = defaultSuckRange * Projectile.scale;
                 int newWidth = (int)(baseWidth * Projectile.scale);
                 int newHeight = (int)(baseHeight * Projectile.scale);
-                ProjectileExtensions.ExpandHitboxBy(Projectile, newWidth, newHeight);
+                ProjectileExtensions.ExpandHitboxTo(Projectile, newWidth, newHeight);
             }
         }
         private void SuckNPCs(float suckingRange, float suckingStrength = 20)
@@ -313,7 +313,7 @@ namespace EBF.Items.Magic
         private void Explode()
         {
             //Change hitbox size and damage
-            ProjectileExtensions.ExpandHitboxBy(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
+            ProjectileExtensions.ExpandHitboxTo(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
             int explosionDamage = Projectile.damage + Projectile.width;
 
             foreach (NPC npc in Main.npc)

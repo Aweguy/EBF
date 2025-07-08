@@ -107,7 +107,7 @@ namespace EBF.Extensions
         /// <param name="projectile">The projectile whose hitbox will be expanded.</param>
         /// <param name="width">The new width of the projectile's hitbox.</param>
         /// <param name="height">The new height of the projectile's hitbox.</param>
-        public static void ExpandHitboxBy(this Projectile projectile, int width, int height)
+        public static void ExpandHitboxTo(this Projectile projectile, int width, int height)
         {
             projectile.position = projectile.Center;
             projectile.width = width;
