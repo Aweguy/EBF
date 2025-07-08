@@ -202,6 +202,9 @@ Projectiles: {
 	Godcat_Destroyer_TurningBall.DisplayName: Godcat_ Destroyer_ Turning Ball
 	Godcat_DarkBall_Big.DisplayName: Godcat_ Dark Ball_ Big
 	Godcat_LightBall_Big.DisplayName: Godcat_ Light Ball_ Big
+	Godcat_BallProjectile.DisplayName: Godcat_ Ball Projectile
+	Godcat_ReturnBall.DisplayName: Godcat_ Return Ball
+	Godcat_TurningBall.DisplayName: Godcat_ Turning Ball
 }
 
 Items: {

@@ -7,6 +7,8 @@ using Terraria.DataStructures;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
+    public enum GodcatBallTypes : byte { LightSmall, LightBig, DarkSmall, DarkBig };
+
     /// <summary>
     /// This is a projectile that delays the spawning of another projectile.
     /// It saves us the trouble of managing timers on the spawning actor.
@@ -140,19 +142,34 @@ namespace EBF.NPCs.Bosses.Godcat
     }
 
     /// <summary>
-    /// A large projectile which flies in a straight path, and explodes into smaller projectiles that home toward the caster
+    /// Copy of Godcat_LightBlade, but using dark texture.
     /// </summary>
-    public class Godcat_LightReturnBall : ModProjectile
+    public class Godcat_DarkBlade : Godcat_LightBlade
     {
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_LightBall_Big";
+        protected override int DustType => DustID.RedTorch;
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBlade";
+    }
 
-        private bool IsMiniVariant => Projectile.ai[1] == 1;
-        private NPC Owner => Main.npc[(int)Projectile.ai[0]]; //Projectile.owner must be -1, otherwise it doesn't deal damage to the player. So we will pass the owner through ai
-        protected virtual int DustType => DustID.AncientLight;
+    /// <summary>
+    /// A large projectile which flies in a straight path, and explodes into smaller projectiles that home toward the caster
+    /// <br>ai[0] determines size and color, use GodcatBallType enum if you don't want to guess.</br>
+    /// <br>ai[1] is the homing target after the ball has broken apart.</br>
+    /// <br>ai[2] is handled internally, it's used to check if the ball should return.</br>
+    /// </summary>
+    public class Godcat_ReturnBall : ModProjectile
+    {
+        private int dustType = DustID.AncientLight;
+        private NPC Owner => Main.npc[(int)Projectile.ai[1]]; //Projectile.owner must be -1, otherwise it doesn't deal damage to the player. So we will pass the owner through ai
+        private bool IsMiniVariant => Projectile.ai[2] == 1;
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_BallProjectile";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 4;
+        }
         public override void SetDefaults()
         {
-            Projectile.width = 20;
-            Projectile.height = 20;
+            Projectile.width = 16;
+            Projectile.height = 16;
             Projectile.timeLeft = 80;
             Projectile.hostile = true;
             Projectile.friendly = false;
@@ -161,14 +178,19 @@ namespace EBF.NPCs.Bosses.Godcat
         public override bool? CanHitNPC(NPC target) => false;
         public override void OnSpawn(IEntitySource source)
         {
+            Projectile.frame = (int)Projectile.ai[0];
+            if (Projectile.frame == 1 || Projectile.frame == 3)
+            {
+                Projectile.ExpandHitboxTo(32, 32);
+            }
+            if (Projectile.frame > 1)
+            {
+                dustType = DustID.RedTorch;
+            }
+
             if (IsMiniVariant)
             {
-                Projectile.scale = 0.8f;
                 Projectile.timeLeft = 200;
-            }
-            else
-            {
-                Projectile.scale = 1.2f;
             }
         }
         public override void AI()
@@ -177,7 +199,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 if (Main.rand.NextBool(2))
                 {
-                    var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType);
+                    var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType);
                     dust.noGravity = true;
                 }
 
@@ -189,7 +211,7 @@ namespace EBF.NPCs.Bosses.Godcat
             }
             else
             {
-                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType);
+                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType);
                 dust.noGravity = true;
             }
         }
@@ -200,114 +222,57 @@ namespace EBF.NPCs.Bosses.Godcat
                 //Replace projectile with a bunch of mini variants, with a bit of angle variation
                 var amount = 8;
                 var spread = 1f;
+                var ballType = Projectile.ai[0] - 1; //Same color, but smaller version
                 for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
                 {
                     var velocity = Projectile.velocity.RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f);
-                    Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.position, velocity, Projectile.type, Projectile.damage, Projectile.knockBack, Projectile.owner, Owner.whoAmI, 1);
+                    Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.position, velocity, Projectile.type, Projectile.damage, Projectile.knockBack, Projectile.owner, ballType, Owner.whoAmI, 1);
                 }
             }
 
             //Create dust
             for (int i = 0; i < 20; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType);
             }
         }
     }
 
     /// <summary>
-    /// Basic ball projectile that flies forward
+    /// A ball projectile which accelerates forward and changes angle over time.
+    /// <br>ai[0] determines whether it should be light or dark, and if it should be big or small.
+    /// Use the GodcatBallTypes enum if you don't want to guess which value means what.</br>
+    /// <br>ai[1] determines the turning speed.</br>
     /// </summary>
-    public class Godcat_LightBall : ModProjectile
+    public class Godcat_TurningBall : ModProjectile
     {
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_LightBall_Small";
-        protected virtual int DustType => DustID.AncientLight;
+        private int dustType = DustID.AncientLight;
+        private ref float TurnRate => ref Projectile.ai[1];
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_BallProjectile";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 4;
+        }
         public override void SetDefaults()
         {
-            Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.timeLeft = 360;
-            Projectile.hostile = true;
-            Projectile.friendly = false;
-            Projectile.tileCollide = false;
-        }
-        public override bool? CanHitNPC(NPC target) => false;
-        public override void AI()
-        {
-            if (Main.rand.NextBool(2))
-            {
-                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType);
-                dust.noGravity = true;
-            }
-        }
-        public override void OnKill(int timeLeft)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType);
-            }
-        }
-    }
-    public class Godcat_LightBall_Big : Godcat_LightBall
-    {
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_LightBall_Big";
-        public override void OnSpawn(IEntitySource source)
-        {
-            Projectile.width = 32;
-            Projectile.height = 32;
-        }
-    }
-
-
-    /// <summary>
-    /// Copy of Godcat_LightBlade, but using dark texture.
-    /// </summary>
-    public class Godcat_DarkBlade : Godcat_LightBlade
-    {
-        protected override int DustType => DustID.RedTorch;
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBlade";
-    }
-
-    /// <summary>
-    /// Copy of Godcat_LightReturnBall, but using dark texture.
-    /// </summary>
-    public class Godcat_DarkReturnBall : Godcat_LightReturnBall
-    {
-        protected override int DustType => DustID.RedTorch;
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBall_Big";
-    }
-
-    /// <summary>
-    /// Copy of Godcat_LightBall, but using dark texture.
-    /// </summary>
-    public class Godcat_DarkBall : Godcat_LightBall
-    {
-        protected override int DustType => DustID.RedTorch;
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBall_Small";
-    }
-    public class Godcat_DarkBall_Big : Godcat_DarkBall
-    {
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBall_Big";
-        public override void OnSpawn(IEntitySource source)
-        {
-            Projectile.width = 32;
-            Projectile.height = 32;
-        }
-    }
-
-    public class Godcat_Creator_TurningBall : ModProjectile
-    {
-        private ref float TurnRate => ref Projectile.ai[0];
-        protected virtual int DustType => DustID.AncientLight;
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_LightBall_Big";
-        public override void SetDefaults()
-        {
-            Projectile.height = 32;
-            Projectile.width = 32;
+            Projectile.width = 16;
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 300;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.frame = (int)Projectile.ai[0];
+            if (Projectile.frame == 1 || Projectile.frame == 3)
+            {
+                Projectile.ExpandHitboxTo(32, 32);
+            }
+            if (Projectile.frame > 1)
+            {
+                dustType = DustID.RedTorch;
+            }
         }
         public override void AI()
         {
@@ -315,7 +280,7 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.velocity = Projectile.velocity.RotatedBy(TurnRate) * 1.005f;
             if (Main.rand.NextBool(2))
             {
-                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType);
+                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType);
                 dust.noGravity = true;
             }
         }
@@ -323,13 +288,59 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType, Projectile.oldVelocity.X, Projectile.oldVelocity.Y);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType, Projectile.oldVelocity.X, Projectile.oldVelocity.Y);
             }
         }
     }
-    public class Godcat_Destroyer_TurningBall : Godcat_Creator_TurningBall
+
+    /// <summary>
+    /// Simple ball projectile which flies forward at a constant pace with a dust trail.
+    /// <br>ai[0] determines whether it should be light or dark, and if it should be big or small.
+    /// Use the GodcatBallTypes enum if you don't want to guess which value means what.</br>
+    /// </summary>
+    public class Godcat_BallProjectile : ModProjectile
     {
-        protected override int DustType => DustID.RedTorch;
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBall_Big";
+        private int dustType = DustID.AncientLight;
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 4;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.height = 16;
+            Projectile.width = 16;
+            Projectile.hostile = true;
+            Projectile.friendly = false;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 300;
+        }
+        public override bool? CanHitNPC(NPC target) => false;
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.frame = (int)Projectile.ai[0];
+            if (Projectile.frame == 1 || Projectile.frame == 3)
+            {
+                Projectile.ExpandHitboxTo(32, 32);
+            }
+            if (Projectile.frame > 1)
+            {
+                dustType = DustID.RedTorch;
+            }
+        }
+        public override void AI()
+        {
+            if (Main.rand.NextBool(2))
+            {
+                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType);
+                dust.noGravity = true;
+            }
+        }
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType);
+            }
+        }
     }
 }
