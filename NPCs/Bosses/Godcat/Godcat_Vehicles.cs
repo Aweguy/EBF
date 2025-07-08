@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using System;
+using Terraria.DataStructures;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -19,6 +20,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
         //AI
         protected ref float StateTimer => ref NPC.localAI[0];
+        protected ref float Phase => ref NPC.ai[0];
 
         public override void SetStaticDefaults()
         {
@@ -68,6 +70,14 @@ namespace EBF.NPCs.Bosses.Godcat
             }
             NPC.frame.Y = (int)NPC.frameCounter * frameHeight;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Spawn with half health in second phase
+            if(Phase == 1)
+            {
+                NPC.life = NPC.lifeMax / 2;
+            }
+        }
         public override void AI()
         {
             NPC.TargetClosest();
@@ -77,6 +87,14 @@ namespace EBF.NPCs.Bosses.Godcat
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
+                return;
+            }
+
+            // In first phase, leave at half health
+            if (Phase == 0 && NPC.life <= NPC.lifeMax / 2)
+            {
+                BeginNextPhase(player);
+                NPC.active = false;
                 return;
             }
 
@@ -94,6 +112,7 @@ namespace EBF.NPCs.Bosses.Godcat
             return false;
         }
         protected abstract void Move(Player player);
+        protected abstract void BeginNextPhase(Player player);
     }
 
     [AutoloadBossHead]
@@ -156,10 +175,41 @@ namespace EBF.NPCs.Bosses.Godcat
 
             HandleStateChanging();
         }
+        public override void OnKill()
+        {
+            //Locate the other vehicle
+            bool destroyerAlive = false;
+            foreach (var npc in Main.npc)
+            {
+                if (npc.active && npc.ModNPC is Godcat_Destroyer)
+                {
+                    destroyerAlive = true;
+                    break;
+                }
+            }
+
+            //Go to next phase if both are dead
+            if (!destroyerAlive)
+            {
+                var pos = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                var type = ModContent.NPCType<Godcat_Light>();
+                NPC.NewNPC(NPC.GetSource_Death(), pos.X, pos.Y, type, 0, Phase + 1);
+
+                var pos2 = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                var type2 = ModContent.NPCType<Godcat_Dark>();
+                NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, Phase + 1);
+            }
+        }
         protected override void Move(Player player)
         {
             var preferredPosition = player.Center + new Vector2(550, -100);
             NPC.Center = Vector2.Lerp(NPC.Center, preferredPosition, 0.03f);
+        }
+        protected override void BeginNextPhase(Player player)
+        {
+            var type = ModContent.NPCType<Godcat_Dark>();
+            var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
+            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
         }
         private void HandleStateChanging()
         {
@@ -296,10 +346,47 @@ namespace EBF.NPCs.Bosses.Godcat
 
             HandleStateChanging();
         }
+        public override void OnKill()
+        {
+            //Locate the other vehicle
+            bool creatorAlive = false;
+            foreach (var npc in Main.npc)
+            {
+                if (npc.active && npc.ModNPC is Godcat_Creator)
+                {
+                    creatorAlive = true;
+                    break;
+                }
+            }
+
+            //Go to next phase if both are dead
+            if (!creatorAlive)
+            {
+                var pos = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                var type = ModContent.NPCType<Godcat_Light>();
+                NPC.NewNPC(NPC.GetSource_Death(), pos.X, pos.Y, type, 0, Phase + 1);
+
+                var pos2 = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                var type2 = ModContent.NPCType<Godcat_Dark>();
+                NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, Phase + 1);
+            }
+        }
         protected override void Move(Player player)
         {
             var preferredPosition = player.Center + new Vector2(-550, -100);
             NPC.Center = Vector2.Lerp(NPC.Center, preferredPosition, 0.05f);
+        }
+        protected override void BeginNextPhase(Player player)
+        {
+            //Spawn light godcat
+            var type = ModContent.NPCType<Godcat_Light>();
+            var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
+            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase + 1);
+
+            //Spawn dark godcat
+            var type2 = ModContent.NPCType<Godcat_Dark>();
+            var pos2 = player.Center.ToPoint() + new Point(-NPC.direction * 1600, 0);
+            NPC.NewNPC(NPC.GetSource_FromAI(), pos2.X, pos2.Y, type2, 0, Phase + 1);
         }
         private void HandleStateChanging()
         {

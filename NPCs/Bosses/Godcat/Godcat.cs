@@ -14,6 +14,8 @@ namespace EBF.NPCs.Bosses.Godcat
     {
         private bool isDodging = false;
         private bool hasDodged = false; // Used to display dodging frames
+        protected ref float Phase => ref NPC.ai[0];
+        protected ref float PhaseTimer => ref NPC.ai[1];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 8;
@@ -163,6 +165,31 @@ namespace EBF.NPCs.Bosses.Godcat
             Player player = Main.player[NPC.target];
             Move(player);
 
+            //Handle phase changes
+            PhaseTimer++;
+            if(PhaseTimer > 60 * 5)
+            {
+                if (Phase < 2)
+                {
+                    var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                    var type = ModContent.NPCType<Godcat_Creator>();
+                    NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+                    NPC.active = false;
+                }
+                else
+                {
+                    NPC.StrikeInstantKill();
+                }
+
+                return;
+            }
+
+            //Don't attack in final phase
+            if(Phase == 2)
+            {
+                return;
+            }
+
             //Handle attacks
             if (Main.GameUpdateCount % 200 == 0)
             {
@@ -173,7 +200,7 @@ namespace EBF.NPCs.Bosses.Godcat
                         break;
                     case 1:
                         //Flurry of light blade
-                        NPC.ai[0] = 30;
+                        NPC.localAI[0] = 30;
                         break;
                     case 2:
                         CreateSeikenRing(14, 10);
@@ -182,24 +209,24 @@ namespace EBF.NPCs.Bosses.Godcat
                         break;
                     case 3:
                         //Cast multiple return balls
-                        NPC.ai[1] = 3;
+                        NPC.localAI[1] = 3;
                         CreateBallArc(player, 0.66f, 6, 9f);
                         break;
                 }
             }
 
             //Handle light blade flurry
-            if (Main.GameUpdateCount % 4 == 0 && NPC.ai[0] > 0)
+            if (Main.GameUpdateCount % 4 == 0 && NPC.localAI[0] > 0)
             {
                 CreateStormSeiken(player);
-                NPC.ai[0]--;
+                NPC.localAI[0]--;
             }
 
             //Handle return balls
-            if (Main.GameUpdateCount % 25 == 0 && NPC.ai[1] > 0)
+            if (Main.GameUpdateCount % 25 == 0 && NPC.localAI[1] > 0)
             {
                 CreateReturnBall(player, 15);
-                NPC.ai[1]--;
+                NPC.localAI[1]--;
             }
         }
         private void Move(Player player)
@@ -296,6 +323,31 @@ namespace EBF.NPCs.Bosses.Godcat
 
             Player player = Main.player[NPC.target];
             Move(player);
+            
+            //Handle phase changes
+            PhaseTimer++;
+            if (PhaseTimer > 60 * 5)
+            {
+                if (Phase < 2)
+                {
+                    var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                    var type = ModContent.NPCType<Godcat_Destroyer>();
+                    NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+                    NPC.active = false;
+                }
+                else
+                {
+                    NPC.StrikeInstantKill();
+                }
+
+                return;
+            }
+
+            //Don't attack in final phase
+            if (Phase == 2)
+            {
+                return;
+            }
 
             //Handle attacks
             if (Main.GameUpdateCount % 200 == 100)
@@ -304,7 +356,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 {
                     case 0:
                         //Flurry of dark blade
-                        NPC.ai[0] = 30;
+                        NPC.localAI[0] = 30;
                         break;
                     case 1:
                         CreateDarkSeikenRing(14, 10);
@@ -313,24 +365,24 @@ namespace EBF.NPCs.Bosses.Godcat
                         break;
                     case 2:
                         //Cast multiple return balls
-                        NPC.ai[1] = 3;
+                        NPC.localAI[1] = 3;
                         CreateDarkBallArc(player, 0.66f, 6, 9f);
                         break;
                 }
             }
 
             //Handle dark blade flurry
-            if (Main.GameUpdateCount % 4 == 0 && NPC.ai[0] > 0)
+            if (Main.GameUpdateCount % 4 == 0 && NPC.localAI[0] > 0)
             {
                 CreateDarkStormSeiken(player);
-                NPC.ai[0]--;
+                NPC.localAI[0]--;
             }
 
             //Handle return balls
-            if (Main.GameUpdateCount % 25 == 0 && NPC.ai[1] > 0)
+            if (Main.GameUpdateCount % 25 == 0 && NPC.localAI[1] > 0)
             {
                 CreateDarkReturnBall(player, 15);
-                NPC.ai[1]--;
+                NPC.localAI[1]--;
             }
         }
         private void Move(Player player)
