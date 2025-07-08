@@ -14,8 +14,10 @@ namespace EBF.NPCs.Bosses.Godcat
     {
         private bool isDodging = false;
         private bool hasDodged = false; // Used to display dodging frames
+        private const int PhaseDuration = 60 * 20; // How long the godcats stick around before summoning their vehicle
+        private const int FinalPhaseDuration = 60 * 10; // How long the godcats stick around before finishing the fight
         protected ref float Phase => ref NPC.ai[0];
-        protected ref float PhaseTimer => ref NPC.ai[1];
+        private ref float PhaseTimer => ref NPC.ai[1];
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 8;
@@ -79,18 +81,18 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
 
-            if (Main.player[NPC.target].dead)
+            Player player = Main.player[NPC.target];
+
+            if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
                 return;
             }
 
-            //Handle dodging
-            isDodging = Main.GameUpdateCount % 60 > 10;
-            if (isDodging)
-            {
-                DodgeOverlappingProjectile();
-            }
+            Move(player);
+            HandleDodging();
+            HandleAttacks(player);
+            HandlePhaseStuff(player);
         }
         public override void OnKill()
         {
@@ -120,16 +122,35 @@ namespace EBF.NPCs.Bosses.Godcat
             // Pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<NeonValkPetItem>(), 4));
         }
-        protected void DodgeOverlappingProjectile()
+        protected abstract void Move(Player player);
+        protected abstract void HandleAttacks(Player player);
+        protected abstract void SummonVehicle(Player player);
+        private void HandleDodging()
         {
-            Rectangle npcBox = NPC.Hitbox;
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            isDodging = Main.GameUpdateCount % 60 > 10;
+            if (isDodging)
             {
-                Projectile proj = Main.projectile[i];
-                if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
+                Rectangle npcBox = NPC.Hitbox;
+                foreach (var proj in Main.projectile)
                 {
-                    hasDodged = true;
+                    if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
+                    {
+                        hasDodged = true;
+                    }
                 }
+            }
+        }
+        private void HandlePhaseStuff(Player player)
+        {
+            PhaseTimer++;
+            if(Phase < 2 && PhaseTimer > PhaseDuration) 
+            {
+                SummonVehicle(player);
+                NPC.active = false;
+            }
+            else if (PhaseTimer > FinalPhaseDuration)
+            {
+                NPC.StrikeInstantKill();
             }
         }
     }
@@ -158,34 +179,15 @@ namespace EBF.NPCs.Bosses.Godcat
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Light")
             ]);
         }
-        public override void AI()
+        protected override void Move(Player player)
         {
-            base.AI();
-
-            Player player = Main.player[NPC.target];
-            Move(player);
-
-            //Handle phase changes
-            PhaseTimer++;
-            if(PhaseTimer > 60 * 5)
-            {
-                if (Phase < 2)
-                {
-                    var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
-                    var type = ModContent.NPCType<Godcat_Creator>();
-                    NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
-                    NPC.active = false;
-                }
-                else
-                {
-                    NPC.StrikeInstantKill();
-                }
-
-                return;
-            }
-
+            var preferredPosition = player.Center + new Vector2(550, -100);
+            NPC.position = Vector2.Lerp(NPC.position, preferredPosition, 0.03f);
+        }
+        protected override void HandleAttacks(Player player)
+        {
             //Don't attack in final phase
-            if(Phase == 2)
+            if (Phase == 2)
             {
                 return;
             }
@@ -229,10 +231,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 NPC.localAI[1]--;
             }
         }
-        private void Move(Player player)
+        protected override void SummonVehicle(Player player)
         {
-            var preferredPosition = player.Center + new Vector2(550, -100);
-            NPC.position = Vector2.Lerp(NPC.position, preferredPosition, 0.03f);
+            var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+            var type = ModContent.NPCType<Godcat_Creator>();
+            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
         }
         private void CreateJudgementWave(Player player)
         {
@@ -317,32 +320,13 @@ namespace EBF.NPCs.Bosses.Godcat
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Dark")
             ]);
         }
-        public override void AI()
+        protected override void Move(Player player)
         {
-            base.AI();
-
-            Player player = Main.player[NPC.target];
-            Move(player);
-            
-            //Handle phase changes
-            PhaseTimer++;
-            if (PhaseTimer > 60 * 5)
-            {
-                if (Phase < 2)
-                {
-                    var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
-                    var type = ModContent.NPCType<Godcat_Destroyer>();
-                    NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
-                    NPC.active = false;
-                }
-                else
-                {
-                    NPC.StrikeInstantKill();
-                }
-
-                return;
-            }
-
+            var preferredPosition = player.Center + new Vector2(-550, -100);
+            NPC.position = Vector2.Lerp(NPC.position, preferredPosition, 0.05f);
+        }
+        protected override void HandleAttacks(Player player)
+        {
             //Don't attack in final phase
             if (Phase == 2)
             {
@@ -385,10 +369,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 NPC.localAI[1]--;
             }
         }
-        private void Move(Player player)
+        protected override void SummonVehicle(Player player)
         {
-            var preferredPosition = player.Center + new Vector2(-550, -100);
-            NPC.position = Vector2.Lerp(NPC.position, preferredPosition, 0.05f);
+            var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+            var type = ModContent.NPCType<Godcat_Destroyer>();
+            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
         }
         private void CreateDarkStormSeiken(Player player)
         {
