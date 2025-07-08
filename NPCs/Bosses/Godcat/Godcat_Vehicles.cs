@@ -100,12 +100,13 @@ namespace EBF.NPCs.Bosses.Godcat
     public class Godcat_Creator : Godcat_Vehicle
     {
         //AI
-        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst }
+        private enum State : byte { Idle, TurningBallsAttack, TurningBallSpiral, MassiveBallBurst }
         private State currentState = State.Idle;
         private readonly Dictionary<State, int> stateDurations = new()
         {
             [State.Idle] = 200,
             [State.TurningBallsAttack] = 240,
+            [State.TurningBallSpiral] = 300,
             [State.MassiveBallBurst] = 1,
         };
         public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_Destroyer";
@@ -145,6 +146,9 @@ namespace EBF.NPCs.Bosses.Godcat
                 case State.TurningBallsAttack:
                     CreateTurningBallsCircles();
                     break;
+                case State.TurningBallSpiral:
+                    CreateTurningBallSpiral();
+                    break;
                 case State.MassiveBallBurst:
                     CreateMassiveBallBurst(player);
                     break;
@@ -181,6 +185,28 @@ namespace EBF.NPCs.Bosses.Godcat
                 }
             }
         }
+        private void CreateTurningBallSpiral()
+        {
+            if (Main.GameUpdateCount % 2 == 0)
+            {
+                var speed = 4;
+                var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
+                var type = ModContent.ProjectileType<Godcat_TurningBall>();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
+            }
+
+            if (Main.GameUpdateCount % 60 == 0)
+            {
+                var amount = 12;
+                var speed = 6;
+                var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+                for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
+                {
+                    var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightSmall);
+                }
+            }
+        }
         private void CreateMassiveBallBurst(Player player)
         {
             //Forward burst
@@ -214,12 +240,13 @@ namespace EBF.NPCs.Bosses.Godcat
     public class Godcat_Destroyer : Godcat_Vehicle
     {
         //AI
-        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst }
+        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst, TurningBallSpiral }
         private State currentState = State.Idle;
         private readonly Dictionary<State, int> stateDurations = new()
         {
             [State.Idle] = 200,
             [State.TurningBallsAttack] = 240,
+            [State.TurningBallSpiral] = 300,
             [State.MassiveBallBurst] = 1,
         };
         public override void SetStaticDefaults()
@@ -259,6 +286,9 @@ namespace EBF.NPCs.Bosses.Godcat
                 case State.TurningBallsAttack:
                     CreateTurningBallsCircles();
                     break;
+                case State.TurningBallSpiral:
+                    CreateTurningBallSpiral();
+                    break;
                 case State.MassiveBallBurst:
                     CreateMassiveBallBurst(player);
                     break;
@@ -278,6 +308,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 StateTimer = 0;
                 currentState = currentState == State.Idle ? (State)Main.rand.Next(1, stateDurations.Count) : State.Idle;
+                //currentState = currentState == State.Idle ? State.TurningBallSpiral : State.Idle;
             }
         }
         private void CreateTurningBallsCircles()
@@ -292,6 +323,28 @@ namespace EBF.NPCs.Bosses.Godcat
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, -0.005f);
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
+                }
+            }
+        }
+        private void CreateTurningBallSpiral()
+        {
+            if (Main.GameUpdateCount % 2 == 0)
+            {
+                var speed = 4;
+                var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
+                var type = ModContent.ProjectileType<Godcat_TurningBall>();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
+            }
+
+            if(Main.GameUpdateCount % 60 == 0)
+            {
+                var amount = 12;
+                var speed = 6;
+                var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+                for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
+                {
+                    var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
                 }
             }
         }

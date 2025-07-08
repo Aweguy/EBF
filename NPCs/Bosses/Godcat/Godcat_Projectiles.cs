@@ -294,7 +294,7 @@ namespace EBF.NPCs.Bosses.Godcat
     }
 
     /// <summary>
-    /// Simple ball projectile which flies forward at a constant pace with a dust trail.
+    /// Simple ball projectile which accelerates forward.
     /// <br>ai[0] determines whether it should be light or dark, and if it should be big or small.
     /// Use the GodcatBallTypes enum if you don't want to guess which value means what.</br>
     /// </summary>
@@ -334,6 +334,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType);
                 dust.noGravity = true;
             }
+
+            Projectile.velocity *= 1.005f;
         }
         public override void OnKill(int timeLeft)
         {
