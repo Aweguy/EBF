@@ -4,6 +4,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using System.Collections.Generic;
+using Terraria.Audio;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -343,6 +345,122 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType);
             }
+        }
+    }
+
+    public class Creator_Thunderball : ModProjectile
+    {
+        protected Vector2 positionalOffset;
+        private Vector2 PreferredPosition => Owner.Center + positionalOffset;
+        private ref float ActivationTime => ref Projectile.ai[0];
+        private bool DrawsBehindNpcs => Projectile.ai[1] == 1;
+        private NPC Owner => Main.npc[(int)Projectile.ai[2]];
+        public override string Texture => "EBF/NPCs/Machines/LaserTurret_Ball";
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 32; 
+            Projectile.height = 32;
+            Projectile.hostile = true;
+            Projectile.friendly = false;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 600;
+            Projectile.hide = true;
+        }
+        public override bool ShouldUpdatePosition() => Projectile.frameCounter >= ActivationTime;
+        public override void OnSpawn(IEntitySource source)
+        {
+            positionalOffset = Projectile.velocity * 128;
+        }
+        public override void AI()
+        {
+            //Behavior
+            Projectile.frameCounter++;
+            if (Projectile.frameCounter < ActivationTime)
+            {
+                Projectile.Center = Vector2.Lerp(Projectile.Center, PreferredPosition, 0.1f);
+            }
+            else if (Projectile.frameCounter == ActivationTime)
+            {
+                Launch();
+                Projectile.tileCollide = true;
+            }
+            else if (Projectile.frameCounter > ActivationTime)
+            {
+                //Gravity
+                Projectile.velocity.Y += 0.2f;
+            }
+
+            //Dust
+            if (Main.rand.NextBool(2))
+            {
+                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
+                dust.noGravity = true;
+            }
+        }
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            if(DrawsBehindNpcs)
+            {
+                behindNPCs.Add(index);
+            }
+            else
+            {
+                overPlayers.Add(index);
+            }
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            Projectile.CreateExplosionEffect();
+        }
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            Projectile.CreateExplosionEffect();
+            Projectile.ExpandHitboxTo(64, 64);
+            Projectile.Damage();
+        }
+        private void Launch()
+        {
+            var vectorToPlayer = Main.LocalPlayer.Center - Projectile.Center;
+            Projectile.velocity = new Vector2(vectorToPlayer.X * 0.009f * Main.rand.NextFloat(0.25f, 2.0f), -14);
+
+            SoundEngine.PlaySound(SoundID.Item39, Projectile.position);
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
+            }
+        }
+    }
+
+    public class Creator_HugeThunderball : Creator_Thunderball
+    {
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_Creator_HugeThunderball";
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 128;
+            Projectile.height = 128;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            positionalOffset = Projectile.velocity * 220;
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+        }
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            Projectile.ExpandHitboxTo(256, 256);
+            Projectile.Damage();
         }
     }
 }

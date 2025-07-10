@@ -205,6 +205,8 @@ Projectiles: {
 	Godcat_BallProjectile.DisplayName: Godcat_ Ball Projectile
 	Godcat_ReturnBall.DisplayName: Godcat_ Return Ball
 	Godcat_TurningBall.DisplayName: Godcat_ Turning Ball
+	Creator_Thunderball.DisplayName: Creator_ Thunderball
+	Creator_HugeThunderball.DisplayName: Creator_ Huge Thunderball
 }
 
 Items: {

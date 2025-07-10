@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using System;
 using Terraria.DataStructures;
+using Terraria.Audio;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -70,7 +71,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnSpawn(IEntitySource source)
         {
             //Spawn with half health in second phase
-            if(Phase == 1)
+            if (Phase == 1)
             {
                 NPC.life = NPC.lifeMax / 2;
             }
@@ -116,14 +117,14 @@ namespace EBF.NPCs.Bosses.Godcat
     public class Godcat_Creator : Godcat_Vehicle
     {
         //AI
-        private enum State : byte { Idle, TurningBallsAttack, TurningBallSpiral, MassiveBallBurst }
+        private enum State : byte { Idle, TurningBallsAttack, TurningBallSpiral, ThunderBall }
         private State currentState = State.Idle;
         private readonly Dictionary<State, int> stateDurations = new()
         {
             [State.Idle] = 200,
             [State.TurningBallsAttack] = 240,
             [State.TurningBallSpiral] = 300,
-            [State.MassiveBallBurst] = 1,
+            [State.ThunderBall] = 200,
         };
         public override void SetStaticDefaults()
         {
@@ -167,8 +168,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 case State.TurningBallSpiral:
                     CreateTurningBallSpiral();
                     break;
-                case State.MassiveBallBurst:
-                    CreateMassiveBallBurst(player);
+                case State.ThunderBall:
+                    CreateThunderBalls(player);
                     break;
             }
 
@@ -256,31 +257,62 @@ namespace EBF.NPCs.Bosses.Godcat
                 }
             }
         }
-        private void CreateMassiveBallBurst(Player player)
+        private void CreateThunderBalls(Player player)
         {
-            //Forward burst
-            var spread = 0.2f;
-            var speed = 8f;
-            var speedRange = 0.2f;
-            var baseVelocity = NPC.DirectionTo(player.Center) * speed;
-            var type = ModContent.ProjectileType<Godcat_BallProjectile>();
-            for (int i = 0; i < 40; i++)
+            //Three small bursts
+            if (StateTimer == 0 || StateTimer == 66 || StateTimer == 133)
             {
-                var velocity = baseVelocity.RotatedByRandom(spread) * Main.rand.NextFloat(1 - speedRange, 1 + speedRange);
-                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig);
-                proj.scale = Main.rand.NextFloat(0.5f, 1.5f);
+                SoundEngine.PlaySound(SoundID.Item8, NPC.position);
+
+                //Form a ring of thunder balls
+                var amount = 24;
+                var delay = 40;
+                var type = ModContent.ProjectileType<Creator_Thunderball>();
+                for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
+                {
+                    var velocity = theta.ToRotationVector2();
+                    velocity.Y *= 0.4f;
+
+                    //Some balls should draw behind creator, we send that info via ai[1]
+                    var drawBehind = 0;
+                    if (theta > MathF.PI) // ">" because theta goes clockwise for some reason?
+                    {
+                        drawBehind = 1;
+                    }
+
+                    //ai[0] is how long it takes before the balls launch
+                    //ai[2] is the owner, real owner must be -1 for dmg to work, owner is used to keep balls attached until they launch
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, delay, drawBehind, NPC.whoAmI);
+                    delay += 2;
+                }
             }
 
-            //Additional arc of projectiles
-            CreateBallArc(player, 1f, 6, 5f);
-        }
-        private void CreateBallArc(Player player, float spread, int amount, float speed)
-        {
-            var type = ModContent.ProjectileType<Godcat_BallProjectile>();
-            for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
+            //Final huge burst
+            else if (StateTimer == 199)
             {
-                var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightSmall);
+                SoundEngine.PlaySound(SoundID.Item8, NPC.position);
+
+                //Form a ring of thunder balls
+                var amount = 8;
+                var delay = 40;
+                var type = ModContent.ProjectileType<Creator_HugeThunderball>();
+                for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
+                {
+                    var velocity = theta.ToRotationVector2();
+                    velocity.Y *= 0.4f;
+
+                    //Some balls should draw behind creator, we send that info via ai[1]
+                    var drawBehind = 0;
+                    if (theta > MathF.PI) // ">" because theta goes clockwise for some reason?
+                    {
+                        drawBehind = 1;
+                    }
+
+                    //ai[0] is how long it takes before the balls launch
+                    //ai[2] is the owner, real owner must be -1 for dmg to work, owner is used to keep balls attached until they launch
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, delay, drawBehind, NPC.whoAmI);
+                    delay += 10;
+                }
             }
         }
     }
@@ -425,7 +457,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
             }
 
-            if(Main.GameUpdateCount % 60 == 0)
+            if (Main.GameUpdateCount % 60 == 0)
             {
                 var amount = 12;
                 var speed = 6;
