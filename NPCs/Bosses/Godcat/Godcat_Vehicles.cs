@@ -24,15 +24,12 @@ namespace EBF.NPCs.Bosses.Godcat
 
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[Type] = 8;
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
         }
         public override void SetDefaults()
         {
-            NPC.width = 152;
-            NPC.height = 152;
             NPC.damage = 100;
             NPC.defense = 50;
             NPC.lifeMax = 200000;
@@ -128,10 +125,10 @@ namespace EBF.NPCs.Bosses.Godcat
             [State.TurningBallSpiral] = 300,
             [State.MassiveBallBurst] = 1,
         };
-        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_Destroyer";
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            Main.npcFrameCount[Type] = 1;
 
             //Bestiary
             NPCID.Sets.BossBestiaryPriority.Add(Type); //Grouped with other bosses
@@ -146,6 +143,8 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetDefaults()
         {
             base.SetDefaults();
+            NPC.width = 202;
+            NPC.height = 154;
             idleTexture = ModContent.Request<Texture2D>(Texture);
             currentTexture = idleTexture.Value;
         }
@@ -222,7 +221,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateTurningBallsCircles()
         {
-            if(Main.GameUpdateCount % 30 == 0)
+            if (Main.GameUpdateCount % 30 == 0)
             {
                 var amount = 12;
                 var speed = 5;
@@ -302,6 +301,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            Main.npcFrameCount[Type] = 8;
 
             //Bestiary
             NPCID.Sets.BossBestiaryPriority.Add(Type); //Grouped with other bosses
@@ -316,6 +316,8 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetDefaults()
         {
             base.SetDefaults();
+            NPC.width = 152;
+            NPC.height = 152;
             idleTexture = ModContent.Request<Texture2D>(Texture);
             attackTexture = ModContent.Request<Texture2D>(Texture + "_Attack");
             currentTexture = idleTexture.Value;
