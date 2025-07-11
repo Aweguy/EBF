@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Terraria.Audio;
+using EBF.Abstract_Classes;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -461,6 +462,22 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
             Projectile.ExpandHitboxTo(256, 256);
             Projectile.Damage();
+        }
+    }
+
+    public class Creator_HolyDeathray : EBFDeathRay
+    {
+        private NPC Owner => Main.npc[(int)Projectile.ai[0]];
+        private Vector2 OwnerBarrelPos => Owner.Center + new Vector2(80 * Owner.direction, -16);
+        protected override Vector3 LightColor => Color.White.ToVector3();
+        public override void AISafe()
+        {
+            if (Owner == null || !Owner.active)
+            {
+                Projectile.Kill();
+                return;
+            }
+            Projectile.Center = OwnerBarrelPos;
         }
     }
 }

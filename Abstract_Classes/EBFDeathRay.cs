@@ -20,7 +20,7 @@ namespace EBF.Abstract_Classes
         protected float hitboxModifier = 1f;
         protected int drawDistance = 3000;
         protected int maxTime = 90;
-        protected Vector3 lightColor = Vector3.One;
+        protected virtual Vector3 LightColor => Vector3.One;
         protected ref float Timer => ref Projectile.localAI[0];
         protected ref float BeamLength => ref Projectile.localAI[1];
         protected Vector2 BeamEnd => Projectile.Center + Projectile.velocity * BeamLength;
@@ -168,7 +168,7 @@ namespace EBF.Abstract_Classes
         private void CastLights()
         {
             // Cast a light along the line of the laser
-            DelegateMethods.v3_1 = lightColor;
+            DelegateMethods.v3_1 = LightColor;
             Utils.PlotTileLine(Projectile.Center, BeamEnd, beamTexture.Width, DelegateMethods.CastLight);
         }
     }

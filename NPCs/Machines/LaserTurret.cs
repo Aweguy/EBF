@@ -186,9 +186,9 @@ namespace EBF.NPCs.Machines
     {
         private NPC owner;
         private Player target;
+        protected override Vector3 LightColor => Color.Orange.ToVector3();
         public override void OnSpawnSafe(IEntitySource source)
         {
-            lightColor = Color.Orange.ToVector3();
             target = Main.player[(int)Projectile.ai[0]];
             ProjectileExtensions.ClosestNPC(ref owner, 400, Projectile.position, true);
         }

@@ -1,14 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.NPCs.Machines;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using System;
-using Terraria.DataStructures;
-using Terraria.Audio;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -117,7 +118,7 @@ namespace EBF.NPCs.Bosses.Godcat
     public class Godcat_Creator : Godcat_Vehicle
     {
         //AI
-        private enum State : byte { Idle, TurningBallsAttack, TurningBallSpiral, ThunderBall }
+        private enum State : byte { Idle, TurningBallsAttack, TurningBallSpiral, ThunderBall, HolyDeathray }
         private State currentState = State.Idle;
         private readonly Dictionary<State, int> stateDurations = new()
         {
@@ -125,7 +126,10 @@ namespace EBF.NPCs.Bosses.Godcat
             [State.TurningBallsAttack] = 240,
             [State.TurningBallSpiral] = 300,
             [State.ThunderBall] = 200,
+            [State.HolyDeathray] = 200,
         };
+        //Other
+        private Vector2 BarrelPos => NPC.Center + new Vector2(80 * NPC.direction, -16);
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -169,7 +173,10 @@ namespace EBF.NPCs.Bosses.Godcat
                     CreateTurningBallSpiral();
                     break;
                 case State.ThunderBall:
-                    CreateThunderBalls(player);
+                    CreateThunderBalls();
+                    break;
+                case State.HolyDeathray:
+                    CreateHolyDeathray();
                     break;
             }
 
@@ -257,7 +264,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 }
             }
         }
-        private void CreateThunderBalls(Player player)
+        private void CreateThunderBalls()
         {
             //Three small bursts
             if (StateTimer == 0 || StateTimer == 66 || StateTimer == 133)
@@ -314,6 +321,41 @@ namespace EBF.NPCs.Bosses.Godcat
                     delay += 10;
                 }
             }
+        }
+        private void CreateHolyDeathray()
+        {
+            if (StateTimer == 0)
+            {
+                SoundEngine.PlaySound(SoundID.NPCDeath58, NPC.Center);
+            }
+
+            if (StateTimer < 150)
+            {
+                ChargeUpDust();
+            }
+            else if (StateTimer == 150)
+            {
+                ShootLaser();
+            }
+        }
+
+        private void ShootLaser()
+        {
+            var velocity = new Vector2(NPC.direction, 0);
+            var type = ModContent.ProjectileType<Creator_HolyDeathray>();
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3, -1, NPC.whoAmI);
+
+            var sound = SoundID.Zombie104; // Moon Lord deathray sound
+            sound.Pitch = 1.4f;
+            sound.Volume = 0.3f;
+            SoundEngine.PlaySound(sound, NPC.Center);
+        }
+        private void ChargeUpDust()
+        {
+            var pos = BarrelPos + new Vector2(NPC.direction, 0).RotatedByRandom(0.5f) * 32;
+            var vel = pos.DirectionTo(BarrelPos);
+            var dust = Dust.NewDustPerfect(pos, DustID.AncientLight, vel, 0, default, 2.0f);
+            dust.noGravity = true;
         }
     }
 
