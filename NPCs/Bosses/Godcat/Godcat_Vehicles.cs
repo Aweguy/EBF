@@ -21,6 +21,9 @@ namespace EBF.NPCs.Bosses.Godcat
         protected Asset<Texture2D> attackTexture;
 
         //AI
+        private bool hasSearchedForOther = false; // We search for the other vehicle in AI, because OnSpawn is called before both vehicles are done initializing.
+        protected NPC otherVehicle = null; // Is used to reduce aggression when both vehicles are active, and is also used to change phase only once both are dead.
+        protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
         protected ref float StateTimer => ref NPC.localAI[0];
         protected ref float Phase => ref NPC.ai[0];
 
@@ -79,6 +82,13 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void AI()
         {
+            // Locate other vehicle when both are alive at once
+            if (Phase != 0 && !hasSearchedForOther && TryFindOtherVehicle(out NPC otherVehicle))
+            {
+                this.otherVehicle = otherVehicle;
+                hasSearchedForOther = true;
+            }
+
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             Player player = Main.player[NPC.target];
@@ -110,8 +120,23 @@ namespace EBF.NPCs.Bosses.Godcat
             spriteBatch.Draw(currentTexture, position, NPC.frame, drawColor, 0, origin, 1, flipX, 0);
             return false;
         }
+        public override void OnKill()
+        {
+            //Go to next phase if both are dead
+            if (IsAlone)
+            {
+                var pos = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                var type = ModContent.NPCType<Godcat_Light>();
+                NPC.NewNPC(NPC.GetSource_Death(), pos.X, pos.Y, type, 0, 2);
+
+                var pos2 = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
+                var type2 = ModContent.NPCType<Godcat_Dark>();
+                NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, 2);
+            }
+        }
         protected abstract void Move(Player player);
         protected abstract void BeginNextPhase(Player player);
+        protected abstract bool TryFindOtherVehicle(out NPC otherVehicle);
     }
 
     [AutoloadBossHead]
@@ -182,31 +207,6 @@ namespace EBF.NPCs.Bosses.Godcat
 
             HandleStateChanging();
         }
-        public override void OnKill()
-        {
-            //Locate the other vehicle
-            bool destroyerAlive = false;
-            foreach (var npc in Main.npc)
-            {
-                if (npc.active && npc.ModNPC is Godcat_Destroyer)
-                {
-                    destroyerAlive = true;
-                    break;
-                }
-            }
-
-            //Go to next phase if both are dead
-            if (!destroyerAlive)
-            {
-                var pos = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
-                var type = ModContent.NPCType<Godcat_Light>();
-                NPC.NewNPC(NPC.GetSource_Death(), pos.X, pos.Y, type, 0, Phase + 1);
-
-                var pos2 = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
-                var type2 = ModContent.NPCType<Godcat_Dark>();
-                NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, Phase + 1);
-            }
-        }
         protected override void Move(Player player)
         {
             var preferredPosition = player.Center + new Vector2(550, -100);
@@ -217,6 +217,20 @@ namespace EBF.NPCs.Bosses.Godcat
             var type = ModContent.NPCType<Godcat_Dark>();
             var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+        }
+        protected override bool TryFindOtherVehicle(out NPC otherVehicle)
+        {
+            foreach (var npc in Main.npc)
+            {
+                if (npc.active && npc.ModNPC is Godcat_Destroyer)
+                {
+                    otherVehicle = npc;
+                    return true;
+                }
+            }
+
+            otherVehicle = null;
+            return false;
         }
         private void HandleStateChanging()
         {
@@ -238,7 +252,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 {
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
+
+                    if (IsAlone)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
+                    }
                 }
             }
         }
@@ -252,7 +270,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
             }
 
-            if (Main.GameUpdateCount % 60 == 0)
+            if (IsAlone && Main.GameUpdateCount % 60 == 0)
             {
                 var amount = 12;
                 var speed = 6;
@@ -363,7 +381,7 @@ namespace EBF.NPCs.Bosses.Godcat
     public class Godcat_Destroyer : Godcat_Vehicle
     {
         //AI
-        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst, TurningBallSpiral }
+        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst, TurningBallSpiral, DarkHomingBall }
         private State currentState = State.Idle;
         private readonly Dictionary<State, int> stateDurations = new()
         {
@@ -371,6 +389,7 @@ namespace EBF.NPCs.Bosses.Godcat
             [State.TurningBallsAttack] = 240,
             [State.TurningBallSpiral] = 300,
             [State.MassiveBallBurst] = 1,
+            [State.DarkHomingBall] = 120,
         };
         public override void SetStaticDefaults()
         {
@@ -418,34 +437,12 @@ namespace EBF.NPCs.Bosses.Godcat
                 case State.MassiveBallBurst:
                     CreateMassiveBallBurst(player);
                     break;
+                case State.DarkHomingBall:
+                    CreateDarkHomingBall(player);
+                    break;
             }
 
             HandleStateChanging();
-        }
-        public override void OnKill()
-        {
-            //Locate the other vehicle
-            bool creatorAlive = false;
-            foreach (var npc in Main.npc)
-            {
-                if (npc.active && npc.ModNPC is Godcat_Creator)
-                {
-                    creatorAlive = true;
-                    break;
-                }
-            }
-
-            //Go to next phase if both are dead
-            if (!creatorAlive)
-            {
-                var pos = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
-                var type = ModContent.NPCType<Godcat_Light>();
-                NPC.NewNPC(NPC.GetSource_Death(), pos.X, pos.Y, type, 0, Phase + 1);
-
-                var pos2 = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
-                var type2 = ModContent.NPCType<Godcat_Dark>();
-                NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, Phase + 1);
-            }
         }
         protected override void Move(Player player)
         {
@@ -463,6 +460,20 @@ namespace EBF.NPCs.Bosses.Godcat
             var type2 = ModContent.NPCType<Godcat_Dark>();
             var pos2 = player.Center.ToPoint() + new Point(-NPC.direction * 1600, 0);
             NPC.NewNPC(NPC.GetSource_FromAI(), pos2.X, pos2.Y, type2, 0, Phase + 1);
+        }
+        protected override bool TryFindOtherVehicle(out NPC otherVehicle)
+        {
+            foreach (var npc in Main.npc)
+            {
+                if (npc.active && npc.ModNPC is Godcat_Creator)
+                {
+                    otherVehicle = npc;
+                    return true;
+                }
+            }
+
+            otherVehicle = null;
+            return false;
         }
         private void HandleStateChanging()
         {
@@ -485,7 +496,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 {
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, -0.005f);
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
+
+                    if (IsAlone)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
+                    }
                 }
             }
         }
@@ -499,7 +514,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
             }
 
-            if (Main.GameUpdateCount % 60 == 0)
+            if (IsAlone && Main.GameUpdateCount % 60 == 0)
             {
                 var amount = 12;
                 var speed = 6;
@@ -527,7 +542,7 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             //Additional arc of projectiles
-            CreateBallArc(player, 1f, 6, 5f);
+            CreateBallArc(player, 1.5f, 9, 5f);
         }
         private void CreateBallArc(Player player, float spread, int amount, float speed)
         {
@@ -536,6 +551,23 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
+            }
+        }
+        private void CreateDarkHomingBall(Player player)
+        {
+            if (StateTimer == 0 || StateTimer == 60 || StateTimer == 119)
+            {
+                var speed = 4f;
+                var velocity = NPC.DirectionTo(player.Center) * speed;
+                var type = ModContent.ProjectileType<Destroyer_DarkHomingBall>();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, player.whoAmI);
+
+                if (IsAlone)
+                {
+                    CreateBallArc(player, 1f, 4, 8f);
+                }
+
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position);
             }
         }
     }

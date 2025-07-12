@@ -208,6 +208,7 @@ Projectiles: {
 	Creator_Thunderball.DisplayName: Creator_ Thunderball
 	Creator_HugeThunderball.DisplayName: Creator_ Huge Thunderball
 	Creator_HolyDeathray.DisplayName: Creator_ Holy Deathray
+	Destroyer_DarkHomingBall.DisplayName: Destroyer_ Dark Homing Ball
 }
 
 Items: {

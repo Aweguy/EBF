@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using Terraria.Audio;
 using EBF.Abstract_Classes;
+using System;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -363,7 +364,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void SetDefaults()
         {
-            Projectile.width = 32; 
+            Projectile.width = 32;
             Projectile.height = 32;
             Projectile.hostile = true;
             Projectile.friendly = false;
@@ -404,7 +405,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
-            if(DrawsBehindNpcs)
+            if (DrawsBehindNpcs)
             {
                 behindNPCs.Add(index);
             }
@@ -478,6 +479,57 @@ namespace EBF.NPCs.Bosses.Godcat
                 return;
             }
             Projectile.Center = OwnerBarrelPos;
+        }
+    }
+
+    public class Destroyer_DarkHomingBall : ModProjectile
+    {
+        private Player homingTarget;
+        public override void SetDefaults()
+        {
+            Projectile.width = 100;
+            Projectile.height = 100;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 240;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            homingTarget = Main.player[(int)Projectile.ai[0]];
+        }
+        public override void AI()
+        {
+            Projectile.rotation += 0.1f;
+
+            //Homing
+            var success = Projectile.HomeTowards(homingTarget, 0.4f, 11f);
+            if (!success)
+            {
+                Projectile.Kill();
+            }
+
+            //Dust
+            var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
+            dust.noGravity = true;
+        }
+        public override void OnKill(int timeLeft)
+        {
+            //Shoot out the outer ring of balls
+            var speed = 6f;
+            var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+
+            for (float theta = Projectile.rotation; theta < MathF.Tau + Projectile.rotation; theta += MathF.Tau / 16)
+            {
+                var pos = Projectile.Center + theta.ToRotationVector2() * 20;
+                var velocity = theta.ToRotationVector2() * speed;
+                Projectile.NewProjectile(Projectile.GetSource_Death(), pos, velocity, type, Projectile.damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
+            }
+
+            //Extra effects
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            for (int i = 0; i < 30; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -148,7 +149,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 SummonVehicle(player);
                 NPC.active = false;
             }
-            else if (PhaseTimer > FinalPhaseDuration)
+            else if (Phase == 2 && PhaseTimer > FinalPhaseDuration)
             {
                 NPC.StrikeInstantKill();
             }

@@ -82,15 +82,15 @@ namespace EBF.Extensions
         /// <param name="strength">How significantly the velocity should be adjusted per step. Only accepts values above 0.</param>
         /// <param name="maxSpeed">The upper limit of how fast the projectile can become. Only accepts values between 0 and 100.</param>
         /// <returns>True if the projectile is currently homing towards a target, otherwise returns false.</returns>
-        public static bool HomeTowards(this Projectile projectile, NPC target, float strength = 1, float maxSpeed = 100)
+        public static bool HomeTowards(this Projectile projectile, Entity target, float strength = 1, float maxSpeed = 100)
         {
             //Guard clauses
             if (target == null) return false;
             if (strength <= 0 || maxSpeed <= 0) return false;
 
             //Update velocity
-            Vector2 towardsNPC = target.Center - projectile.Center;
-            projectile.velocity += Vector2.Normalize(towardsNPC) * strength;
+            Vector2 towardsTarget = target.Center - projectile.Center;
+            projectile.velocity += Vector2.Normalize(towardsTarget) * strength;
 
             //Limit speed if a valid speed is set.
             if(maxSpeed < 100 && projectile.velocity.Length() > maxSpeed)
