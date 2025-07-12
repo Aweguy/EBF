@@ -1,4 +1,5 @@
-﻿using EBF.NPCs.Machines;
+﻿using EBF.Extensions;
+using EBF.NPCs.Machines;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -8,6 +9,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -133,6 +135,10 @@ namespace EBF.NPCs.Bosses.Godcat
                 var type2 = ModContent.NPCType<Godcat_Dark>();
                 NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, 2);
             }
+
+            // Screen shake
+            var modifier = new PunchCameraModifier(NPC.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), 20f, 6f, 20, 1000f, FullName);
+            Main.instance.CameraModifiers.Add(modifier);
         }
         protected abstract void Move(Player player);
         protected abstract void BeginNextPhase(Player player);
@@ -175,6 +181,8 @@ namespace EBF.NPCs.Bosses.Godcat
             base.SetDefaults();
             NPC.width = 202;
             NPC.height = 154;
+            NPC.HitSound = SoundID.NPCHit4;
+            NPC.DeathSound = SoundID.Item14;
             idleTexture = ModContent.Request<Texture2D>(Texture);
             currentTexture = idleTexture.Value;
         }
@@ -207,9 +215,20 @@ namespace EBF.NPCs.Bosses.Godcat
 
             HandleStateChanging();
         }
+        public override void OnKill()
+        {
+            base.OnKill();
+            NPC.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+        }
         protected override void Move(Player player)
         {
-            var preferredPosition = player.Center + new Vector2(550, -100);
+            var offset = new Vector2(550, -100);
+            if(currentState == State.HolyDeathray)
+            {
+                offset = new Vector2(400, 16);
+            }
+
+            var preferredPosition = player.Center + offset;
             NPC.Center = Vector2.Lerp(NPC.Center, preferredPosition, 0.03f);
         }
         protected override void BeginNextPhase(Player player)
@@ -258,6 +277,8 @@ namespace EBF.NPCs.Bosses.Godcat
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
                     }
                 }
+
+                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
         }
         private void CreateTurningBallSpiral()
@@ -268,6 +289,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
                 var type = ModContent.ProjectileType<Godcat_TurningBall>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
+
+                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
 
             if (IsAlone && Main.GameUpdateCount % 60 == 0)
@@ -280,6 +303,8 @@ namespace EBF.NPCs.Bosses.Godcat
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightSmall);
                 }
+
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
         }
         private void CreateThunderBalls()
@@ -291,6 +316,11 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 //Form a ring of thunder balls
                 var amount = 24;
+                if (!IsAlone)
+                {
+                    amount = 18;
+                }
+
                 var delay = 40;
                 var type = ModContent.ProjectileType<Creator_Thunderball>();
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
@@ -411,6 +441,8 @@ namespace EBF.NPCs.Bosses.Godcat
             base.SetDefaults();
             NPC.width = 152;
             NPC.height = 152;
+            NPC.HitSound = SoundID.NPCHit18;
+            NPC.DeathSound = SoundID.NPCDeath5;
             idleTexture = ModContent.Request<Texture2D>(Texture);
             attackTexture = ModContent.Request<Texture2D>(Texture + "_Attack");
             currentTexture = idleTexture.Value;
@@ -502,6 +534,8 @@ namespace EBF.NPCs.Bosses.Godcat
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
                     }
                 }
+
+                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
         }
         private void CreateTurningBallSpiral()
@@ -512,6 +546,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
                 var type = ModContent.ProjectileType<Godcat_TurningBall>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
+
+                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
 
             if (IsAlone && Main.GameUpdateCount % 60 == 0)
@@ -524,6 +560,8 @@ namespace EBF.NPCs.Bosses.Godcat
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
                 }
+
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
         }
         private void CreateMassiveBallBurst(Player player)
@@ -540,6 +578,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig);
                 proj.scale = Main.rand.NextFloat(0.5f, 1.5f);
             }
+
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
 
             //Additional arc of projectiles
             CreateBallArc(player, 1.5f, 9, 5f);
@@ -567,7 +607,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     CreateBallArc(player, 1f, 4, 8f);
                 }
 
-                SoundEngine.PlaySound(SoundID.Item72, NPC.position);
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
         }
     }

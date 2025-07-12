@@ -207,7 +207,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     dust.noGravity = true;
                 }
 
-                Projectile.HomeTowards(Owner, 0.3f);
+                Projectile.HomeTowards(Owner, 0.33f, 12f);
                 if (Projectile.Distance(Owner.Center) < 32)
                 {
                     Projectile.Kill();
@@ -357,6 +357,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private ref float ActivationTime => ref Projectile.ai[0];
         private bool DrawsBehindNpcs => Projectile.ai[1] == 1;
         private NPC Owner => Main.npc[(int)Projectile.ai[2]];
+        private Player Target => Main.player[Owner.target];
         public override string Texture => "EBF/NPCs/Machines/LaserTurret_Ball";
         public override void SetStaticDefaults()
         {
@@ -394,13 +395,13 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 //Gravity
                 Projectile.velocity.Y += 0.2f;
-            }
 
-            //Dust
-            if (Main.rand.NextBool(2))
-            {
-                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
-                dust.noGravity = true;
+                //Dust
+                if (Main.rand.NextBool(2))
+                {
+                    var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
+                    dust.noGravity = true;
+                }
             }
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -428,8 +429,9 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void Launch()
         {
-            var vectorToPlayer = Main.LocalPlayer.Center - Projectile.Center;
-            Projectile.velocity = new Vector2(vectorToPlayer.X * 0.009f * Main.rand.NextFloat(0.25f, 2.0f), -14);
+            var vectorToPlayer = Target.Center - Projectile.Center;
+            var spread = Main.rand.NextFloat(0.25f, 2.0f);
+            Projectile.velocity = new Vector2(vectorToPlayer.X * spread * 0.009f, -14) + Target.velocity * 0.2f;
 
             SoundEngine.PlaySound(SoundID.Item39, Projectile.position);
             for (int i = 0; i < 10; i++)

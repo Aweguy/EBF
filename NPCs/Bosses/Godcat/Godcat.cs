@@ -4,6 +4,7 @@ using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
@@ -36,8 +37,8 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.noGravity = true;
 
             NPC.noTileCollide = true;
-            NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.HitSound = SoundID.NPCHit52;
+            NPC.DeathSound = SoundID.NPCDeath7;
             NPC.knockBackResist = 0f;
             NPC.value = Item.buyPrice(gold: 5);
             NPC.SpawnWithHigherTime(30);
@@ -126,6 +127,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected abstract void Move(Player player);
         protected abstract void HandleAttacks(Player player);
         protected abstract void SummonVehicle(Player player);
+        protected abstract void SpawnDust();
         private void HandleDodging()
         {
             isDodging = Main.GameUpdateCount % 60 > 10;
@@ -146,11 +148,13 @@ namespace EBF.NPCs.Bosses.Godcat
             PhaseTimer++;
             if(Phase < 2 && PhaseTimer > PhaseDuration) 
             {
+                SpawnDust();
                 SummonVehicle(player);
                 NPC.active = false;
             }
             else if (Phase == 2 && PhaseTimer > FinalPhaseDuration)
             {
+                SpawnDust();
                 NPC.StrikeInstantKill();
             }
         }
@@ -238,6 +242,13 @@ namespace EBF.NPCs.Bosses.Godcat
             var type = ModContent.NPCType<Godcat_Creator>();
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
         }
+        protected override void SpawnDust()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.AncientLight);
+            }
+        }
         private void CreateJudgementWave(Player player)
         {
             // Big ol' wave of judgement lasers
@@ -273,6 +284,8 @@ namespace EBF.NPCs.Bosses.Godcat
             var velocity = Vector2.Normalize(player.Center - position) * 14f;
             var type = ModContent.ProjectileType<Godcat_LightBlade>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage, 3f, -1, NPC.target);
+
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateSeikenRing(int amount, int speed)
         {
@@ -281,11 +294,15 @@ namespace EBF.NPCs.Bosses.Godcat
                 var type = ModContent.ProjectileType<Godcat_LightBlade>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage, 3f, -1, NPC.target);
             }
+
+            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
         }
         private void CreateReturnBall(Player player, float speed)
         {
             var type = ModContent.ProjectileType<Godcat_ReturnBall>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, NPC.whoAmI);
+
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateBallArc(Player player, float spread, int amount, float speed)
         {
@@ -376,12 +393,21 @@ namespace EBF.NPCs.Bosses.Godcat
             var type = ModContent.NPCType<Godcat_Destroyer>();
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
         }
+        protected override void SpawnDust()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch);
+            }
+        }
         private void CreateDarkStormSeiken(Player player)
         {
             var position = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
             var velocity = Vector2.Normalize(player.Center - position) * 14f;
             var type = ModContent.ProjectileType<Godcat_DarkBlade>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage, 3f, -1, NPC.target);
+
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateDarkSeikenRing(int amount, int speed)
         {
@@ -390,11 +416,15 @@ namespace EBF.NPCs.Bosses.Godcat
                 var type = ModContent.ProjectileType<Godcat_DarkBlade>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage, 3f, -1, NPC.target);
             }
+
+            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
         }
         private void CreateDarkReturnBall(Player player, float speed)
         {
             var type = ModContent.ProjectileType<Godcat_ReturnBall>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, NPC.whoAmI);
+
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateDarkBallArc(Player player, float spread, int amount, float speed)
         {
