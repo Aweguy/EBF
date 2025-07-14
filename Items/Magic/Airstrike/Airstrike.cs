@@ -1,4 +1,4 @@
-﻿using EBF.Extensions;
+﻿using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -198,8 +198,8 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.localAI[0] = 1;
 
             //Explode
-            ProjectileExtensions.ExpandHitboxTo(Projectile, explosionSize, explosionSize);
-            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            Projectile.ExpandHitboxTo(explosionSize, explosionSize);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
             Projectile.Damage();
 
             // Play explosion sound

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
-using EBF.Extensions;
+using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Terraria;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using System.Collections.Generic;
-using Terraria.Audio;
-using EBF.Abstract_Classes;
 using System;
+using System.Collections.Generic;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -103,7 +103,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 //Slight homing behavior while flying
                 var angleToTarget = Projectile.AngleTo(Target.Center) + MathHelper.PiOver2;
-                Projectile.rotation = ProjectileExtensions.SlowRotation(Projectile.rotation, angleToTarget, turnSpeed);
+                Projectile.rotation = EBFUtils.SlowRotation(Projectile.rotation, angleToTarget, turnSpeed);
                 Projectile.velocity = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * speed;
             }
 
@@ -457,12 +457,12 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
         }
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
             Projectile.ExpandHitboxTo(256, 256);
             Projectile.Damage();
         }

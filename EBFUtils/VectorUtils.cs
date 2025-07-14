@@ -2,25 +2,10 @@
 using System;
 using Terraria;
 
-namespace EBF.Extensions
+namespace EBF.EbfUtils
 {
-    public static class VectorUtils
+    public static partial class EBFUtils
     {
-        /// <summary>
-        /// Converts polar vectors into cartesian vectors.
-        /// </summary>
-        /// <param name="radius">The length of the vector.</param>
-        /// <param name="theta">The angle of the vector.</param>
-        /// <returns>A cartesian vector (A vector that has x and y coordinates).</returns>
-        public static Vector2 Polar(float radius, float theta) => new Vector2(MathF.Cos(theta), MathF.Sin(theta)) * radius;
-
-        /// <summary>
-        /// Shortcut to generate a randomized vector in any direction inside a square.
-        /// </summary>
-        /// <param name="size">Optionally multiply the valid area.</param>
-        /// <returns>A vector where (X = -1 to 1, Y = -1 to 1).</returns>
-        public static Vector2 Random(float size = 1) => Main.rand.NextVector2Square(-size, size);
-
         /// <summary>
         /// Scans an area for any ground.
         /// </summary>

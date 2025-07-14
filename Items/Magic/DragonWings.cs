@@ -1,4 +1,4 @@
-using EBF.Extensions;
+using EBF.EbfUtils;
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -159,7 +159,7 @@ namespace EBF.Items.Magic
             if (Projectile.localAI[0] > 50)
             {
                 Projectile.localAI[0] = 30;
-                if(ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.position))
+                if(EBFUtils.ClosestNPC(ref target, 400, Projectile.position))
                 {
                     return;
                 }

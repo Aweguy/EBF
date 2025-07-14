@@ -1,5 +1,4 @@
-﻿using EBF.Extensions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -34,7 +33,7 @@ namespace EBF.Items.Melee
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             for (int i = 0; i < 3; i++)
-                Projectile.NewProjectile(source, position, velocity + VectorUtils.Random(0.75f), type, damage, knockback);
+                Projectile.NewProjectile(source, position, velocity + Main.rand.NextVector2Square(-0.75f, 0.75f), type, damage, knockback);
             
             return false;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -9,13 +10,12 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
-using ReLogic.Content;
-using EBF.Extensions;
-using EBF.NPCs.Machines;
-using System.Collections.Generic;
-using EBF.Systems;
-using EBF.Dusts;
 using Terraria.GameContent.ItemDropRules;
+using ReLogic.Content;
+using EBF.Dusts;
+using EBF.Systems;
+using EBF.EbfUtils;
+using EBF.NPCs.Machines;
 using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
 using EBF.Items.Placeables.Furniture.BossTrophies;
@@ -203,7 +203,7 @@ namespace EBF.NPCs.Bosses
             if (HasAttachment)
                 attachedNPC.StrikeInstantKill();
 
-            NPC.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
 
             var sound = SoundID.NPCDeath37; //37, 56
             sound.Pitch = -1f;
@@ -295,7 +295,7 @@ namespace EBF.NPCs.Bosses
                 }
                 else
                 {
-                    bool foundGround = VectorUtils.TryGetGroundPosition(NPC.BottomLeft, new Vector2(NPC.width, hoverDistance * 2), out Vector2 ground, true);
+                    bool foundGround = EBFUtils.TryGetGroundPosition(NPC.BottomLeft, new Vector2(NPC.width, hoverDistance * 2), out Vector2 ground, true);
                     groundPos = foundGround ? ground : groundPos + new Vector2(0, hoverDistance * 2);
                 }
             }

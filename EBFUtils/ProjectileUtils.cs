@@ -3,9 +3,9 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 
-namespace EBF.Extensions
+namespace EBF.EbfUtils
 {
-    public static class ProjectileExtensions
+    public static partial class EBFUtils
     {
         /// <summary>
         /// Adjusts a rotation towards a target angle in small increments, choosing the shortest direction. 

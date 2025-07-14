@@ -1,17 +1,16 @@
-﻿using EBF.Extensions;
-using EBF.NPCs.Machines;
+﻿using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.Audio;
+using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
-using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -218,7 +217,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnKill()
         {
             base.OnKill();
-            NPC.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
         }
         protected override void Move(Player player)
         {

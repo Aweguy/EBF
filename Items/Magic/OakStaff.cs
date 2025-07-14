@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.Extensions;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Magic
 {

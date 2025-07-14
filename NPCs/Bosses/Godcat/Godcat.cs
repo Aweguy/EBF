@@ -1,13 +1,12 @@
-﻿using EBF.Extensions;
+﻿using EBF.EbfUtils;
 using EBF.Items.Magic;
 using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
+using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat

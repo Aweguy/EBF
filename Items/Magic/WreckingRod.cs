@@ -1,14 +1,13 @@
-
-using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Audio;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using EBF.EbfUtils;
 using EBF.Items.Materials;
 using EBF.Items.Ranged.Guns;
-using EBF.Extensions;
+using EBF.Abstract_Classes;
 
 namespace EBF.Items.Magic
 {
@@ -83,7 +82,7 @@ namespace EBF.Items.Magic
         public override void OnKill(int timeLeft)
         {
             //Explode
-            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Small);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Small);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
             //Create plasma burst

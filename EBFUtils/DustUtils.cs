@@ -2,9 +2,9 @@
 using Terraria;
 using Microsoft.Xna.Framework;
 
-namespace EBF.Extensions
+namespace EBF.EbfUtils
 {
-    public static partial class Utils
+    public static partial class EBFUtils
     {
         public enum ExplosionSize { Small, Medium, Large, Huge, Nuclear }
         
@@ -55,7 +55,7 @@ namespace EBF.Extensions
             for (int i = 0; i < stats.bigSmokeCount; i++)
             {
                 var offset = new Vector2(Main.rand.NextFloat(-entity.width / 2, entity.width / 2), Main.rand.NextFloat(-entity.height / 2, entity.height / 2));
-                Gore.NewGoreDirect(entity.GetSource_Death(), entity.Center + offset, VectorUtils.Random(1.5f), Main.rand.Next(61, 64), Scale: stats.scale / 2);
+                Gore.NewGoreDirect(entity.GetSource_Death(), entity.Center + offset, Main.rand.NextVector2Circular(1.5f, 1.5f), Main.rand.Next(61, 64), Scale: stats.scale / 2);
             }
         }
     }

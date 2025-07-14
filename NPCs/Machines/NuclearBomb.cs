@@ -1,4 +1,4 @@
-﻿using EBF.Extensions;
+﻿using EBF.EbfUtils;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria;
@@ -76,8 +76,8 @@ namespace EBF.NPCs.Machines
             SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.position);
 
             //Explode
-            ProjectileExtensions.ExpandHitboxTo(Projectile, explosionSize, explosionSize);
-            Projectile.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Nuclear);
+            Projectile.ExpandHitboxTo(explosionSize, explosionSize);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Nuclear);
             Projectile.Damage();
         }
     }

@@ -1,5 +1,4 @@
-﻿using EBF.Extensions;
-using System;
+﻿using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Audio;
@@ -186,7 +185,8 @@ namespace EBF.Abstract_Classes
                 }
             }
 
-            Vector2 drawOffset = VectorUtils.Polar(40 - (8f * drawTime / MaximumDrawTime), Projectile.rotation - MathHelper.PiOver2);
+            var magnitude = 40 - (8f * drawTime / MaximumDrawTime);
+            var drawOffset = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * magnitude;
             Projectile.Center = playerCenter + drawOffset; //the vector is a bandaid fix, we need to find the real reason the arrow is offset
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
             Projectile.timeLeft += Projectile.extraUpdates + 1;
@@ -221,8 +221,9 @@ namespace EBF.Abstract_Classes
             else
             {
                 //Light the tip of the arrow
-                Vector2 offset = VectorUtils.Polar(8 - DrawOriginOffsetY, Projectile.rotation - MathHelper.PiOver2);
-                Dust dust = Dust.NewDustPerfect(Projectile.Center + offset, DustID.AncientLight, Vector2.Zero);
+                var magnitude = 8 - DrawOriginOffsetY;
+                var offset = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * magnitude;
+                var dust = Dust.NewDustPerfect(Projectile.Center + offset, DustID.AncientLight, Vector2.Zero);
                 dust.noGravity = true;
             }
         }

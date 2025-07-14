@@ -1,6 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs;
-using EBF.Extensions;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;

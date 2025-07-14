@@ -1,14 +1,14 @@
-﻿using EBF.Extensions;
+﻿using EBF.EbfUtils;
 using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 
 namespace EBF.NPCs.Machines
 {

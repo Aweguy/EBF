@@ -1,13 +1,12 @@
-﻿using EBF.Extensions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace EBF.Items.Melee.Throwable
 {
@@ -166,7 +165,7 @@ namespace EBF.Items.Melee.Throwable
             Projectile.frame = Main.rand.Next(0, 3);
 
             //Get all valid npcs to target using the following criteria (reduces search size for homing)
-            validNPCs = Main.npc.ToList<NPC>().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
+            validNPCs = Main.npc.ToList().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
         }
         private bool FindTarget(out Vector2 move)
         {

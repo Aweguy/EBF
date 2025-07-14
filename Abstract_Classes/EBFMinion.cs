@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using EBF.Extensions;
+using EBF.EbfUtils;
 using Terraria.ID;
 
 namespace EBF.Abstract_Classes
@@ -142,7 +142,7 @@ namespace EBF.Abstract_Classes
             //Locate and attack nearest target. (isFlying == UseHoverAI) prevents ground minions from targetting while flying.
             target = null;
             InAttackRange = false;
-            if (isFlying == UseHoverAI && ProjectileExtensions.ClosestNPC(ref target, DetectRange, Projectile.position, ignoreTiles: isFlying))
+            if (isFlying == UseHoverAI && EBFUtils.ClosestNPC(ref target, DetectRange, Projectile.position, ignoreTiles: isFlying))
             {
                 HandleTargetLogic(target);
             }

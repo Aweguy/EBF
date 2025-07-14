@@ -1,12 +1,11 @@
-﻿using EBF.Extensions;
-using EBF.Items.Materials;
+﻿using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Melee
 {
@@ -104,9 +103,9 @@ namespace EBF.Items.Melee
                 Lighting.AddLight(Projectile.Center, TorchID.Orange); //Orange lighting coming from the center of the Projectile.
 
                 //Homing
-                if (ProjectileExtensions.ClosestNPC(ref target, homingRange, Projectile.Center))
+                if (EBFUtils.ClosestNPC(ref target, homingRange, Projectile.Center))
                 {
-                    direction = ProjectileExtensions.SlowRotation(direction, (target.Center - Projectile.Center).ToRotation(), 3f);
+                    direction = EBFUtils.SlowRotation(direction, Projectile.AngleTo(target.Center), 3f);
                     Projectile.velocity = direction.ToRotationVector2() * speed;
                     Projectile.rotation = direction + MathHelper.PiOver2;
                 }
