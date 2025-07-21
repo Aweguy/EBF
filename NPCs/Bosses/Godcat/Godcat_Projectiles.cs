@@ -534,4 +534,54 @@ namespace EBF.NPCs.Bosses.Godcat
             }
         }
     }
+
+    /// <summary>
+    /// A slow moving invisible projectile which expands and rapidly spawns smoke within its hitbox.
+    /// <br>ai[0] determines how big the smoke cloud becomes.</br>
+    /// </summary>
+    public class Destroyer_DarkBreath : ModProjectile
+    {
+        private ref float MaxSize => ref Projectile.ai[0];
+        private Player HomingTarget => Main.player[(int)Projectile.ai[1]];
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+
+            Projectile.timeLeft = 60 * 5;
+            Projectile.hostile = true;
+            Projectile.friendly = false;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+        }
+        public override void AI()
+        {
+            if (Main.GameUpdateCount % 2 == 0)
+            {
+                Projectile.velocity *= 0.99f;
+                Projectile.HomeTowards(HomingTarget, 0.1f, 6f);
+                SpawnGore();
+                
+                //Expand hitbox until max size
+                if (Projectile.width < MaxSize)
+                {
+                    Projectile.ExpandHitboxTo(Projectile.width + 2, Projectile.height + 2);
+                }
+            }
+        }
+        private void SpawnGore()
+        {
+            var type = 99;
+            var scale = 0.5f + ((float)Projectile.width * 2 / MaxSize);
+            for (int i = 0; i < 1 + Projectile.width / 50; i++)
+            {
+                var position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width);
+                var velocity = Main.rand.NextVector2Square(-1f, 1f);
+                var gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, velocity, type, scale);
+                gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5);
+                gore.alpha = 128;
+            }
+        }
+    }
 }

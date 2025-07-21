@@ -222,7 +222,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected override void Move(Player player)
         {
             var offset = new Vector2(550, -100);
-            if(currentState == State.HolyDeathray)
+            if (currentState == State.HolyDeathray)
             {
                 offset = new Vector2(400, 16);
             }
@@ -410,13 +410,13 @@ namespace EBF.NPCs.Bosses.Godcat
     public class Godcat_Destroyer : Godcat_Vehicle
     {
         //AI
-        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst, TurningBallSpiral, DarkHomingBall }
+        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst, DarkBreath, DarkHomingBall }
         private State currentState = State.Idle;
         private readonly Dictionary<State, int> stateDurations = new()
         {
             [State.Idle] = 200,
             [State.TurningBallsAttack] = 240,
-            [State.TurningBallSpiral] = 300,
+            [State.DarkBreath] = 200,
             [State.MassiveBallBurst] = 1,
             [State.DarkHomingBall] = 120,
         };
@@ -462,8 +462,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 case State.TurningBallsAttack:
                     CreateTurningBallsCircles();
                     break;
-                case State.TurningBallSpiral:
-                    CreateTurningBallSpiral();
+                case State.DarkBreath:
+                    CreateDarkBreath(player);
                     break;
                 case State.MassiveBallBurst:
                     CreateMassiveBallBurst(player);
@@ -537,32 +537,6 @@ namespace EBF.NPCs.Bosses.Godcat
                 SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
         }
-        private void CreateTurningBallSpiral()
-        {
-            if (Main.GameUpdateCount % 2 == 0)
-            {
-                var speed = 4;
-                var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
-                var type = ModContent.ProjectileType<Godcat_TurningBall>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
-
-                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
-            }
-
-            if (IsAlone && Main.GameUpdateCount % 60 == 0)
-            {
-                var amount = 12;
-                var speed = 6;
-                var type = ModContent.ProjectileType<Godcat_BallProjectile>();
-                for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
-                {
-                    var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
-                }
-
-                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
-            }
-        }
         private void CreateMassiveBallBurst(Player player)
         {
             //Forward burst
@@ -607,6 +581,29 @@ namespace EBF.NPCs.Bosses.Godcat
                 }
 
                 SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+            }
+        }
+        private void CreateDarkBreath(Player player)
+        {
+            var windupTime = 50;
+            if (StateTimer == 0)
+            {
+                SoundEngine.PlaySound(SoundID.NPCDeath60, NPC.position);
+            }
+            else if (StateTimer == windupTime)
+            {
+                SoundStyle sound = SoundID.NPCHit57;
+                sound.Pitch = -1.0f;
+                sound.Volume = 0.33f;
+                SoundEngine.PlaySound(sound, NPC.position);
+            }
+
+            else if (StateTimer > windupTime && Main.GameUpdateCount % 15 == 0)
+            {
+                var speed = 7f;
+                var velocity = NPC.DirectionTo(player.Center) * speed;
+                var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 80);
             }
         }
     }
