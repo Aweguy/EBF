@@ -216,7 +216,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     case 3:
                         //Cast multiple return balls
                         NPC.localAI[1] = 3;
-                        CreateBallArc(player, 0.66f, 6, 9f);
+                        CreateDiamondArc(player, 0.66f, 6, 9f);
                         break;
                 }
             }
@@ -303,13 +303,13 @@ namespace EBF.NPCs.Bosses.Godcat
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
-        private void CreateBallArc(Player player, float spread, int amount, float speed)
+        private void CreateDiamondArc(Player player, float spread, int amount, float speed)
         {
-            var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+            var type = ModContent.ProjectileType<Godcat_LightDiamond>();
             for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
             {
                 var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightSmall);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f);
             }
         }
     }

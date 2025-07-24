@@ -296,11 +296,11 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 var amount = 12;
                 var speed = 6;
-                var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+                var type = ModContent.ProjectileType<Godcat_LightDiamond>();
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
                 {
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightSmall);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f);
                 }
 
                 SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
@@ -383,6 +383,18 @@ namespace EBF.NPCs.Bosses.Godcat
             else if (StateTimer == 150)
             {
                 ShootLaser();
+
+                //Create arc of diamonds
+                var speed = 4f;
+                var amount = 4;
+                var spread = 1f;
+                var type = ModContent.ProjectileType<Godcat_LightDiamond>();
+                var dir = (NPC.direction == 1 ? 0 : MathHelper.Pi).ToRotationVector2();
+                for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
+                {
+                    var velocity = dir.RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f);
+                }
             }
         }
 

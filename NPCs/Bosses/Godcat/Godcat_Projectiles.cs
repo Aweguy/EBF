@@ -154,6 +154,25 @@ namespace EBF.NPCs.Bosses.Godcat
         public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_DarkBlade";
     }
 
+    public class Godcat_LightDiamond : Godcat_BallProjectile
+    {
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Godcat_LightDiamond";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 1;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 10;
+            Projectile.height = 10;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+        }
+    }
+
     /// <summary>
     /// A large projectile which flies in a straight path, and explodes into smaller projectiles that home toward the caster
     /// <br>ai[0] determines size and color, use GodcatBallType enum if you don't want to guess.</br>
