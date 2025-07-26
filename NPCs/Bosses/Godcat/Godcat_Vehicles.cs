@@ -11,6 +11,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
+using System.Linq;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -24,6 +25,9 @@ namespace EBF.NPCs.Bosses.Godcat
         //AI
         private bool hasSearchedForOther = false; // We search for the other vehicle in AI, because OnSpawn is called before both vehicles are done initializing.
         protected NPC otherVehicle = null; // Is used to reduce aggression when both vehicles are active, and is also used to change phase only once both are dead.
+        protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall}
+        protected State currentState = State.Idle;
+        protected Dictionary<State, int> stateDurations;
         protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
         protected ref float StateTimer => ref NPC.localAI[0];
         protected ref float Phase => ref NPC.ai[0];
@@ -109,6 +113,7 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             Move(player);
+            HandleStateChange();
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -141,24 +146,35 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected abstract void Move(Player player);
         protected abstract void BeginNextPhase(Player player);
-        protected abstract bool TryFindOtherVehicle(out NPC otherVehicle);
+        private void HandleStateChange()
+        {
+            StateTimer++;
+            if (StateTimer >= stateDurations[currentState])
+            {
+                StateTimer = 0;
+                var index = Main.rand.Next(1, stateDurations.Count);
+                currentState = currentState == State.Idle ? stateDurations.ElementAt(index).Key : State.Idle;
+            }
+        }
+        private bool TryFindOtherVehicle(out NPC otherVehicle)
+        {
+            foreach (var npc in Main.npc)
+            {
+                if (npc.active && npc.type != NPC.type && npc.ModNPC is Godcat_Vehicle)
+                {
+                    otherVehicle = npc;
+                    return true;
+                }
+            }
+
+            otherVehicle = null;
+            return false;
+        }
     }
 
     [AutoloadBossHead]
     public class Godcat_Creator : Godcat_Vehicle
     {
-        //AI
-        private enum State : byte { Idle, TurningBallsAttack, TurningBallSpiral, ThunderBall, HolyDeathray }
-        private State currentState = State.Idle;
-        private readonly Dictionary<State, int> stateDurations = new()
-        {
-            [State.Idle] = 200,
-            [State.TurningBallsAttack] = 240,
-            [State.TurningBallSpiral] = 300,
-            [State.ThunderBall] = 200,
-            [State.HolyDeathray] = 200,
-        };
-        //Other
         private Vector2 BarrelPos => NPC.Center + new Vector2(80 * NPC.direction, -16);
         public override void SetStaticDefaults()
         {
@@ -184,6 +200,15 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.DeathSound = SoundID.Item14;
             idleTexture = ModContent.Request<Texture2D>(Texture);
             currentTexture = idleTexture.Value;
+
+            stateDurations = new()
+            {
+                [State.Idle] = 200,
+                [State.TurningBallCircle] = 240,
+                [State.TurningBallSpiral] = 300,
+                [State.CreatorThunderBall] = 200,
+                [State.CreatorHolyDeathray] = 200,
+            };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -198,21 +223,19 @@ namespace EBF.NPCs.Bosses.Godcat
             var player = Main.player[NPC.target];
             switch (currentState)
             {
-                case State.TurningBallsAttack:
+                case State.TurningBallCircle:
                     CreateTurningBallsCircles();
                     break;
                 case State.TurningBallSpiral:
                     CreateTurningBallSpiral();
                     break;
-                case State.ThunderBall:
+                case State.CreatorThunderBall:
                     CreateThunderBalls();
                     break;
-                case State.HolyDeathray:
+                case State.CreatorHolyDeathray:
                     CreateHolyDeathray();
                     break;
             }
-
-            HandleStateChanging();
         }
         public override void OnKill()
         {
@@ -222,7 +245,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected override void Move(Player player)
         {
             var offset = new Vector2(550, -100);
-            if (currentState == State.HolyDeathray)
+            if (currentState == State.CreatorHolyDeathray)
             {
                 offset = new Vector2(400, 16);
             }
@@ -235,29 +258,6 @@ namespace EBF.NPCs.Bosses.Godcat
             var type = ModContent.NPCType<Godcat_Dark>();
             var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
-        }
-        protected override bool TryFindOtherVehicle(out NPC otherVehicle)
-        {
-            foreach (var npc in Main.npc)
-            {
-                if (npc.active && npc.ModNPC is Godcat_Destroyer)
-                {
-                    otherVehicle = npc;
-                    return true;
-                }
-            }
-
-            otherVehicle = null;
-            return false;
-        }
-        private void HandleStateChanging()
-        {
-            StateTimer++;
-            if (StateTimer >= stateDurations[currentState])
-            {
-                StateTimer = 0;
-                currentState = currentState == State.Idle ? (State)Main.rand.Next(1, stateDurations.Count) : State.Idle;
-            }
         }
         private void CreateTurningBallsCircles()
         {
@@ -397,7 +397,6 @@ namespace EBF.NPCs.Bosses.Godcat
                 }
             }
         }
-
         private void ShootLaser()
         {
             var velocity = new Vector2(NPC.direction, 0);
@@ -421,17 +420,6 @@ namespace EBF.NPCs.Bosses.Godcat
     [AutoloadBossHead]
     public class Godcat_Destroyer : Godcat_Vehicle
     {
-        //AI
-        private enum State : byte { Idle, TurningBallsAttack, MassiveBallBurst, DarkBreath, DarkHomingBall }
-        private State currentState = State.Idle;
-        private readonly Dictionary<State, int> stateDurations = new()
-        {
-            [State.Idle] = 200,
-            [State.TurningBallsAttack] = 240,
-            [State.DarkBreath] = 200,
-            [State.MassiveBallBurst] = 1,
-            [State.DarkHomingBall] = 120,
-        };
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -457,6 +445,15 @@ namespace EBF.NPCs.Bosses.Godcat
             idleTexture = ModContent.Request<Texture2D>(Texture);
             attackTexture = ModContent.Request<Texture2D>(Texture + "_Attack");
             currentTexture = idleTexture.Value;
+
+            stateDurations = new()
+            {
+                [State.Idle] = 200,
+                [State.TurningBallCircle] = 240,
+                [State.DestroyerBreath] = 200,
+                [State.DestroyerBallBurst] = 1,
+                [State.DestroyerHomingBall] = 120,
+            };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -471,21 +468,19 @@ namespace EBF.NPCs.Bosses.Godcat
             var player = Main.player[NPC.target];
             switch (currentState)
             {
-                case State.TurningBallsAttack:
+                case State.TurningBallCircle:
                     CreateTurningBallsCircles();
                     break;
-                case State.DarkBreath:
+                case State.DestroyerBreath:
                     CreateDarkBreath(player);
                     break;
-                case State.MassiveBallBurst:
+                case State.DestroyerBallBurst:
                     CreateMassiveBallBurst(player);
                     break;
-                case State.DarkHomingBall:
+                case State.DestroyerHomingBall:
                     CreateDarkHomingBall(player);
                     break;
             }
-
-            HandleStateChanging();
         }
         protected override void Move(Player player)
         {
@@ -503,30 +498,6 @@ namespace EBF.NPCs.Bosses.Godcat
             var type2 = ModContent.NPCType<Godcat_Dark>();
             var pos2 = player.Center.ToPoint() + new Point(-NPC.direction * 1600, 0);
             NPC.NewNPC(NPC.GetSource_FromAI(), pos2.X, pos2.Y, type2, 0, Phase + 1);
-        }
-        protected override bool TryFindOtherVehicle(out NPC otherVehicle)
-        {
-            foreach (var npc in Main.npc)
-            {
-                if (npc.active && npc.ModNPC is Godcat_Creator)
-                {
-                    otherVehicle = npc;
-                    return true;
-                }
-            }
-
-            otherVehicle = null;
-            return false;
-        }
-        private void HandleStateChanging()
-        {
-            StateTimer++;
-            if (StateTimer >= stateDurations[currentState])
-            {
-                StateTimer = 0;
-                currentState = currentState == State.Idle ? (State)Main.rand.Next(1, stateDurations.Count) : State.Idle;
-                //currentState = currentState == State.Idle ? State.TurningBallSpiral : State.Idle;
-            }
         }
         private void CreateTurningBallsCircles()
         {

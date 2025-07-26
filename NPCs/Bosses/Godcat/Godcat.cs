@@ -3,22 +3,34 @@ using EBF.Items.Magic;
 using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
     public abstract class Godcat : ModNPC
     {
+        //Attacks
+        protected enum State : byte { Idle, LightJudgmentWave, SeikenStorm, SeikenRing, ReturnBall }
+        protected Dictionary<State, int> stateDurations;
+        protected State currentState = State.Idle;
+        protected ref float StateTimer => ref NPC.localAI[0];
+
+        //Dodging
         private bool isDodging = false;
         private bool hasDodged = false; // Used to display dodging frames
+
+        //Phases
         private const int PhaseDuration = 60 * 20; // How long the godcats stick around before summoning their vehicle
         private const int FinalPhaseDuration = 60 * 10; // How long the godcats stick around before finishing the fight
         protected ref float Phase => ref NPC.ai[0];
         private ref float PhaseTimer => ref NPC.ai[1];
+
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 8;
@@ -93,6 +105,7 @@ namespace EBF.NPCs.Bosses.Godcat
             Move(player);
             HandleDodging();
             HandleAttacks(player);
+            HandleStateChange();
             HandlePhaseStuff(player);
         }
         public override void OnKill()
@@ -127,6 +140,16 @@ namespace EBF.NPCs.Bosses.Godcat
         protected abstract void HandleAttacks(Player player);
         protected abstract void SummonVehicle(Player player);
         protected abstract void SpawnDust();
+        private void HandleStateChange()
+        {
+            StateTimer++;
+            if (StateTimer >= stateDurations[currentState])
+            {
+                StateTimer = 0;
+                var index = Main.rand.Next(1, stateDurations.Count);
+                currentState = currentState == State.Idle ? stateDurations.ElementAt(index).Key : State.Idle;
+            }
+        }
         private void HandleDodging()
         {
             isDodging = Main.GameUpdateCount % 60 > 10;
@@ -145,7 +168,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private void HandlePhaseStuff(Player player)
         {
             PhaseTimer++;
-            if(Phase < 2 && PhaseTimer > PhaseDuration) 
+            if (Phase < 2 && PhaseTimer > PhaseDuration)
             {
                 SpawnDust();
                 SummonVehicle(player);
@@ -176,6 +199,18 @@ namespace EBF.NPCs.Bosses.Godcat
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            stateDurations = new()
+            {
+                [State.Idle] = 200,
+                [State.SeikenStorm] = 120,
+                [State.SeikenRing] = 1,
+                [State.ReturnBall] = 100,
+                [State.LightJudgmentWave] = 1,
+            };
+        }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
@@ -196,43 +231,35 @@ namespace EBF.NPCs.Bosses.Godcat
                 return;
             }
 
-            //Handle attacks
-            if (Main.GameUpdateCount % 200 == 0)
+            switch (currentState)
             {
-                switch (Main.rand.Next(4))
-                {
-                    case 0:
-                        CreateJudgementWave(player);
-                        break;
-                    case 1:
-                        //Flurry of light blade
-                        NPC.localAI[0] = 30;
-                        break;
-                    case 2:
-                        CreateSeikenRing(14, 10);
-                        CreateSeikenRing(8, 6);
-                        CreateSeikenRing(6, 4);
-                        break;
-                    case 3:
-                        //Cast multiple return balls
-                        NPC.localAI[1] = 3;
-                        CreateDiamondArc(player, 0.66f, 6, 9f);
-                        break;
-                }
-            }
+                case State.Idle:
+                    break;
 
-            //Handle light blade flurry
-            if (Main.GameUpdateCount % 4 == 0 && NPC.localAI[0] > 0)
-            {
-                CreateStormSeiken(player);
-                NPC.localAI[0]--;
-            }
+                case State.SeikenStorm:
+                    if (StateTimer % 4 == 0)
+                        CreateStormSeiken(player);
+                    break;
 
-            //Handle return balls
-            if (Main.GameUpdateCount % 25 == 0 && NPC.localAI[1] > 0)
-            {
-                CreateReturnBall(player, 15);
-                NPC.localAI[1]--;
+                case State.SeikenRing:
+                    CreateSeikenRing(14, 10);
+                    CreateSeikenRing(8, 6);
+                    CreateSeikenRing(6, 4);
+                    break;
+
+                case State.ReturnBall:
+                    if (StateTimer % 33 == 0)
+                    {
+                        CreateReturnBall(player, 15);
+
+                        if (StateTimer == 0)
+                            CreateDiamondArc(player, 0.66f, 6, 9f);
+                    }
+                    break;
+
+                case State.LightJudgmentWave:
+                    CreateJudgementWave(player);
+                    break;
             }
         }
         protected override void SummonVehicle(Player player)
@@ -330,6 +357,17 @@ namespace EBF.NPCs.Bosses.Godcat
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            stateDurations = new()
+            {
+                [State.Idle] = 200,
+                [State.SeikenStorm] = 120,
+                [State.SeikenRing] = 1,
+                [State.ReturnBall] = 70,
+            };
+        }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
@@ -350,40 +388,31 @@ namespace EBF.NPCs.Bosses.Godcat
                 return;
             }
 
-            //Handle attacks
-            if (Main.GameUpdateCount % 200 == 100)
+            switch (currentState)
             {
-                switch (Main.rand.Next(3))
-                {
-                    case 0:
-                        //Flurry of dark blade
-                        NPC.localAI[0] = 30;
-                        break;
-                    case 1:
-                        CreateDarkSeikenRing(14, 10);
-                        CreateDarkSeikenRing(8, 6);
-                        CreateDarkSeikenRing(6, 4);
-                        break;
-                    case 2:
-                        //Cast multiple return balls
-                        NPC.localAI[1] = 3;
-                        CreateDarkBallArc(player, 0.66f, 6, 9f);
-                        break;
-                }
-            }
+                case State.Idle:
+                    break;
 
-            //Handle dark blade flurry
-            if (Main.GameUpdateCount % 4 == 0 && NPC.localAI[0] > 0)
-            {
-                CreateDarkStormSeiken(player);
-                NPC.localAI[0]--;
-            }
+                case State.SeikenStorm:
+                    if (StateTimer % 4 == 0)
+                        CreateDarkStormSeiken(player);
+                    break;
 
-            //Handle return balls
-            if (Main.GameUpdateCount % 25 == 0 && NPC.localAI[1] > 0)
-            {
-                CreateDarkReturnBall(player, 15);
-                NPC.localAI[1]--;
+                case State.SeikenRing:
+                    CreateDarkSeikenRing(14, 10);
+                    CreateDarkSeikenRing(8, 6);
+                    CreateDarkSeikenRing(6, 4);
+                    break;
+
+                case State.ReturnBall:
+                    if (StateTimer % 30 == 0)
+                    {
+                        CreateDarkReturnBall(player, 15);
+
+                        if (StateTimer == 0)
+                            CreateDarkBallArc(player, 0.66f, 6, 9f);
+                    }
+                    break;
             }
         }
         protected override void SummonVehicle(Player player)
