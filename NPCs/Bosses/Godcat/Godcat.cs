@@ -16,7 +16,7 @@ namespace EBF.NPCs.Bosses.Godcat
     public abstract class Godcat : ModNPC
     {
         //Attacks
-        protected enum State : byte { Idle, LightJudgmentWave, SeikenStorm, SeikenRing, ReturnBall }
+        protected enum State : byte { Idle, LightJudgmentWave, SeikenStorm, SeikenRing, ReturnBall, LightDiamondWalls }
         protected Dictionary<State, int> stateDurations;
         protected State currentState = State.Idle;
         protected ref float StateTimer => ref NPC.localAI[0];
@@ -205,10 +205,10 @@ namespace EBF.NPCs.Bosses.Godcat
             stateDurations = new()
             {
                 [State.Idle] = 200,
-                [State.SeikenStorm] = 120,
-                [State.SeikenRing] = 1,
-                [State.ReturnBall] = 100,
-                [State.LightJudgmentWave] = 1,
+                //[State.SeikenStorm] = 120,
+                //[State.SeikenRing] = 1,
+                //[State.LightJudgmentWave] = 1,
+                [State.LightDiamondWalls] = 200,
             };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -247,18 +247,27 @@ namespace EBF.NPCs.Bosses.Godcat
                     CreateSeikenRing(6, 4);
                     break;
 
-                case State.ReturnBall:
-                    if (StateTimer % 33 == 0)
-                    {
-                        CreateReturnBall(player, 15);
-
-                        if (StateTimer == 0)
-                            CreateDiamondArc(player, 0.66f, 6, 9f);
-                    }
-                    break;
-
                 case State.LightJudgmentWave:
                     CreateJudgementWave(player);
+                    break;
+
+                case State.LightDiamondWalls:
+                    if (StateTimer <= 120)
+                    {
+                        if (StateTimer % 40 == 0)
+                        {
+                            CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 5, 50, 1.0f);
+                        }
+                        else if (StateTimer % 40 == 20)
+                        {
+                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(0.33f) * 8f, 5, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(-0.33f) * 8f, 5, 50, 1.0f);
+                        }
+                    }
+                    else if (StateTimer == 199)
+                    {
+                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 4f, 7, 128, 2.0f);
+                    }
                     break;
             }
         }
@@ -323,20 +332,19 @@ namespace EBF.NPCs.Bosses.Godcat
 
             SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
         }
-        private void CreateReturnBall(Player player, float speed)
+        private void CreateDiamondWall(Vector2 velocity, int amount, float spread, float scale)
         {
-            var type = ModContent.ProjectileType<Godcat_ReturnBall>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, NPC.whoAmI);
+            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
 
-            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
-        }
-        private void CreateDiamondArc(Player player, float spread, int amount, float speed)
-        {
             var type = ModContent.ProjectileType<Godcat_LightDiamond>();
-            for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
+            var rightAngleVector = new Vector2(-velocity.Y, velocity.X);
+            rightAngleVector.Normalize();
+
+            for (float i = -spread; i < spread; i += spread * 2 / amount)
             {
-                var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f);
+                var position = NPC.Center + rightAngleVector * i;
+                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position, velocity, type, NPC.damage, 3f);
+                proj.scale = scale;
             }
         }
     }
