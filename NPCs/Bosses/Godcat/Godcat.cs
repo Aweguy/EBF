@@ -16,7 +16,7 @@ namespace EBF.NPCs.Bosses.Godcat
     public abstract class Godcat : ModNPC
     {
         //Attacks
-        protected enum State : byte { Idle, LightJudgmentWave, SeikenStorm, SeikenRing, ReturnBall, LightDiamondWalls }
+        protected enum State : byte { Idle, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }
         protected Dictionary<State, int> stateDurations;
         protected State currentState = State.Idle;
         protected ref float StateTimer => ref NPC.localAI[0];
@@ -371,9 +371,10 @@ namespace EBF.NPCs.Bosses.Godcat
             stateDurations = new()
             {
                 [State.Idle] = 200,
-                [State.SeikenStorm] = 120,
-                [State.SeikenRing] = 1,
-                [State.ReturnBall] = 70,
+                //[State.SeikenStorm] = 120,
+                //[State.SeikenRing] = 1,
+                //[State.DarkReturnBall] = 70,
+                [State.DarkBallStream] = 120,
             };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -412,13 +413,25 @@ namespace EBF.NPCs.Bosses.Godcat
                     CreateDarkSeikenRing(6, 4);
                     break;
 
-                case State.ReturnBall:
+                case State.DarkReturnBall:
                     if (StateTimer % 30 == 0)
                     {
                         CreateDarkReturnBall(player, 15);
 
                         if (StateTimer == 0)
                             CreateDarkBallArc(player, 0.66f, 6, 9f);
+                    }
+                    break;
+
+                case State.DarkBallStream:
+                    if(StateTimer % 2 == 0)
+                    {
+                        CreateDarkStreamBall(player, 6f, 0.1f);
+                    }
+                    if (StateTimer % 40 == 0)
+                    {
+                        CreateDarkBallArc(player, 1f, 5, 7f);
+                        SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
                     }
                     break;
             }
@@ -454,6 +467,16 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+        }
+        private void CreateDarkStreamBall(Player player, float speed, float deviation)
+        {
+            var multiplier = 0.5f + (StateTimer / stateDurations[State.DarkBallStream]);
+            var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(deviation) * speed * multiplier + player.velocity * 0.1f;
+            var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (int)GodcatBallTypes.DarkBig);
+            proj.scale = Main.rand.NextFloat(0.9f, 1.1f) * multiplier;
+
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateDarkReturnBall(Player player, float speed)
         {
