@@ -21,6 +21,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected Texture2D currentTexture;
         protected Asset<Texture2D> idleTexture;
         protected Asset<Texture2D> attackTexture;
+        protected float animationSpeed = 0.1f;
 
         //AI
         private bool hasSearchedForOther = false; // We search for the other vehicle in AI, because OnSpawn is called before both vehicles are done initializing.
@@ -71,10 +72,13 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void FindFrame(int frameHeight)
         {
             // Idle frames
-            NPC.frameCounter += 0.1f;
+            NPC.frameCounter += animationSpeed;
             if (NPC.frameCounter >= Main.npcFrameCount[NPC.type])
             {
-                NPC.frameCounter = 0;
+                if(currentTexture != idleTexture.Value)
+                    SetAnimation(idleTexture, 6);
+                else
+                    NPC.frameCounter = 0;
             }
             NPC.frame.Y = (int)NPC.frameCounter * frameHeight;
         }
@@ -148,6 +152,15 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected abstract void Move(Player player);
         protected abstract void BeginNextPhase(Player player);
+        protected void SetAnimation(Asset<Texture2D> textureAsset, int fps)
+        {
+            if (textureAsset == null || !textureAsset.IsLoaded)
+                return;
+
+            currentTexture = textureAsset.Value;
+            animationSpeed = fps / 60f;
+            NPC.frameCounter = 0;
+        }
         private void HandleStateChange()
         {
             StateTimer++;
@@ -473,8 +486,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.Idle] = 200,
                 [State.TurningBallCircle] = 240,
                 [State.DestroyerBreath] = 200,
-                [State.DestroyerBallBurst] = 1,
-                [State.DestroyerHomingBall] = 120,
+                [State.DestroyerBallBurst] = 10,
+                [State.DestroyerHomingBall] = 130,
             };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -544,23 +557,32 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateMassiveBallBurst(Player player)
         {
-            //Forward burst
-            var spread = 0.2f;
-            var speed = 8f;
-            var speedRange = 0.2f;
-            var baseVelocity = NPC.DirectionTo(player.Center) * speed;
-            var type = ModContent.ProjectileType<Godcat_BallProjectile>();
-            for (int i = 0; i < 40; i++)
+            //Begin attack animation
+            if(StateTimer == 0)
             {
-                var velocity = baseVelocity.RotatedByRandom(spread) * Main.rand.NextFloat(1 - speedRange, 1 + speedRange);
-                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig);
-                proj.scale = Main.rand.NextFloat(0.5f, 1.5f);
+                SetAnimation(attackTexture, 12);
             }
+            //Shoot projectiles
+            else if (StateTimer == 9)
+            {
+                var spread = 0.2f;
+                var speed = 8f;
+                var speedRange = 0.2f;
+                var baseVelocity = NPC.DirectionTo(player.Center) * speed;
+                var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+                for (int i = 0; i < 40; i++)
+                {
+                    var velocity = baseVelocity.RotatedByRandom(spread) * Main.rand.NextFloat(1 - speedRange, 1 + speedRange);
+                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig);
+                    proj.scale = Main.rand.NextFloat(0.5f, 1.5f);
+                }
 
-            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
 
-            //Additional arc of projectiles
-            CreateBallArc(player, 1.5f, 9, 5f);
+                //Additional arc of projectiles
+                CreateBallArc(player, 1.5f, 9, 5f);
+                CreateBallArc(player, 1.5f, 8, 4f);
+            }
         }
         private void CreateBallArc(Player player, float spread, int amount, float speed)
         {
@@ -573,7 +595,13 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateDarkHomingBall(Player player)
         {
-            if (StateTimer == 0 || StateTimer == 60 || StateTimer == 119)
+            //Begin attack animation
+            if(StateTimer % 59 == 0)
+            {
+                SetAnimation(attackTexture, 12);
+            }
+            //Shoot projectile
+            if (StateTimer % 59 == 10)
             {
                 var speed = 4f;
                 var velocity = NPC.DirectionTo(player.Center) * speed;
@@ -594,15 +622,17 @@ namespace EBF.NPCs.Bosses.Godcat
             if (StateTimer == 0)
             {
                 SoundEngine.PlaySound(SoundID.NPCDeath60, NPC.position);
+                SetAnimation(attackTexture, 2);
             }
             else if (StateTimer == windupTime)
             {
                 SoundStyle sound = SoundID.NPCHit57;
                 sound.Pitch = -1.0f;
-                sound.Volume = 0.33f;
+                sound.Volume = 0.5f;
                 SoundEngine.PlaySound(sound, NPC.position);
             }
 
+            //Shoot projectiles
             else if (StateTimer > windupTime && Main.GameUpdateCount % 15 == 0)
             {
                 var speed = 7f * Main.rand.NextFloat(0.8f, 1.2f);
