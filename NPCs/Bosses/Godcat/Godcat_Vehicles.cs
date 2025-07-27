@@ -25,12 +25,13 @@ namespace EBF.NPCs.Bosses.Godcat
         //AI
         private bool hasSearchedForOther = false; // We search for the other vehicle in AI, because OnSpawn is called before both vehicles are done initializing.
         protected NPC otherVehicle = null; // Is used to reduce aggression when both vehicles are active, and is also used to change phase only once both are dead.
-        protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall}
+        protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall }
         protected State currentState = State.Idle;
         protected Dictionary<State, int> stateDurations;
         protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
         protected ref float StateTimer => ref NPC.localAI[0];
         protected ref float Phase => ref NPC.ai[0];
+        protected const int PunishingDistance = 810; // Used to spawn deadly projectiles if the target player is too far away.
 
         public override void SetStaticDefaults()
         {
@@ -114,6 +115,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
             Move(player);
             HandleStateChange();
+            PunishFleeingPlayer(player);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -169,6 +171,26 @@ namespace EBF.NPCs.Bosses.Godcat
 
             otherVehicle = null;
             return false;
+        }
+        private void PunishFleeingPlayer(Player player)
+        {
+            if (currentState != State.Idle && NPC.Distance(player.Center) > PunishingDistance)
+            {
+                var position = NPC.Center + Vector2.UnitX.RotatedByRandom(MathHelper.Pi) * 64;
+                var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(1f) * 20f;
+                
+                int type = 0;
+                if (NPC.ModNPC is Godcat_Destroyer)
+                    type = ModContent.ProjectileType<Godcat_DarkBlade>();
+                
+                else if (NPC.ModNPC is Godcat_Creator)
+                    type = ModContent.ProjectileType<Godcat_LightBlade>();
+                
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity, type, NPC.damage, 3f);
+
+                if(Main.GameUpdateCount % 5 == 0)
+                    SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+            }
         }
     }
 
@@ -583,8 +605,8 @@ namespace EBF.NPCs.Bosses.Godcat
 
             else if (StateTimer > windupTime && Main.GameUpdateCount % 15 == 0)
             {
-                var speed = 7f;
-                var velocity = NPC.DirectionTo(player.Center) * speed;
+                var speed = 7f * Main.rand.NextFloat(0.8f, 1.2f);
+                var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(0.5f) * speed + player.velocity * 0.5f;
                 var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 80);
             }
