@@ -205,10 +205,10 @@ namespace EBF.NPCs.Bosses.Godcat
             stateDurations = new()
             {
                 [State.Idle] = 200,
-                //[State.SeikenStorm] = 120,
-                //[State.SeikenRing] = 1,
-                //[State.LightJudgmentWave] = 1,
-                [State.LightDiamondWalls] = 200,
+                [State.SeikenStorm] = 120,
+                [State.SeikenRing] = 1,
+                [State.LightJudgmentWave] = 1,
+                [State.LightDiamondWalls] = 170,
             };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -256,17 +256,17 @@ namespace EBF.NPCs.Bosses.Godcat
                     {
                         if (StateTimer % 40 == 0)
                         {
-                            CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 5, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 6, 50, 1.0f);
                         }
                         else if (StateTimer % 40 == 20)
                         {
-                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(0.33f) * 8f, 5, 50, 1.0f);
-                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(-0.33f) * 8f, 5, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(0.33f) * 8f, 6, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(-0.33f) * 8f, 6, 50, 1.0f);
                         }
                     }
-                    else if (StateTimer == 199)
+                    else if (StateTimer == 169)
                     {
-                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 4f, 7, 128, 2.0f);
+                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 6f, 10, 128, 2.0f);
                     }
                     break;
             }
@@ -371,9 +371,9 @@ namespace EBF.NPCs.Bosses.Godcat
             stateDurations = new()
             {
                 [State.Idle] = 200,
-                //[State.SeikenStorm] = 120,
-                //[State.SeikenRing] = 1,
-                //[State.DarkReturnBall] = 70,
+                [State.SeikenStorm] = 120,
+                [State.SeikenRing] = 1,
+                [State.DarkReturnBall] = 70,
                 [State.DarkBallStream] = 120,
             };
         }
