@@ -44,7 +44,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.damage = 100;
             NPC.defense = 50;
-            NPC.lifeMax = 200000;
+            NPC.lifeMax = 300000;
             NPC.noGravity = true;
 
             NPC.noTileCollide = true;
