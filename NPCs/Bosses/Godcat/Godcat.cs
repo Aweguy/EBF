@@ -276,6 +276,11 @@ namespace EBF.NPCs.Bosses.Godcat
             var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
             var type = ModContent.NPCType<Godcat_Creator>();
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+
+            type = ModContent.NPCType<BlueCrystal>();
+            var amount = Phase == 0 ? 2 : 1;
+            for (var i = 0; i < amount; i++)
+                NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
         }
         protected override void SpawnDust()
         {
@@ -441,6 +446,11 @@ namespace EBF.NPCs.Bosses.Godcat
             var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
             var type = ModContent.NPCType<Godcat_Destroyer>();
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+
+            type = ModContent.NPCType<RedCrystal>();
+            var amount = Phase == 0 ? 2 : 1;
+            for (var i = 0; i < amount; i++)
+                NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
         }
         protected override void SpawnDust()
         {

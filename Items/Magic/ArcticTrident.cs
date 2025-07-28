@@ -89,7 +89,7 @@ namespace EBF.Items.Magic
                 //Spawn smaller icecicles
                 for (int i = 0; i < 3; i++)
                 {
-                    Projectile.NewProjectile(
+                    var proj = Projectile.NewProjectileDirect(
                         Projectile.GetSource_FromThis(),
                         Projectile.position,
                         Vector2.Normalize(Projectile.velocity).RotatedByRandom(0.75f) * initialVelocity.Length(),
@@ -98,6 +98,9 @@ namespace EBF.Items.Magic
                         Projectile.knockBack * 0.5f,
                         Projectile.owner
                         );
+
+                    proj.friendly = Projectile.friendly;
+                    proj.hostile = Projectile.hostile;
                 }
                 Projectile.Kill();
             }
