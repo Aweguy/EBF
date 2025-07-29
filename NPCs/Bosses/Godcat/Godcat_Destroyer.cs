@@ -141,8 +141,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
 
                 //Additional arc of projectiles
-                CreateBallArc(player, 1.5f, 9, 5f);
-                CreateBallArc(player, 1.5f, 8, 4f);
+                if (IsAlone)
+                {
+                    CreateBallArc(player, 1.5f, 9, 5f);
+                    CreateBallArc(player, 1.5f, 8, 4f);
+                }
             }
         }
         private void CreateBallArc(Player player, float spread, int amount, float speed)
@@ -194,19 +197,21 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             //Shoot projectiles
-            else if (StateTimer > windupTime && Main.GameUpdateCount % 10 == 0)
+            else if (StateTimer > windupTime && Main.GameUpdateCount % 12 == 0)
             {
+                var maxSize = IsAlone ? 120 : 100;
                 var speed = 7f * Main.rand.NextFloat(0.8f, 1.2f);
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(0.5f) * speed + player.velocity * 0.75f;
                 var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 120);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, maxSize);
             }
         }
         private void CreateFireWheel(Player player)
         {
+            var fireballCount = IsAlone ? 10 : 8;
             var velocity = NPC.DirectionTo(player.Center) * 3f;
             var type = ModContent.ProjectileType<Destroyer_FireWheel>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 10);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, fireballCount);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.damage = 100;
             NPC.defense = 50;
-            NPC.lifeMax = 300000;
+            NPC.lifeMax = 500000;
             NPC.noGravity = true;
 
             NPC.noTileCollide = true;
@@ -137,6 +137,7 @@ namespace EBF.NPCs.Bosses.Godcat
             //Go to next phase if both are dead
             if (IsAlone)
             {
+                //Bring back both godcats
                 var pos = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
                 var type = ModContent.NPCType<Godcat_Light>();
                 NPC.NewNPC(NPC.GetSource_Death(), pos.X, pos.Y, type, 0, 2);
@@ -144,6 +145,15 @@ namespace EBF.NPCs.Bosses.Godcat
                 var pos2 = Main.player[NPC.target].position.ToPoint() + new Point(-NPC.direction * 1600, 0);
                 var type2 = ModContent.NPCType<Godcat_Dark>();
                 NPC.NewNPC(NPC.GetSource_Death(), pos2.X, pos2.Y, type2, 0, 2);
+
+                //Kill all crystals
+                foreach (var npc in Main.npc)
+                    if(npc.active && npc.type != Type && npc.ModNPC is Godcat_Crystal)
+                        npc.StrikeInstantKill();
+            }
+            else
+            {
+                otherVehicle.defense -= 10;
             }
 
             // Screen shake

@@ -454,7 +454,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             var vectorToPlayer = Target.Center - Projectile.Center;
             var spread = Main.rand.NextFloat(0.25f, 2.0f);
-            Projectile.velocity = new Vector2(vectorToPlayer.X * spread * 0.009f, -14) + Target.velocity * 0.2f;
+            Projectile.velocity = new Vector2(vectorToPlayer.X * spread * 0.009f, -14) + Target.velocity * 0.33f;
 
             SoundEngine.PlaySound(SoundID.Item39, Projectile.position);
             for (int i = 0; i < 10; i++)

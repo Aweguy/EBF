@@ -26,7 +26,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private bool hasDodged = false; // Used to display dodging frames
 
         //Phases
-        private const int PhaseDuration = 60 * 20; // How long the godcats stick around before summoning their vehicle
+        private const int PhaseDuration = 60 * 25; // How long the godcats stick around before summoning their vehicle
         private const int FinalPhaseDuration = 60 * 10; // How long the godcats stick around before finishing the fight
         protected ref float Phase => ref NPC.ai[0];
         private ref float PhaseTimer => ref NPC.ai[1];
