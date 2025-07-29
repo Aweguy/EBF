@@ -211,6 +211,7 @@ Projectiles: {
 	Destroyer_DarkHomingBall.DisplayName: Destroyer_ Dark Homing Ball
 	Destroyer_DarkBreath.DisplayName: Destroyer_ Dark Breath
 	Godcat_LightDiamond.DisplayName: Godcat_ Light Diamond
+	Destroyer_FireWheel.DisplayName: Destroyer_ Fire Wheel
 }
 
 Items: {

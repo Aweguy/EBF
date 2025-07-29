@@ -26,7 +26,7 @@ namespace EBF.NPCs.Bosses.Godcat
         //AI
         private bool hasSearchedForOther = false; // We search for the other vehicle in AI, because OnSpawn is called before both vehicles are done initializing.
         protected NPC otherVehicle = null; // Is used to reduce aggression when both vehicles are active, and is also used to change phase only once both are dead.
-        protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall }
+        protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall, DestroyerFireWheel }
         protected State currentState = State.Idle;
         protected Dictionary<State, int> stateDurations;
         protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
@@ -75,7 +75,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.frameCounter += animationSpeed;
             if (NPC.frameCounter >= Main.npcFrameCount[NPC.type])
             {
-                if(currentTexture != idleTexture.Value)
+                if (currentTexture != idleTexture.Value)
                     SetAnimation(idleTexture, 6);
                 else
                     NPC.frameCounter = 0;
@@ -191,17 +191,17 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 var position = NPC.Center + Vector2.UnitX.RotatedByRandom(MathHelper.Pi) * 64;
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(1f) * 20f;
-                
+
                 int type = 0;
                 if (NPC.ModNPC is Godcat_Destroyer)
                     type = ModContent.ProjectileType<Godcat_DarkBlade>();
-                
+
                 else if (NPC.ModNPC is Godcat_Creator)
                     type = ModContent.ProjectileType<Godcat_LightBlade>();
-                
+
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity, type, NPC.damage, 3f);
 
-                if(Main.GameUpdateCount % 5 == 0)
+                if (Main.GameUpdateCount % 5 == 0)
                     SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
         }
@@ -488,6 +488,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.DestroyerBreath] = 200,
                 [State.DestroyerBallBurst] = 10,
                 [State.DestroyerHomingBall] = 130,
+                [State.DestroyerFireWheel] = 1,
             };
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -514,6 +515,9 @@ namespace EBF.NPCs.Bosses.Godcat
                     break;
                 case State.DestroyerHomingBall:
                     CreateDarkHomingBall(player);
+                    break;
+                case State.DestroyerFireWheel:
+                    CreateFireWheel(player);
                     break;
             }
         }
@@ -558,7 +562,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateMassiveBallBurst(Player player)
         {
             //Begin attack animation
-            if(StateTimer == 0)
+            if (StateTimer == 0)
             {
                 SetAnimation(attackTexture, 12);
             }
@@ -596,7 +600,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateDarkHomingBall(Player player)
         {
             //Begin attack animation
-            if(StateTimer % 59 == 0)
+            if (StateTimer % 59 == 0)
             {
                 SetAnimation(attackTexture, 12);
             }
@@ -640,6 +644,12 @@ namespace EBF.NPCs.Bosses.Godcat
                 var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 80);
             }
+        }
+        private void CreateFireWheel(Player player)
+        {
+            var velocity = NPC.DirectionTo(player.Center) * 3f;
+            var type = ModContent.ProjectileType<Destroyer_FireWheel>();
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 10);
         }
     }
 }

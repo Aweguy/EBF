@@ -1,13 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using EBF.Abstract_Classes;
+﻿using EBF.Abstract_Classes;
 using EBF.EbfUtils;
-using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -581,7 +584,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 Projectile.velocity *= 0.99f;
                 Projectile.HomeTowards(HomingTarget, 0.1f, 6f);
                 SpawnGore();
-                
+
                 //Expand hitbox until max size
                 if (Projectile.width < MaxSize)
                 {
@@ -602,5 +605,154 @@ namespace EBF.NPCs.Bosses.Godcat
                 gore.alpha = 128;
             }
         }
+    }
+
+    public class Destroyer_FireWheel : ModProjectile
+    {
+        private struct BallInfo
+        {
+            public static int size = 50;
+            public static Vector2 origin = new(25, 25);
+            public Vector2 position;
+            public Vector2 center;
+            public Rectangle rect;
+        }
+
+        private BallInfo[] balls; // Used in collision and drawing
+        private float radius = 1;
+        private float rotationOffset;
+        private Asset<Texture2D> texture;
+        private NPC owner;
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
+        private ref float StickTimer => ref Projectile.localAI[0];
+        private ref float EasingTimer => ref Projectile.localAI[1];
+        private ref float Amount => ref Projectile.ai[0];
+        public override void SetDefaults()
+        {
+            Projectile.width = 1;
+            Projectile.height = 1;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.tileCollide = false;
+
+            texture = ModContent.Request<Texture2D>($"Terraria/Images/Projectile_{ProjectileID.CultistBossFireBall}");
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+            EBFUtils.ClosestNPC(ref owner, 128, Projectile.Center);
+
+            //Default in case no ai is provided
+            if (Amount == 0)
+            {
+                Amount = 10;
+            }
+
+            balls = new BallInfo[(int)Amount];
+        }
+        public override void AI()
+        {
+            //Radius
+            if (EasingTimer < 1)
+            {
+                EasingTimer += 0.006f;
+                radius = 500 * PolynomialEasing(EasingTimer);
+            }
+
+            //Rotation
+            rotationOffset += 0.02f + EasingTimer * 0.01f;
+            if (rotationOffset > MathF.Tau)
+            {
+                rotationOffset = 0;
+            }
+
+            //Sprite animation
+            if (Main.GameUpdateCount % 4 == 0)
+            {
+                Projectile.frameCounter++;
+                if (Projectile.frameCounter > 3)
+                {
+                    Projectile.frameCounter = 0;
+                }
+            }
+
+            //Stick to owner for a while
+            StickTimer++;
+            if (owner != null && owner.active)
+            {
+                if (StickTimer < 60)
+                {
+                    Projectile.Center = owner.Center;
+                }
+                else if (StickTimer == 60)
+                {
+                    Projectile.velocity = owner.DirectionTo(Main.player[owner.target].Center) * 3f;
+                }
+                else
+                {
+                    Projectile.velocity *= 1.01f;
+                }
+            }
+            else
+            {
+                Projectile.velocity *= 1.01f;
+            }
+
+            //Update ball information
+            balls = UpdateBalls();
+
+            //Dust
+            foreach (var ball in balls)
+            {
+                var dust = Dust.NewDustDirect(ball.position, BallInfo.size, BallInfo.size, DustID.Torch, 0, 0, 0, default, 1.5f);
+                dust.noGravity = true;
+            }
+        }
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            foreach (var ball in balls)
+            {
+                if (ball.rect.Intersects(targetHitbox))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            if (!texture.IsLoaded)
+                return false;
+
+            foreach (var ball in balls)
+            {
+                Main.EntitySpriteDraw(
+                    texture.Value,
+                    ball.center - Main.screenPosition,
+                    new Rectangle(0, BallInfo.size * Projectile.frameCounter, BallInfo.size, BallInfo.size),
+                    lightColor,
+                    0,
+                    BallInfo.origin,
+                    1f,
+                    SpriteEffects.None
+                    );
+            }
+
+            return false;
+        }
+        private BallInfo[] UpdateBalls()
+        {
+            byte i = 0;
+            for (float theta = rotationOffset; theta < MathF.Tau + rotationOffset; theta += MathF.Tau / Amount)
+            {
+                balls[i].center = Projectile.Center + theta.ToRotationVector2() * radius;
+                balls[i].position = balls[i].center - BallInfo.origin;
+                balls[i].rect = new((int)balls[i].position.X, (int)balls[i].position.Y, BallInfo.size, BallInfo.size);
+                i++;
+            }
+
+            return balls;
+        }
+        private static float PolynomialEasing(float x) => x * (4.18f + x * (-17.13f + x * (25.98f + x * -12.03f)));
     }
 }
