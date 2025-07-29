@@ -269,10 +269,9 @@ BlueFlybot.DisplayName: Blue Flybot
 CannonTurret.DisplayName: Cannon Turret
 HarpoonTurret.DisplayName: Harpoon Turret
 NukeStand.DisplayName: Nuke Stand
-Godcat.DisplayName: Godcat
-Godcat_Light.DisplayName: Godcat_ Light
-Godcat_Dark.DisplayName: Godcat_ Dark
-Godcat_Destroyer.DisplayName: Godcat_ Destroyer
-Godcat_Creator.DisplayName: Godcat_ Creator
+Godcat_Light.DisplayName: Godcat
+Godcat_Dark.DisplayName: Godcat
+Godcat_Destroyer.DisplayName: The Destroyer
+Godcat_Creator.DisplayName: The Creator
 BlueCrystal.DisplayName: Blue Crystal
 RedCrystal.DisplayName: Red Crystal
