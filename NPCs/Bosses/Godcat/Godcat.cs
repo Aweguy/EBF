@@ -16,7 +16,7 @@ namespace EBF.NPCs.Bosses.Godcat
     public abstract class Godcat : ModNPC
     {
         //Attacks
-        protected enum State : byte { Idle, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }
+        protected enum State : byte { Idle, GoingTowardsGround, InGround, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }
         protected Dictionary<State, int> stateDurations;
         protected State currentState = State.Idle;
         protected ref float StateTimer => ref NPC.localAI[0];
@@ -33,7 +33,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
         public override void SetStaticDefaults()
         {
-            Main.npcFrameCount[Type] = 8;
+            Main.npcFrameCount[Type] = 16;
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Poisoned] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
@@ -81,9 +81,20 @@ namespace EBF.NPCs.Bosses.Godcat
                 return;
             }
 
+            //Burrowing into ground
+            if (currentState == State.InGround)
+            {
+                NPC.frame.Y = ((int)NPC.frameCounter + 8) * frameHeight;
+                if(NPC.frameCounter <= 7)
+                {
+                    NPC.frameCounter += 0.1f;
+                }
+                return;
+            }
+
             // Idle frames
             NPC.frameCounter += 0.1f;
-            if (NPC.frameCounter >= Main.npcFrameCount[NPC.type] - 2)
+            if (NPC.frameCounter >= 6)
             {
                 NPC.frameCounter = 0;
             }
@@ -102,7 +113,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 return;
             }
 
-            Move(player);
+            if (currentState == State.GoingTowardsGround)
+                DropToGround();
+            else if (currentState != State.InGround)
+                Move(player);
+            
             HandleDodging();
             HandleAttacks(player);
             HandleStateChange();
@@ -146,7 +161,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                var index = Main.rand.Next(1, stateDurations.Count);
+                var index = Main.rand.Next(3, stateDurations.Count);
                 currentState = currentState == State.Idle ? stateDurations.ElementAt(index).Key : State.Idle;
             }
         }
@@ -168,16 +183,46 @@ namespace EBF.NPCs.Bosses.Godcat
         private void HandlePhaseStuff(Player player)
         {
             PhaseTimer++;
-            if (Phase < 2 && PhaseTimer > PhaseDuration)
+            if (Phase < 2 && PhaseTimer > PhaseDuration && currentState == State.Idle)
             {
-                SpawnDust();
-                SummonVehicle(player);
-                NPC.active = false;
+                //Poof away or head to the ground
+                var groundPos = NPC.Bottom.ToGroundPosition();
+                if(NPC.Distance(groundPos) < 2000)
+                {
+                    currentState = State.GoingTowardsGround;
+                    PhaseTimer = 0;
+                }
+                else
+                {
+                    SpawnDust();
+                    SummonVehicle(player);
+                    NPC.active = false;
+                }
             }
             else if (Phase == 2 && PhaseTimer > FinalPhaseDuration)
             {
                 SpawnDust();
                 NPC.StrikeInstantKill();
+            }
+
+            if(currentState == State.InGround && PhaseTimer > 120)
+            {
+                SummonVehicle(player);
+                NPC.active = false;
+            }
+        }
+    
+        private void DropToGround()
+        {
+            NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
+
+            Vector2 groundPos = NPC.Bottom.ToGroundPosition();
+            if (NPC.Bottom.Distance(groundPos) < 8)
+            {
+                NPC.velocity.Y = 0;
+                NPC.Bottom = groundPos;
+                currentState = State.InGround;
+                PhaseTimer = 0;
             }
         }
     }
@@ -205,6 +250,8 @@ namespace EBF.NPCs.Bosses.Godcat
             stateDurations = new()
             {
                 [State.Idle] = 200,
+                [State.GoingTowardsGround] = 9999999,
+                [State.InGround] = 9999999,
                 [State.SeikenStorm] = 120,
                 [State.SeikenRing] = 1,
                 [State.LightJudgmentWave] = 1,
@@ -376,6 +423,8 @@ namespace EBF.NPCs.Bosses.Godcat
             stateDurations = new()
             {
                 [State.Idle] = 200,
+                [State.GoingTowardsGround] = 9999999,
+                [State.InGround] = 9999999,
                 [State.SeikenStorm] = 120,
                 [State.SeikenRing] = 1,
                 [State.DarkReturnBall] = 70,
@@ -429,7 +478,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     break;
 
                 case State.DarkBallStream:
-                    if(StateTimer % 2 == 0)
+                    if (StateTimer % 2 == 0)
                     {
                         CreateDarkStreamBall(player, 6f, 0.1f);
                     }
