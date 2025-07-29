@@ -1,5 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.EbfUtils;
+using EBF.Gores;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -579,27 +580,27 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void AI()
         {
-            if (Main.GameUpdateCount % 2 == 0)
+            if (Main.GameUpdateCount % 4 == 0)
             {
-                Projectile.velocity *= 0.99f;
-                Projectile.HomeTowards(HomingTarget, 0.1f, 6f);
+                Projectile.velocity *= 0.97f;
+                Projectile.HomeTowards(HomingTarget, 0.2f, 10f);
                 SpawnGore();
 
                 //Expand hitbox until max size
                 if (Projectile.width < MaxSize)
                 {
-                    Projectile.ExpandHitboxTo(Projectile.width + 2, Projectile.height + 2);
+                    Projectile.ExpandHitboxTo(Projectile.width + 4, Projectile.height + 4);
                 }
             }
         }
         private void SpawnGore()
         {
-            var type = 99;
-            var scale = 0.5f + ((float)Projectile.width * 2 / MaxSize);
-            for (int i = 0; i < 1 + Projectile.width / 50; i++)
+            var type = ModContent.GoreType<BigSmog>();
+            var scale = 0.5f + (Projectile.width * 1.5f / MaxSize);
+            for (int i = 0; i < 1 + Projectile.width / 200; i++)
             {
-                var position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width);
-                var velocity = Main.rand.NextVector2Square(-1f, 1f);
+                var position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width * 0.8f);
+                var velocity = Main.rand.NextVector2Square(-0.5f, 0.5f);
                 var gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, velocity, type, scale);
                 gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5);
                 gore.alpha = 128;

@@ -637,12 +637,12 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             //Shoot projectiles
-            else if (StateTimer > windupTime && Main.GameUpdateCount % 15 == 0)
+            else if (StateTimer > windupTime && Main.GameUpdateCount % 10 == 0)
             {
                 var speed = 7f * Main.rand.NextFloat(0.8f, 1.2f);
-                var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(0.5f) * speed + player.velocity * 0.5f;
+                var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(0.5f) * speed + player.velocity * 0.75f;
                 var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 80);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, 120);
             }
         }
         private void CreateFireWheel(Player player)
