@@ -744,7 +744,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private BallInfo[] UpdateBalls()
         {
             byte i = 0;
-            for (float theta = rotationOffset; theta < MathF.Tau + rotationOffset; theta += MathF.Tau / Amount)
+            for (float theta = rotationOffset; theta < MathF.Tau + rotationOffset - 0.01f; theta += MathF.Tau / Amount)
             {
                 balls[i].center = Projectile.Center + theta.ToRotationVector2() * radius;
                 balls[i].position = balls[i].center - BallInfo.origin;
