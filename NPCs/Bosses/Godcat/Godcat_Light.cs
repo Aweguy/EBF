@@ -1,12 +1,13 @@
-﻿using EBF.Items.Magic;
-using EBF.EbfUtils;
+﻿using EBF.EbfUtils;
+using EBF.Items.Magic;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -47,6 +48,19 @@ namespace EBF.NPCs.Bosses.Godcat
                 new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Light")
             ]);
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Dialogue
+            string text = Phase switch
+            {
+                0 => "To be summoned by a child of humanity! Do you crave judgement so badly?",
+                1 => "Your resilience is nearly impressive.",
+                2 => "Your world and your creations are impressive. Keep it so.",
+                _ => ""
+            };
+
+            Main.NewText(text, Color.LightCyan);
         }
         protected override void Move(Player player)
         {
@@ -111,6 +125,10 @@ namespace EBF.NPCs.Bosses.Godcat
             var amount = Phase == 0 ? 2 : 1;
             for (var i = 0; i < amount; i++)
                 NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+
+            //Dialogue
+            var text = Phase == 0 ? "I pass my infallible judgement upon you." : "This ends now.";
+            Main.NewText(text, Color.LightCyan);
         }
         protected override void SpawnDust()
         {

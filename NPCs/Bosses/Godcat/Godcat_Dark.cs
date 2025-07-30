@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
+using Terraria.DataStructures;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -45,6 +46,19 @@ namespace EBF.NPCs.Bosses.Godcat
                 new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Dark")
             ]);
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            //Dialogue
+            string text = Phase switch
+            {
+                0 => "This world began in fire, and it shall end in fire!",
+                1 => "Foolish, I am far beyond you.",
+                2 => "To craft such brilliant weapons of war… May we meet again!",
+                _ => ""
+            };
+
+            Main.NewText(text, Color.Red);
         }
         protected override void Move(Player player)
         {
@@ -108,6 +122,10 @@ namespace EBF.NPCs.Bosses.Godcat
             var amount = Phase == 0 ? 2 : 1;
             for (var i = 0; i < amount; i++)
                 NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+
+            //Dialogue
+            var text = Phase == 0 ? "You cannot escape my wrath." : "No one who dares spite me can be permitted to stand!";
+            Main.NewText(text, Color.Red);
         }
         protected override void SpawnDust()
         {
