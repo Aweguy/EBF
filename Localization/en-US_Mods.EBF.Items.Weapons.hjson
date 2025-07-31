@@ -329,6 +329,15 @@ Magic: {
 			'Yes Rico, kaboom.'
 			'''
 	}
+
+	Jubileus: {
+		DisplayName: Jubileus
+		Tooltip:
+			'''
+			Creates a localized downpour of electric bolts at the cursor.
+			'A peal of thunder which heralds divine bloodlust.'
+			'''
+	}
 }
 
 Ranged: {
