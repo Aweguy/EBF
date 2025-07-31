@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.EbfUtils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
@@ -94,6 +95,11 @@ namespace EBF.NPCs.Bosses.Godcat
             var type2 = ModContent.NPCType<Godcat_Dark>();
             var pos2 = player.Center.ToPoint() + new Point(-NPC.direction * 1600, 0);
             NPC.NewNPC(NPC.GetSource_FromAI(), pos2.X, pos2.Y, type2, 0, Phase + 1);
+        }
+        protected override void CreateHalfHealthHurtEffect()
+        {
+            SoundEngine.PlaySound(SoundID.Item14, NPC.position);
+            NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
         }
         private void CreateTurningBallsCircles()
         {

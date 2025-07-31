@@ -24,6 +24,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected float animationSpeed = 0.1f;
 
         //AI
+        private bool isTransitioningOut = false;
         private bool hasSearchedForOther = false; // We search for the other vehicle in AI, because OnSpawn is called before both vehicles are done initializing.
         protected NPC otherVehicle = null; // Is used to reduce aggression when both vehicles are active, and is also used to change phase only once both are dead.
         protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall, DestroyerFireWheel }
@@ -110,16 +111,33 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             // In first phase, leave at half health
-            if (Phase == 0 && NPC.life <= NPC.lifeMax / 2)
+            if (Phase == 0 && NPC.life <= NPC.lifeMax / 2 && !isTransitioningOut)
             {
-                BeginNextPhase(player);
-                NPC.active = false;
-                return;
-            }
+                isTransitioningOut = true;
+                currentState = State.Idle;
+                StateTimer = 0;
+                CreateHalfHealthHurtEffect();
 
-            Move(player);
-            HandleStateChange();
-            PunishFleeingPlayer(player);
+                NPC.velocity = new Vector2(-NPC.direction * 0.1f, 0);
+            }
+            
+            if (isTransitioningOut)
+            {
+                NPC.velocity.X *= 1.1f;
+                if(NPC.Distance(player.Center) > 3000)
+                {
+                    BeginNextPhase(player);
+                    NPC.active = false;
+                    return;
+                }
+            }
+            else
+            {
+                //Do normal behavior
+                Move(player);
+                HandleStateChange();
+                PunishFleeingPlayer(player);
+            }
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -162,6 +180,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected abstract void Move(Player player);
         protected abstract void BeginNextPhase(Player player);
+        protected abstract void CreateHalfHealthHurtEffect();
         protected void SetAnimation(Asset<Texture2D> textureAsset, int fps)
         {
             if (textureAsset == null || !textureAsset.IsLoaded)

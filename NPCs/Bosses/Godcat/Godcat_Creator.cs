@@ -97,6 +97,11 @@ namespace EBF.NPCs.Bosses.Godcat
             var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
             NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
         }
+        protected override void CreateHalfHealthHurtEffect()
+        {
+            SoundEngine.PlaySound(SoundID.Item14, NPC.position);
+            NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
+        }
         private void CreateTurningBallsCircles()
         {
             if (Main.GameUpdateCount % 30 == 0)
