@@ -212,6 +212,9 @@ Projectiles: {
 	Destroyer_DarkBreath.DisplayName: Destroyer_ Dark Breath
 	Godcat_LightDiamond.DisplayName: Godcat_ Light Diamond
 	Destroyer_FireWheel.DisplayName: Destroyer_ Fire Wheel
+	Stormsplitter_ThrownProjectile.DisplayName: Stormsplitter_ Thrown Projectile
+	Stormsplitter_Thunderball.DisplayName: Stormsplitter_ Thunderball
+	Stormsplitter_Proj.DisplayName: Stormsplitter_ Proj
 }
 
 Items: {
