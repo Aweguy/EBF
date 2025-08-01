@@ -368,6 +368,11 @@ Items: {
 		DisplayName: Neon Valk Relic
 		Tooltip: ""
 	}
+
+	GodcatRelic: {
+		DisplayName: Godcat Relic
+		Tooltip: ""
+	}
 }
 
 Emotes: {
