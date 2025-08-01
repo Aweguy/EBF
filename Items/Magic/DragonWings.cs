@@ -25,7 +25,8 @@ namespace EBF.Items.Magic
             Item.mana = 15;//The amount of mana this item consumes on use
 
             Item.useTime = 5;//How fast the item is used
-            Item.useAnimation = 40;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useAnimation = 15;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.reuseDelay = 25;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 10, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -37,17 +38,7 @@ namespace EBF.Items.Magic
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            //Quirky way to shoot 3 times
-            if(player.itemAnimation <= 30)
-            {
-                player.itemTime = 30;
-            }
-
-            //Randomize velocity slightly
             velocity -= Vector2.UnitY * Main.rand.NextFloat(2, 4);
-
-            //Spawn the projecile
-            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathShot, player.Center);
             Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
@@ -85,6 +76,8 @@ namespace EBF.Items.Magic
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.DD2_BetsysWrathShot, Projectile.position);
+
             for (int i = 0; i < 8; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke);
