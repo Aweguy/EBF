@@ -61,6 +61,9 @@ namespace EBF.NPCs.Bosses.Godcat
             };
 
             Main.NewText(text, Color.LightCyan);
+
+            if (Phase == 0)
+                SoundEngine.PlaySound(SoundID.Roar with { MaxInstances = 0 }, NPC.Center);
         }
         protected override void Move(Player player)
         {

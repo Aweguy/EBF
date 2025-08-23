@@ -373,6 +373,11 @@ Items: {
 		DisplayName: Godcat Relic
 		Tooltip: ""
 	}
+
+	GodcatAltar: {
+		DisplayName: Godcat Altar
+		Tooltip: Rumored to summon an ancient deity if one were to offer the three sacred jewels.
+	}
 }
 
 Emotes: {
