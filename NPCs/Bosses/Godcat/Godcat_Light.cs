@@ -33,7 +33,7 @@ namespace EBF.NPCs.Bosses.Godcat
             base.SetDefaults();
             stateDurations = new()
             {
-                [State.Idle] = 200,
+                [State.Idle] = Main.expertMode ? 180 : 220,
                 [State.GoingTowardsGround] = 9999999,
                 [State.InGround] = 9999999,
                 [State.SeikenStorm] = 120,

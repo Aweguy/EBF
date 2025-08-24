@@ -41,7 +41,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
             stateDurations = new()
             {
-                [State.Idle] = 200,
+                [State.Idle] = Main.expertMode ? 180 : 220,
                 [State.TurningBallCircle] = 240,
                 [State.DestroyerBreath] = 200,
                 [State.DestroyerBallBurst] = 10,

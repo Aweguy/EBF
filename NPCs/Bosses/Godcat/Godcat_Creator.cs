@@ -41,7 +41,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
             stateDurations = new()
             {
-                [State.Idle] = 200,
+                [State.Idle] = Main.expertMode ? 180 : 220,
                 [State.TurningBallCircle] = 240,
                 [State.TurningBallSpiral] = 300,
                 [State.CreatorThunderBall] = 200,
@@ -157,7 +157,9 @@ namespace EBF.NPCs.Bosses.Godcat
                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
                 //Form a ring of thunder balls
-                var amount = IsAlone ? 24 : 18;
+                var amount = IsAlone ? 18 : 12;
+                if (Main.expertMode) amount += 6;
+
                 var delay = 40;
                 var type = ModContent.ProjectileType<Creator_Thunderball>();
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
@@ -185,7 +187,9 @@ namespace EBF.NPCs.Bosses.Godcat
                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
                 //Form a ring of thunder balls
-                var amount = 8;
+                var amount = IsAlone ? 6 : 4;
+                if (Main.expertMode) amount += 2;
+
                 var delay = 40;
                 var type = ModContent.ProjectileType<Creator_HugeThunderball>();
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
@@ -224,7 +228,13 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 //Create arc of diamonds
                 var speed = 4f;
-                var amount = 4;
+                var amount = IsAlone ? 8 : 4;
+                if (Main.expertMode)
+                {
+                    amount += 1;
+                    speed += 1f;
+                }
+
                 var spread = 1f;
                 var type = ModContent.ProjectileType<Godcat_LightDiamond>();
                 var dir = (NPC.direction == 1 ? 0 : MathHelper.Pi).ToRotationVector2();
