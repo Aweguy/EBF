@@ -4,6 +4,8 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Linq;
+using EBF.Items.BossSummons;
+using Terraria.Audio;
 
 namespace EBF.Tiles.Furniture
 {
@@ -38,13 +40,13 @@ namespace EBF.Tiles.Furniture
             bool requirementFulfilled = false;
             for (int slot = 0; slot < player.inventory.Length; slot++)
             {
-                if (player.inventory[slot].type == ItemID.LargeRuby && player.inventory[slot].stack > 0)
+                if (player.inventory[slot].type == ModContent.ItemType<SacredRuby>() && player.inventory[slot].stack > 0)
                     slotWithGem[0] = slot;
 
-                if (player.inventory[slot].type == ItemID.LargeEmerald && player.inventory[slot].stack > 0)
+                if (player.inventory[slot].type == ModContent.ItemType<SacredEmerald>() && player.inventory[slot].stack > 0)
                     slotWithGem[1] = slot;
 
-                if (player.inventory[slot].type == ItemID.LargeSapphire && player.inventory[slot].stack > 0)
+                if (player.inventory[slot].type == ModContent.ItemType<SacredSapphire>() && player.inventory[slot].stack > 0)
                     slotWithGem[2] = slot;
 
                 if (!slotWithGem.Contains(0))
@@ -54,6 +56,7 @@ namespace EBF.Tiles.Furniture
                 }
             }
 
+            var clickPosition = new Vector2(i, j).ToWorldCoordinates();
             if (requirementFulfilled)
             {
                 ConsumeItem(player, slotWithGem[0]);
@@ -65,12 +68,16 @@ namespace EBF.Tiles.Furniture
                 {
                     int npcID = ModContent.NPCType<NPCs.Bosses.Godcat.Godcat_Light>();
                     NPC.SpawnOnPlayer(player.whoAmI, npcID);
+
+                    SoundEngine.PlaySound(SoundID.Item4, clickPosition);
+                    CreateDust(clickPosition);
                 }
             }
             else
             {
                 // No item found, show warning
-                CombatText.NewText(new Rectangle(i * 16, j * 16 - 20, 1, 1), Color.Red, "Missing Gems!");
+                CombatText.NewText(new Rectangle(i * 16, j * 16 - 20, 1, 1), Color.Red, "Missing Sacred Jewels!");
+                SoundEngine.PlaySound(SoundID.MenuTick, clickPosition);
                 return true;
             }
 
@@ -82,6 +89,16 @@ namespace EBF.Tiles.Furniture
             player.inventory[slot].stack--;
             if (player.inventory[slot].stack <= 0)
                 player.inventory[slot].TurnToAir();
+        }
+
+        private static void CreateDust(Vector2 pos)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDust(pos, 0, 0, DustID.GemRuby);
+                Dust.NewDust(pos, 0, 0, DustID.GemEmerald);
+                Dust.NewDust(pos, 0, 0, DustID.GemSapphire);
+            }
         }
     }
 }

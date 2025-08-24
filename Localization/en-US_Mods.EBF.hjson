@@ -378,6 +378,21 @@ Items: {
 		DisplayName: Godcat Altar
 		Tooltip: Rumored to summon an ancient deity if one were to offer the three sacred jewels.
 	}
+
+	SacredEmerald: {
+		DisplayName: The Sacred Emerald of Life
+		Tooltip: Must under no circumstance meet its friends at the altar!
+	}
+
+	SacredRuby: {
+		DisplayName: The Sacred Ruby of Death
+		Tooltip: Must under no circumstance meet its friends at the altar!
+	}
+
+	SacredSapphire: {
+		DisplayName: The Sacred Sapphire of Dreams
+		Tooltip: Must under no circumstance meet its friends at the altar!
+	}
 }
 
 Emotes: {
