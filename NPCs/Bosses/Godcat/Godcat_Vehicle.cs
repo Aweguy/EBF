@@ -33,7 +33,11 @@ namespace EBF.NPCs.Bosses.Godcat
         protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
         protected ref float StateTimer => ref NPC.localAI[0];
         protected ref float Phase => ref NPC.ai[0];
-        protected const int PunishingDistance = 830; // Used to spawn deadly projectiles if the target player is too far away.
+
+        //Anti-fleeing system
+        private ref float FramesOverPunishDistance => ref NPC.localAI[1];
+        private const int PunishingDistance = 750;
+        private const int PunishFrameThreshold = 60;
 
         public override void SetStaticDefaults()
         {
@@ -218,6 +222,11 @@ namespace EBF.NPCs.Bosses.Godcat
         private void PunishFleeingPlayer(Player player)
         {
             if (currentState != State.Idle && NPC.Distance(player.Center) > PunishingDistance)
+                FramesOverPunishDistance++;
+            else
+                FramesOverPunishDistance = 0;
+
+            if(FramesOverPunishDistance > PunishFrameThreshold)
             {
                 var position = NPC.Center + Vector2.UnitX.RotatedByRandom(MathHelper.Pi) * 64;
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(1f) * 20f;
