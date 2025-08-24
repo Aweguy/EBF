@@ -103,17 +103,17 @@ namespace EBF.NPCs.Bosses.Godcat
                     {
                         if (StateTimer % 40 == 0)
                         {
-                            CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 6, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center) * 10f, 6, 50, 1.0f);
                         }
                         else if (StateTimer % 40 == 20)
                         {
-                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(0.33f) * 8f, 6, 50, 1.0f);
-                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(-0.33f) * 8f, 6, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(0.33f) * 10f, 6, 50, 1.0f);
+                            CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(-0.33f) * 10f, 6, 50, 1.0f);
                         }
                     }
                     else if (StateTimer == 169)
                     {
-                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 6f, 10, 128, 2.0f);
+                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 12, 136, 2.0f);
                     }
                     break;
             }

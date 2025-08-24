@@ -247,7 +247,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (!IsMiniVariant)
             {
                 //Replace projectile with a bunch of mini variants, with a bit of angle variation
-                var amount = 8;
+                var amount = 7;
                 var spread = 1f;
                 var ballType = Projectile.ai[0] - 1; //Same color, but smaller version
                 for (float theta = -spread; theta < spread; theta += 2 * spread / amount)

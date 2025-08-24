@@ -23,9 +23,9 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.width = 58;
             NPC.height = 62;
-            NPC.lifeMax = 35000;
+            NPC.lifeMax = 18000;
             NPC.defense = 35;
-            NPC.damage = 80;
+            NPC.damage = 40;
             NPC.knockBackResist = 0.5f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
@@ -50,6 +50,13 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
             var player = Main.player[NPC.target];
+
+            if (player.dead)
+            {
+                NPC.EncourageDespawn(10); // Despawns in 10 ticks
+                NPC.noGravity = false;
+                return;
+            }
 
             var dist = NPC.Distance(player.Center);
             Move(player, dist);

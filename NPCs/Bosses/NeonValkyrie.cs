@@ -135,6 +135,8 @@ namespace EBF.NPCs.Bosses
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
+                if (HasAttachment)
+                    attachedNPC.StrikeInstantKill();
                 return;
             }
 

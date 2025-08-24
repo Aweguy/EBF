@@ -42,7 +42,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.width = 34;
             NPC.height = 46;
-            NPC.damage = 100;
+            NPC.damage = 50;
             NPC.defense = 9999;
             NPC.lifeMax = 999999;
             NPC.noGravity = true;
@@ -110,6 +110,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
+                NPC.noGravity = false;
                 return;
             }
 

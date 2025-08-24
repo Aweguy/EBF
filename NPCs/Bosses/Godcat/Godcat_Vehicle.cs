@@ -33,7 +33,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
         protected ref float StateTimer => ref NPC.localAI[0];
         protected ref float Phase => ref NPC.ai[0];
-        protected const int PunishingDistance = 810; // Used to spawn deadly projectiles if the target player is too far away.
+        protected const int PunishingDistance = 830; // Used to spawn deadly projectiles if the target player is too far away.
 
         public override void SetStaticDefaults()
         {
@@ -43,9 +43,9 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void SetDefaults()
         {
-            NPC.damage = 100;
+            NPC.damage = 50;
             NPC.defense = 50;
-            NPC.lifeMax = 500000;
+            NPC.lifeMax = 300000;
             NPC.noGravity = true;
 
             NPC.noTileCollide = true;
@@ -107,6 +107,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
+                NPC.noGravity = false;
                 return;
             }
 
