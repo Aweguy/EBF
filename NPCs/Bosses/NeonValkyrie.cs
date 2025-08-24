@@ -228,7 +228,7 @@ namespace EBF.NPCs.Bosses
             //Let the world know the boss is dead
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1); 
         }
-        public override void BossLoot(ref string name, ref int potionType)
+        public override void BossLoot(ref int potionType)
         {
             potionType = ItemID.HealingPotion;
         }

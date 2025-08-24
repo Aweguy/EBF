@@ -66,7 +66,7 @@ namespace EBF.NPCs.Bosses.Godcat
             cooldownSlot = ImmunityCooldownID.Bosses; //Prevent ignoring boss attacks by taking damage from other sources.
             return true;
         }
-        public override void BossLoot(ref string name, ref int potionType)
+        public override void BossLoot(ref int potionType)
         {
             potionType = ItemID.SuperHealingPotion;
         }
