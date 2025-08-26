@@ -12,6 +12,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
 using System.Linq;
+using EBF.Systems;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -30,6 +31,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected enum State : byte { Idle, TurningBallCircle, TurningBallSpiral, CreatorThunderBall, CreatorHolyDeathray, LimitBreak, DestroyerBallBurst, DestroyerBreath, DestroyerHomingBall, DestroyerFireWheel }
         protected State currentState = State.Idle;
         protected Dictionary<State, int> stateDurations;
+        protected AttackManager attackManager = new();
         protected bool IsAlone => otherVehicle == null || !otherVehicle.active;
         protected ref float StateTimer => ref NPC.localAI[0];
         protected ref float Phase => ref NPC.ai[0];
@@ -201,8 +203,17 @@ namespace EBF.NPCs.Bosses.Godcat
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                var index = Main.rand.Next(1, stateDurations.Count);
-                currentState = currentState == State.Idle ? stateDurations.ElementAt(index).Key : State.Idle;
+                //var index = Main.rand.Next(1, stateDurations.Count);
+                if(currentState == State.Idle)
+                {
+                    var index = attackManager.Next();
+                    currentState = stateDurations.ElementAt(index).Key;
+                }
+                else
+                {
+                    currentState = State.Idle;
+                }
+                
             }
         }
         private bool TryFindOtherVehicle(out NPC otherVehicle)

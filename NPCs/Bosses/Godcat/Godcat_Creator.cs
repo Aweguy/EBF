@@ -47,6 +47,12 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.CreatorThunderBall] = 200,
                 [State.CreatorHolyDeathray] = 200,
             };
+
+            attackManager
+                .Add(1, 1f)
+                .Add(2, 1f)
+                .Add(3, 1f)
+                .Add(4, 1f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {

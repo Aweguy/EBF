@@ -48,6 +48,13 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.DestroyerHomingBall] = 130,
                 [State.DestroyerFireWheel] = 1,
             };
+            
+            attackManager
+                .Add(1, 1f)
+                .Add(2, 1f)
+                .Add(3, 1f)
+                .Add(4, 1f)
+                .Add(5, 1f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
