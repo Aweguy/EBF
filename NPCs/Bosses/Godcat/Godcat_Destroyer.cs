@@ -33,6 +33,7 @@ namespace EBF.NPCs.Bosses.Godcat
             base.SetDefaults();
             NPC.width = 152;
             NPC.height = 152;
+            NPC.scale = 1.2f;
             NPC.HitSound = SoundID.NPCHit18;
             NPC.DeathSound = SoundID.NPCDeath5;
             idleTexture = ModContent.Request<Texture2D>(Texture);

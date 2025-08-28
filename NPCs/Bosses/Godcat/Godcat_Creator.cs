@@ -17,7 +17,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.npcFrameCount[Type] = 1;
+            Main.npcFrameCount[Type] = 6;
 
             //Bestiary
             NPCID.Sets.BossBestiaryPriority.Add(Type); //Grouped with other bosses
@@ -32,8 +32,8 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetDefaults()
         {
             base.SetDefaults();
-            NPC.width = 202;
-            NPC.height = 154;
+            NPC.width = 256;
+            NPC.height = 200;
             NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.Item14;
             idleTexture = ModContent.Request<Texture2D>(Texture);

@@ -152,9 +152,9 @@ namespace EBF.NPCs.Bosses.Godcat
                 return false;
 
             var position = NPC.Center - screenPos;
-            var origin = NPC.Size * 0.5f;
+            var origin = NPC.frame.Size() * 0.5f;
             var flipX = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(currentTexture, position, NPC.frame, drawColor, 0, origin, 1, flipX, 0);
+            spriteBatch.Draw(currentTexture, position, NPC.frame, drawColor, 0, origin, NPC.scale, flipX, 0);
             return false;
         }
         public override void OnKill()
