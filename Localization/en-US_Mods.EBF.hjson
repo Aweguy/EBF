@@ -375,23 +375,39 @@ Items: {
 	}
 
 	GodcatAltar: {
-		DisplayName: Godcat Altar
-		Tooltip: Rumored to summon an ancient deity if one were to offer the three sacred jewels.
+		DisplayName: Altar of Godcat
+		Tooltip:
+			'''
+			A mysterious shrine dedicated to Godcat.
+			Built in honor of her dominion over life, death, and dreams.
+			'''
 	}
 
 	SacredEmerald: {
 		DisplayName: The Sacred Emerald of Life
-		Tooltip: Must under no circumstance meet its friends at the altar!
+		Tooltip:
+			'''
+			The leaves stole life from Godcat. The failings of her creations did not belong to her.
+			Seeks the azure and crimson light.
+			'''
 	}
 
 	SacredRuby: {
 		DisplayName: The Sacred Ruby of Death
-		Tooltip: Must under no circumstance meet its friends at the altar!
+		Tooltip:
+			'''
+			The sand stole death from Godcat. No goddess deserves their final rest.
+			Seeks the azure and verdant light.
+			'''
 	}
 
 	SacredSapphire: {
 		DisplayName: The Sacred Sapphire of Dreams
-		Tooltip: Must under no circumstance meet its friends at the altar!
+		Tooltip:
+			'''
+			The ice stole dreams from Godcat. How dare she claim the aspirations of all?
+			Seeks the crimson and verdant light.
+			'''
 	}
 }
 
