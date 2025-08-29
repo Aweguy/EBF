@@ -129,29 +129,6 @@ namespace EBF.NPCs.Bosses.Godcat
             //Let the world know the boss is dead
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedGodcat, -1);
         }
-        public override void ModifyNPCLoot(NPCLoot npcLoot)
-        {
-            // The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
-            // 1. Trophy
-            // 2. Classic Mode ("not expert")
-            // 3. Expert Mode (usually just the treasure bag)
-            // 4. Master Mode (relic first, pet last, everything else in between)
-
-            // Trophy
-            //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NeonValkTrophy>(), 10));
-
-            // Classic Mode drops
-            //npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<NanoFibre>(), 1, 3, 4));
-
-            // Treasure bag
-            //npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NeonValkBossBag>()));
-
-            // Relic
-            //npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.NeonValkRelic>()));
-
-            // Pet
-            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<NeonValkPetItem>(), 4));
-        }
         protected abstract void Move(Player player);
         protected abstract void HandleAttacks(Player player);
         protected abstract void SummonVehicle(Player player);

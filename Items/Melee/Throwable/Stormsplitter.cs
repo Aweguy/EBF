@@ -1,4 +1,5 @@
 ﻿using EBF.EbfUtils;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -29,6 +30,16 @@ namespace EBF.Items.Melee.Throwable
             Item.shootSpeed = 14f;
             Item.rare = ItemRarityID.Red;
             Item.UseSound = SoundID.Item1;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.DayBreak, stack: 1)
+                .AddIngredient<HolyGrail>(stack: 1)
+                .AddIngredient<ElixirOfLife>(stack: 1)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
         }
     }
 

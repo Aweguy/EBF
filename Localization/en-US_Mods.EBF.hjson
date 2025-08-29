@@ -350,12 +350,31 @@ Items: {
 			DisplayName: Ram Chip
 			Tooltip: ""
 		}
+
+		ElixirOfLife: {
+			DisplayName: Elixir Of Life
+			Tooltip: A legendary potion said to grant immortal life.
+		}
+
+		HolyGrail: {
+			DisplayName: Holy Grail
+			Tooltip:
+				'''
+				A golden chalice decorated with red accents and small red gemstones.
+				'A legendary relic. Let's melt it down for materials!'
+				'''
+		}
 	}
 
 	TreasureBags: {
 		NeonValkBossBag: {
 			DisplayName: Treasure Bag (Neon Valkyrie)
-			Tooltip: ""
+			Tooltip: Right click to open
+		}
+
+		GodcatBossBag: {
+			DisplayName: Treasure Bag (Godcat)
+			Tooltip: Right click to open
 		}
 	}
 

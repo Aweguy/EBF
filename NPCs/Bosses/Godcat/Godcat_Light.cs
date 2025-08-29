@@ -1,11 +1,14 @@
 ﻿using EBF.EbfUtils;
 using EBF.Items.Magic;
+using EBF.Items.Materials;
+using EBF.Items.TreasureBags;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -64,6 +67,30 @@ namespace EBF.NPCs.Bosses.Godcat
 
             if (Phase == 0)
                 SoundEngine.PlaySound(SoundID.Roar with { MaxInstances = 0 }, NPC.Center);
+        }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            // The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
+            // 1. Trophy
+            // 2. Classic Mode ("not expert")
+            // 3. Expert Mode (usually just the treasure bag)
+            // 4. Master Mode (relic first, pet last, everything else in between)
+
+            // Trophy
+            //npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GodcatTrophy>(), 10));
+
+            // Classic Mode drops
+            npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<ElixirOfLife>(), 1, 1, 2));
+            npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<HolyGrail>(), 1, 1, 2));
+
+            // Treasure bag
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GodcatBossBag>()));
+            
+            // Relic
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeables.Furniture.BossRelics.GodcatRelic>()));
+
+            // Pet
+            //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<GodcatPetItem>(), 4));
         }
         protected override void Move(Player player)
         {

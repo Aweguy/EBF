@@ -1,4 +1,5 @@
 ﻿using EBF.Abstract_Classes;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -54,6 +55,16 @@ namespace EBF.Items.Magic
             }
 
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe(amount: 1)
+                .AddIngredient(ItemID.BlizzardStaff, stack: 1)
+                .AddIngredient<HolyGrail>(stack: 1)
+                .AddIngredient<ElixirOfLife>(stack: 1)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
         }
     }
 }
