@@ -8,6 +8,7 @@
   <ItemGroup>
     <None Remove="Buffs\Charged.png" />
     <None Remove="Buffs\TagDebuff.png" />
+    <None Remove="Gores\Machines\HarpoonTurret_Gore2.png" />
     <None Remove="Items\BlitzNeedle.png" />
     <None Remove="Items\BlitzNeedleProjectile.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_Bomb.png" />
@@ -20,12 +21,14 @@
     <None Remove="Items\Magic\ShootingStar.png" />
     <None Remove="Items\Magic\Star.png" />
     <None Remove="Items\Magic\Tribolt.png" />
+    <None Remove="Items\Materials\RamChip.png" />
     <None Remove="Items\Melee\BloodBlade.png" />
     <None Remove="Items\Melee\Inferno_Fireball.png" />
     <None Remove="Items\Melee\Throwable\IceNeedle.png" />
     <None Remove="Items\Melee\Throwable\IceNeedle_Proj.png" />
     <None Remove="Items\NeedleBoom.png" />
     <None Remove="Items\NeedleShot.png" />
+    <None Remove="Items\Placeables\Furniture\GodcatAltar.png" />
     <None Remove="Items\Ranged\Bows\EagleEye.png" />
     <None Remove="Items\Ranged\Bows\GaiasBow.png" />
     <None Remove="Items\Ranged\Bows\GaiaSeed.png" />
@@ -42,7 +45,10 @@
     <None Remove="Items\Ranged\Guns\ThePhantomSidearm.png" />
     <None Remove="Items\Summon\BusterSword_OrigamiDragonMinion.png" />
     <None Remove="Items\Summon\BusterSword_PaperBladeProjectile.png" />
+    <None Remove="Items\TreasureBags\GodcatBossBag.png" />
+    <None Remove="Items\TreasureBags\NeonValkBossBag.png" />
     <None Remove="Localization\en-US_Mods.EBF.Bestiary.hjson" />
+    <None Remove="Localization\en-US_Mods.EBF.Items.Weapons.hjson" />
     <None Remove="localization\en-US_Mods.EBF.NPCs.hjson" />
     <None Remove="NPCs\TownNPCs\NoLegs.png" />
     <None Remove="NPCs\TownNPCs\Natalie.png" />
@@ -51,6 +57,15 @@
     <None Remove="NPCs\TownNPCs\Natalie_Shimmer.png" />
     <None Remove="NPCs\TownNPCs\Natalie_Shimmer_Head.png" />
     <None Remove="NPCs\TownNPCs\Natalie_Shimmer_Party.png" />
+    <None Remove="NPCs\Bosses\NeonValkyrie.png" />
+    <None Remove="NPCs\Bosses\NeonValkyrie_Glow.png" />
+    <None Remove="NPCs\Machines\NuclearBomb.png" />
+    <None Remove="NPCs\Machines\NukeStand.png" />
+    <None Remove="NPCs\Machines\RedFlybot.png" />
+    <None Remove="NPCs\Machines\RedFlybot_Cannon.png" />
+    <None Remove="Tiles\Furniture\BossRelics\NeonValkRelicTile.png" />
+    <None Remove="Tiles\Furniture\BossRelics\RelicPedestal.png" />
+    <None Remove="Tiles\Furniture\GodcatAltarTile.png" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Assets\Sfx\NPCHit\**" />

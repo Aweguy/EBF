@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -90,7 +89,7 @@ namespace EBF.Items.Ranged.Bows
                 //Run this code x times per second
                 if (Main.GameUpdateCount % (60 / batSpawnRate) == 0)
                 {
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + ProjectileExtensions.GetRandomVector(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
+                    var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity + Main.rand.NextVector2Unit(), ProjectileID.Hellwing, Projectile.damage, Projectile.knockBack);
                     proj.timeLeft = 120;
                 }
             }

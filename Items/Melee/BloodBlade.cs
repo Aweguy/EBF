@@ -1,4 +1,4 @@
-﻿using EBF.Extensions;
+﻿using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

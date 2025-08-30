@@ -1,6 +1,7 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs;
 using EBF.Buffs.Cooldowns;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -63,6 +64,8 @@ namespace EBF.Items.Ranged.Guns
         {
             CreateRecipe()
                 .AddIngredient<CrystalWing>(stack: 1)
+                .AddIngredient<HolyGrail>(stack: 1)
+                .AddIngredient<ElixirOfLife>(stack: 1)
                 .AddIngredient(ItemID.LunarBar, 20)
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();

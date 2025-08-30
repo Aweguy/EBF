@@ -1,0 +1,725 @@
+Melee: {
+	Berzerker: {
+		Tooltip:
+			'''
+			Unleashes boulders.
+			'A heavy weapon with a stone edge and unyielding rage.'
+			'''
+		DisplayName: Berzerker
+	}
+
+	Avenger: {
+		Tooltip:
+			'''
+			Grows stronger as health decreases.
+			'For every scar, for every dishonor, the Avenger sharpens its edge.'
+			'''
+		DisplayName: Avenger
+	}
+
+	Anarchy: {
+		Tooltip:
+			'''
+			Reduced defense while held.
+			Becomes stronger at low health.
+			'Hack, slash, and rock out!'
+			'''
+		DisplayName: Anarchy
+	}
+
+	BlackFang: {
+		Tooltip:
+			'''
+			Inflicts poison and heals the user.
+			'This weapon is totally historically accurate, I'm sure of it. I saw it in an anime once!' - Matt
+			'''
+		DisplayName: Black Fang
+	}
+
+	Blizzard: {
+		Tooltip:
+			'''
+			Flings three inaccurate icy bolts.
+			'A blade of glistening ice, said to have slain an ancient demon.'
+			'''
+		DisplayName: Blizzard
+	}
+
+	BloodBlade: {
+		Tooltip:
+			'''
+			Drains life from foes.
+			'A gruesome blade forged with the very blood it spills.'
+			'''
+		DisplayName: Blood Blade
+	}
+
+	DragonsFeather: {
+		Tooltip:
+			'''
+			Grants enhanced swiftness while held.
+			'Dance like a feather in the wind!'
+			'''
+		DisplayName: Dragons Feather
+	}
+
+	FusionBlade: {
+		Tooltip:
+			'''
+			Shoots a homing bullet bob.
+			'Modeled after the weapons used by MILITIA troopers.'
+			'''
+		DisplayName: Fusion Blade
+	}
+
+	HeavensGate: {
+		Tooltip:
+			'''
+			Sends a blade of light to hack at foes.
+			'A legendary sword belonging to a line of famed corsairs.'
+			'''
+		DisplayName: Heavens Gate
+	}
+
+	Inferno: {
+		Tooltip:
+			'''
+			Burns foes.
+			'Wreathed in scorching flames.'
+			'''
+		DisplayName: Inferno
+	}
+
+	LoveBlade: {
+		Tooltip:
+			'''
+			Striking a foe has a chance to spawn damaging auras on nearby foes.
+			'A sword made for healing, not fighting.'
+			'''
+		DisplayName: Love Blade
+	}
+
+	SoulEater: {
+		Tooltip:
+			'''
+			Deals massive damage but reduces your defense by 50% when held.
+			'Honestly, it could have been worse. It could kill you instantly.'
+			'''
+		DisplayName: Soul Eater
+	}
+
+	GiantSlayer: {
+		Tooltip: An unwieldy spear made to fight defensive foes.
+		DisplayName: Giant Slayer
+	}
+
+	SwiftBrand: {
+		Tooltip: Lightweight, easy to use, and awfully sharp.
+		DisplayName: Swift Brand
+	}
+
+	SwordBreaker: {
+		Tooltip:
+			'''
+			Applies weak to hit foes.
+			'Forged by an eccentric mangaka to disarm foes.'
+			'''
+		DisplayName: Sword Breaker
+	}
+
+	IceNeedle: {
+		Tooltip:
+			'''
+			Launches a javelin that explodes into homing snowflakes.
+			'Used in only the most painful of snowball fights.'
+			'''
+		DisplayName: Ice Needle
+	}
+
+	UltraPro9000X: {
+		Tooltip: "'I can use this old hockey stick as a weapon. I think that should be enough equipment for now.' - Matt"
+		DisplayName: UltraPro9000X
+	}
+
+	DarkStalker: {
+		DisplayName: Dark Stalker
+		Tooltip: 
+			'''
+			Applies weak to hit foes.
+			'Tears up its victims like a twisted briar.'
+			'''
+	}
+
+	Stormsplitter: {
+		DisplayName: Stormsplitter
+		Tooltip:
+			'''
+			Ejects thunder bombs as it travels.
+			Hitting a foe directly will cause it to attract every thunder bomb.
+			'Swing well, fly true; rend the heavens asunder.'
+			'''
+	}
+}
+
+Magic: {
+	SpellRegeneration: {
+		DisplayName: Spell Regeneration
+		Tooltip:
+			'''
+			Costs a lot of mana and has a big cooldown.
+			This spell vastly increases your regeneration.
+			'''
+	}
+
+	SpellProtect: {
+		DisplayName: Spell Protect
+		Tooltip:
+			'''
+			Blocks 25% of the damage received.
+			This spell vastly protects you from enemy attacks.
+			'''
+	}
+
+	ShootingStar: {
+		DisplayName: Shooting Star
+		Tooltip:
+			'''
+			Summons a bouncy star from the heavens.
+			'Star light, star bright, first to smite my foes tonight.'
+			'''
+	}
+
+	Seraphim: {
+		DisplayName: Seraphim
+		Tooltip:
+			'''
+			Creates a massive sky piercing laser from the ground.
+			'A glorious staff used by gorgeous angels.'
+			'''
+	}
+
+	Flameheart: {
+		Tooltip:
+			'''
+			Every third use summons a firestorm.
+			'A staff of twisted crystal meant to scorch and torch foes.'
+			'''
+		DisplayName: Flameheart
+	}
+
+	DarkTooth: {
+		Tooltip:
+			'''
+			Creates a growing black hole that pulls everything and explodes upon being released.
+			'An ancient black magic staff used for Dark elemental magic.'
+			'''
+		DisplayName: Dark Tooth
+	}
+
+	Airstrike_Remote: {
+		Tooltip:
+			'''
+			Left click to drop a big bomb from the sky, right click to drop 3 weaker bombs at once.
+			'Bombs away!'
+			'''
+		DisplayName: Airstrike Remote
+	}
+
+	DragonWings: {
+		DisplayName: Dragon Wings
+		Tooltip:
+			'''
+			Calls forth dragon fire that seeks out foes.
+			'Be purged by the flames of the Omega Dragon!'
+			'''
+	}
+
+	Tribolt: {
+		DisplayName: Tribolt
+		Tooltip:
+			'''
+			Fires Thunder at targets near the cursor.
+			'The third bolt missed his bus today.'
+			'''
+	}
+
+	WrathOfZeus: {
+		DisplayName: Wrath Of Zeus
+		Tooltip:
+			'''
+			Sends a charged orb to the cursor which attracts a Thunderstorm.
+			'Thunderbolts and lightning, very very frightening!'
+			'''
+	}
+
+	ArcticWind: {
+		DisplayName: Arctic Wind
+		Tooltip:
+			'''
+			Shoots icicles.
+			'Ice and crispy.'
+			'''
+	}
+
+	NimbusRod: {
+		DisplayName: Dank Nimbus
+		Tooltip:
+			'''
+			Casts Bubbles that rise up and pop.
+			'Somewhere, under the rainbow...'
+			'''
+	}
+
+	BeholdingEye: {
+		DisplayName: Beholding Eye
+		Tooltip:
+			'''
+			Sends writhing tentacles to lash at nearby foes.
+			'I see dead people.'
+			'''
+	}
+
+	ArcticTrident: {
+		DisplayName: Arctic Trident
+		Tooltip:
+			'''
+			Creates a chunk of ice that splinters into three Iceshards.
+			'Not approved for use in igloo construction.'
+			'''
+	}
+
+	OakStaff: {
+		DisplayName: Oak Staff
+		Tooltip:
+			'''
+			Flings Wooden Idols to assault foes.
+			May launch a rolling log that triggers the Log spell on hit.
+			'Wood you lend me a hand?'
+			'''
+	}
+
+	Razorwind: {
+		DisplayName: Razorwind
+		Tooltip:
+			'''
+			Hold to lob hovering glaciers. On release, each glacier bursts into chunks that splinter into icicles.
+			'They didn't say it would hail tonight.'
+			'''
+	}
+
+	DruidStaff: {
+		DisplayName: Druid Staff
+		Tooltip:
+			'''
+			Sends a vine to snake through the earth towards foes.
+			'Crafted from the gnarled roots of Lankyroot Jungle.'
+			'''
+	}
+
+	Nirvana: {
+		DisplayName: Nirvana
+		Tooltip:
+			'''
+			Tosses out a massive thorn ball which unleashes Monster Vines in every direction.
+			'There is no self, only a point on the circle of life.'
+			'''
+	}
+
+	WreckingRod: {
+		DisplayName: Wrecking Rod
+		Tooltip:
+			'''
+			Lobs magical, short-fused grenades, that explode with a plasma burst.
+			'Yes Rico, kaboom.'
+			'''
+	}
+
+	Jubileus: {
+		DisplayName: Jubileus
+		Tooltip:
+			'''
+			Creates a localized downpour of electric bolts at the cursor.
+			'A peal of thunder which heralds divine bloodlust.'
+			'''
+	}
+}
+
+Ranged: {
+	Bows: {
+		CrimsonDragon: {
+			Tooltip:
+				'''
+				Converts wooden arrows into Dragon arrows that spew flaming bats.
+				'Incredibly ornate, but houses unimaginable heat all the same.'
+				'''
+			DisplayName: Crimson Dragon
+		}
+
+		EagleEye: {
+			DisplayName: Eagle Eye
+			Tooltip:
+				'''
+				Wooden arrows turn into chargeable, piercing arrows.
+				Giving a new meaning to 'Got you in my sights.'
+				'''
+		}
+
+		FairyBow: {
+			DisplayName: Fairy Bow
+			Tooltip:
+				'''
+				Fully charged wooden arrows launch with additional damaging leaves.
+				'A simple yet quality bow given to Greenwood's defenders.'
+				'''
+		}
+
+		Sharanga: {
+			DisplayName: Sharanga
+			Tooltip:
+				'''
+				Wooden arrows turn into chargeable energy arrows with high pierce and velocity.
+				'A cosmic bow said to have been found in a fallen star.'
+				'''
+		}
+
+		BlackWidow: {
+			DisplayName: Black Widow
+			Tooltip:
+				'''
+				Fully charged wooden arrows break into spiders that chase foes.
+				'A creepy bow only used by the most fiendish of huntresses.'
+				'''
+		}
+
+		AlchemistBow: {
+			DisplayName: Alchemist Bow
+			Tooltip:
+				'''
+				Fully charged wooden arrows launch with three additional random arrows.
+				'The archer's fruitcake.'
+				'''
+		}
+
+		Juggernaut: {
+			DisplayName: Juggernaut
+			Tooltip:
+				'''
+				Wooden arrows turn into chargeable hellfire arrows.
+				'A pain to use, but boasts low recoil for such explosive firepower.'
+				'''
+		}
+
+		GaiasGift: {
+			DisplayName: Gaias Gift
+			Tooltip:
+				'''
+				Fully charged wooden arrows drain health and spawn a Gaia Bloom on hit that poisons foes.
+				'A gift from Gaia to her Ores, dotted with peridot and emerald.'
+				'''
+		}
+
+		RegalTurtle: {
+			DisplayName: Regal Turtle
+			Tooltip:
+				'''
+				Wooden arrows turn into massive, chargable regal arrows.
+				'This unwieldy bow requires some serious leg muscles.'
+				'''
+		}
+
+		IronTusk: {
+			DisplayName: Iron Tusk
+			Tooltip:
+				'''
+				Wooden arrows turn into chargeable nitro arrows that break into explosive shrapnel.
+				'A girthy nest of twisted metal. Effectively a hand-cannon at this point.'
+				'''
+		}
+
+		ThorsHammer: {
+			DisplayName: Thors Hammer
+			Tooltip:
+				'''
+				Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
+				'So I said, Mjolnir? I hardly know 'er!'
+				'''
+		}
+
+		IronTooth: {
+			DisplayName: Iron Tooth
+			Tooltip: Fully charged wooden arrows are converted into hellfire arrows.
+		}
+
+		GaiasBow: {
+			DisplayName: Gaias Bow
+			Tooltip:
+				'''
+				Fully charged wooden arrows spawn a poisonous gaia seed on hit foes.
+				'Forged from mud and blessed by nature.'
+				'''
+		}
+
+		TheStinger: {
+			DisplayName: The Stinger
+			Tooltip:
+				'''
+				Wooden arrows turn into a flurry of three toxic stingers.
+				'Held by the king of the jungle; law dictates only the strongest may wield it.'
+				'''
+		}
+
+		ThornBow: {
+			DisplayName: Thorn Bow
+			Tooltip:
+				'''
+				Fully charged wooden arrows turn into three poisonous thorns.
+				'Rallies weeds to your cause.'
+				'''
+		}
+	}
+
+	Guns: {
+		HeavyClaw: {
+			DisplayName: Heavy Claw
+			Tooltip:
+				'''
+				Right click launches a devastating missile.
+				'Can hold three tons of metal in its grip, at least until your back gives out.'
+				'''
+		}
+
+		SteelShark: {
+			DisplayName: Steel Shark
+			Tooltip:
+				'''
+				Right click makes the shark shoot a lot of bullets at once.
+				'Preferred weapon of the dreaded robo-pirate techno-mage.'
+				'''
+		}
+
+		DeepBlue: {
+			DisplayName: Deep Blue
+			Tooltip:
+				'''
+				Right click slams the weapon into the ground, unleashing a torrent of water.
+				'Almost as good at crushing as it is shooting.'
+				'''
+		}
+
+		BiohazardBlaster: {
+			DisplayName: Biohazard Blaster
+			Tooltip:
+				'''
+				Bullets burst into damaging fumes.
+				Right click fires a blast of lingering gas clouds that inflict Poison, Ichor and Venom on foes.
+				'Fight biohazards with even worse biohazards!'
+				'''
+		}
+
+		DesertScorpion: {
+			DisplayName: Desert Scorpion
+			Tooltip:
+				'''
+				Right click slams the weapon into the ground, unleashing a sand dune to scour foes.
+				'Brings the desert with it.'
+				'''
+		}
+
+		PositronRifle: {
+			DisplayName: Positron Rifle
+			Tooltip:
+				'''
+				Bullets turn into lethal plasma shots.
+				Right click fires a bolt that bursts into a wide wave of plasma.
+				'A handheld railgun that fires electrifying shots.'
+				'''
+		}
+
+		ShadowBlaster: {
+			DisplayName: Shadow Blaster
+			Tooltip:
+				'''
+				Bullets turn into a dark shot.
+				Right click fires a blast that bursts into an antimatter flux.
+				'My god, it's full of stars.'
+				'''
+		}
+
+		Destroyer: {
+			DisplayName: Destroyer
+			Tooltip:
+				'''
+				Right click fires a blast of lingering gas clouds that inflict Poison on foes.
+				'Gas mask sold separately.'
+				'''
+		}
+
+		CrystalWing: {
+			DisplayName: Crystal Wing
+			Tooltip:
+				'''
+				Right click charges up Hyper Beam. Right click again to unleash angelic might.
+				'Crafted by futuristic Seraphim. Use holy water when cleaning.'
+				'''
+		}
+
+		Exterminator: {
+			DisplayName: Exterminator
+			Tooltip:
+				'''
+				Right click fires a blast of lingering gas clouds that inflict Poison and Ichor on foes.
+				'Makes every problem into 'just a pest problem'!'
+				'''
+		}
+
+		CoconutShooter: {
+			DisplayName: Coconut Shooter
+			Tooltip:
+				'''
+				Bullets turn into arcing seeds.
+				Right click launches a bouncy coconut.
+				'A gorilla's bazooka. Beat your chest with open palms before use.'
+				'''
+		}
+
+		SubZero: {
+			DisplayName: Sub Zero
+			Tooltip:
+				'''
+				Right click slams the weapon into the ground, unleashing an iceberg beneath the nearest foe.
+				'It keeps fridges cool by day! It freezes foes by night!'
+				'''
+		}
+
+		QuakeMaker: {
+			DisplayName: Quake Maker
+			Tooltip:
+				'''
+				Right click slams the weapon into the ground, unleashing an eruption of sand.
+				'They feel tremors from right beneath.'
+				'''
+		}
+
+		GodHand: {
+			DisplayName: God Hand
+			Tooltip:
+				'''
+				Shoot four bullets at once.
+				Right click charges up Hyper Beam. Right click again to unleash divine retribution.
+				'Forged from the remains of the Kitten Kingdom. An echo of catkind's hubris.'
+				'''
+		}
+
+		ThePhantom: {
+			DisplayName: The Phantom
+			Tooltip:
+				'''
+				Bullets turn into a dark shot.
+				Right click fires a blast that bursts into an antimatter flux.
+				'Manufactured using illegal and sacrilegious technology. Crackles with dark magic.'
+				'''
+		}
+
+		NitroBomberXL: {
+			DisplayName: Nitro Bomber XL
+			Tooltip:
+				'''
+				Bullets are transformed into a rockets.
+				Right click fires both a mini nuke and a cluster rocket.
+				'That and 3CD will get you a hamburger.'
+				'''
+		}
+	}
+}
+
+Summon: {
+	GodlyBook: {
+		DisplayName: Godly Book
+		Tooltip:
+			'''
+			Holding the toy summons an Angelic Mirror.
+			Stabbing a foe will make your Angelic Mirror shoot a burst of shots.
+			'An incredible work of fiction second only to Don Quixote.'
+			'''
+	}
+
+	SteelBuckler: {
+		DisplayName: Steel Buckler
+		Tooltip:
+			'''
+			Holding the toy summons a Cat Soldier.
+			Stabbing a foe will grant guaranteed critical hits to your Cat Soldier.
+			'A sturdy sword and shield fit for a warrior of Godcat, or a devout brigand.'
+			'''
+	}
+
+	IcecreamSandwich: {
+		DisplayName: Icecream Sandwich
+		Tooltip:
+			'''
+			Holding the toy summons an Icecream Slime.
+			Stabbing a foe inflicts frostburn and grants extra damage, pierce and velocity to your Icecream Slime's projectiles.
+			'Tastes like bubblegum and freezer burn.'
+			'''
+	}
+
+	RiotShield: {
+		DisplayName: Riot Shield
+		Tooltip:
+			'''
+			Holding the toy summons a Red Flybot, and exchanges some of your mobility for extra defense.
+			Stabbing a foe will significantly increase the attack speed of your Red Flybot for a while.
+			'Perfect for a relaxing evening oppressing dissidents.'
+			'''
+	}
+
+	StarHammer: {
+		DisplayName: Star Hammer
+		Tooltip:
+			'''
+			Holding the toy summons a Shooting Star.
+			Stabbing a foe will make your Shooting Star minion shoot a set of homing stars.
+			'The hammer you should know, for the king of the show!'
+			'''
+	}
+
+	LeafShield: {
+		DisplayName: Leaf Shield
+		Tooltip:
+			'''
+			Holding the toy summons a Wooden Idol.
+			Stabbing a foe grants you Dryad's Blessing for a while.
+			'The druids of the Mystic Woods are peaceful, but NOT pacifists.'
+			'''
+	}
+
+	BloodBank: {
+		DisplayName: Blood Bank
+		Tooltip:
+			'''
+			Holding the toy summons a Blood Bat.
+			Stabbing a foe will temporarily empower the lifesteal of your Blood Bat.
+			'It's actually just fruit punch.'
+			'''
+	}
+
+	BusterSword: {
+		DisplayName: Buster Sword
+		Tooltip:
+			'''
+			Holding the toy summons an Origami Dragon.
+			Stabbing a foe makes the Origami Dragon shoot five powerful paper blades.
+			'Made from the finest cardboardium alloy.'
+			'''
+	}
+
+	PowerPaw: {
+		DisplayName: Power Paw
+		Tooltip:
+			'''
+			Holding the toy summons a Gunslinger.
+			Stabbing a foe will briefly replace the Gunslinger's bullets with rockets.
+			'Give 'em the old X+Y+Down+Up!'
+			'''
+	}
+}

@@ -6,6 +6,7 @@ using EBF.Items.Ranged.Guns;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using EBF.Items.Summon;
+using EBF.Items.Placeables.Furniture;
 
 namespace EBF.NPCs
 {
@@ -24,6 +25,11 @@ namespace EBF.NPCs
                 //Blood Bank at 20%
                 case NPCID.ZombieMerman:
                     npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodBank>(), 5));
+                    break;
+
+                //Godcat Altar at 100%
+                case NPCID.MoonLordCore:
+                    npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GodcatAltar>(), 1));
                     break;
             }
         }

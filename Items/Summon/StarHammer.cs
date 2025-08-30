@@ -1,11 +1,10 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
 using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace EBF.Items.Summon
 {
@@ -121,8 +120,10 @@ namespace EBF.Items.Summon
 
             for (float theta = randomOffset; theta < Math.Tau; theta += delta)
             {
-                Projectile.NewProjectile(source, Projectile.Center, ProjectileExtensions.PolarVector(6, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Projectile.NewProjectile(source, Projectile.Center, ProjectileExtensions.PolarVector(10, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                var velocity = theta.ToRotationVector2() * 6;
+                Projectile.NewProjectile(source, Projectile.Center, velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                velocity = (theta + (delta / 2)).ToRotationVector2() * 10;
+                Projectile.NewProjectile(source, Projectile.Center, velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
         private void ShootBoostedStarPattern()
@@ -135,13 +136,15 @@ namespace EBF.Items.Summon
 
             for (float theta = randomOffset; theta < Math.Tau; theta += delta)
             {
-                proj = Projectile.NewProjectileDirect(source, Projectile.Center, ProjectileExtensions.PolarVector(36, theta), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                var velocity = theta.ToRotationVector2() * 36;
+                proj = Projectile.NewProjectileDirect(source, Projectile.Center, velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 proj.aiStyle = ProjAIStyleID.FlamingJack;
                 proj.localNPCHitCooldown = 20;
                 proj.penetrate = 2;
                 proj.timeLeft = 180;
 
-                proj = Projectile.NewProjectileDirect(source, Projectile.Center, ProjectileExtensions.PolarVector(50, theta + (delta / 2)), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                velocity = (theta + (delta / 2)).ToRotationVector2() * 50;
+                proj = Projectile.NewProjectileDirect(source, Projectile.Center, velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 proj.aiStyle = ProjAIStyleID.FlamingJack;
                 proj.localNPCHitCooldown = 20;
                 proj.penetrate = 2;

@@ -1,15 +1,12 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
-using EBF.Extensions;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework.Graphics;
-using EBF.Buffs;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Summon
 {

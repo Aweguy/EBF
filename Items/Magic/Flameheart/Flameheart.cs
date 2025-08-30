@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -104,7 +103,7 @@ namespace EBF.Items.Magic.Flameheart
                 }
 
                 //Spawn projectile
-                Vector2 position = Projectile.Center + ProjectileExtensions.GetRandomVector() * 100f;
+                Vector2 position = Projectile.Center + Main.rand.NextVector2Square(-100f, 100f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, chosenProjectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }

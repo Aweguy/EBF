@@ -84,6 +84,10 @@ namespace EBF.Items.Magic
 
         //Methods
         public override bool ShouldUpdatePosition() => false;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Projectile.type] = maxHeight;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 0;

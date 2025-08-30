@@ -1,8 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -82,7 +80,7 @@ namespace EBF.Items.Ranged.Guns
         public override bool PreAISafe()
         {
             //Add some offset cuz the sprite is small
-            Projectile.position += ProjectileExtensions.PolarVector(Projectile.width / 2, Projectile.velocity.ToRotation());
+            Projectile.position += Vector2.Normalize(Projectile.velocity) * Projectile.width / 2;
             return false;
         }
         public override void WhileShoot(Vector2 barrelEnd, int type)

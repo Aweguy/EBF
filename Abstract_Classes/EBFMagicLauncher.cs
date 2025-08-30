@@ -1,12 +1,9 @@
-﻿using EBF.Extensions;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Abstract_Classes
@@ -80,10 +77,12 @@ namespace EBF.Abstract_Classes
             float angle = MathHelper.Pi * (itemTimePercent / (player.itemTimeMax / 2));
 
             //Offset position using distance and angle
-            Projectile.position -= ProjectileExtensions.PolarVector(Projectile.direction * 30, angle * Projectile.direction);
+            var theta = angle * Projectile.direction;
+            var magnitude = 30 * Projectile.direction;
+            Projectile.position -= theta.ToRotationVector2() * magnitude;
 
             //Handle rotation
-            Projectile.rotation = (angle * Projectile.direction) - MathHelper.PiOver2 * Projectile.direction;
+            Projectile.rotation = theta - MathHelper.PiOver2 * Projectile.direction;
         }
         private bool CheckGroundHit(Player player)
         {

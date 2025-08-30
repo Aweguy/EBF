@@ -1,11 +1,11 @@
-﻿using EBF.Extensions;
+﻿using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Melee
 {
@@ -17,7 +17,7 @@ namespace EBF.Items.Melee
             Item.width = 64;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 52;//Item's base damage value
+            Item.damage = 54;//Item's base damage value
             Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
@@ -36,9 +36,9 @@ namespace EBF.Items.Melee
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.HallowedBar, stack: 12)
+                .AddIngredient(ModContent.ItemType<NanoFibre>(), stack: 2)
+                .AddIngredient(ModContent.ItemType<RamChip>(), stack: 35)
                 .AddIngredient(ItemID.Wire, stack: 40)
-                .AddIngredient(ItemID.SoulofFright, stack: 10)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
@@ -103,9 +103,9 @@ namespace EBF.Items.Melee
                 Lighting.AddLight(Projectile.Center, TorchID.Orange); //Orange lighting coming from the center of the Projectile.
 
                 //Homing
-                if (ProjectileExtensions.ClosestNPC(ref target, homingRange, Projectile.Center))
+                if (EBFUtils.ClosestNPC(ref target, homingRange, Projectile.Center))
                 {
-                    direction = ProjectileExtensions.SlowRotation(direction, (target.Center - Projectile.Center).ToRotation(), 3f);
+                    direction = EBFUtils.SlowRotation(direction, Projectile.AngleTo(target.Center), 3f);
                     Projectile.velocity = direction.ToRotationVector2() * speed;
                     Projectile.rotation = direction + MathHelper.PiOver2;
                 }
