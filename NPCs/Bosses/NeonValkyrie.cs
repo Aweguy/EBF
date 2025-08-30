@@ -150,6 +150,7 @@ namespace EBF.NPCs.Bosses
                 NPC.defense = 70;
                 TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
+                attachedNPC.velocity = NPC.velocity;
 
                 //Enrage attached turret
                 if (InSecondPhase == 1)
