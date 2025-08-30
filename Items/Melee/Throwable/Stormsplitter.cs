@@ -28,6 +28,7 @@ namespace EBF.Items.Melee.Throwable
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<Stormsplitter_Proj>();
             Item.shootSpeed = 14f;
+            Item.value = Item.sellPrice(platinum: 0, gold: 25, silver: 0, copper: 0);
             Item.rare = ItemRarityID.Red;
             Item.UseSound = SoundID.Item1;
         }

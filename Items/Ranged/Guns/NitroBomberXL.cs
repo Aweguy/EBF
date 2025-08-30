@@ -3,7 +3,6 @@ using EBF.Buffs.Cooldowns;
 using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

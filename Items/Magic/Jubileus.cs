@@ -21,6 +21,7 @@ namespace EBF.Items.Magic
             Item.damage = 388;
             Item.useTime = 4;
             Item.useAnimation = 8;
+            Item.value = Item.sellPrice(platinum: 0, gold: 30, silver: 0, copper: 0);
             Item.rare = ItemRarityID.Red;
             Item.autoReuse = true;
             Item.shoot = ProjectileID.DD2LightningBugZap;
