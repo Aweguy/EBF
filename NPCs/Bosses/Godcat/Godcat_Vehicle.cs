@@ -49,7 +49,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void SetDefaults()
         {
-            NPC.damage = 50;
+            NPC.damage = 45;
             NPC.defense = 50;
             NPC.lifeMax = 300000;
             NPC.noGravity = true;
@@ -88,6 +88,12 @@ namespace EBF.NPCs.Bosses.Godcat
                     NPC.frameCounter = 0;
             }
             NPC.frame.Y = (int)NPC.frameCounter * frameHeight;
+        }
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
+        {
+            // Zenith deals significantly less damage
+            if(projectile.type == ProjectileID.FinalFractal)
+                modifiers.FinalDamage *= 0.1f;
         }
         public override void OnSpawn(IEntitySource source)
         {
