@@ -208,7 +208,7 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.frame = (int)Projectile.ai[0];
             if (Projectile.frame == 1 || Projectile.frame == 3)
             {
-                Projectile.ExpandHitboxTo(32, 32);
+                Projectile.Resize(32, 32);
             }
             if (Projectile.frame > 1)
             {
@@ -294,7 +294,7 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.frame = (int)Projectile.ai[0];
             if (Projectile.frame == 1 || Projectile.frame == 3)
             {
-                Projectile.ExpandHitboxTo(32, 32);
+                Projectile.Resize(32, 32);
             }
             if (Projectile.frame > 1)
             {
@@ -347,7 +347,7 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.frame = (int)Projectile.ai[0];
             if (Projectile.frame == 1 || Projectile.frame == 3)
             {
-                Projectile.ExpandHitboxTo(32, 32);
+                Projectile.Resize(32, 32);
             }
             if (Projectile.frame > 1)
             {
@@ -447,7 +447,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             Projectile.CreateExplosionEffect();
-            Projectile.ExpandHitboxTo(64, 64);
+            Projectile.Resize(64, 64);
             Projectile.Damage();
         }
         private void Launch()
@@ -486,7 +486,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
-            Projectile.ExpandHitboxTo(256, 256);
+            Projectile.Resize(256, 256);
             Projectile.Damage();
         }
     }
@@ -589,7 +589,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 //Expand hitbox until max size
                 if (Projectile.width < MaxSize)
                 {
-                    Projectile.ExpandHitboxTo(Projectile.width + 4, Projectile.height + 4);
+                    Projectile.Resize(Projectile.width + 4, Projectile.height + 4);
                 }
             }
         }

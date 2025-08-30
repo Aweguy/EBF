@@ -107,7 +107,7 @@ namespace EBF.Items.Melee.Throwable
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-            Projectile.ExpandHitboxTo(32, 32);
+            Projectile.Resize(32, 32);
             Projectile.CreateExplosionEffect();
             Projectile.Damage();
         }
@@ -157,7 +157,7 @@ namespace EBF.Items.Melee.Throwable
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item118, Projectile.position);
-            Projectile.ExpandHitboxTo(30, 30);
+            Projectile.Resize(30, 30);
             Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Small);
             Projectile.Damage();
         }

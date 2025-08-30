@@ -198,7 +198,7 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.localAI[0] = 1;
 
             //Explode
-            Projectile.ExpandHitboxTo(explosionSize, explosionSize);
+            Projectile.Resize(explosionSize, explosionSize);
             Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
             Projectile.Damage();
 

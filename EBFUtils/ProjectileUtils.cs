@@ -101,21 +101,6 @@ namespace EBF.EbfUtils
         }
 
         /// <summary>
-        /// Changes the hitbox rectangle of a given projectile.
-        /// <br>From Calamity Utilities.</br>
-        /// </summary>
-        /// <param name="projectile">The projectile whose hitbox will be expanded.</param>
-        /// <param name="width">The new width of the projectile's hitbox.</param>
-        /// <param name="height">The new height of the projectile's hitbox.</param>
-        public static void ExpandHitboxTo(this Projectile projectile, int width, int height)
-        {
-            projectile.position = projectile.Center;
-            projectile.width = width;
-            projectile.height = height;
-            projectile.position -= projectile.Size * 0.5f;
-        }
-
-        /// <summary>
         /// Rotates a projectile's sprite and velocity toward a target.
         /// </summary>
         /// <param name="projectile"></param>
