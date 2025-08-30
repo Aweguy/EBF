@@ -1,5 +1,4 @@
-
-using EBF.Extensions;
+using EBF.EbfUtils;
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;

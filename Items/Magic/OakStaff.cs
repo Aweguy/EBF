@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.Extensions;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Magic
 {
@@ -226,7 +226,7 @@ namespace EBF.Items.Magic
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             //Get ground below target
-            Vector2 position = VectorUtils.GetGroundPosition(target.Center);
+            Vector2 position = target.Center.ToGroundPosition();
 
             //Spawn projectile
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<OakStaff_LogSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);

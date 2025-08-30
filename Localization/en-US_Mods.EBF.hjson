@@ -62,7 +62,6 @@ Projectiles: {
 	Flameheart_Firestorm.DisplayName: Flameheart_ Firestorm
 	Seraphim_Judgement.DisplayName: Seraphim_ Judgement
 	HeavensGate_LightBlade.DisplayName: Heavens Gate_ Light Blade
-	HeavensGate_LightBlade_Mini.DisplayName: Heavens Gate_ Light Blade_ Mini
 	FusionBlade_BulletBob.DisplayName: Fusion Blade_ Bullet Bob
 	Airstrike_Bomb.DisplayName: Airstrike_ Bomb
 	Airstrike_SmallBomb.DisplayName: Airstrike_ Small Bomb
@@ -192,6 +191,30 @@ Projectiles: {
 	WreckingRod_MagicGrenade.DisplayName: Wrecking Rod_ Magic Grenade
 	NitroBomberXLLauncher.DisplayName: Nitro Bomber X L Launcher
 	NitroBomberXLSidearm.DisplayName: Nitro Bomber X L Sidearm
+	DelayedProjectile.DisplayName: Delayed Projectile
+	Godcat_LightBlade.DisplayName: Godcat_ Light Blade
+	Godcat_LightReturnBall.DisplayName: Godcat_ Light Return Ball
+	Godcat_LightBall.DisplayName: Godcat_ Light Ball
+	Godcat_DarkBall.DisplayName: Godcat_ Dark Ball
+	Godcat_DarkBlade.DisplayName: Godcat_ Dark Blade
+	Godcat_DarkReturnBall.DisplayName: Godcat_ Dark Return Ball
+	Godcat_Creator_TurningBall.DisplayName: Godcat_ Creator_ Turning Ball
+	Godcat_Destroyer_TurningBall.DisplayName: Godcat_ Destroyer_ Turning Ball
+	Godcat_DarkBall_Big.DisplayName: Godcat_ Dark Ball_ Big
+	Godcat_LightBall_Big.DisplayName: Godcat_ Light Ball_ Big
+	Godcat_BallProjectile.DisplayName: Godcat_ Ball Projectile
+	Godcat_ReturnBall.DisplayName: Godcat_ Return Ball
+	Godcat_TurningBall.DisplayName: Godcat_ Turning Ball
+	Creator_Thunderball.DisplayName: Creator_ Thunderball
+	Creator_HugeThunderball.DisplayName: Creator_ Huge Thunderball
+	Creator_HolyDeathray.DisplayName: Creator_ Holy Deathray
+	Destroyer_DarkHomingBall.DisplayName: Destroyer_ Dark Homing Ball
+	Destroyer_DarkBreath.DisplayName: Destroyer_ Dark Breath
+	Godcat_LightDiamond.DisplayName: Godcat_ Light Diamond
+	Destroyer_FireWheel.DisplayName: Destroyer_ Fire Wheel
+	Stormsplitter_ThrownProjectile.DisplayName: Stormsplitter_ Thrown Projectile
+	Stormsplitter_Thunderball.DisplayName: Stormsplitter_ Thunderball
+	Stormsplitter_Proj.DisplayName: Stormsplitter_ Proj
 }
 
 Items: {
@@ -327,12 +350,31 @@ Items: {
 			DisplayName: Ram Chip
 			Tooltip: ""
 		}
+
+		ElixirOfLife: {
+			DisplayName: Elixir Of Life
+			Tooltip: A legendary potion said to grant immortal life.
+		}
+
+		HolyGrail: {
+			DisplayName: Holy Grail
+			Tooltip:
+				'''
+				A golden chalice decorated with red accents and small red gemstones.
+				'A legendary relic. Let's melt it down for materials!'
+				'''
+		}
 	}
 
 	TreasureBags: {
 		NeonValkBossBag: {
 			DisplayName: Treasure Bag (Neon Valkyrie)
-			Tooltip: ""
+			Tooltip: Right click to open
+		}
+
+		GodcatBossBag: {
+			DisplayName: Treasure Bag (Godcat)
+			Tooltip: Right click to open
 		}
 	}
 
@@ -343,6 +385,57 @@ Items: {
 
 	NeonValkRelic: {
 		DisplayName: Neon Valk Relic
+		Tooltip: ""
+	}
+
+	GodcatRelic: {
+		DisplayName: Godcat Relic
+		Tooltip: ""
+	}
+
+	GodcatAltar: {
+		DisplayName: Altar of Godcat
+		Tooltip:
+			'''
+			A mysterious shrine dedicated to Godcat.
+			Built in honor of her dominion over life, death, and dreams.
+			'''
+	}
+
+	SacredEmerald: {
+		DisplayName: The Sacred Emerald of Life
+		Tooltip:
+			'''
+			The leaves stole life from Godcat. The failings of her creations did not belong to her.
+			Seeks the azure and crimson light.
+			'''
+	}
+
+	SacredRuby: {
+		DisplayName: The Sacred Ruby of Death
+		Tooltip:
+			'''
+			The sand stole death from Godcat. No goddess deserves their final rest.
+			Seeks the azure and verdant light.
+			'''
+	}
+
+	SacredSapphire: {
+		DisplayName: The Sacred Sapphire of Dreams
+		Tooltip:
+			'''
+			The ice stole dreams from Godcat. How dare she claim the aspirations of all?
+			Seeks the crimson and verdant light.
+			'''
+	}
+
+	GodcatCreatorTrophy: {
+		DisplayName: Godcat Creator Trophy
+		Tooltip: ""
+	}
+
+	GodcatDestroyerTrophy: {
+		DisplayName: Godcat Destroyer Trophy
 		Tooltip: ""
 	}
 }

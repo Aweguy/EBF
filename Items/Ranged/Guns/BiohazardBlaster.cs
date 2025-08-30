@@ -1,11 +1,11 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -147,7 +147,7 @@ namespace EBF.Items.Ranged.Guns
                 //Expand hitbox until max size
                 if (Projectile.width < maxSize)
                 {
-                    Projectile.ExpandHitboxBy(Projectile.width + 2, Projectile.height + 2);
+                    Projectile.Resize(Projectile.width + 2, Projectile.height + 2);
                 }
 
                 //Slow down
@@ -157,7 +157,7 @@ namespace EBF.Items.Ranged.Guns
                 for (int i = 0; i < 1 + Projectile.width / 50; i++)
                 {
                     Vector2 position = Projectile.position + Main.rand.NextVector2Square(0, Projectile.width);
-                    Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, VectorUtils.Random(), Type: Main.rand.Next(435, 438), Scale: 0.5f + ((float)Projectile.width * 2 / maxSize));
+                    Gore gore = Gore.NewGorePerfect(Projectile.GetSource_FromThis(), position, Main.rand.NextVector2Square(-1f, 1f), Type: Main.rand.Next(435, 438), Scale: 0.5f + ((float)Projectile.width * 2 / maxSize));
                     gore.alpha = 128;
                     gore.rotation = MathHelper.PiOver2 * Main.rand.Next(1, 5);
                 }

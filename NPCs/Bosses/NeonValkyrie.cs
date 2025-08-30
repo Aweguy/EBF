@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -9,13 +10,12 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
-using ReLogic.Content;
-using EBF.Extensions;
-using EBF.NPCs.Machines;
-using System.Collections.Generic;
-using EBF.Systems;
-using EBF.Dusts;
 using Terraria.GameContent.ItemDropRules;
+using ReLogic.Content;
+using EBF.Dusts;
+using EBF.Systems;
+using EBF.EbfUtils;
+using EBF.NPCs.Machines;
 using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
 using EBF.Items.Placeables.Furniture.BossTrophies;
@@ -123,7 +123,7 @@ namespace EBF.NPCs.Bosses
         public override void OnSpawn(IEntitySource source)
         {
             NPC.TargetClosest(false);
-            groundPos = VectorUtils.GetGroundPosition(NPC.position);
+            groundPos = NPC.position.ToGroundPosition();
         }
         public override void AI()
         {
@@ -135,6 +135,8 @@ namespace EBF.NPCs.Bosses
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
+                if (HasAttachment)
+                    attachedNPC.StrikeInstantKill();
                 return;
             }
 
@@ -148,6 +150,7 @@ namespace EBF.NPCs.Bosses
                 NPC.defense = 70;
                 TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
+                attachedNPC.velocity = NPC.velocity;
 
                 //Enrage attached turret
                 if (InSecondPhase == 1)
@@ -203,7 +206,7 @@ namespace EBF.NPCs.Bosses
             if (HasAttachment)
                 attachedNPC.StrikeInstantKill();
 
-            NPC.CreateExplosionEffect(Extensions.Utils.ExplosionSize.Large);
+            NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
 
             var sound = SoundID.NPCDeath37; //37, 56
             sound.Pitch = -1f;
@@ -228,7 +231,7 @@ namespace EBF.NPCs.Bosses
             //Let the world know the boss is dead
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1); 
         }
-        public override void BossLoot(ref string name, ref int potionType)
+        public override void BossLoot(ref int potionType)
         {
             potionType = ItemID.HealingPotion;
         }
@@ -290,12 +293,12 @@ namespace EBF.NPCs.Bosses
             {
                 if (NPC.BottomLeft.Y < player.position.Y && NPC.DirectionTo(player.position).Y > 0.4f)
                 {
-                    groundPos = VectorUtils.GetGroundPosition(player.BottomLeft);
+                    groundPos = player.BottomLeft.ToGroundPosition();
                     return; //No need to hover yet
                 }
                 else
                 {
-                    bool foundGround = VectorUtils.GetGroundPosition(NPC.BottomLeft, new Vector2(NPC.width, hoverDistance * 2), out Vector2 ground, true);
+                    bool foundGround = EBFUtils.TryGetGroundPosition(NPC.BottomLeft, new Vector2(NPC.width, hoverDistance * 2), out Vector2 ground, true);
                     groundPos = foundGround ? ground : groundPos + new Vector2(0, hoverDistance * 2);
                 }
             }

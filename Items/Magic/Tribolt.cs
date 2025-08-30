@@ -1,4 +1,4 @@
-using EBF.Extensions;
+using EBF.EbfUtils;
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -87,7 +87,7 @@ namespace EBF.Items.Magic
             }
 
             //Check for nearby enemies
-            if (ProjectileExtensions.ClosestNPC(ref target, attractionRange, newPos))
+            if (EBFUtils.ClosestNPC(ref target, attractionRange, newPos))
             {
                 GenerateTrail(target);
                 Projectile.Center = target.Center;

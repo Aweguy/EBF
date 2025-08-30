@@ -5,7 +5,7 @@ using EBF.Tiles.Furniture.BossTrophies;
 
 namespace EBF.Items.Placeables.Furniture.BossTrophies
 {
-    internal class NeonValkTrophy : ModItem
+    public class NeonValkTrophy : ModItem
     {
         public override void SetDefaults()
         {

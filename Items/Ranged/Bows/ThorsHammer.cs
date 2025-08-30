@@ -1,5 +1,5 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -123,7 +123,7 @@ namespace EBF.Items.Ranged.Bows
                 {
                     chainCount--;
                     hitTargets.Add(target);
-                    if (!ProjectileExtensions.ClosestNPC(ref this.target, 500, Projectile.position, specialCondition: new ProjectileExtensions.SpecialCondition(CanTarget)))
+                    if (!EBFUtils.ClosestNPC(ref this.target, 500, Projectile.position, specialCondition: new EBFUtils.SpecialCondition(CanTarget)))
                     {
                         Projectile.Kill();
                     }

@@ -1,13 +1,12 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -89,11 +88,11 @@ namespace EBF.Items.Ranged.Guns
         public override void OnGroundHit()
         {
             //Find a nearby target
-            NPC target = new NPC();
-            if (ProjectileExtensions.ClosestNPC(ref target, 400, Projectile.Center, ignoreTiles: true))
+            NPC target = new();
+            if (EBFUtils.ClosestNPC(ref target, 400, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
-                Vector2 position = VectorUtils.GetGroundPosition(target.Center);
+                Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);

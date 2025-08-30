@@ -1,4 +1,3 @@
-
 using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -12,7 +11,6 @@ namespace EBF.Items.Magic
     public class NimbusRod : EBFStaff, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
-
         public override void SetDefaultsSafe()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
@@ -23,7 +21,8 @@ namespace EBF.Items.Magic
             Item.mana = 6;//The amount of mana this item consumes on use
 
             Item.useTime = 4;//How fast the item is used
-            Item.useAnimation = 60;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.reuseDelay = 40;
 
             Item.value = Item.sellPrice(copper: 0, silver: 30, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -35,18 +34,11 @@ namespace EBF.Items.Magic
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            //Quirky way to shoot 5 times
-            if (player.itemAnimation <= 44)
-            {
-                player.itemTime = 44;
-            }
-
-            velocity = StaffHead.DirectionTo(Main.MouseWorld).RotatedByRandom(0.1f) * Item.shootSpeed;
+            position = StaffHead;
+            velocity = position.DirectionTo(Main.MouseWorld).RotatedByRandom(0.1f) * Item.shootSpeed;
             velocity += Vector2.UnitY;
 
-            //Spawn the projecile
-            SoundEngine.PlaySound(SoundID.Item85, player.Center);
-            Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI, 0f);
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
         public override void AddRecipes()
@@ -73,6 +65,8 @@ namespace EBF.Items.Magic
         }
         public override void OnSpawn(IEntitySource source)
         {
+            SoundEngine.PlaySound(SoundID.Item85, Projectile.position);
+
             //Spawn dust
             for (int i = 0; i < 3; i++)
             {

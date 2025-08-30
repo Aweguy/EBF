@@ -1,14 +1,14 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using EBF.EbfUtils;
 
 namespace EBF.Items.Magic
 {
@@ -256,7 +256,7 @@ namespace EBF.Items.Magic
                 suckRange = defaultSuckRange * Projectile.scale;
                 int newWidth = (int)(baseWidth * Projectile.scale);
                 int newHeight = (int)(baseHeight * Projectile.scale);
-                ProjectileExtensions.ExpandHitboxBy(Projectile, newWidth, newHeight);
+                Projectile.Resize(newWidth, newHeight);
             }
         }
         private void SuckNPCs(float suckingRange, float suckingStrength = 20)
@@ -313,7 +313,7 @@ namespace EBF.Items.Magic
         private void Explode()
         {
             //Change hitbox size and damage
-            ProjectileExtensions.ExpandHitboxBy(Projectile, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
+            Projectile.Resize((int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
             int explosionDamage = Projectile.damage + Projectile.width;
 
             foreach (NPC npc in Main.npc)

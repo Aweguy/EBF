@@ -2,13 +2,11 @@
 using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using ReLogic.Content;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 using System;
 using EBF.Abstract_Classes;
-using EBF.Extensions;
+using EBF.EbfUtils;
 
 namespace EBF.NPCs.Machines
 {
@@ -171,7 +169,7 @@ namespace EBF.NPCs.Machines
             //Homing
             Player target = Main.player[Player.FindClosest(Projectile.Center, Projectile.width, Projectile.height)];
             Vector2 toTarget = Projectile.DirectionTo(target.Center);
-            float newRotation = ProjectileExtensions.SlowRotation(Projectile.velocity.ToRotation(), toTarget.ToRotation(), 0.33f);
+            float newRotation = EbfUtils.EBFUtils.SlowRotation(Projectile.velocity.ToRotation(), toTarget.ToRotation(), 0.33f);
             Projectile.velocity = newRotation.ToRotationVector2() * Projectile.velocity.Length();
         }
         public override void OnKill(int timeLeft)
@@ -186,11 +184,11 @@ namespace EBF.NPCs.Machines
     {
         private NPC owner;
         private Player target;
+        protected override Vector3 LightColor => Color.Orange.ToVector3();
         public override void OnSpawnSafe(IEntitySource source)
         {
-            lightColor = Color.Orange.ToVector3();
             target = Main.player[(int)Projectile.ai[0]];
-            ProjectileExtensions.ClosestNPC(ref owner, 400, Projectile.position, true);
+            EBFUtils.ClosestNPC(ref owner, 400, Projectile.position, true);
         }
         public override void AISafe()
         {

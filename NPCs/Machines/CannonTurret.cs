@@ -48,6 +48,7 @@ namespace EBF.NPCs.Machines
                 var type = ProjectileID.CannonballHostile;
                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3);
                 proj.timeLeft = 40;
+                proj.light = 0.8f;
 
                 SoundEngine.PlaySound(SoundID.Item11, NPC.Center);
 

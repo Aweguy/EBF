@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using EBF.Items.Ranged.Bows;
+using EBF.Items.BossSummons;
 
 namespace EBF.NPCs.TownNPCs
 {
@@ -67,6 +68,9 @@ namespace EBF.NPCs.TownNPCs
                 .Add(ItemID.PottedLavaPlantBramble, Condition.IsNpcShimmered)
                 .Add(ItemID.PottedLavaPlantBulb, Condition.IsNpcShimmered)
                 .Add(ItemID.PottedLavaPlantTendrils, Condition.IsNpcShimmered)
+                .Add(ModContent.ItemType<SacredEmerald>())
+                .Add(ModContent.ItemType<SacredSapphire>(), Condition.Hardmode)
+                .Add(ModContent.ItemType<SacredRuby>(), Condition.DownedMoonLord)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;

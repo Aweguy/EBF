@@ -145,6 +145,16 @@ Melee: {
 		DisplayName: Dark Stalker
 		Tooltip: Applies weak to hit foes.
 	}
+
+	Stormsplitter: {
+		DisplayName: Stormsplitter
+		Tooltip:
+			'''
+			Ejects thunder bombs as it travels.
+			Hitting a foe directly will cause it to attract every thunder bomb.
+			'Swing well, fly true; rend the heavens asunder.'
+			'''
+	}
 }
 
 Magic: {
@@ -317,6 +327,15 @@ Magic: {
 			'''
 			Lobs magical, short-fused grenades, that explode with a plasma burst.
 			'Yes Rico, kaboom.'
+			'''
+	}
+
+	Jubileus: {
+		DisplayName: Jubileus
+		Tooltip:
+			'''
+			Creates a localized downpour of electric bolts at the cursor.
+			'A peal of thunder which heralds divine bloodlust.'
 			'''
 	}
 }

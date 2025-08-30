@@ -1,5 +1,4 @@
-﻿using EBF.Extensions;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -32,7 +31,7 @@ namespace EBF.Items.Melee
         {
             if (Main.rand.NextBool(3))
             {
-                Vector2 position = hitbox.Center.ToVector2() + VectorUtils.Random(20);
+                Vector2 position = hitbox.Center.ToVector2() + Main.rand.NextVector2Square(-20, 20);
                 Vector2 velocity = Vector2.UnitX * player.direction * 0.33f;
                 Dust dust = Dust.NewDustPerfect(position, DustID.TintableDustLighted, velocity, 0, Color.WhiteSmoke);
                 dust.noLight = true;

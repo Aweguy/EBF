@@ -1,17 +1,15 @@
-﻿using EBF.Abstract_Classes;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
-using Terraria.GameContent.Drawing;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using EBF.Extensions;
 using System;
 using System.Collections.Generic;
-using Terraria.Audio;
-using EBF.Buffs;
+using EBF.EbfUtils;
 using EBF.NPCs.Machines;
 using EBF.Items.Materials;
+using EBF.Abstract_Classes;
 
 namespace EBF.Items.Summon
 {

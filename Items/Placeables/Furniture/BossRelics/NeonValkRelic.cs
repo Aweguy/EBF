@@ -8,9 +8,7 @@ namespace EBF.Items.Placeables.Furniture.BossRelics
     {
         public override void SetDefaults()
         {
-            // The place style (here by default 0) is important if you decide to have more than one relic share the same tile type (more on that in the tiles' code)
-            Item.DefaultToPlaceableTile(ModContent.TileType<NeonValkRelicTile>(), 0);
-
+            Item.DefaultToPlaceableTile(ModContent.TileType<NeonValkRelicTile>());
             Item.width = 30;
             Item.height = 40;
             Item.master = true;

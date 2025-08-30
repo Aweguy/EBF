@@ -16,19 +16,18 @@ namespace EBF.Abstract_Classes
             get
             {
                 Player player = Main.LocalPlayer;
-                Vector2 dir = player.Center.DirectionTo(Main.MouseWorld) * (Item.width / 4);
+                Vector2 dir = player.DirectionTo(Main.MouseWorld) * (Item.width / 4);
                 
                 //player.direction updates a frame late
-                float sign = dir.X <= 0 ? 1 : -1;
+                int sign = dir.X <= 0 ? 1 : -1;
 
                 //Similarly, player.itemPosition and player.itemRotation updates a frame late, so I gotta use a workaround.
-                Vector2 headPosition = dir + player.Center + new Vector2(32, (Item.height / 1.66f) * sign).RotatedBy(player.Center.AngleTo(Main.MouseWorld)); 
-                return headPosition;
+                return dir + player.Center + new Vector2(32, (Item.height / 1.66f) * sign).RotatedBy(player.AngleTo(Main.MouseWorld));
             }
         }
         public virtual void SetDefaultsSafe()
         { }
-        public override void SetDefaults()
+        public sealed override void SetDefaults()
         {
             Item.DamageType = DamageClass.Magic;
             Item.useStyle = ItemUseStyleID.Shoot; //Shoot animation style allows the staff to be rotated, instead of pointing directly at the cursor
@@ -37,7 +36,7 @@ namespace EBF.Abstract_Classes
 
             SetDefaultsSafe();
         }
-        public override void UseStyle(Player player, Rectangle heldItemFrame)
+        public sealed override void UseStyle(Player player, Rectangle heldItemFrame)
         {
             player.itemLocation -= new Vector2(player.direction * Item.width / 4, Item.height / 6).RotatedBy(player.itemRotation);
         }
