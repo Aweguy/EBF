@@ -1,10 +1,14 @@
 ﻿using EBF.EbfUtils;
+using EBF.Items.Materials;
+using EBF.Items.Placeables.Furniture.BossTrophies;
+using EBF.Items.TreasureBags;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -85,6 +89,10 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             base.OnKill();
             NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
+        }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GodcatCreatorTrophy>(), 10));
         }
         protected override void Move(Player player)
         {

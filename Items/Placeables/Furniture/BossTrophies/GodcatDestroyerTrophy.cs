@@ -5,11 +5,11 @@ using EBF.Tiles.Furniture.BossTrophies;
 
 namespace EBF.Items.Placeables.Furniture.BossTrophies
 {
-    public class NeonValkTrophy : ModItem
+    public class GodcatDestroyerTrophy : ModItem
     {
         public override void SetDefaults()
         {
-            Item.DefaultToPlaceableTile(ModContent.TileType<NeonValkTrophyTile>());
+            Item.DefaultToPlaceableTile(ModContent.TileType<GodcatDestroyerTrophyTile>());
 
             Item.width = 32;
             Item.height = 32;

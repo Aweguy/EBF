@@ -1,10 +1,12 @@
 ﻿using EBF.EbfUtils;
+using EBF.Items.Placeables.Furniture.BossTrophies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -86,6 +88,10 @@ namespace EBF.NPCs.Bosses.Godcat
                     CreateFireWheel(player);
                     break;
             }
+        }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GodcatDestroyerTrophy>(), 10));
         }
         protected override void Move(Player player)
         {

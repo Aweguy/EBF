@@ -428,6 +428,16 @@ Items: {
 			Seeks the crimson and verdant light.
 			'''
 	}
+
+	GodcatCreatorTrophy: {
+		DisplayName: Godcat Creator Trophy
+		Tooltip: ""
+	}
+
+	GodcatDestroyerTrophy: {
+		DisplayName: Godcat Destroyer Trophy
+		Tooltip: ""
+	}
 }
 
 Emotes: {
