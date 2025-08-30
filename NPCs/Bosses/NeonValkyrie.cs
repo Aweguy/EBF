@@ -255,7 +255,7 @@ namespace EBF.NPCs.Bosses
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NeonValkBossBag>()));
 
             // Relic
-            //npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.NeonValkRelic>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeables.Furniture.BossRelics.NeonValkRelic>()));
 
             // Pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<NeonValkPetItem>(), 4));
