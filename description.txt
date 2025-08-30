@@ -1,8 +1,8 @@
 EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
-As of version 1.5, the mod adds 87 items:
+As of version 1.5, the mod adds 106 items:
 - 18 Melee weapons
 - 31 Ranged weapon
-- 20 Magic weapons
+- 21 Magic weapons
 - 9 Summon weapons
 - 9 Accessories
 
