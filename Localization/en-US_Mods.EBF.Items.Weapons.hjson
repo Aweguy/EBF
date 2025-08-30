@@ -67,7 +67,7 @@ Melee: {
 		Tooltip:
 			'''
 			Shoots a homing bullet bob.
-			'Modeled after the weapons used by the MILITIA branch.'
+			'Modeled after the weapons used by MILITIA troopers.'
 			'''
 		DisplayName: Fusion Blade
 	}
@@ -143,7 +143,11 @@ Melee: {
 
 	DarkStalker: {
 		DisplayName: Dark Stalker
-		Tooltip: Applies weak to hit foes.
+		Tooltip: 
+			'''
+			Applies weak to hit foes.
+			'Tears up its victims like a twisted briar.'
+			'''
 	}
 
 	Stormsplitter: {
@@ -434,7 +438,11 @@ Ranged: {
 
 		ThorsHammer: {
 			DisplayName: Thors Hammer
-			Tooltip: Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
+			Tooltip:
+				'''
+				Fully charged wooden arrows turn into speedy lightning arrows that bounce to other nearby foes.
+				'So I said, Mjolnir? I hardly know 'er!'
+				'''
 		}
 
 		IronTooth: {
