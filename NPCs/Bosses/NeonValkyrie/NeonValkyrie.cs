@@ -20,7 +20,7 @@ using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
 using EBF.Items.Placeables.Furniture.BossTrophies;
 
-namespace EBF.NPCs.Bosses
+namespace EBF.NPCs.Bosses.NeonValkyrie
 {
     [AutoloadBossHead]
     public class NeonValkyrie : ModNPC
@@ -229,7 +229,7 @@ namespace EBF.NPCs.Bosses
             Main.instance.CameraModifiers.Add(modifier);
 
             //Let the world know the boss is dead
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1); 
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1);
         }
         public override void BossLoot(ref int potionType)
         {
@@ -322,7 +322,7 @@ namespace EBF.NPCs.Bosses
         }
         private void SpawnHoverRings()
         {
-            if(Main.GameUpdateCount % 20 == 0)
+            if (Main.GameUpdateCount % 20 == 0)
             {
                 var type = ModContent.DustType<HoverRing>();
                 var velocity = new Vector2(NPC.velocity.X / 2, 2);
@@ -386,9 +386,9 @@ namespace EBF.NPCs.Bosses
         {
             //Determine attachment
             int type;
-            if(InSecondPhase == 1)
+            if (InSecondPhase == 1)
                 type = Main.rand.NextBool(2) ? ModContent.NPCType<LaserTurret>() : ModContent.NPCType<NukeStand>();
-            else 
+            else
                 type = Main.rand.NextBool(2) ? ModContent.NPCType<HarpoonTurret>() : ModContent.NPCType<CannonTurret>();
 
             //Add attachment to NV
