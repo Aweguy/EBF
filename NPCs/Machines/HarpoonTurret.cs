@@ -26,11 +26,10 @@ namespace EBF.NPCs.Machines
         public override void AISafe()
         {
             Player player = Main.player[NPC.target];
-            Timer++;
-
             LerpRotationToTarget(player, 0.1f);
 
-            if(Timer == 240)
+            Timer++;
+            if(Timer == 210)
             {
                 IsShooting = 1;
                 Shoot();
@@ -65,8 +64,8 @@ namespace EBF.NPCs.Machines
 
         private void Shoot()
         {
-            var speed = 20;
-            var vel = NPC.rotation.ToRotationVector2() * speed;
+            var speed = 22;
+            var vel = NPC.rotation.ToRotationVector2() * speed + new Vector2(0, -1);
             var type = ModContent.ProjectileType<HarpoonTurret_Projectile>();
             hook = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3f, -1, NPC.whoAmI);
 
@@ -76,12 +75,16 @@ namespace EBF.NPCs.Machines
 
     public class HarpoonTurret_Projectile : ModProjectile
     {
-        private const int RetractionSpeed = 12;
-        private const int AirTimeLimit = 120;
+        private const int RetractionSpeed = 18;
+        private const int AirTimeLimit = 90;
         private bool isRetracting;
         private NPC Parent => Main.npc[(int)Projectile.ai[0]];
         private Vector2 ParentFront => Parent.Center + Parent.rotation.ToRotationVector2() * 32;
         private ref float Timer => ref Projectile.localAI[0];
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Projectile.type] = 1000;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 28;
