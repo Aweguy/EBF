@@ -48,7 +48,7 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         };
         private readonly WeightedRandom<State> weightedRandom = new();
         private ref float StateTimer => ref NPC.localAI[0];
-        private ref float InSecondPhase => ref NPC.ai[0];
+        private bool InSecondPhase { get => NPC.ai[0] == 1; set => NPC.ai[0] = value.ToInt(); }
 
         //Attachment
         private NPC attachedNPC;
@@ -140,10 +140,8 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
                 return;
             }
 
-            if (InSecondPhase == 1)
-            {
+            if (InSecondPhase)
                 SecondStageSmokeEffect();
-            }
 
             if (HasAttachment)
             {
@@ -151,10 +149,6 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
                 TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
                 attachedNPC.velocity = NPC.velocity;
-
-                //Enrage attached turret
-                if (InSecondPhase == 1)
-                    attachedNPC.ai[1] = 1;
             }
             else
             {
@@ -280,7 +274,7 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
             }
 
             //Go into 2nd phase
-            if (InSecondPhase == 0 && NPC.life < NPC.lifeMax / 2)
+            if (!InSecondPhase && NPC.life < NPC.lifeMax / 2)
             {
                 StateTimer = 0;
                 currentState = State.RevUp;
@@ -386,19 +380,19 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         {
             //Determine attachment
             int type;
-            if (InSecondPhase == 1)
+            if (InSecondPhase)
                 type = Main.rand.NextBool(2) ? ModContent.NPCType<LaserTurret>() : ModContent.NPCType<NukeStand>();
             else
                 type = Main.rand.NextBool(2) ? ModContent.NPCType<HarpoonTurret>() : ModContent.NPCType<CannonTurret>();
 
             //Add attachment to NV
-            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type, 0, 0, InSecondPhase);
+            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type);
             attachedNPC.Bottom = AttachmentBasePos;
         }
         private void TransitionToSecondStage()
         {
             NPC.velocity.X *= 0.9f;
-            InSecondPhase = 1;
+            InSecondPhase = true;
 
             if (StateTimer < 30) //Give some time to brake.
                 return;
