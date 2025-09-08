@@ -8,6 +8,17 @@
   <ItemGroup>
     <None Remove="Buffs\Charged.png" />
     <None Remove="Buffs\TagDebuff.png" />
+    <None Remove="Gores\BossGores\Godcat_Creator_Gore0.png" />
+    <None Remove="Gores\BossGores\Godcat_Creator_Gore1.png" />
+    <None Remove="Gores\BossGores\Godcat_Creator_Gore2.png" />
+    <None Remove="Gores\BossGores\Godcat_Creator_Gore3.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore0.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore1.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore2.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore3.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore4.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore5.png" />
+    <None Remove="Gores\BossGores\Godcat_Destroyer_Gore6.png" />
     <None Remove="Gores\Machines\HarpoonTurret_Gore2.png" />
     <None Remove="Items\BlitzNeedle.png" />
     <None Remove="Items\BlitzNeedleProjectile.png" />
