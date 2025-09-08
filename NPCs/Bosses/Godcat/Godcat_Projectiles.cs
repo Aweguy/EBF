@@ -709,6 +709,10 @@ namespace EBF.NPCs.Bosses.Godcat
                 dust.noGravity = true;
             }
         }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.OnFire3, 60 * 2);
+        }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             foreach (var ball in balls)
