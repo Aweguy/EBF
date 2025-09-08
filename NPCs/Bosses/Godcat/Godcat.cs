@@ -42,7 +42,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.width = 34;
             NPC.height = 46;
-            NPC.damage = 50;
+            NPC.damage = 70;
             NPC.defense = 9999;
             NPC.lifeMax = 999999;
             NPC.noGravity = true;
@@ -189,7 +189,6 @@ namespace EBF.NPCs.Bosses.Godcat
                 NPC.active = false;
             }
         }
-    
         private void DropToGround()
         {
             NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
