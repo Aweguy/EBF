@@ -85,7 +85,7 @@ namespace EBF.NPCs.Bosses
         {
             NPC.width = 300;
             NPC.height = 64;
-            NPC.damage = 50;
+            NPC.damage = 80;
             NPC.defense = 20;
             NPC.lifeMax = 40000;
 
@@ -359,7 +359,7 @@ namespace EBF.NPCs.Bosses
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
 
                 var velocity = GunTipPos.DirectionTo(player.Center) * 10;
-                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 2, 3);
+                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 4, 3);
                 proj.friendly = false;
                 proj.hostile = true;
             }
