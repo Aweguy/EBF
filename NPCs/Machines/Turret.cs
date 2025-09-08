@@ -19,7 +19,7 @@ namespace EBF.NPCs.Machines
         private Asset<Texture2D> glowTexture;
         private Rectangle baseRect;
         private Vector2 originOffset = Vector2.UnitX * 12; // Adjusts the pivot point, so the turret rotates around the attachment and not its center.
-        protected ref float IsShooting => ref NPC.ai[0]; // This value is read by Neon Valkyrie so she won't jump.
+        protected bool IsShooting { get => NPC.ai[0] == 1; set => NPC.ai[0] = value.ToInt(); } // This value is read by Neon Valkyrie so she won't jump.
         
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
@@ -112,10 +112,10 @@ namespace EBF.NPCs.Machines
         }
 
 
-        protected void LerpRotationToTarget(Player player, float lerpSpeed)
+        protected void LerpRotationToTarget(Entity target, float lerpSpeed)
         {
-            float angleToPlayer = NPC.DirectionTo(player.Center).ToRotation();
-            float angleDiff = MathHelper.WrapAngle(angleToPlayer - NPC.rotation);
+            float angleToTarget = NPC.DirectionTo(target.Center).ToRotation();
+            float angleDiff = MathHelper.WrapAngle(angleToTarget - NPC.rotation);
             NPC.rotation += angleDiff * lerpSpeed;
         }
     }

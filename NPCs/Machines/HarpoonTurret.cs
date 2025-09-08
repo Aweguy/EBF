@@ -31,14 +31,14 @@ namespace EBF.NPCs.Machines
             Timer++;
             if(Timer == 210)
             {
-                IsShooting = 1;
+                IsShooting = true;
                 Shoot();
             }
 
             //Reset when hook is destroyed (fully retracted)
-            if(IsShooting == 1 && (hook == null || !hook.active))
+            if(IsShooting && (hook == null || !hook.active))
             {
-                IsShooting = 0;
+                IsShooting = false;
                 Timer = 0;
             }
         }
@@ -46,7 +46,7 @@ namespace EBF.NPCs.Machines
         {
             NPC.frame = new(0, 0, NPC.width, NPC.height)
             {
-                Y = IsShooting == 1 ? 54 : 0 // frameHeight is fucked for some reason, maybe it's cuz I draw manually?
+                Y = IsShooting ? 54 : 0 // frameHeight is fucked for some reason, maybe it's cuz I draw manually?
             };
         }
 
@@ -55,11 +55,9 @@ namespace EBF.NPCs.Machines
             for (int i = 0; i < 2; i++)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore{i}").Type, NPC.scale);
         
-            if(IsShooting == 0)
-            {
-                // Create hook gore if it is on the cannon
+            // Create hook gore if it is on the cannon
+            if(!IsShooting)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore2").Type, NPC.scale);
-            }
         }
 
         private void Shoot()

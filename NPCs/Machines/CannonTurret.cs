@@ -28,7 +28,7 @@ namespace EBF.NPCs.Machines
 
             if(Timer > 240)
             {
-                IsShooting = 1;
+                IsShooting = true;
                 Shoot();
             }
         }
@@ -58,7 +58,7 @@ namespace EBF.NPCs.Machines
                 {
                     Timer = 0;
                     ShotsFired = 0;
-                    IsShooting = 0;
+                    IsShooting = false;
                 }
             }
         }
