@@ -216,6 +216,8 @@ Projectiles: {
 	Stormsplitter_Thunderball.DisplayName: Stormsplitter_ Thunderball
 	Stormsplitter_Proj.DisplayName: Stormsplitter_ Proj
 	CrystalStaff_Projectile.DisplayName: Crystal Staff_ Projectile
+	Aquamarine_Arrow.DisplayName: Aquamarine_ Arrow
+	Aquamarine_Bubble.DisplayName: Aquamarine_ Bubble
 }
 
 Items: {

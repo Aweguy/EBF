@@ -481,6 +481,15 @@ Ranged: {
 				'Rallies weeds to your cause.'
 				'''
 		}
+
+		Aquamarine: {
+			DisplayName: Aquamarine
+			Tooltip:
+				'''
+				Fully charged arrows create an exploding bubble upon hitting a foe.
+				'Shower your enemies with freezing water.'
+				'''
+		}
 	}
 
 	Guns: {
