@@ -49,7 +49,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void SetDefaults()
         {
-            NPC.damage = 45;
+            NPC.damage = 70;
             NPC.defense = 50;
             NPC.lifeMax = 300000;
             NPC.noGravity = true;

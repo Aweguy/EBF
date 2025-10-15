@@ -28,12 +28,12 @@ namespace EBF.NPCs.Machines
             Player player = Main.player[NPC.target];
             Timer++;
 
-            if (IsShooting == 1)
+            if (IsShooting)
             {
                 TurnTowardsTarget(player);
                 if (Timer >= 90)
                 {
-                    IsShooting = 0;
+                    IsShooting = false;
                 }
                 return;
             }
@@ -72,7 +72,7 @@ namespace EBF.NPCs.Machines
             if (Vector2.Distance(NPC.position, player.position) < 1000)
             {
                 ShootLaser();
-                IsShooting = 1;
+                IsShooting = true;
                 AttackChoice = Main.rand.Next(2);
             }
         }

@@ -89,6 +89,11 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             base.OnKill();
             NPC.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
+
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore0").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore1").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore2").Type, NPC.scale);
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 10).RotatedByRandom(2f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore3").Type, NPC.scale);
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
@@ -126,11 +131,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
                 {
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 2, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
 
                     if (IsAlone)
                     {
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage / 2, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
                     }
                 }
 
@@ -144,7 +149,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 var speed = 4;
                 var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
                 var type = ModContent.ProjectileType<Godcat_TurningBall>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 2, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
 
                 SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
@@ -157,7 +162,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
                 {
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 2, 3f);
                 }
 
                 SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
@@ -190,7 +195,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
                     //ai[0] is how long it takes before the balls launch
                     //ai[2] is the owner, real owner must be -1 for dmg to work, owner is used to keep balls attached until they launch
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, delay, drawBehind, NPC.whoAmI);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 2, 3f, -1, delay, drawBehind, NPC.whoAmI);
                     delay += 2;
                 }
             }
@@ -255,7 +260,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
                 {
                     var velocity = dir.RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 2, 3f);
                 }
             }
         }
@@ -263,7 +268,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             var velocity = new Vector2(NPC.direction, 0);
             var type = ModContent.ProjectileType<Creator_HolyDeathray>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3, -1, NPC.whoAmI);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 2, 3, -1, NPC.whoAmI);
 
             var sound = SoundID.Zombie104; // Moon Lord deathray sound
             sound.Pitch = 1.4f;

@@ -25,7 +25,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.height = 62;
             NPC.lifeMax = 18000;
             NPC.defense = 35;
-            NPC.damage = 40;
+            NPC.damage = 70;
             NPC.knockBackResist = 0.5f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
