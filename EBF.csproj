@@ -16,6 +16,7 @@
     <None Remove="Items\Magic\Airstrike\Airstrike_SmallBomb.png" />
     <None Remove="Items\Magic\Airstrike\Airstrike_SmallBomb_Glowmask.png" />
     <None Remove="Items\Magic\Airstrike_Remote.png" />
+    <None Remove="Items\Magic\CrystalStaff.png" />
     <None Remove="Items\Magic\DragonWings.png" />
     <None Remove="Items\Magic\Seraphim_LightExplosion.png" />
     <None Remove="Items\Magic\ShootingStar.png" />
@@ -29,6 +30,7 @@
     <None Remove="Items\NeedleBoom.png" />
     <None Remove="Items\NeedleShot.png" />
     <None Remove="Items\Placeables\Furniture\GodcatAltar.png" />
+    <None Remove="Items\Ranged\Bows\Aquamarine.png" />
     <None Remove="Items\Ranged\Bows\EagleEye.png" />
     <None Remove="Items\Ranged\Bows\GaiasBow.png" />
     <None Remove="Items\Ranged\Bows\GaiaSeed.png" />

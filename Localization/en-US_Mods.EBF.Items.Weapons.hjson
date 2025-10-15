@@ -143,7 +143,7 @@ Melee: {
 
 	DarkStalker: {
 		DisplayName: Dark Stalker
-		Tooltip: 
+		Tooltip:
 			'''
 			Applies weak to hit foes.
 			'Tears up its victims like a twisted briar.'
@@ -342,6 +342,11 @@ Magic: {
 			'A peal of thunder which heralds divine bloodlust.'
 			'''
 	}
+
+	CrystalStaff: {
+		DisplayName: Crystal Staff
+		Tooltip: ""
+	}
 }
 
 Ranged: {
@@ -474,6 +479,15 @@ Ranged: {
 				'''
 				Fully charged wooden arrows turn into three poisonous thorns.
 				'Rallies weeds to your cause.'
+				'''
+		}
+
+		Aquamarine: {
+			DisplayName: Aquamarine
+			Tooltip:
+				'''
+				Fully charged arrows create an exploding bubble upon hitting a foe.
+				'Shower your enemies with freezing water.'
 				'''
 		}
 	}
