@@ -262,16 +262,33 @@ Natalie: {
 	}
 }
 
-NeonValkyrie.DisplayName: Neon Valkyrie
 RedFlybot.DisplayName: Red Flybot
 LaserTurret.DisplayName: Laser Turret
 BlueFlybot.DisplayName: Blue Flybot
 CannonTurret.DisplayName: Cannon Turret
 HarpoonTurret.DisplayName: Harpoon Turret
 NukeStand.DisplayName: Nuke Stand
-Godcat_Light.DisplayName: Godcat
+
+Godcat_Light: {
+	DisplayName: Godcat
+
+	BossChecklistIntegration: {
+		EntryName: Godcat
+		SpawnInfo: Use [i:EBF/SacredEmerald], [i:EBF/SacredSapphire] and [i:EBF/SacredRuby] as an offering at [i:EBF/GodcatAltar].
+	}
+}
+
 Godcat_Dark.DisplayName: Godcat
 Godcat_Destroyer.DisplayName: The Destroyer
 Godcat_Creator.DisplayName: The Creator
 BlueCrystal.DisplayName: Blue Crystal
 RedCrystal.DisplayName: Red Crystal
+
+NeonValkyrie: {
+	DisplayName: Neon Valkyrie
+
+	BossChecklistIntegration: {
+		EntryName: Neon Valkyrie
+		SpawnInfo: Use [i:EBF/NeonKeychain].
+	}
+}
