@@ -19,7 +19,7 @@ namespace EBF.NPCs.Machines
         {
             NPC.width = 108;
             NPC.height = 54;
-            NPC.damage = 30;
+            NPC.damage = 50;
             NPC.defense = 18;
             NPC.lifeMax = 2000;
         }

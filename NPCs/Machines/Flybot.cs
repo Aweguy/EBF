@@ -38,6 +38,15 @@ namespace EBF.NPCs.Machines
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.NPCDeath14;
+            
+            NPC.damage = 50;
+            NPC.defense = 18;
+            NPC.lifeMax = 400;
+
+            maxSpeedH = 4f;
+            maxSpeedV = 3f;
+            accelH = 1f; 
+            accelV = 1f;
 
             bodyTexture = ModContent.Request<Texture2D>(Texture);
             glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");

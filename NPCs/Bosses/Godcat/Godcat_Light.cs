@@ -140,7 +140,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     }
                     else if (StateTimer == 169)
                     {
-                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 12, 136, 2.0f);
+                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 12, 180, 2.0f);
                     }
                     break;
             }
@@ -183,14 +183,14 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateJudgementAt(Vector2 position)
         {
             var type = ModContent.ProjectileType<Seraphim_Judgement>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position.ToGroundPosition().ToSurfacePosition(), Vector2.Zero, type, NPC.damage / 2, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position.ToGroundPosition().ToSurfacePosition(), Vector2.Zero, type, NPC.damage / 4, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
             proj.friendly = false;
             proj.hostile = true;
         }
         private void CreateJudgementAt(Vector2 position, int delay)
         {
             var type = ModContent.ProjectileType<DelayedProjectile>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position.ToGroundPosition().ToSurfacePosition(), Vector2.Zero, type, NPC.damage / 2, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position.ToGroundPosition().ToSurfacePosition(), Vector2.Zero, type, NPC.damage / 4, 3f, 255); //Do not ask me why owner is 255, the projectile disappears otherwise
             proj.ai[0] = ModContent.ProjectileType<Seraphim_Judgement>();
             proj.timeLeft = delay;
             proj.friendly = false;
@@ -201,7 +201,7 @@ namespace EBF.NPCs.Bosses.Godcat
             var position = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
             var velocity = Vector2.Normalize(player.Center - position) * 14f;
             var type = ModContent.ProjectileType<Godcat_LightBlade>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage / 2, 3f, -1, NPC.target);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage / 4, 3f, -1, NPC.target);
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
@@ -210,7 +210,7 @@ namespace EBF.NPCs.Bosses.Godcat
             for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
             {
                 var type = ModContent.ProjectileType<Godcat_LightBlade>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage / 2, 3f, -1, NPC.target);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage / 4, 3f, -1, NPC.target);
             }
 
             SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
@@ -226,7 +226,7 @@ namespace EBF.NPCs.Bosses.Godcat
             for (float i = -spread; i < spread; i += spread * 2 / amount)
             {
                 var position = NPC.Center + rightAngleVector * i;
-                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position, velocity, type, NPC.damage / 2, 3f);
+                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position, velocity, type, NPC.damage / 4, 3f);
                 proj.scale = scale;
             }
         }

@@ -3,27 +3,12 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using ReLogic.Content;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using EBF.Items.Summon;
 
 namespace EBF.NPCs.Machines
 {
     public class RedFlybot : Flybot
     {
-        public override void SetDefaultsSafe()
-        {
-            NPC.damage = 30;
-            NPC.defense = 18;
-            NPC.lifeMax = 400;
-
-            maxSpeedH = 4f;
-            maxSpeedV = 3f;
-            accelH = 1f; 
-            accelV = 1f;
-        }
         public override void OnSpawn(IEntitySource source)
         {
             //Ensure all flybots don't shoot at the same time

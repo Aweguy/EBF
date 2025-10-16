@@ -454,7 +454,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             var vectorToPlayer = Target.Center - Projectile.Center;
             var spread = Main.rand.NextFloat(0.25f, 2.0f);
-            Projectile.velocity = new Vector2(vectorToPlayer.X * spread * 0.009f, -14) + Target.velocity * 0.33f;
+            Projectile.velocity = new Vector2(vectorToPlayer.X * spread * 0.009f, -13) + Target.velocity * 0.33f;
 
             SoundEngine.PlaySound(SoundID.Item39, Projectile.position);
             for (int i = 0; i < 10; i++)
@@ -583,7 +583,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (Main.GameUpdateCount % 4 == 0)
             {
                 Projectile.velocity *= 0.97f;
-                Projectile.HomeTowards(HomingTarget, 0.2f, 10f);
+                Projectile.HomeTowards(HomingTarget, 0.25f, 10f);
                 SpawnGore();
 
                 //Expand hitbox until max size
@@ -687,7 +687,9 @@ namespace EBF.NPCs.Bosses.Godcat
                 }
                 else if (StickTimer == 60)
                 {
-                    Projectile.velocity = owner.DirectionTo(Main.player[owner.target].Center) * 3f;
+                    var player = Main.player[owner.target];
+                    Projectile.velocity = owner.DirectionTo(player.Center) * 3f;
+                    Projectile.velocity += player.velocity * 0.3f;
                 }
                 else
                 {
@@ -716,12 +718,8 @@ namespace EBF.NPCs.Bosses.Godcat
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             foreach (var ball in balls)
-            {
-                if (ball.rect.Intersects(targetHitbox))
-                {
-                    return true;
-                }
-            }
+                return ball.rect.Intersects(targetHitbox);
+            
             return false;
         }
         public override bool PreDraw(ref Color lightColor)
