@@ -85,7 +85,7 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         {
             NPC.width = 300;
             NPC.height = 64;
-            NPC.damage = 80;
+            NPC.damage = 60;
             NPC.defense = 20;
             NPC.lifeMax = 40000;
 
