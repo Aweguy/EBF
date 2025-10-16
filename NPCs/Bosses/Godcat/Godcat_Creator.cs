@@ -176,8 +176,8 @@ namespace EBF.NPCs.Bosses.Godcat
                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
                 //Form a ring of thunder balls
-                var amount = IsAlone ? 18 : 12;
-                if (Main.expertMode) amount += 6;
+                var amount = IsAlone ? 16 : 12;
+                if (Main.expertMode) amount += 4;
 
                 var delay = 40;
                 var type = ModContent.ProjectileType<Creator_Thunderball>();

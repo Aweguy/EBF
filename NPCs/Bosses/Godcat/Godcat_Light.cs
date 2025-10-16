@@ -140,7 +140,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     }
                     else if (StateTimer == 169)
                     {
-                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 12, 136, 2.0f);
+                        CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 12, 180, 2.0f);
                     }
                     break;
             }

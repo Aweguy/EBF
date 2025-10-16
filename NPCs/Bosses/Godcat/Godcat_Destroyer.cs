@@ -216,7 +216,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateDarkBreath(Player player)
         {
-            var windupTime = 50;
+            var windupTime = 45;
             if (StateTimer == 0)
             {
                 SoundEngine.PlaySound(SoundID.NPCDeath60, NPC.position);
@@ -231,10 +231,10 @@ namespace EBF.NPCs.Bosses.Godcat
             }
 
             //Shoot projectiles
-            else if (StateTimer > windupTime && Main.GameUpdateCount % 12 == 0)
+            else if (StateTimer > windupTime && Main.GameUpdateCount % 11 == 0)
             {
-                var maxSize = IsAlone ? 120 : 100;
-                var speed = 7f * Main.rand.NextFloat(0.8f, 1.2f);
+                var maxSize = IsAlone ? 200 : 150;
+                var speed = 8f * Main.rand.NextFloat(0.8f, 1.2f);
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(0.5f) * speed + player.velocity * 0.75f;
                 var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, maxSize);
