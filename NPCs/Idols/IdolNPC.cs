@@ -13,6 +13,7 @@ namespace EBF.NPCs.Idols
         private bool isSpinning = false;
         private float maxSpeed = 3f, accel = 0.1f;
         private int textureFrame;
+        public int goreCount;
 
         public virtual SoundStyle IdolHitSound => SoundID.Item1;
         public virtual SoundStyle IdolJumpSound => SoundID.Item1;
@@ -99,8 +100,8 @@ namespace EBF.NPCs.Idols
             for (int i = 0; i <= 20; i++)
                 Dust.NewDustDirect(NPC.Center, NPC.width, NPC.height, HitDustID, Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f));
 
-            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (NPC.velocity * NPC.direction), Mod.Find<ModGore>($"{GetType().Name}{textureFrame}_Gore0").Type, 1f);
-            Gore.NewGore(NPC.GetSource_Death(), NPC.position, (NPC.velocity * NPC.direction), Mod.Find<ModGore>($"{GetType().Name}{textureFrame}_Gore1").Type, 1f);
+            for (int i = 0; i < goreCount; i++)
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity * NPC.direction, Mod.Find<ModGore>($"{GetType().Name}{textureFrame}_Gore{i}").Type, 1f);
         }
     }
 }

@@ -4,26 +4,25 @@ using Terraria.ID;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Audio;
-using Terraria.DataStructures;
 
 namespace EBF.NPCs.Idols
 {
-    public class WoodenIdol : IdolNPC
+    public class StoneIdol : IdolNPC
     {
         public override SoundStyle IdolHitSound => SoundID.Item140 with { Pitch = 1.0f, Volume = 1.2f };
         public override SoundStyle IdolJumpSound => SoundID.Item140 with { Pitch = 1.05f, Volume = 0.3f };
         public override SoundStyle IdolBigJumpSound => SoundID.Item140 with { Pitch = 1.1f, Volume = 0.5f };
-        public override int HitDustID => DustID.t_LivingWood;
+        public override int HitDustID => DustID.Dirt;
         public override void SetDefaults()
         {
             base.SetDefaults();
 
-            NPC.lifeMax = 95;
-            NPC.damage = 16;
-            NPC.defense = 5;
+            NPC.lifeMax = 200;
+            NPC.damage = 8;
+            NPC.defense = 20;
             NPC.lifeRegen = 4;
             NPC.value = 10;
-            goreCount = 2;
+            goreCount = 4;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -32,41 +31,24 @@ namespace EBF.NPCs.Idols
             [
 				// Spawn conditions
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.DayTime,
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
 				
                 // Description
-				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.WoodenIdol")
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.StoneIdol")
             ]);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ItemID.Wood, 1, 2, 4));
+            npcLoot.Add(ItemDropRule.Common(ItemID.StoneBlock, 1, 2, 4));
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            Player player = Main.player[spawnInfo.Player.whoAmI];
-            if (PlayerIsInForest(player) && Main.dayTime && !spawnInfo.Invasion)
-                return 0.1f;
+            if (Main.hardMode && spawnInfo.Player.ZoneDesert || spawnInfo.Player.ZoneUndergroundDesert && !spawnInfo.Invasion)
+                return 0.2f;
             
             return 0f;
-        }
-
-        private static bool PlayerIsInForest(Player player)
-        {
-            return !player.ZoneJungle
-                && !player.ZoneDungeon
-                && !player.ZoneCorrupt
-                && !player.ZoneCrimson
-                && !player.ZoneHallow
-                && !player.ZoneSnow
-                && !player.ZoneDesert
-                && !player.ZoneUndergroundDesert
-                && !player.ZoneGlowshroom
-                && !player.ZoneMeteor
-                && !player.ZoneBeach
-                && player.ZoneOverworldHeight;
         }
     }
 }
