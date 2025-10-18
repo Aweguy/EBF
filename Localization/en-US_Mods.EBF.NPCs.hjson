@@ -292,3 +292,9 @@ NeonValkyrie: {
 		SpawnInfo: Use [i:EBF/NeonKeychain].
 	}
 }
+
+WoodenIdol.DisplayName: Wooden Idol
+StoneIdol.DisplayName: Stone Idol
+ObsidianIdol.DisplayName: Obsidian Idol
+MarbleIdol.DisplayName: Marble Idol
+IceIdol.DisplayName: Ice Idol

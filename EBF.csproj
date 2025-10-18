@@ -63,6 +63,11 @@
     <None Remove="Localization\en-US_Mods.EBF.Bestiary.hjson" />
     <None Remove="Localization\en-US_Mods.EBF.Items.Weapons.hjson" />
     <None Remove="localization\en-US_Mods.EBF.NPCs.hjson" />
+    <None Remove="NPCs\Idols\IceIdol.png" />
+    <None Remove="NPCs\Idols\MarbleIdol.png" />
+    <None Remove="NPCs\Idols\ObsidianIdol.png" />
+    <None Remove="NPCs\Idols\StoneIdol.png" />
+    <None Remove="NPCs\Idols\WoodenIdol.png" />
     <None Remove="NPCs\TownNPCs\NoLegs.png" />
     <None Remove="NPCs\TownNPCs\Natalie.png" />
     <None Remove="NPCs\TownNPCs\Natalie_Head.png" />
