@@ -22,7 +22,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 84;
+            Item.damage = 140;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 16, platinum: 0);
@@ -52,7 +52,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 30);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 20);
                 type = ModContent.ProjectileType<GodHandLauncher>();
             }
             else
