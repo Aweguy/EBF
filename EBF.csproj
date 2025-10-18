@@ -91,6 +91,7 @@
     <None Remove="Items\Limit Breaks\**" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Textures\Bestiary\" />
     <Folder Include="Players\" />
     <Folder Include="Projectiles\" />
   </ItemGroup>
