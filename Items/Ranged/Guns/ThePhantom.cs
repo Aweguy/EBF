@@ -19,7 +19,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 14;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 182;
+            Item.damage = 230;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 90, gold: 10, platinum: 0);
@@ -49,7 +49,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 15);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 12);
                 type = ModContent.ProjectileType<ThePhantomLauncher>();
             }
             else
