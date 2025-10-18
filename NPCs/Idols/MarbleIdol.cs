@@ -7,19 +7,19 @@ using Terraria.Audio;
 
 namespace EBF.NPCs.Idols
 {
-    public class StoneIdol : IdolNPC
+    public class MarbleIdol : IdolNPC
     {
         public override SoundStyle IdolHitSound => SoundID.Item140 with { Pitch = 1.0f, Volume = 1.2f };
         public override SoundStyle IdolJumpSound => SoundID.Item140 with { Pitch = 1.05f, Volume = 0.3f };
         public override SoundStyle IdolBigJumpSound => SoundID.Item140 with { Pitch = 1.1f, Volume = 0.5f };
-        public override int HitDustID => DustID.Dirt;
+        public override int HitDustID => DustID.Marble;
         public override void SetDefaults()
         {
             base.SetDefaults();
 
-            NPC.lifeMax = 200;
-            NPC.damage = 8;
-            NPC.defense = 20;
+            NPC.lifeMax = 220;
+            NPC.damage = 10;
+            NPC.defense = 6;
             NPC.lifeRegen = 4;
             NPC.value = 10;
             goreCount = 4;
@@ -30,22 +30,21 @@ namespace EBF.NPCs.Idols
             bestiaryEntry.Info.AddRange(
             [
 				// Spawn conditions
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.DayTime,
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Desert,
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Marble,
 				
                 // Description
-				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.StoneIdol")
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.MarbleIdol")
             ]);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ItemID.StoneBlock, 1, 2, 4));
+            npcLoot.Add(ItemDropRule.Common(ItemID.Obsidian, 1, 2, 4));
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneBeach && Main.dayTime && !spawnInfo.Invasion)
+            if (spawnInfo.Player.ZoneDesert || spawnInfo.Player.ZoneUndergroundDesert || spawnInfo.Player.ZoneMarble && !spawnInfo.Invasion)
                 return 0.2f;
             
             return 0f;
