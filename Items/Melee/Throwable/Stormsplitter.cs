@@ -18,7 +18,7 @@ namespace EBF.Items.Melee.Throwable
         {
             Item.width = 60;
             Item.height = 64;
-            Item.damage = 168;
+            Item.damage = 160;
             Item.DamageType = DamageClass.Melee;
             Item.useStyle = ItemUseStyleID.Swing; // Throwing style
             Item.useTime = 22;
@@ -78,13 +78,15 @@ namespace EBF.Items.Melee.Throwable
             if (Projectile.numUpdates == 0 && Main.GameUpdateCount % 10 == 0)
             {
                 var type = ModContent.ProjectileType<Stormsplitter_Thunderball>();
-                var damage = (int)(Projectile.damage * 0.75f);
+                var damage = Projectile.damage / 2;
                 var perpendicularVelocity = Vector2.Normalize(new Vector2(-Projectile.velocity.Y, Projectile.velocity.X)) * 5f;
                 var backVelocity = Vector2.Normalize(-Projectile.velocity) * 4f;
 
+                // 90 degrees clockwise
                 var thunderball = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, perpendicularVelocity + backVelocity, type, damage, 0, Projectile.owner, ai0: Projectile.whoAmI);
                 thunderball.netUpdate = true;
 
+                // 90 degrees counter-clockwise
                 thunderball = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, -perpendicularVelocity + backVelocity, type, damage, 0, Projectile.owner, ai0: Projectile.whoAmI);
                 thunderball.netUpdate = true;
             }
