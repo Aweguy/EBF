@@ -13,46 +13,43 @@ namespace EBF.Items.Magic
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
-        private const int spread = 250;
+        private const int spread = 200;
         public override void SetDefaultsSafe()
         {
             Item.width = 60;
             Item.height = 64;
-            Item.damage = 388;
-            Item.useTime = 4;
+            Item.damage = 318;
+            Item.useTime = 8;
             Item.useAnimation = 8;
             Item.value = Item.sellPrice(platinum: 0, gold: 30, silver: 0, copper: 0);
             Item.rare = ItemRarityID.Red;
             Item.autoReuse = true;
+            Item.UseSound = SoundID.DD2_LightningBugZap;
             Item.shoot = ProjectileID.DD2LightningBugZap;
             Item.shootSpeed = 25f;
-            Item.mana = 8;
+            Item.mana = 6;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            //Spawn position
-            float offsetX = Main.rand.NextFloat(-spread, spread);
-            position = new Vector2(Main.MouseWorld.X + offsetX, Main.screenPosition.Y - 200);
-
-            //Velocity towards cursor
-            velocity = Vector2.Normalize(Main.MouseWorld - position) * velocity.Length();
-            velocity.X += Main.rand.NextFloat(-2, 2);
-
-            //Spawn the projecile
-            damage += Main.rand.Next(-20, 21);
-            var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
-            proj.timeLeft = 300;
-            proj.friendly = true;
-            proj.hostile = false;
-            proj.aiStyle = -1;
-            proj.velocity = velocity;
-            proj.rotation = proj.velocity.ToRotation();
-
-            //Create sound every few uses
-            if(player.itemAnimation == player.itemAnimationMax)
+            for (int i = 0; i < 2; i++)
             {
-                SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, position);
+                //Spawn position
+                float offsetX = Main.rand.NextFloat(-spread, spread);
+                position = new Vector2(Main.MouseWorld.X + offsetX, Main.screenPosition.Y - 200 - (100 * i));
+
+                //Velocity towards cursor
+                velocity = Vector2.Normalize(Main.MouseWorld - position) * velocity.Length();
+                velocity.X += Main.rand.NextFloat(-2, 2);
+
+                //Spawn the projecile
+                var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
+                proj.timeLeft = 300;
+                proj.friendly = true;
+                proj.hostile = false;
+                proj.aiStyle = -1;
+                proj.velocity = velocity;
+                proj.rotation = proj.velocity.ToRotation();
             }
 
             return false;
