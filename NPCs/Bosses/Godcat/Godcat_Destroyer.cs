@@ -24,7 +24,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPCID.Sets.BossBestiaryPriority.Add(Type); //Grouped with other bosses
             var drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
-                CustomTexturePath = "EBF/Assets/Textures/Bestiary/Godcat_Preview",
+                CustomTexturePath = "EBF/Assets/Textures/Bestiary/Godcat_Destroyer_Preview",
                 PortraitScale = 0.6f, // Portrait refers to the full picture when clicking on the icon in the bestiary
                 PortraitPositionYOverride = 0f,
             };

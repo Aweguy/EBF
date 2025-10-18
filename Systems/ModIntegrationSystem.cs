@@ -8,7 +8,7 @@ using EBF.Items.BossSummons;
 using EBF.Items.Placeables.Furniture;
 using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
-using EBF.NPCs.Bosses;
+using EBF.NPCs.Bosses.NeonValkyrie;
 using Terraria.ID;
 
 namespace EBF.Systems
