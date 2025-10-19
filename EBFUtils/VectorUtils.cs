@@ -35,10 +35,13 @@ namespace EBF.EbfUtils
             return false;
         }
 
-        public static Vector2 ToGroundPosition(this Vector2 checkPosition)
+        public static Vector2 ToGroundPosition(this Vector2 checkPosition, bool checkPlatforms = true)
         {
             Point pos = checkPosition.ToTileCoordinates();
-            for (; pos.Y < Main.maxTilesY - 10 && Main.tile[pos.X, pos.Y] != null && !WorldGen.SolidTile3(pos.X, pos.Y); pos.Y++) { }
+            if (checkPlatforms)
+                for (; pos.Y < Main.maxTilesY - 10 && !WorldGen.SolidTile2(pos.X, pos.Y); pos.Y++) { }
+            else
+                for (; pos.Y < Main.maxTilesY - 10 && !WorldGen.SolidTile3(pos.X, pos.Y); pos.Y++) { }
 
             return new Vector2(pos.X * 16 + 8, pos.Y * 16);
         }
