@@ -9,15 +9,15 @@ namespace EBF.NPCs.Idols
 {
     public abstract class IdolNPC : ModNPC
     {
-        private int rotationDirection = 1;
-        private bool isSpinning = false;
+        private const float MaxRotation = 0.15f; // In radians
+        private const float SpinSpeed = 0.5f; // In radians
         private float maxSpeed = 3f, accel = 0.1f;
+        private bool isSpinning = false;
+        private int rotationDirection = 1;
         private int textureFrame;
-        public int goreCount;
+        protected int goreCount;
 
         public virtual SoundStyle IdolHitSound => SoundID.Item1;
-        public virtual SoundStyle IdolJumpSound => SoundID.Item1;
-        public virtual SoundStyle IdolBigJumpSound => SoundID.Item1;
         public virtual int HitDustID => DustID.WoodFurniture;
         public override void SetStaticDefaults()
         {
@@ -46,15 +46,9 @@ namespace EBF.NPCs.Idols
             NPC.spriteDirection = NPC.direction;
 
             // Rotation
-            if (isSpinning)
-            {
-                NPC.rotation += MathHelper.ToRadians(30) * NPC.direction;
-            }
-            else
-            {
-                NPC.rotation += MathHelper.ToRadians(1) * rotationDirection;
-                NPC.rotation = MathHelper.Clamp(NPC.rotation, MathHelper.ToRadians(-10), MathHelper.ToRadians(10));
-            }
+            NPC.rotation = isSpinning 
+                ? NPC.rotation + SpinSpeed * NPC.direction
+                : MathHelper.Clamp(NPC.rotation + 0.01f * rotationDirection, -MaxRotation, MaxRotation);
 
             // Movement
             var dir = Vector2.Normalize(NPC.DirectionTo(Main.player[NPC.target].Center));
@@ -62,21 +56,11 @@ namespace EBF.NPCs.Idols
 
             // Jumping
             Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.ai[0], ref NPC.ai[1]);
-            if (NPC.collideY)
+            if (NPC.collideY && NPC.oldVelocity.Y >= 0)
             {
+                NPC.velocity.Y = Main.rand.NextBool(5) ? -10 : -5;
                 if (!isSpinning)
                     rotationDirection = -rotationDirection;
-
-                if (Main.rand.NextBool(5))
-                {
-                    NPC.velocity.Y = -10f;
-                    SoundEngine.PlaySound(IdolBigJumpSound, NPC.position);
-                }
-                else
-                {
-                    NPC.velocity.Y = -5f;
-                    SoundEngine.PlaySound(IdolJumpSound, NPC.position);
-                }
             }
         }
 

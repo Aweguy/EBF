@@ -1,11 +1,19 @@
 ﻿using EBF.Items.Magic;
 using Terraria;
+using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public class BlueCrystal : Godcat_Crystal
+    public class BlueCrystal : Godcat_CrystalNPC
     {
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange([
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Snow, // Spawn conditions
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.BlueCrystal") // Description
+            ]);
+        }
         protected override void Attack(Player player)
         {
             var type = ModContent.ProjectileType<ArcticTrident_Icecicle>();

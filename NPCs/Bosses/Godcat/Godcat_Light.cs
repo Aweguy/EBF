@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Light : Godcat
+    public class Godcat_Light : GodcatNPC
     {
         public override void SetStaticDefaults()
         {
@@ -48,7 +48,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheHallow, // Background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Light")
             ]);
         }

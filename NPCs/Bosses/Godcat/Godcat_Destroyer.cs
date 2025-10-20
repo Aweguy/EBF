@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Destroyer : Godcat_Vehicle
+    public class Godcat_Destroyer : Godcat_VehicleNPC
     {
         public override void SetStaticDefaults()
         {
@@ -62,7 +62,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld, // Background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Destroyer")
             ]);
         }

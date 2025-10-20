@@ -2,18 +2,27 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public class HarpoonTurret : Turret
+    public class HarpoonTurret : TurretNPC
     {
         private Projectile hook;
         private ref float Timer => ref NPC.localAI[0];
         public override void SetStaticDefaultsSafe()
         {
             Main.projFrames[Type] = 2;
+
+            // Bestiary stuff
+            var drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                CustomTexturePath = "EBF/Assets/Textures/Bestiary/HarpoonTurret_Preview",
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override void SetDefaultsSafe()
         {
@@ -22,6 +31,13 @@ namespace EBF.NPCs.Machines
             NPC.damage = 50;
             NPC.defense = 18;
             NPC.lifeMax = 2000;
+        }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange([
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Spawn conditions
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.HarpoonTurret") // Description
+            ]);
         }
         public override void AISafe()
         {

@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public abstract class Godcat : ModNPC
+    public abstract class GodcatNPC : ModNPC
     {
         //Attacks
         protected enum State : byte { Idle, GoingTowardsGround, InGround, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }
@@ -164,7 +164,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (Phase < 2 && PhaseTimer > PhaseDuration && currentState == State.Idle)
             {
                 //Poof away or head to the ground
-                var groundPos = NPC.Bottom.ToGroundPosition();
+                var groundPos = NPC.Bottom.ToGroundPosition(false);
                 if(NPC.Distance(groundPos) < 2000)
                 {
                     currentState = State.GoingTowardsGround;
@@ -193,7 +193,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
 
-            Vector2 groundPos = NPC.Bottom.ToGroundPosition();
+            Vector2 groundPos = NPC.Bottom.ToGroundPosition(false);
             if (NPC.Bottom.Distance(groundPos) < 8)
             {
                 NPC.velocity.Y = 0;

@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Dark : Godcat
+    public class Godcat_Dark : GodcatNPC
     {
         public override void SetStaticDefaults()
         {
@@ -43,7 +43,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld, // Background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Dark")
             ]);
         }

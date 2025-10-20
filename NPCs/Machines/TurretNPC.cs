@@ -12,7 +12,7 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace EBF.NPCs.Machines
 {
-    public abstract class Turret : ModNPC
+    public abstract class TurretNPC : ModNPC
     {
         private Asset<Texture2D> baseTexture;
         private Asset<Texture2D> bodyTexture;
