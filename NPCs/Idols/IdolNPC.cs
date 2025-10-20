@@ -16,8 +16,6 @@ namespace EBF.NPCs.Idols
         public int goreCount;
 
         public virtual SoundStyle IdolHitSound => SoundID.Item1;
-        public virtual SoundStyle IdolJumpSound => SoundID.Item1;
-        public virtual SoundStyle IdolBigJumpSound => SoundID.Item1;
         public virtual int HitDustID => DustID.WoodFurniture;
         public override void SetStaticDefaults()
         {
@@ -64,19 +62,9 @@ namespace EBF.NPCs.Idols
             Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.ai[0], ref NPC.ai[1]);
             if (NPC.collideY)
             {
+                NPC.velocity.Y = Main.rand.NextBool(5) ? -10 : -5;
                 if (!isSpinning)
                     rotationDirection = -rotationDirection;
-
-                if (Main.rand.NextBool(5))
-                {
-                    NPC.velocity.Y = -10f;
-                    SoundEngine.PlaySound(IdolBigJumpSound, NPC.position);
-                }
-                else
-                {
-                    NPC.velocity.Y = -5f;
-                    SoundEngine.PlaySound(IdolJumpSound, NPC.position);
-                }
             }
         }
 

@@ -4,15 +4,12 @@ using Terraria.ID;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Audio;
-using Terraria.DataStructures;
 
 namespace EBF.NPCs.Idols
 {
     public class WoodenIdol : IdolNPC
     {
         public override SoundStyle IdolHitSound => SoundID.Item140 with { Pitch = 1.0f, Volume = 1.2f };
-        public override SoundStyle IdolJumpSound => SoundID.Item140 with { Pitch = 1.05f, Volume = 0.3f };
-        public override SoundStyle IdolBigJumpSound => SoundID.Item140 with { Pitch = 1.1f, Volume = 0.5f };
         public override int HitDustID => DustID.t_LivingWood;
         public override void SetDefaults()
         {
