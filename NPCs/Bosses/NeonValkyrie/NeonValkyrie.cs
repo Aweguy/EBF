@@ -111,7 +111,7 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.NeonValkyrie")
             ]);
         }

@@ -4,11 +4,19 @@ using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using Terraria.GameContent.Bestiary;
 
 namespace EBF.NPCs.Machines
 {
     public class BlueFlybot : FlybotNPC
     {
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange([
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky, // Spawn conditions
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.BlueFlybot") // Description
+            ]);
+        }
         public override void OnSpawn(IEntitySource source)
         {
             //Ensure all flybots don't shoot at the same time
