@@ -718,7 +718,8 @@ namespace EBF.NPCs.Bosses.Godcat
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             foreach (var ball in balls)
-                return ball.rect.Intersects(targetHitbox);
+                if (ball.rect.Intersects(targetHitbox))
+                    return true;
             
             return false;
         }
