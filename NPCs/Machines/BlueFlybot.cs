@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace EBF.NPCs.Machines
 {
-    public class BlueFlybot : Flybot
+    public class BlueFlybot : FlybotNPC
     {
         public override void OnSpawn(IEntitySource source)
         {

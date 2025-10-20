@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public class HarpoonTurret : Turret
+    public class HarpoonTurret : TurretNPC
     {
         private Projectile hook;
         private ref float Timer => ref NPC.localAI[0];

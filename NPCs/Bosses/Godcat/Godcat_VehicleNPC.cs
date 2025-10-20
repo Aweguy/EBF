@@ -1,5 +1,4 @@
-﻿using EBF.EbfUtils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -9,14 +8,13 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
 using System.Linq;
 using EBF.Systems;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public abstract class Godcat_Vehicle : ModNPC
+    public abstract class Godcat_VehicleNPC : ModNPC
     {
         //Textures
         protected Texture2D currentTexture;
@@ -179,7 +177,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 //Kill all crystals
                 foreach (var npc in Main.npc)
-                    if(npc.active && npc.type != Type && npc.ModNPC is Godcat_Crystal)
+                    if(npc.active && npc.type != Type && npc.ModNPC is Godcat_CrystalNPC)
                         npc.StrikeInstantKill();
             }
             else
@@ -226,7 +224,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             foreach (var npc in Main.npc)
             {
-                if (npc.active && npc.type != NPC.type && npc.ModNPC is Godcat_Vehicle)
+                if (npc.active && npc.type != NPC.type && npc.ModNPC is Godcat_VehicleNPC)
                 {
                     otherVehicle = npc;
                     return true;

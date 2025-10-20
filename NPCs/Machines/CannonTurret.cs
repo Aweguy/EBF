@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public class CannonTurret : Turret
+    public class CannonTurret : TurretNPC
     {
         private ref float Timer => ref NPC.localAI[0];
         private ref float ShotsFired => ref NPC.localAI[1];

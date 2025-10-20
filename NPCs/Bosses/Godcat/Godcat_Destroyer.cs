@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Destroyer : Godcat_Vehicle
+    public class Godcat_Destroyer : Godcat_VehicleNPC
     {
         public override void SetStaticDefaults()
         {

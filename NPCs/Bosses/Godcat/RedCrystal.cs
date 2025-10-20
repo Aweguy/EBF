@@ -3,7 +3,7 @@ using Terraria.ID;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public class RedCrystal : Godcat_Crystal
+    public class RedCrystal : Godcat_CrystalNPC
     {
         protected override void Attack(Player player)
         {

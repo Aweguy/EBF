@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public class NuclearBomb : Nuke
+    public class NuclearBomb : NukeNPC
     {
         private Texture2D glowmaskTexture;
         private Vector2 shakeDirection = Vector2.UnitX * 1; //Increase the multiplier to make the shaking more intense

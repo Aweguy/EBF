@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Dark : Godcat
+    public class Godcat_Dark : GodcatNPC
     {
         public override void SetStaticDefaults()
         {

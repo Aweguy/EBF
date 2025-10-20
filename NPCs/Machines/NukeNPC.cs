@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public abstract class Nuke : ModProjectile
+    public abstract class NukeNPC : ModProjectile
     {
         protected bool inGround = false;
 

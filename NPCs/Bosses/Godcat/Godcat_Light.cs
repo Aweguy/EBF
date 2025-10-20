@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Light : Godcat
+    public class Godcat_Light : GodcatNPC
     {
         public override void SetStaticDefaults()
         {

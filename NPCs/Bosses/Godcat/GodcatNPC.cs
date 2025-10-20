@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public abstract class Godcat : ModNPC
+    public abstract class GodcatNPC : ModNPC
     {
         //Attacks
         protected enum State : byte { Idle, GoingTowardsGround, InGround, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }

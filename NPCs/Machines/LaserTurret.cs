@@ -10,7 +10,7 @@ using EBF.EbfUtils;
 
 namespace EBF.NPCs.Machines
 {
-    public class LaserTurret : Turret
+    public class LaserTurret : TurretNPC
     {
         private ref float Timer => ref NPC.localAI[0];
         private ref float AttackChoice => ref NPC.localAI[1];

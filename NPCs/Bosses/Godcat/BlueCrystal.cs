@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public class BlueCrystal : Godcat_Crystal
+    public class BlueCrystal : Godcat_CrystalNPC
     {
         protected override void Attack(Player player)
         {
