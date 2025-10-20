@@ -60,7 +60,7 @@ namespace EBF.NPCs.Idols
 
             // Jumping
             Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.ai[0], ref NPC.ai[1]);
-            if (NPC.collideY)
+            if (NPC.collideY && NPC.oldVelocity.Y >= 0)
             {
                 NPC.velocity.Y = Main.rand.NextBool(5) ? -10 : -5;
                 if (!isSpinning)
