@@ -9,11 +9,13 @@ namespace EBF.NPCs.Idols
 {
     public abstract class IdolNPC : ModNPC
     {
-        private int rotationDirection = 1;
-        private bool isSpinning = false;
+        private const float MaxRotation = 0.15f; // In radians
+        private const float SpinSpeed = 0.5f; // In radians
         private float maxSpeed = 3f, accel = 0.1f;
+        private bool isSpinning = false;
+        private int rotationDirection = 1;
         private int textureFrame;
-        public int goreCount;
+        protected int goreCount;
 
         public virtual SoundStyle IdolHitSound => SoundID.Item1;
         public virtual int HitDustID => DustID.WoodFurniture;
@@ -44,15 +46,9 @@ namespace EBF.NPCs.Idols
             NPC.spriteDirection = NPC.direction;
 
             // Rotation
-            if (isSpinning)
-            {
-                NPC.rotation += MathHelper.ToRadians(30) * NPC.direction;
-            }
-            else
-            {
-                NPC.rotation += MathHelper.ToRadians(1) * rotationDirection;
-                NPC.rotation = MathHelper.Clamp(NPC.rotation, MathHelper.ToRadians(-10), MathHelper.ToRadians(10));
-            }
+            NPC.rotation = isSpinning 
+                ? NPC.rotation + SpinSpeed * NPC.direction
+                : MathHelper.Clamp(NPC.rotation + 0.01f * rotationDirection, -MaxRotation, MaxRotation);
 
             // Movement
             var dir = Vector2.Normalize(NPC.DirectionTo(Main.player[NPC.target].Center));
