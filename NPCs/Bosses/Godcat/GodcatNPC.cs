@@ -173,7 +173,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 //Poof away or head to the ground
                 var groundPos = NPC.Bottom.ToGroundPosition(false);
-                if(NPC.Distance(groundPos) < 2000)
+                if(NPC.Distance(groundPos) < 1500)
                 {
                     currentState = State.GoingTowardsGround;
                     PhaseTimer = 0;
@@ -202,7 +202,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
 
             Vector2 groundPos = NPC.Bottom.ToGroundPosition(false);
-            if (NPC.Bottom.Distance(groundPos) < 8)
+            if (NPC.Bottom.Distance(groundPos) <= 8)
             {
                 NPC.velocity.Y = 0;
                 NPC.Bottom = groundPos;
