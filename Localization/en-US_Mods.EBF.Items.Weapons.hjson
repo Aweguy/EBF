@@ -159,6 +159,11 @@ Melee: {
 			'Swing well, fly true; rend the heavens asunder.'
 			'''
 	}
+
+	SilverBlade: {
+		DisplayName: Silver Blade
+		Tooltip: Lightweight, easy to use, and awfully sharp.
+	}
 }
 
 Magic: {

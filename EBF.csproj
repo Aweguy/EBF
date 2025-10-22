@@ -36,6 +36,7 @@
     <None Remove="Items\Materials\RamChip.png" />
     <None Remove="Items\Melee\BloodBlade.png" />
     <None Remove="Items\Melee\Inferno_Fireball.png" />
+    <None Remove="Items\Melee\SilverBlade.png" />
     <None Remove="Items\Melee\Throwable\IceNeedle.png" />
     <None Remove="Items\Melee\Throwable\IceNeedle_Proj.png" />
     <None Remove="Items\NeedleBoom.png" />
