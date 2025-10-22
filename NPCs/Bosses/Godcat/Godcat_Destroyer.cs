@@ -51,7 +51,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.DestroyerHomingBall] = 130,
                 [State.DestroyerFireWheel] = 1,
             };
-            
+
             attackManager
                 .Add(1, 1f)
                 .Add(2, 1f)
@@ -142,9 +142,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig, -0.005f);
 
                     if (IsAlone)
-                    {
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
-                    }
                 }
 
                 SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
@@ -154,9 +152,8 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             //Begin attack animation
             if (StateTimer == 0)
-            {
                 SetAnimation(attackTexture, 12);
-            }
+
             //Shoot projectiles
             else if (StateTimer == 9)
             {
@@ -195,9 +192,8 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             //Begin attack animation
             if (StateTimer % 59 == 0)
-            {
                 SetAnimation(attackTexture, 12);
-            }
+
             //Shoot projectile
             if (StateTimer % 59 == 10)
             {
@@ -207,9 +203,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, player.whoAmI);
 
                 if (IsAlone)
-                {
                     CreateBallArc(player, 1f, 4, 8f);
-                }
 
                 SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
