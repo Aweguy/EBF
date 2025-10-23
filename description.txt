@@ -1,52 +1,44 @@
 EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
-As of version 1.5, the mod adds 87 items:
-- 18 Melee weapons
-- 31 Ranged weapon
-- 20 Magic weapons
-- 9 Summon weapons
-- 9 Accessories
-
+As of version 1.6.2, the mod adds a lot of content, including:
+- 82 weapons
+- 9 accessories
+- 5 town npcs
+- 2 bosses
+- 13 foes
 
 V1.1 Bows Update (15/01/2025)
-
--15 bows added as ranged weapons.
--Many balance changes and various fixes.
+- Added 15 bows as ranged weapons.
+- Many balance changes and various fixes.
 
 V1.1.1 Balance and Fixes (16/01/2025)
-
-Balanced some weapons and fixed bugs.
-Details in the changelog on our discord server.
+- Balanced some weapons and fixed bugs.
 
 V1.2 Guns Update (28/01/2025)
-
--15 guns added as ranged weapons.
--Minor tweaks to existing weapons
-Details in the changelog on our discord server.
+- Added 15 guns as ranged weapons.
+- Minor tweaks to existing weapons
 
 V1.3 Staff Update (03/03/2025)
-
-- 11 staves added as magic weapons.
-- Guns that slam the ground are no longer blocked by line of sight.
-- All bows now have autofire, but take longer to draw.
-Details in the changelog on our discord server.
+- Added 11 staves as magic weapons.
+- Guns and bows made more comfortable to use.
 
 V1.4 Cat Toy Update (06/04/2025)
-
-- 9 cat toys added as summon weapons.
-- 2 new accessories added.
-- Fixed sold weapons being too expensive.
-That is all.
+- Added 9 cat toys as summon weapons.
+- Added 2 new accessories.
 
 V1.5 Town NPC Update (09/06/2025)
 - Added all five EBF players as town NPCs.
 - Added tag damage to the cat toys.
 - Made grounded minions smarter.
-Details in the changelog on our discord server.
 
 V1.6 Boss Update (30/08/2025)
 - Added Neon Valkyrie and Godcat.
 - Added 4 new weapons.
 - Changed some weapon recipes to use newly added materials.
-- Fixed a critical bug related to multi-fire staves and attack speed modifiers.
 
+V1.6.2 Various improvements (23/10/2025)
+- Added Idol foes and 4 new weapons.
+- Added bestiary entries and integrated boss checklist.
+- Improved boss fight balance.
+
+Update details are listed in the changelog on our discord server.
 If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf
