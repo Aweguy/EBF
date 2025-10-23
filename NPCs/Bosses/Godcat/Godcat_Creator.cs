@@ -141,7 +141,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateTurningBallSpiral()
         {
-            var shootDelay = IsAlone ? 4 : 2;
+            var shootDelay = IsAlone ? 2 : 4;
             if (Main.GameUpdateCount % shootDelay == 0)
             {
                 var speed = 4;
