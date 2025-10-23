@@ -20,7 +20,7 @@ using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
 using EBF.Items.Placeables.Furniture.BossTrophies;
 
-namespace EBF.NPCs.Bosses
+namespace EBF.NPCs.Bosses.NeonValkyrie
 {
     [AutoloadBossHead]
     public class NeonValkyrie : ModNPC
@@ -48,7 +48,7 @@ namespace EBF.NPCs.Bosses
         };
         private readonly WeightedRandom<State> weightedRandom = new();
         private ref float StateTimer => ref NPC.localAI[0];
-        private ref float InSecondPhase => ref NPC.ai[0];
+        private bool InSecondPhase { get => NPC.ai[0] == 1; set => NPC.ai[0] = value.ToInt(); }
 
         //Attachment
         private NPC attachedNPC;
@@ -85,7 +85,7 @@ namespace EBF.NPCs.Bosses
         {
             NPC.width = 300;
             NPC.height = 64;
-            NPC.damage = 50;
+            NPC.damage = 60;
             NPC.defense = 20;
             NPC.lifeMax = 40000;
 
@@ -111,7 +111,7 @@ namespace EBF.NPCs.Bosses
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.NeonValkyrie")
             ]);
         }
@@ -140,10 +140,8 @@ namespace EBF.NPCs.Bosses
                 return;
             }
 
-            if (InSecondPhase == 1)
-            {
+            if (InSecondPhase)
                 SecondStageSmokeEffect();
-            }
 
             if (HasAttachment)
             {
@@ -151,10 +149,6 @@ namespace EBF.NPCs.Bosses
                 TimePassedWithoutAttachment = 0;
                 attachedNPC.Bottom = AttachmentBasePos;
                 attachedNPC.velocity = NPC.velocity;
-
-                //Enrage attached turret
-                if (InSecondPhase == 1)
-                    attachedNPC.ai[1] = 1;
             }
             else
             {
@@ -229,7 +223,7 @@ namespace EBF.NPCs.Bosses
             Main.instance.CameraModifiers.Add(modifier);
 
             //Let the world know the boss is dead
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1); 
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedNeonValk, -1);
         }
         public override void BossLoot(ref int potionType)
         {
@@ -255,7 +249,7 @@ namespace EBF.NPCs.Bosses
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NeonValkBossBag>()));
 
             // Relic
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeables.Furniture.BossRelics.NeonValkRelic>()));
+            //npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeable.Furniture.NeonValkRelic>()));
 
             // Pet
             //npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<NeonValkPetItem>(), 4));
@@ -280,7 +274,7 @@ namespace EBF.NPCs.Bosses
             }
 
             //Go into 2nd phase
-            if (InSecondPhase == 0 && NPC.life < NPC.lifeMax / 2)
+            if (!InSecondPhase && NPC.life < NPC.lifeMax / 2)
             {
                 StateTimer = 0;
                 currentState = State.RevUp;
@@ -322,7 +316,7 @@ namespace EBF.NPCs.Bosses
         }
         private void SpawnHoverRings()
         {
-            if(Main.GameUpdateCount % 20 == 0)
+            if (Main.GameUpdateCount % 20 == 0)
             {
                 var type = ModContent.DustType<HoverRing>();
                 var velocity = new Vector2(NPC.velocity.X / 2, 2);
@@ -359,7 +353,7 @@ namespace EBF.NPCs.Bosses
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
 
                 var velocity = GunTipPos.DirectionTo(player.Center) * 10;
-                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 2, 3);
+                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 4, 3);
                 proj.friendly = false;
                 proj.hostile = true;
             }
@@ -386,19 +380,19 @@ namespace EBF.NPCs.Bosses
         {
             //Determine attachment
             int type;
-            if(InSecondPhase == 1)
+            if (InSecondPhase)
                 type = Main.rand.NextBool(2) ? ModContent.NPCType<LaserTurret>() : ModContent.NPCType<NukeStand>();
-            else 
+            else
                 type = Main.rand.NextBool(2) ? ModContent.NPCType<HarpoonTurret>() : ModContent.NPCType<CannonTurret>();
 
             //Add attachment to NV
-            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type, 0, 0, InSecondPhase);
+            attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type);
             attachedNPC.Bottom = AttachmentBasePos;
         }
         private void TransitionToSecondStage()
         {
             NPC.velocity.X *= 0.9f;
-            InSecondPhase = 1;
+            InSecondPhase = true;
 
             if (StateTimer < 30) //Give some time to brake.
                 return;
