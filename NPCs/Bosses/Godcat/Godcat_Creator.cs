@@ -68,7 +68,6 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void AI()
         {
             base.AI();
-            var player = Main.player[NPC.target];
             switch (currentState)
             {
                 case State.TurningBallCircle:
@@ -134,9 +133,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
 
                     if (IsAlone)
-                    {
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
-                    }
                 }
 
                 SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
@@ -144,7 +141,8 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateTurningBallSpiral()
         {
-            if (Main.GameUpdateCount % 2 == 0)
+            var shootDelay = IsAlone ? 4 : 2;
+            if (Main.GameUpdateCount % shootDelay == 0)
             {
                 var speed = 4;
                 var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
@@ -176,7 +174,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
                 //Form a ring of thunder balls
-                var amount = IsAlone ? 16 : 12;
+                var amount = IsAlone ? 16 : 10;
                 if (Main.expertMode) amount += 4;
 
                 var delay = 40;
@@ -239,48 +237,45 @@ namespace EBF.NPCs.Bosses.Godcat
 
             if (StateTimer < 150)
             {
-                ChargeUpDust();
+                // Create charge-up dust
+                var pos = BarrelPos + new Vector2(NPC.direction, 0).RotatedByRandom(0.5f) * 32;
+                var vel = pos.DirectionTo(BarrelPos);
+                var dust = Dust.NewDustPerfect(pos, DustID.AncientLight, vel, 0, default, 2.0f);
+                dust.noGravity = true;
             }
             else if (StateTimer == 150)
             {
-                ShootLaser();
+                // Shoot laser
+                var velocity = new Vector2(NPC.direction, 0);
+                var type = ModContent.ProjectileType<Creator_HolyDeathray>();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3, -1, NPC.whoAmI);
 
-                //Create arc of diamonds
+                var sound = SoundID.Zombie104; // Moon Lord deathray sound
+                sound.Pitch = 1.4f;
+                sound.Volume = 0.3f;
+                SoundEngine.PlaySound(sound, NPC.Center);
+
+                // Create arc of diamonds
+                if (!IsAlone)
+                    return;
+
                 var speed = 4f;
-                var amount = IsAlone ? 8 : 4;
+                var amount = 10;
                 if (Main.expertMode)
                 {
                     amount += 1;
                     speed += 1f;
                 }
 
-                var spread = 1f;
-                var type = ModContent.ProjectileType<Godcat_LightDiamond>();
+                var spread = 1.5f;
+                type = ModContent.ProjectileType<Godcat_LightDiamond>();
                 var dir = (NPC.direction == 1 ? 0 : MathHelper.Pi).ToRotationVector2();
                 for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
                 {
-                    var velocity = dir.RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
+                    velocity = dir.RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f);
                 }
             }
-        }
-        private void ShootLaser()
-        {
-            var velocity = new Vector2(NPC.direction, 0);
-            var type = ModContent.ProjectileType<Creator_HolyDeathray>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3, -1, NPC.whoAmI);
-
-            var sound = SoundID.Zombie104; // Moon Lord deathray sound
-            sound.Pitch = 1.4f;
-            sound.Volume = 0.3f;
-            SoundEngine.PlaySound(sound, NPC.Center);
-        }
-        private void ChargeUpDust()
-        {
-            var pos = BarrelPos + new Vector2(NPC.direction, 0).RotatedByRandom(0.5f) * 32;
-            var vel = pos.DirectionTo(BarrelPos);
-            var dust = Dust.NewDustPerfect(pos, DustID.AncientLight, vel, 0, default, 2.0f);
-            dust.noGravity = true;
         }
     }
 }

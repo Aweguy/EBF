@@ -19,6 +19,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected enum State : byte { Idle, GoingTowardsGround, InGround, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }
         protected Dictionary<State, int> stateDurations;
         protected State currentState = State.Idle;
+        protected AttackManager attackManager = new();
         protected ref float StateTimer => ref NPC.localAI[0];
 
         //Dodging
@@ -139,8 +140,15 @@ namespace EBF.NPCs.Bosses.Godcat
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                var index = Main.rand.Next(3, stateDurations.Count);
-                currentState = currentState == State.Idle ? stateDurations.ElementAt(index).Key : State.Idle;
+                if (currentState == State.Idle)
+                {
+                    var index = attackManager.Next();
+                    currentState = stateDurations.ElementAt(index).Key;
+                }
+                else
+                {
+                    currentState = State.Idle;
+                }
             }
         }
         private void HandleDodging()
@@ -165,7 +173,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 //Poof away or head to the ground
                 var groundPos = NPC.Bottom.ToGroundPosition(false);
-                if(NPC.Distance(groundPos) < 2000)
+                if(NPC.Distance(groundPos) < 1500)
                 {
                     currentState = State.GoingTowardsGround;
                     PhaseTimer = 0;
@@ -194,7 +202,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
 
             Vector2 groundPos = NPC.Bottom.ToGroundPosition(false);
-            if (NPC.Bottom.Distance(groundPos) < 8)
+            if (NPC.Bottom.Distance(groundPos) <= 8)
             {
                 NPC.velocity.Y = 0;
                 NPC.Bottom = groundPos;

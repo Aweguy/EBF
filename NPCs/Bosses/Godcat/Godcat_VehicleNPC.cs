@@ -36,8 +36,8 @@ namespace EBF.NPCs.Bosses.Godcat
 
         //Anti-fleeing system
         private ref float FramesOverPunishDistance => ref NPC.localAI[1];
-        private const int PunishingDistance = 770;
-        private const int PunishFrameThreshold = 60;
+        private const int PunishingDistance = 780;
+        private const int PunishFrameThreshold = 80;
 
         public override void SetStaticDefaults()
         {

@@ -44,16 +44,12 @@ namespace EBF.Systems
 
         private void UpdateWeights(int usedAttack)
         {
-            // Reset the used attack back to its original weight
             currentWeights[usedAttack] = initialWeights[usedAttack];
 
             // Reward all other attacks
             foreach (var key in currentWeights.Keys.ToList())
-            {
                 if (key != usedAttack)
                     currentWeights[key] = Math.Min(initialWeights[key] * 10f, currentWeights[key] + 2f);
-                // ^ clamp to stop runaway growth
-            }
         }
 
         /// <summary>
@@ -66,21 +62,6 @@ namespace EBF.Systems
         {
             initialWeights[attackID] = weight;
             currentWeights[attackID] = weight;
-            return this;
-        }
-
-        /// <summary>
-        /// Adds multiple attacks at once.
-        /// </summary>
-        /// <param name="extraChoices">A dictionary of attack IDs and their initial weights.</param>
-        /// <returns>This manager, so calls can be chained fluently.</returns>
-        public AttackManager AddRange(Dictionary<int, float> extraChoices)
-        {
-            foreach (var kvp in extraChoices)
-            {
-                initialWeights[kvp.Key] = kvp.Value;
-                currentWeights[kvp.Key] = kvp.Value;
-            }
             return this;
         }
     }

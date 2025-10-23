@@ -44,6 +44,12 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.LightJudgmentWave] = 1,
                 [State.LightDiamondWalls] = 170,
             };
+
+            attackManager
+                .Add(3, 1f)
+                .Add(4, 1f)
+                .Add(5, 1f)
+                .Add(6, 1f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
