@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,6 +34,7 @@ namespace EBF.Abstract_Classes
 
             SetDefaultsSafe();
         }
+        public sealed override bool MeleePrefix() => true;
         public sealed override void HoldItem(Player player)
         {
             if (BonusMinion > 0)
@@ -62,6 +61,14 @@ namespace EBF.Abstract_Classes
             }
 
             HoldItemSafe(player);
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback);
+            proj.scale = Item.scale; // Visual only
+            proj.velocity *= Item.scale; // Actual gameplay difference
+            return false;
         }
 
         /// <summary>

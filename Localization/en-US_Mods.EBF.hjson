@@ -215,6 +215,10 @@ Projectiles: {
 	Stormsplitter_ThrownProjectile.DisplayName: Stormsplitter_ Thrown Projectile
 	Stormsplitter_Thunderball.DisplayName: Stormsplitter_ Thunderball
 	Stormsplitter_Proj.DisplayName: Stormsplitter_ Proj
+	CrystalStaff_Projectile.DisplayName: Crystal Staff_ Projectile
+	Aquamarine_Arrow.DisplayName: Aquamarine_ Arrow
+	Aquamarine_Bubble.DisplayName: Aquamarine_ Bubble
+	ObsidianStaff_DarkPulse.DisplayName: Obsidian Staff_ Dark Pulse
 }
 
 Items: {

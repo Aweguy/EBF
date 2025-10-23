@@ -1,7 +1,6 @@
 ﻿using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
-using EBF.NPCs.Bosses;
 using Terraria.Audio;
 using EBF.Items.Materials;
 using EBF.NPCs.Bosses.NeonValkyrie;

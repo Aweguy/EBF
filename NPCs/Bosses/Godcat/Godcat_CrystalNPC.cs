@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public abstract class Godcat_Crystal : ModNPC
+    public abstract class Godcat_CrystalNPC : ModNPC
     {
         private const float maxSpeed = 3f, accel = 0.5f;
         private const int preferredDistanceMin = 400, preferredDistanceMax = 600;
@@ -23,9 +23,9 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.width = 58;
             NPC.height = 62;
-            NPC.lifeMax = 18000;
+            NPC.lifeMax = 16000;
             NPC.defense = 35;
-            NPC.damage = 40;
+            NPC.damage = 70;
             NPC.knockBackResist = 0.5f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;

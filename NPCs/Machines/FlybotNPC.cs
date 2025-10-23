@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public abstract class Flybot : ModNPC
+    public abstract class FlybotNPC : ModNPC
     {
         protected Asset<Texture2D> bodyTexture, glowTexture, cannonTexture, cannonGlowTexture;
         protected float maxSpeedH = 1f, maxSpeedV = 1f, accelH = 1f, accelV = 1f;
@@ -38,6 +38,15 @@ namespace EBF.NPCs.Machines
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.NPCDeath14;
+            
+            NPC.damage = 50;
+            NPC.defense = 18;
+            NPC.lifeMax = 400;
+
+            maxSpeedH = 4f;
+            maxSpeedV = 3f;
+            accelH = 1f; 
+            accelV = 1f;
 
             bodyTexture = ModContent.Request<Texture2D>(Texture);
             glowTexture = ModContent.Request<Texture2D>(Texture + "_Glow");
@@ -158,7 +167,7 @@ namespace EBF.NPCs.Machines
             for (int i = 0; i < Main.npc.Length; i++)
             {
                 NPC other = Main.npc[i];
-                if (i != NPC.whoAmI && other.active && other.ModNPC is Flybot && (NPC.position - other.position).Length() < NPC.width)
+                if (i != NPC.whoAmI && other.active && other.ModNPC is FlybotNPC && (NPC.position - other.position).Length() < NPC.width)
                 {
                     //Nudge the flybot
                     NPC.velocity.X += (NPC.position.X > other.position.X) ? overlapVelocity : -overlapVelocity;

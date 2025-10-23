@@ -2,15 +2,25 @@
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
-    public class CannonTurret : Turret
+    public class CannonTurret : TurretNPC
     {
         private ref float Timer => ref NPC.localAI[0];
         private ref float ShotsFired => ref NPC.localAI[1];
+        public override void SetStaticDefaultsSafe()
+        {
+            var drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                CustomTexturePath = "EBF/Assets/Textures/Bestiary/CannonTurret_Preview",
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
         public override void SetDefaultsSafe()
         {
             NPC.width = 104;
@@ -18,6 +28,13 @@ namespace EBF.NPCs.Machines
             NPC.damage = 30;
             NPC.defense = 18;
             NPC.lifeMax = 2000;
+        }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange([
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Spawn conditions
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.CannonTurret") // Description
+            ]);
         }
         public override void AISafe()
         {
@@ -28,7 +45,7 @@ namespace EBF.NPCs.Machines
 
             if(Timer > 240)
             {
-                IsShooting = 1;
+                IsShooting = true;
                 Shoot();
             }
         }
@@ -58,7 +75,7 @@ namespace EBF.NPCs.Machines
                 {
                     Timer = 0;
                     ShotsFired = 0;
-                    IsShooting = 0;
+                    IsShooting = false;
                 }
             }
         }

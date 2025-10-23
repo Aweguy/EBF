@@ -3,26 +3,19 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using ReLogic.Content;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using EBF.Items.Summon;
+using Terraria.GameContent.Bestiary;
 
 namespace EBF.NPCs.Machines
 {
-    public class RedFlybot : Flybot
+    public class RedFlybot : FlybotNPC
     {
-        public override void SetDefaultsSafe()
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            NPC.damage = 30;
-            NPC.defense = 18;
-            NPC.lifeMax = 400;
-
-            maxSpeedH = 4f;
-            maxSpeedV = 3f;
-            accelH = 1f; 
-            accelV = 1f;
+            bestiaryEntry.Info.AddRange([
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky, // Spawn conditions
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.RedFlybot") // Description
+            ]);
         }
         public override void OnSpawn(IEntitySource source)
         {

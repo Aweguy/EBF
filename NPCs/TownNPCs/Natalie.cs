@@ -57,6 +57,7 @@ namespace EBF.NPCs.TownNPCs
         {
             NPCShop shop = new(Type);
             shop.Add(ModContent.ItemType<NimbusRod>())
+                .Add(ModContent.ItemType<CrystalStaff>())
                 .Add(ItemID.FruitSalad)
                 .Add(ItemID.Marshmallow)
                 .Add(ItemID.FancyDishes)

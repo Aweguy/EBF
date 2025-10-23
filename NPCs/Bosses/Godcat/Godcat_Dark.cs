@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 namespace EBF.NPCs.Bosses.Godcat
 {
     [AutoloadBossHead]
-    public class Godcat_Dark : Godcat
+    public class Godcat_Dark : GodcatNPC
     {
         public override void SetStaticDefaults()
         {
@@ -20,7 +20,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPCID.Sets.BossBestiaryPriority.Add(Type); //Grouped with other bosses
             var drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
-                CustomTexturePath = "EBF/Assets/Textures/Bestiary/Godcat_Preview",
+                CustomTexturePath = "EBF/Assets/Textures/Bestiary/Godcat_Dark_Preview",
                 PortraitScale = 0.6f, // Portrait refers to the full picture when clicking on the icon in the bestiary
                 PortraitPositionYOverride = 0f,
             };
@@ -39,11 +39,17 @@ namespace EBF.NPCs.Bosses.Godcat
                 [State.DarkReturnBall] = 70,
                 [State.DarkBallStream] = 120,
             };
+
+            attackManager
+                .Add(3, 1f)
+                .Add(4, 1f)
+                .Add(5, 1f)
+                .Add(6, 1f);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-                new MoonLordPortraitBackgroundProviderBestiaryInfoElement(), // Plain black background
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld, // Background
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.Godcat_Dark")
             ]);
         }
@@ -139,7 +145,7 @@ namespace EBF.NPCs.Bosses.Godcat
             var position = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
             var velocity = Vector2.Normalize(player.Center - position) * 14f;
             var type = ModContent.ProjectileType<Godcat_DarkBlade>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage, 3f, -1, NPC.target);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage / 4, 3f, -1, NPC.target);
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
@@ -148,7 +154,7 @@ namespace EBF.NPCs.Bosses.Godcat
             for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
             {
                 var type = ModContent.ProjectileType<Godcat_DarkBlade>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage, 3f, -1, NPC.target);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage / 4, 3f, -1, NPC.target);
             }
 
             SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
@@ -158,7 +164,7 @@ namespace EBF.NPCs.Bosses.Godcat
             var multiplier = 0.5f + (StateTimer / stateDurations[State.DarkBallStream]);
             var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(deviation) * speed * multiplier + player.velocity * 0.1f;
             var type = ModContent.ProjectileType<Godcat_BallProjectile>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (int)GodcatBallTypes.DarkBig);
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (int)GodcatBallTypes.DarkBig);
             proj.scale = Main.rand.NextFloat(0.9f, 1.1f) * multiplier;
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
@@ -166,7 +172,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateDarkReturnBall(Player player, float speed)
         {
             var type = ModContent.ProjectileType<Godcat_ReturnBall>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkBig, NPC.whoAmI);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig, NPC.whoAmI);
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
@@ -176,7 +182,7 @@ namespace EBF.NPCs.Bosses.Godcat
             for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
             {
                 var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkSmall);
             }
         }
     }

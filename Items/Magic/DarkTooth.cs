@@ -61,6 +61,7 @@ namespace EBF.Items.Magic
         public override void AddRecipes()
         {
             CreateRecipe()
+                .AddIngredient<ObsidianStaff>(stack: 1)
                 .AddIngredient(ItemID.SpectreBar, stack: 30)
                 .AddIngredient(ItemID.Ruby, stack: 5)
                 .AddIngredient(ItemID.SoulofNight, stack: 15)

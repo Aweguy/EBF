@@ -7,14 +7,24 @@ using Microsoft.Xna.Framework;
 using System;
 using EBF.Abstract_Classes;
 using EBF.EbfUtils;
+using Terraria.GameContent.Bestiary;
 
 namespace EBF.NPCs.Machines
 {
-    public class LaserTurret : Turret
+    public class LaserTurret : TurretNPC
     {
         private ref float Timer => ref NPC.localAI[0];
         private ref float AttackChoice => ref NPC.localAI[1];
         private ref float BallsFired => ref NPC.localAI[2];
+        public override void SetStaticDefaultsSafe()
+        {
+            var drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                CustomTexturePath = "EBF/Assets/Textures/Bestiary/LaserTurret_Preview",
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
         public override void SetDefaultsSafe()
         {
             NPC.width = 70;
@@ -23,17 +33,24 @@ namespace EBF.NPCs.Machines
             NPC.defense = 18;
             NPC.lifeMax = 2000;
         }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange([
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Spawn conditions
+				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.LaserTurret") // Description
+            ]);
+        }
         public override void AISafe()
         {
             Player player = Main.player[NPC.target];
             Timer++;
 
-            if (IsShooting == 1)
+            if (IsShooting)
             {
                 TurnTowardsTarget(player);
                 if (Timer >= 90)
                 {
-                    IsShooting = 0;
+                    IsShooting = false;
                 }
                 return;
             }
@@ -72,7 +89,7 @@ namespace EBF.NPCs.Machines
             if (Vector2.Distance(NPC.position, player.position) < 1000)
             {
                 ShootLaser();
-                IsShooting = 1;
+                IsShooting = true;
                 AttackChoice = Main.rand.Next(2);
             }
         }

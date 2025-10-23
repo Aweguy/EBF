@@ -13,12 +13,13 @@ using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
-    public abstract class Godcat : ModNPC
+    public abstract class GodcatNPC : ModNPC
     {
         //Attacks
         protected enum State : byte { Idle, GoingTowardsGround, InGround, LightJudgmentWave, SeikenStorm, SeikenRing, DarkReturnBall, LightDiamondWalls, DarkBallStream }
         protected Dictionary<State, int> stateDurations;
         protected State currentState = State.Idle;
+        protected AttackManager attackManager = new();
         protected ref float StateTimer => ref NPC.localAI[0];
 
         //Dodging
@@ -42,7 +43,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.width = 34;
             NPC.height = 46;
-            NPC.damage = 50;
+            NPC.damage = 70;
             NPC.defense = 9999;
             NPC.lifeMax = 999999;
             NPC.noGravity = true;
@@ -139,8 +140,15 @@ namespace EBF.NPCs.Bosses.Godcat
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                var index = Main.rand.Next(3, stateDurations.Count);
-                currentState = currentState == State.Idle ? stateDurations.ElementAt(index).Key : State.Idle;
+                if (currentState == State.Idle)
+                {
+                    var index = attackManager.Next();
+                    currentState = stateDurations.ElementAt(index).Key;
+                }
+                else
+                {
+                    currentState = State.Idle;
+                }
             }
         }
         private void HandleDodging()
@@ -164,8 +172,8 @@ namespace EBF.NPCs.Bosses.Godcat
             if (Phase < 2 && PhaseTimer > PhaseDuration && currentState == State.Idle)
             {
                 //Poof away or head to the ground
-                var groundPos = NPC.Bottom.ToGroundPosition();
-                if(NPC.Distance(groundPos) < 2000)
+                var groundPos = NPC.Bottom.ToGroundPosition(false);
+                if(NPC.Distance(groundPos) < 1500)
                 {
                     currentState = State.GoingTowardsGround;
                     PhaseTimer = 0;
@@ -189,13 +197,12 @@ namespace EBF.NPCs.Bosses.Godcat
                 NPC.active = false;
             }
         }
-    
         private void DropToGround()
         {
             NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
 
-            Vector2 groundPos = NPC.Bottom.ToGroundPosition();
-            if (NPC.Bottom.Distance(groundPos) < 8)
+            Vector2 groundPos = NPC.Bottom.ToGroundPosition(false);
+            if (NPC.Bottom.Distance(groundPos) <= 8)
             {
                 NPC.velocity.Y = 0;
                 NPC.Bottom = groundPos;

@@ -73,6 +73,9 @@ namespace EBF.Abstract_Classes
         public override sealed bool PreAI()
         {
             Player player = Main.player[Projectile.owner];
+            if (player.dead)
+                return false;
+
             HandleTransform(player);
             HandleCharge(player);
 
