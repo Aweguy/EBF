@@ -189,7 +189,7 @@ Magic: {
 		DisplayName: Shooting Star
 		Tooltip:
 			'''
-			Summons a bouncy star from the heavens.
+			Summons a cluster of accelerating stars that deal random damage.
 			'Star light, star bright, first to smite my foes tonight.'
 			'''
 	}
@@ -350,7 +350,21 @@ Magic: {
 
 	CrystalStaff: {
 		DisplayName: Crystal Staff
-		Tooltip: ""
+		Tooltip:
+			'''
+			Summons an accelerating star that deals random damage.
+			'N-no sir, I don't have any wishes!'
+			'''
+	}
+
+	ObsidianStaff: {
+		DisplayName: Obsidian Staff
+		Tooltip:
+			'''
+			Creates a short lasting dark pulse on the cursor.
+			Sucks in enemies, dust and townsfolk alike.
+			'A moment of weightlessness.'
+			'''
 	}
 }
 

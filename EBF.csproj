@@ -29,6 +29,7 @@
     <None Remove="Items\Magic\Airstrike_Remote.png" />
     <None Remove="Items\Magic\CrystalStaff.png" />
     <None Remove="Items\Magic\DragonWings.png" />
+    <None Remove="Items\Magic\ObsidianStaff_DarkPulse.png" />
     <None Remove="Items\Magic\Seraphim_LightExplosion.png" />
     <None Remove="Items\Magic\ShootingStar.png" />
     <None Remove="Items\Magic\Star.png" />
