@@ -218,6 +218,7 @@ Projectiles: {
 	CrystalStaff_Projectile.DisplayName: Crystal Staff_ Projectile
 	Aquamarine_Arrow.DisplayName: Aquamarine_ Arrow
 	Aquamarine_Bubble.DisplayName: Aquamarine_ Bubble
+	ObsidianStaff_DarkPulse.DisplayName: Obsidian Staff_ Dark Pulse
 }
 
 Items: {
