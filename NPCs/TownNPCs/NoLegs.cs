@@ -1,11 +1,11 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Personalities;
-using Terraria.GameContent.Bestiary;
-using Terraria.Localization;
-using EBF.Abstract_Classes;
+﻿using EBF.Abstract_Classes;
 using EBF.Items.Summon;
+using Terraria;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Personalities;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.TownNPCs
 {
@@ -40,11 +40,11 @@ namespace EBF.NPCs.TownNPCs
         }
         public override bool PreAI()
         {
-            if(NPC.velocity.X > 0)
+            if (NPC.velocity.X > 0)
             {
                 NPC.spriteDirection = NPC.direction = 1;
             }
-            else if(NPC.velocity.X < 0)
+            else if (NPC.velocity.X < 0)
             {
                 NPC.spriteDirection = NPC.direction = -1;
             }
@@ -57,15 +57,15 @@ namespace EBF.NPCs.TownNPCs
                 return;
 
             NPC.frameCounter++;
-            
-            if(NPC.velocity.Y == 0 && NPC.velocity.X != 0)
+
+            if (NPC.velocity.Y == 0 && NPC.velocity.X != 0)
             {
                 if (NPC.frameCounter > walkSequence.Length - 1)
                     NPC.frameCounter = 0;
 
                 NPC.frame.Y = frameHeight * walkSequence[(int)NPC.frameCounter];
             }
-            else if(NPC.velocity.Y == 0)
+            else if (NPC.velocity.Y == 0)
             {
                 if (NPC.frameCounter > idleSequence.Length - 1)
                     NPC.frameCounter = 0;

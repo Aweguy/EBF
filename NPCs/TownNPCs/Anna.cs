@@ -1,15 +1,15 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Personalities;
-using Terraria.GameContent.Bestiary;
-using Terraria.Localization;
-using EBF.Abstract_Classes;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent;
-using EBF.Items.Ranged.Bows;
+﻿using EBF.Abstract_Classes;
 using EBF.Items.BossSummons;
+using EBF.Items.Ranged.Bows;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Personalities;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.TownNPCs
 {

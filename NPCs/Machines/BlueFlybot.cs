@@ -1,10 +1,10 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
@@ -40,7 +40,7 @@ namespace EBF.NPCs.Machines
             for (int i = 0; i < 2; i++)
                 cannonOffsets[i] *= 0.9f;
         }
-        
+
         private void Shoot(Player player)
         {
             SoundEngine.PlaySound(SoundID.Item85, NPC.position);

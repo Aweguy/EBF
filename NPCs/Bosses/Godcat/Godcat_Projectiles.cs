@@ -11,7 +11,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -720,7 +719,7 @@ namespace EBF.NPCs.Bosses.Godcat
             foreach (var ball in balls)
                 if (ball.rect.Intersects(targetHitbox))
                     return true;
-            
+
             return false;
         }
         public override bool PreDraw(ref Color lightColor)

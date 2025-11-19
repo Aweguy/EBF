@@ -1,6 +1,4 @@
-﻿using EBF.NPCs.Machines;
-using Microsoft.Xna.Framework;
-using System;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

@@ -1,9 +1,9 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Idols
 {
@@ -44,7 +44,7 @@ namespace EBF.NPCs.Idols
         {
             if (spawnInfo.Player.ZoneUnderworldHeight && !spawnInfo.Invasion)
                 return 0.08f;
-            
+
             return 0f;
         }
     }

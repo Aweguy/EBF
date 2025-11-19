@@ -1,5 +1,4 @@
-using EBF.EbfUtils;
-﻿using EBF.Abstract_Classes;
+using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -30,7 +29,7 @@ namespace EBF.Items.Magic
             Item.UseSound = SoundID.Item43;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
-            
+
             Item.shoot = ModContent.ProjectileType<CrystalStaff_Projectile>();
             Item.shootSpeed = 0.1f;
         }

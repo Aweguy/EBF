@@ -1,13 +1,13 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using System;
-using EBF.Abstract_Classes;
-using EBF.EbfUtils;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
@@ -63,13 +63,13 @@ namespace EBF.NPCs.Machines
 
             if (Timer < 300)
             {
-                if(AttackChoice == 0)
+                if (AttackChoice == 0)
                 {
                     ShootBalls();
                     return;
                 }
 
-                if(Timer == 240)
+                if (Timer == 240)
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath58, NPC.Center);
                 }
@@ -100,7 +100,7 @@ namespace EBF.NPCs.Machines
         }
         private void ShootBalls()
         {
-            if(Main.GameUpdateCount % 10 == 0)
+            if (Main.GameUpdateCount % 10 == 0)
             {
                 //Shoot projectile
                 var speed = 12 + Main.rand.NextFloat(-1f, 1f);
@@ -112,7 +112,7 @@ namespace EBF.NPCs.Machines
 
                 var maxBallCount = 3;
                 BallsFired++;
-                if(BallsFired >= maxBallCount)
+                if (BallsFired >= maxBallCount)
                 {
                     Timer = 0;
                     BallsFired = 0;

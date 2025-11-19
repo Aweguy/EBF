@@ -1,7 +1,5 @@
 ﻿using EBF.EbfUtils;
-using EBF.Items.Materials;
 using EBF.Items.Placeables.Furniture.BossTrophies;
-using EBF.Items.TreasureBags;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

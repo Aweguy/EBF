@@ -1,9 +1,9 @@
-﻿using Terraria.ID;
-using Terraria.ModLoader;
+﻿using EBF.Items.Materials;
+using EBF.NPCs.Bosses.NeonValkyrie;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
-using EBF.Items.Materials;
-using EBF.NPCs.Bosses.NeonValkyrie;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.TreasureBags
 {

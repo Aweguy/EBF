@@ -19,7 +19,7 @@ namespace EBF.Items.Melee
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
             Item.useTime = 19;//How fast the item is used
             Item.useAnimation = 19;//How long the animation lasts. For swords it should stay the same as UseTime
-            
+
             Item.value = Item.sellPrice(copper: 40, silver: 5, gold: 1, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used

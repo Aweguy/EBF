@@ -15,14 +15,14 @@ namespace EBF.Items.Accessories.Flairs
             Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 28;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.value = Item.sellPrice(copper:0, silver:50, gold:3, platinum:0);//Item's value when sold
+            Item.value = Item.sellPrice(copper: 0, silver: 50, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Lime;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.accessory = true;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             timer--;
-            if(timer <= 0)
+            if (timer <= 0)
             {
                 int healAmount = player.statLifeMax2 / 100 * healthPercentage;
                 player.Heal(healAmount);

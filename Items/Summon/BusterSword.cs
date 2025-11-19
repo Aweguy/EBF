@@ -2,12 +2,10 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
-using EBF.Buffs;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Summon
 {
@@ -93,7 +91,7 @@ namespace EBF.Items.Summon
         }
         public override void AISafe()
         {
-            if(Projectile.velocity.Length() > maxSpeed)
+            if (Projectile.velocity.Length() > maxSpeed)
             {
                 Projectile.velocity.Normalize();
                 Projectile.velocity *= maxSpeed;
@@ -138,7 +136,7 @@ namespace EBF.Items.Summon
                     Projectile.frameCounter = 0;
                     Projectile.ai[0] = 0; //Use idle anim
                 }
-                
+
                 if (Projectile.ai[0] == 1)
                 {
                     Projectile.frame = attackAnimSequence[Projectile.frameCounter];
@@ -175,11 +173,11 @@ namespace EBF.Items.Summon
         }
         public override void AI()
         {
-            if(Projectile.frameCounter >= 20)
+            if (Projectile.frameCounter >= 20)
             {
                 //Accelerate to max speed
                 Projectile.velocity *= 1.25f;
-                if(Projectile.velocity.Length() > 40)
+                if (Projectile.velocity.Length() > 40)
                 {
                     Projectile.velocity.Normalize();
                     Projectile.velocity *= 40;

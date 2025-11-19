@@ -1,10 +1,8 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -122,7 +120,7 @@ namespace EBF.Items.Summon
         }
         private void Animate()
         {
-            if(Main.GameUpdateCount % 6 == 0)
+            if (Main.GameUpdateCount % 6 == 0)
             {
                 Projectile.frame++;
                 switch (AnimationState)
@@ -135,13 +133,13 @@ namespace EBF.Items.Summon
                         break;
 
                     case 1: //Regular attack
-                        if(Projectile.frame > 5)
+                        if (Projectile.frame > 5)
                         {
                             Projectile.frame = 0;
                             AnimationState = 0;
                         }
                         break;
-                        
+
                     case 2: //Boosted attack
                         if (Projectile.frame > 12)
                         {

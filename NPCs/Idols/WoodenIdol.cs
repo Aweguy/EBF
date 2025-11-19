@@ -1,9 +1,9 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Idols
 {
@@ -46,7 +46,7 @@ namespace EBF.NPCs.Idols
             Player player = Main.player[spawnInfo.Player.whoAmI];
             if (PlayerIsInForest(player) && Main.dayTime && !spawnInfo.Invasion)
                 return 0.1f;
-            
+
             return 0f;
         }
 

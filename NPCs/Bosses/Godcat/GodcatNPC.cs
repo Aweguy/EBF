@@ -1,13 +1,10 @@
 ﻿using EBF.EbfUtils;
-using EBF.Items.Magic;
 using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -86,7 +83,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (currentState == State.InGround)
             {
                 NPC.frame.Y = ((int)NPC.frameCounter + 8) * frameHeight;
-                if(NPC.frameCounter <= 7)
+                if (NPC.frameCounter <= 7)
                 {
                     NPC.frameCounter += 0.1f;
                 }
@@ -119,7 +116,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 DropToGround();
             else if (currentState != State.InGround)
                 Move(player);
-            
+
             HandleDodging();
             HandleAttacks(player);
             HandleStateChange();
@@ -173,7 +170,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 //Poof away or head to the ground
                 var groundPos = NPC.Bottom.ToGroundPosition(false);
-                if(NPC.Distance(groundPos) < 1500)
+                if (NPC.Distance(groundPos) < 1500)
                 {
                     currentState = State.GoingTowardsGround;
                     PhaseTimer = 0;
@@ -191,7 +188,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 NPC.StrikeInstantKill();
             }
 
-            if(currentState == State.InGround && PhaseTimer > 120)
+            if (currentState == State.InGround && PhaseTimer > 120)
             {
                 SummonVehicle(player);
                 NPC.active = false;

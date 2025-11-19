@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace EBF.Systems
 {
@@ -11,7 +11,7 @@ namespace EBF.Systems
     /// </summary>
     public class DownedBossSystem : ModSystem
     {
-        public static bool 
+        public static bool
             downedNeonValk = false,
             downedGodcat = false;
 

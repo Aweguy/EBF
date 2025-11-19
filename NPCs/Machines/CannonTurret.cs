@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -43,7 +42,7 @@ namespace EBF.NPCs.Machines
 
             LerpRotationToTarget(player, 0.1f);
 
-            if(Timer > 240)
+            if (Timer > 240)
             {
                 IsShooting = true;
                 Shoot();

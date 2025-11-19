@@ -91,7 +91,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
             // Treasure bag
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<GodcatBossBag>()));
-            
+
             // Relic
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.Placeables.Furniture.BossRelics.GodcatRelic>()));
 

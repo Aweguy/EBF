@@ -1,11 +1,11 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using EBF.EbfUtils;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {

@@ -45,14 +45,14 @@ namespace EBF.NPCs.Machines
             LerpRotationToTarget(player, 0.1f);
 
             Timer++;
-            if(Timer == 210)
+            if (Timer == 210)
             {
                 IsShooting = true;
                 Shoot();
             }
 
             //Reset when hook is destroyed (fully retracted)
-            if(IsShooting && (hook == null || !hook.active))
+            if (IsShooting && (hook == null || !hook.active))
             {
                 IsShooting = false;
                 Timer = 0;
@@ -70,9 +70,9 @@ namespace EBF.NPCs.Machines
         {
             for (int i = 0; i < 2; i++)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore{i}").Type, NPC.scale);
-        
+
             // Create hook gore if it is on the cannon
-            if(!IsShooting)
+            if (!IsShooting)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore2").Type, NPC.scale);
         }
 
@@ -116,7 +116,7 @@ namespace EBF.NPCs.Machines
         }
         public override void AI()
         {
-            if(Parent == null || !Parent.active)
+            if (Parent == null || !Parent.active)
             {
                 Projectile.Kill();
             }
@@ -126,7 +126,7 @@ namespace EBF.NPCs.Machines
                 Projectile.velocity = Projectile.DirectionTo(ParentFront) * RetractionSpeed;
                 Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
-                if(Vector2.Distance(Projectile.Center, ParentFront) < 16)
+                if (Vector2.Distance(Projectile.Center, ParentFront) < 16)
                 {
                     Projectile.Kill();
                 }

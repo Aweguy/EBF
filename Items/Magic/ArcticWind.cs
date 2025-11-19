@@ -2,10 +2,10 @@
 using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
 
 namespace EBF.Items.Magic
 {
@@ -30,7 +30,7 @@ namespace EBF.Items.Magic
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.shoot = ModContent.ProjectileType<ArcticWind_Icecicle>();
             Item.shootSpeed = 12f;
         }
@@ -38,7 +38,7 @@ namespace EBF.Items.Magic
         {
             position = StaffHead + Main.rand.NextVector2Circular(16, 16);
             velocity = position.DirectionTo(Main.MouseWorld).RotatedByRandom(0.1f) * Item.shootSpeed;
-            
+
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }

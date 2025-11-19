@@ -26,7 +26,7 @@ namespace EBF.Items.Ranged.Bows
             Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.useAmmo = AmmoID.Arrow;
             Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 8f;

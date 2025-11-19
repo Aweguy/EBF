@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Abstract_Classes
 {
@@ -194,7 +194,7 @@ namespace EBF.Abstract_Classes
         private void HandlePlayer(Player player)
         {
             player.ChangeDir(Projectile.direction);
-            
+
             //These checks exists so the arrow doesn't remove the bow's usetime
             if (player.itemTime < 2)
             {

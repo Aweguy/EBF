@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {

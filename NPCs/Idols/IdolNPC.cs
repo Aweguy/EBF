@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using System;
 
 namespace EBF.NPCs.Idols
 {
@@ -46,7 +46,7 @@ namespace EBF.NPCs.Idols
             NPC.spriteDirection = NPC.direction;
 
             // Rotation
-            NPC.rotation = isSpinning 
+            NPC.rotation = isSpinning
                 ? NPC.rotation + SpinSpeed * NPC.direction
                 : MathHelper.Clamp(NPC.rotation + 0.01f * rotationDirection, -MaxRotation, MaxRotation);
 

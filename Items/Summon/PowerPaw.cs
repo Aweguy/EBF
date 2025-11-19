@@ -1,12 +1,12 @@
 ﻿using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Summon
 {
@@ -146,10 +146,10 @@ namespace EBF.Items.Summon
         }
         private void Animate()
         {
-            if(Main.GameUpdateCount % 6 == 0)
+            if (Main.GameUpdateCount % 6 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame >= 8)
+                if (Projectile.frame >= 8)
                 {
                     Projectile.frame = 0;
                 }

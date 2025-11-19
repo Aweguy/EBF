@@ -123,7 +123,7 @@ namespace EBF.Items.Ranged.Bows
         public override void AI()
         {
             Projectile.alpha += (int)(255 / (60 * lifeTime)); //takes 1 * lifetime seconds
-            if(Projectile.alpha >= 254)
+            if (Projectile.alpha >= 254)
             {
                 Projectile.Kill();
             }

@@ -1,11 +1,11 @@
 using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
@@ -47,7 +47,7 @@ namespace EBF.Items.Magic
 
             //Spawn the projecile
             Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI);
-            
+
             //Spawn some dust
             for (int i = 0; i < 3; i++)
             {
@@ -164,7 +164,7 @@ namespace EBF.Items.Magic
         {
             if (Main.rand.NextBool(2))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.WoodFurniture); 
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.WoodFurniture);
             }
 
             //Bounce
@@ -255,7 +255,7 @@ namespace EBF.Items.Magic
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.position.Y -= Projectile.height / 2;
-            
+
             for (int i = 0; i < 10; i++)
             {
                 //Spawn dirt dust
