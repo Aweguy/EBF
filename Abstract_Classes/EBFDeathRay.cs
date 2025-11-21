@@ -17,13 +17,14 @@ namespace EBF.Abstract_Classes
     public abstract class EBFDeathRay : ModProjectile
     {
         private Texture2D beamTexture;
-        protected float hitboxModifier = 1f;
+        private float timer = 0f;
+        private float beamLength = 0f;
+        private const float hitboxWidthMultiplier = 1f;
+        protected float scaleFactor = 1f;
         protected int drawDistance = 3000;
         protected int maxTime = 90;
         protected virtual Vector3 LightColor => Vector3.One;
-        protected ref float Timer => ref Projectile.localAI[0];
-        protected ref float BeamLength => ref Projectile.localAI[1];
-        protected Vector2 BeamEnd => Projectile.Center + Projectile.velocity * BeamLength;
+        protected Vector2 BeamEnd => Projectile.Center + Projectile.velocity * beamLength;
 
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
@@ -38,7 +39,6 @@ namespace EBF.Abstract_Classes
         {
             Projectile.width = 48;
             Projectile.height = 48;
-            Projectile.hostile = true;
             Projectile.alpha = 0;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false; //only beam start has the hitbox, rest don't care
@@ -53,95 +53,74 @@ namespace EBF.Abstract_Classes
         }
         public sealed override void AI()
         {
-            // Sine wave scaling for pulsating beam effect (enter and exit scale effect)
-            Timer += 1f;
-            Projectile.scale = Math.Min(MathF.Sin(Timer * MathF.PI / maxTime) * 3f, 1);
+            // Enter and exit scale effect
+            timer += 1f;
+            Projectile.scale = Math.Min(MathF.Sin(timer * MathF.PI / maxTime) * 3f, 1) * scaleFactor;
 
             // Align beam to velocity
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
             // Grow beam length from zero to max (prevents drawing many segments when scale is tiny)
-            BeamLength = MathHelper.Lerp(BeamLength, drawDistance, 0.5f);
+            beamLength = MathHelper.Lerp(beamLength, drawDistance, 0.5f);
             CastLights();
             AISafe();
         }
         public sealed override Color? GetAlpha(Color lightColor) => new Color(255, 255, 255, 50) * 0.95f;
         public sealed override bool PreDraw(ref Color lightColor)
         {
-            // Don't draw if the projectile isn't moving.
+            // Don't draw if not moving / invalid texture
             if (Projectile.velocity == Vector2.Zero || Projectile.velocity.HasNaNs() || beamTexture == null)
-            {
                 return false;
-            }
 
-            // Load textures and frames.
+            // Prepare frames and color
             Rectangle beamBegFrame = beamTexture.Frame(verticalFrames: 3, frameY: 0);
             Rectangle beamMidFrame = beamTexture.Frame(verticalFrames: 3, frameY: 1);
             Rectangle beamEndFrame = beamTexture.Frame(verticalFrames: 3, frameY: 2);
 
-            // Adjust color for transparency
             Color drawColor = Projectile.GetAlpha(lightColor);
             drawColor = Color.Lerp(drawColor, Color.Transparent, Projectile.alpha / 255f);
 
-            // Draw the start of the beam
-            Main.EntitySpriteDraw(
-                beamTexture,
-                Projectile.Center - Main.screenPosition,
-                beamBegFrame,
-                drawColor,
-                Projectile.rotation,
-                beamBegFrame.Size() / 2,
-                Projectile.scale,
-                SpriteEffects.None,
-                0
-            );
+            // Use Utils.DrawLaser. Draw positions must be world coordinates minus screen position
+            // because the rest of your drawing used EntitySpriteDraw with screen-subtracted coords.
+            Vector2 startPos = Projectile.Center - Main.screenPosition;
+            Vector2 endPos = BeamEnd - Main.screenPosition;
+            Vector2 scale = new(Projectile.scale, Projectile.scale);
 
-            // Starting point (after the beginning piece) for drawing the repeating middle part
-            Vector2 drawPos = Projectile.Center + Projectile.velocity * (beamMidFrame.Height * Projectile.scale / 2f);
-
-            // Length to draw (in pixels) along the beam, subtracted by the visual size of the start and end pieces
-            float remainingLength = BeamLength - (beamBegFrame.Height / 2 + beamEndFrame.Height) * Projectile.scale;
-
-            if (remainingLength > 0f)
+            // Local function to get laser line frame info, passed to Utils.DrawLaser
+            void GetLaserLineFrame(int stage, Vector2 currentPosition, float distanceLeft, Rectangle lastFrame,
+                out float distanceCovered, out Rectangle frame, out Vector2 origin, out Color color)
             {
-                // Draw the middle beam segments repeatedly until we fill the needed length
-                for (float drawnLength = 0f; drawnLength + 1f < remainingLength; drawnLength += beamMidFrame.Height * Projectile.scale)
+                // Default values
+                distanceCovered = 0f;
+                frame = Rectangle.Empty;
+                origin = Vector2.Zero;
+                color = drawColor;
+
+                switch (stage)
                 {
-                    // If this next segment would go past the needed length, trim it
-                    if (remainingLength - drawnLength < beamMidFrame.Height)
-                    {
-                        beamMidFrame.Height = (int)(remainingLength - drawnLength);
-                    }
-
-                    Main.EntitySpriteDraw(
-                        beamTexture,
-                        drawPos - Main.screenPosition,
-                        beamMidFrame,
-                        drawColor,
-                        Projectile.rotation,
-                        new Vector2(beamMidFrame.Width / 2, 0),
-                        Projectile.scale,
-                        SpriteEffects.None,
-                        0
-                    );
-
-                    drawPos += Projectile.velocity * beamMidFrame.Height * Projectile.scale;
+                    case 0: // head
+                        frame = beamBegFrame;
+                        distanceCovered = frame.Height;
+                        origin = frame.Size() / 2f;
+                        return;
+                    case 1: // middle (repeated tile)
+                        // Use lastFrame to keep continuity if needed. Use full tile height normally.
+                        frame = beamMidFrame;
+                        distanceCovered = frame.Height;
+                        // origin at top center so tiled segments draw correctly
+                        origin = new Vector2(frame.Width / 2f, 0f);
+                        return;
+                    case 2: // tail
+                        frame = beamEndFrame;
+                        distanceCovered = frame.Height;
+                        origin = new Vector2(frame.Width / 2f, 0f);
+                        return;
                 }
             }
 
-            // Draw the end of the beam
-            Main.EntitySpriteDraw(
-                beamTexture,
-                drawPos - Main.screenPosition,
-                beamEndFrame,
-                drawColor,
-                Projectile.rotation,
-                new Vector2(beamEndFrame.Width / 2, 0),
-                Projectile.scale,
-                SpriteEffects.None,
-                0
-            );
+            Utils.DrawLaser(Main.spriteBatch, beamTexture, startPos, endPos, scale, GetLaserLineFrame);
 
+            // Skip default drawing
             return false;
         }
         public sealed override void CutTiles()
@@ -153,16 +132,13 @@ namespace EBF.Abstract_Classes
         public sealed override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projHitbox.Intersects(targetHitbox))
-            {
                 return true;
-            }
 
-            var lineWidth = beamTexture.Width * 0.66f * Projectile.scale * hitboxModifier;
+            var lineWidth = beamTexture.Width * 0.66f * Projectile.scale * hitboxWidthMultiplier;
             var _ = 0f;
             if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, BeamEnd, lineWidth, ref _))
-            {
                 return true;
-            }
+            
             return false;
         }
         private void CastLights()

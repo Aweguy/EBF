@@ -201,6 +201,10 @@ namespace EBF.NPCs.Machines
         private NPC owner;
         private Player target;
         protected override Vector3 LightColor => Color.Orange.ToVector3();
+        public override void SetDefaultsSafe()
+        {
+            Projectile.hostile = true;
+        }
         public override void OnSpawnSafe(IEntitySource source)
         {
             target = Main.player[(int)Projectile.ai[0]];

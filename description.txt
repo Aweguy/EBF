@@ -1,5 +1,5 @@
 EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
-As of version 1.6.2, the mod adds a lot of content, including:
+As of version 1.6.3, the mod adds a lot of content, including:
 - 82 weapons
 - 9 accessories
 - 5 town npcs
@@ -35,7 +35,7 @@ V1.6 Boss Update (30/08/2025)
 - Added 4 new weapons.
 - Changed some weapon recipes to use newly added materials.
 
-V1.6.2 Various improvements (23/10/2025)
+V1.6.x Various improvements (21/11/2025)
 - Added Idol foes and 4 new weapons.
 - Added bestiary entries and integrated boss checklist.
 - Improved boss fight balance.
