@@ -15,9 +15,9 @@ namespace EBF.NPCs.Idols
         {
             base.SetDefaults();
 
-            NPC.lifeMax = 125;
-            NPC.damage = 8;
-            NPC.defense = 7;
+            NPC.lifeMax = 95;
+            NPC.damage = 12;
+            NPC.defense = 5;
             NPC.lifeRegen = 4;
             NPC.value = 10;
             goreCount = 4;
