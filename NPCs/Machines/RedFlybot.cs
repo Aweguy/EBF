@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -48,7 +49,7 @@ namespace EBF.NPCs.Machines
             //Create projectile
             var velocity = NPC.DirectionTo(player.position) * 14;
             var type = ModContent.ProjectileType<RedFlybot_Laser>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3);
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3);
             proj.friendly = false;
             proj.hostile = true;
 

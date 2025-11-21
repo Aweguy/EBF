@@ -1,5 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.EbfUtils;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -29,9 +30,6 @@ namespace EBF.NPCs.Machines
         {
             NPC.width = 70;
             NPC.height = 56;
-            NPC.damage = 30;
-            NPC.defense = 18;
-            NPC.lifeMax = 2000;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -106,7 +104,7 @@ namespace EBF.NPCs.Machines
                 var speed = 12 + Main.rand.NextFloat(-1f, 1f);
                 var vel = NPC.rotation.ToRotationVector2().RotatedByRandom(1f) * speed;
                 var type = ModContent.ProjectileType<LaserTurret_Ball>();
-                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3);
+                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.GetProjectileDamage(type), 3);
 
                 SoundEngine.PlaySound(SoundID.Item157, NPC.Center);
 
@@ -123,7 +121,8 @@ namespace EBF.NPCs.Machines
         private void ShootLaser()
         {
             var velocity = NPC.rotation.ToRotationVector2();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<LaserTurret_Laser>(), NPC.damage, 3, -1, NPC.target);
+            var type = ModContent.ProjectileType<LaserTurret_Laser>();
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3, -1, NPC.target);
 
             var sound = SoundID.Zombie104; // Moon Lord deathray sound
             sound.Pitch = 1.4f;

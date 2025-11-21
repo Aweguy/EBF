@@ -1,5 +1,6 @@
 ﻿using EBF.EbfUtils;
 using EBF.Items.Materials;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -32,6 +33,10 @@ namespace EBF.NPCs.Machines
         }
         public sealed override void SetDefaults()
         {
+            NPC.damage = NPC.GetContactDamage();
+            NPC.defense = 18;
+            NPC.lifeMax = 2000;
+
             NPC.value = 100;
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;

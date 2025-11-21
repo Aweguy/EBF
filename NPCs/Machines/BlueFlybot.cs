@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -48,7 +49,7 @@ namespace EBF.NPCs.Machines
             //Create projectile
             var velocity = NPC.DirectionTo(player.position) * Main.rand.NextFloat(11, 13);
             var type = ModContent.ProjectileType<BlueFlybot_Bubble>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3);
 
             //Recoil
             CannonIndexToUse = CannonIndexToUse == 0 ? 1 : 0;

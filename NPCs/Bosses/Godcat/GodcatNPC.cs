@@ -40,7 +40,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.width = 34;
             NPC.height = 46;
-            NPC.damage = 70;
+            NPC.damage = NPC.GetContactDamage();
             NPC.defense = 9999;
             NPC.lifeMax = 999999;
             NPC.noGravity = true;

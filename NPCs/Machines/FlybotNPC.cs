@@ -1,5 +1,6 @@
 ﻿using EBF.EbfUtils;
 using EBF.Items.Materials;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -38,7 +39,7 @@ namespace EBF.NPCs.Machines
             NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.NPCDeath14;
 
-            NPC.damage = 50;
+            NPC.damage = NPC.GetContactDamage();
             NPC.defense = 18;
             NPC.lifeMax = 400;
 

@@ -1,5 +1,6 @@
 ﻿using EBF.EbfUtils;
 using EBF.Items.Placeables.Furniture.BossTrophies;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -136,13 +137,14 @@ namespace EBF.NPCs.Bosses.Godcat
                 var amount = 12;
                 var speed = 5;
                 var type = ModContent.ProjectileType<Godcat_TurningBall>();
+                var damage = NPC.GetProjectileDamage(type);
                 for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
                 {
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig, -0.005f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 3f, -1, (float)GodcatBallTypes.DarkBig, -0.005f);
 
                     if (IsAlone)
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
                 }
 
                 SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
@@ -162,10 +164,11 @@ namespace EBF.NPCs.Bosses.Godcat
                 var speedRange = 0.2f;
                 var baseVelocity = NPC.DirectionTo(player.Center) * speed;
                 var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+                var damage = NPC.GetProjectileDamage(type);
                 for (int i = 0; i < 40; i++)
                 {
                     var velocity = baseVelocity.RotatedByRandom(spread) * Main.rand.NextFloat(1 - speedRange, 1 + speedRange);
-                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig);
+                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 3f, -1, (float)GodcatBallTypes.DarkBig);
                     proj.scale = Main.rand.NextFloat(0.5f, 1.5f);
                 }
 
@@ -182,10 +185,11 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateBallArc(Player player, float spread, int amount, float speed)
         {
             var type = ModContent.ProjectileType<Godcat_BallProjectile>();
+            var damage = NPC.GetProjectileDamage(type);
             for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
             {
                 var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkSmall);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 3f, -1, (float)GodcatBallTypes.DarkSmall);
             }
         }
         private void CreateDarkHomingBall(Player player)
@@ -200,7 +204,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 var speed = 4f;
                 var velocity = NPC.DirectionTo(player.Center) * speed;
                 var type = ModContent.ProjectileType<Destroyer_DarkHomingBall>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, player.whoAmI);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, player.whoAmI);
 
                 if (IsAlone)
                     CreateBallArc(player, 1f, 4, 8f);
@@ -231,7 +235,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 var speed = 8f * Main.rand.NextFloat(0.8f, 1.2f);
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(0.5f) * speed + player.velocity * 0.75f;
                 var type = ModContent.ProjectileType<Destroyer_DarkBreath>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, maxSize);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, maxSize);
             }
         }
         private void CreateFireWheel(Player player)
@@ -239,7 +243,7 @@ namespace EBF.NPCs.Bosses.Godcat
             var fireballCount = IsAlone ? 10 : 8;
             var velocity = NPC.DirectionTo(player.Center) * 3f;
             var type = ModContent.ProjectileType<Destroyer_FireWheel>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, fireballCount);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, fireballCount);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
@@ -28,9 +29,6 @@ namespace EBF.NPCs.Machines
         {
             NPC.width = 108;
             NPC.height = 54;
-            NPC.damage = 50;
-            NPC.defense = 18;
-            NPC.lifeMax = 2000;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -81,7 +79,7 @@ namespace EBF.NPCs.Machines
             var speed = 22;
             var vel = NPC.rotation.ToRotationVector2() * speed + new Vector2(0, -1);
             var type = ModContent.ProjectileType<HarpoonTurret_Projectile>();
-            hook = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3f, -1, NPC.whoAmI);
+            hook = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.GetProjectileDamage(type), 3f, -1, NPC.whoAmI);
 
             SoundEngine.PlaySound(SoundID.Item11, NPC.position);
         }

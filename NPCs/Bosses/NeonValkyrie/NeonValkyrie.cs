@@ -85,7 +85,7 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         {
             NPC.width = 300;
             NPC.height = 64;
-            NPC.damage = 60;
+            NPC.damage = NPC.GetContactDamage();
             NPC.defense = 20;
             NPC.lifeMax = 40000;
 
@@ -353,7 +353,8 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
 
                 var velocity = GunTipPos.DirectionTo(player.Center) * 10;
-                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 4, 3);
+                var type = ProjectileID.Bullet;
+                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), type, NPC.GetProjectileDamage(type), 3);
                 proj.friendly = false;
                 proj.hostile = true;
             }

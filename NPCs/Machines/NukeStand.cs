@@ -1,4 +1,5 @@
 ﻿using EBF.EbfUtils;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -110,7 +111,7 @@ namespace EBF.NPCs.Machines
         private void Launch()
         {
             var type = (int)NPC.ai[0]; // Nuke type is given by the npc that created the stand.
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - new Vector2(0, 2), Vector2.Zero, type, 120, 5f);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - new Vector2(0, 2), Vector2.Zero, type, NPC.GetProjectileDamage(type), 5f);
         }
     }
 }

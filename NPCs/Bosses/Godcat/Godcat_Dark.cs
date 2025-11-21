@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -145,7 +146,7 @@ namespace EBF.NPCs.Bosses.Godcat
             var position = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
             var velocity = Vector2.Normalize(player.Center - position) * 14f;
             var type = ModContent.ProjectileType<Godcat_DarkBlade>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.damage / 4, 3f, -1, NPC.target);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.GetProjectileDamage(type), 3f, -1, NPC.target);
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
@@ -154,7 +155,7 @@ namespace EBF.NPCs.Bosses.Godcat
             for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
             {
                 var type = ModContent.ProjectileType<Godcat_DarkBlade>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.damage / 4, 3f, -1, NPC.target);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.GetProjectileDamage(type), 3f, -1, NPC.target);
             }
 
             SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
@@ -164,7 +165,7 @@ namespace EBF.NPCs.Bosses.Godcat
             var multiplier = 0.5f + (StateTimer / stateDurations[State.DarkBallStream]);
             var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(deviation) * speed * multiplier + player.velocity * 0.1f;
             var type = ModContent.ProjectileType<Godcat_BallProjectile>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (int)GodcatBallTypes.DarkBig);
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, (int)GodcatBallTypes.DarkBig);
             proj.scale = Main.rand.NextFloat(0.9f, 1.1f) * multiplier;
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
@@ -172,7 +173,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateDarkReturnBall(Player player, float speed)
         {
             var type = ModContent.ProjectileType<Godcat_ReturnBall>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkBig, NPC.whoAmI);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.GetProjectileDamage(type), 3f, -1, (float)GodcatBallTypes.DarkBig, NPC.whoAmI);
 
             SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
@@ -182,7 +183,7 @@ namespace EBF.NPCs.Bosses.Godcat
             for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
             {
                 var velocity = NPC.DirectionTo(player.Center).RotatedBy(theta) * Main.rand.NextFloat(0.9f, 1.1f) * speed;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3f, -1, (float)GodcatBallTypes.DarkSmall);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, (float)GodcatBallTypes.DarkSmall);
             }
         }
     }
