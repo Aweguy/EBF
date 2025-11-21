@@ -40,5 +40,13 @@ V1.6.x Various improvements (21/11/2025)
 - Added bestiary entries and integrated boss checklist.
 - Improved boss fight balance.
 
+V1.6.3 Various Improvements (21/11/2025)
+
+- Buffed Deep Blue, Desert Scorpion, Quakemaker, Subzero and Shooting Star.
+- Reworked Crystal Wing and Godhand, which also nerfs their laser attack.
+- Nerfed Positron Rifle.
+- Nerfed Idols.
+- Added a system to counteract vanilla's terrible scaling. NPC damage can now easily be tweaked for all difficulty settings. (This has also caused some changes to boss damage).
+
 Update details are listed in the changelog on our discord server.
 If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf
