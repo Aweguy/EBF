@@ -95,7 +95,7 @@ namespace EBF.Items.Ranged.Guns
                 Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<SandSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<SandSpell>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             }
         }
     }
