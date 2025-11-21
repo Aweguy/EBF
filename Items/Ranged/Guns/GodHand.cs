@@ -123,7 +123,7 @@ namespace EBF.Items.Ranged.Guns
                 {
                     //Randomize 
                     Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * Main.rand.NextFloatDirection() * beamWidth;
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 2, Projectile.knockBack, Projectile.owner);
+                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
                     proj.friendly = true;
                     proj.penetrate = -1;
                     proj.timeLeft = 120;
