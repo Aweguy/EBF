@@ -1,10 +1,11 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using EBF.Systems;
 using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
@@ -13,7 +14,7 @@ namespace EBF.NPCs.Machines
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange([
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky, // Spawn conditions
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky, // Spawn conditions
 				new FlavorTextBestiaryInfoElement("Mods.EBF.Bestiary.RedFlybot") // Description
             ]);
         }
@@ -40,7 +41,7 @@ namespace EBF.NPCs.Machines
             for (int i = 0; i < 2; i++)
                 cannonOffsets[i] *= 0.9f;
         }
-        
+
         private void Shoot(Player player)
         {
             SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
@@ -48,7 +49,7 @@ namespace EBF.NPCs.Machines
             //Create projectile
             var velocity = NPC.DirectionTo(player.position) * 14;
             var type = ModContent.ProjectileType<RedFlybot_Laser>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3);
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3);
             proj.friendly = false;
             proj.hostile = true;
 

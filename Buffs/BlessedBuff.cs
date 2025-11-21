@@ -4,25 +4,25 @@ using Terraria.ModLoader;
 
 namespace EBF.Buffs
 {
-	public class BlessedBuff : ModBuff
-	{
-		public override void Update(Player player, ref int buffIndex)
-		{
-			//player.GetModPlayer<EpicPlayer>().numberOfDrawableBuffs++;
+    public class BlessedBuff : ModBuff
+    {
+        public override void Update(Player player, ref int buffIndex)
+        {
+            //player.GetModPlayer<EpicPlayer>().numberOfDrawableBuffs++;
 
-			//player.GetModPlayer<EpicPlayer>().Blessed = true;
+            //player.GetModPlayer<EpicPlayer>().Blessed = true;
 
-			for (int j = 0; j < BuffLoader.BuffCount; ++j)
-			{
-				if (Main.debuff[j])
-				{
+            for (int j = 0; j < BuffLoader.BuffCount; ++j)
+            {
+                if (Main.debuff[j])
+                {
 
-					if(j != ModContent.BuffType<CooldownProtect>() && j != ModContent.BuffType<CooldownRegen>())
-					{
-						player.buffImmune[j] = true;
-					}
-				}
-			}
-		}
-	}
+                    if (j != ModContent.BuffType<CooldownProtect>() && j != ModContent.BuffType<CooldownRegen>())
+                    {
+                        player.buffImmune[j] = true;
+                    }
+                }
+            }
+        }
+    }
 }

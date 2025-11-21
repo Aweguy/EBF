@@ -1,11 +1,11 @@
-﻿using EBF.Items.Materials;
+﻿using EBF.EbfUtils;
+using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Melee
 {
@@ -88,7 +88,7 @@ namespace EBF.Items.Melee
                 Projectile.velocity *= speed;
                 SoundEngine.PlaySound(SoundID.Item73, Projectile.position);
             }
-            
+
             if (Projectile.frameCounter >= waitingFrames)
             {
                 //Animate sprite

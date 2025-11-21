@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -151,7 +151,7 @@ namespace EBF.Items.Melee
         {
             // This is how large the circumference is, aka how big the range is. Vanilla uses 94f to match it to the size of the texture.
             float coneLength = 94f * Projectile.scale;
-            
+
             // This number affects how much the start and end of the collision will be rotated.
             // Bigger Pi numbers will rotate the collision counter clockwise.
             // Smaller Pi numbers will rotate the collision clockwise.
@@ -289,7 +289,7 @@ namespace EBF.Items.Melee
             float dustRotation = Projectile.rotation + Main.rand.NextFloatDirection() * MathHelper.PiOver4;
             Vector2 dustPosition = Projectile.Center + dustRotation.ToRotationVector2() * 84f * Projectile.scale;
             Vector2 dustVelocity = (dustRotation + Projectile.ai[0] * MathHelper.PiOver2).ToRotationVector2();
-            
+
             if (Main.rand.NextFloat() * 2f < Projectile.Opacity)
             {
                 Color dustColor = Color.Lerp(Color.Red, Color.Crimson, Main.rand.NextFloat() * 0.3f);

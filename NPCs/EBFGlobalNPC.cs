@@ -1,12 +1,11 @@
-﻿using Terraria.ID;
-using Terraria.ModLoader;
-using EBF.Items.Melee;
-using EBF.Items.Ranged.Bows;
+﻿using EBF.Items.Melee;
+using EBF.Items.Placeables.Furniture;
 using EBF.Items.Ranged.Guns;
+using EBF.Items.Summon;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
-using EBF.Items.Summon;
-using EBF.Items.Placeables.Furniture;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs
 {

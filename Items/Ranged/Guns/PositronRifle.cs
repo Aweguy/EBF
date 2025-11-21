@@ -21,7 +21,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 44;
+            Item.damage = 32;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 40, gold: 2, platinum: 0);
@@ -51,7 +51,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 8);
                 type = ModContent.ProjectileType<PositronRifleLauncher>();
             }
             else
@@ -108,10 +108,10 @@ namespace EBF.Items.Ranged.Guns
         public override void WhileShoot(Vector2 barrelEnd, int type)
         {
             //Shoot twice
-            if(Projectile.frameCounter == 0 || Projectile.frameCounter == 4)
+            if (Projectile.frameCounter == 0 || Projectile.frameCounter == 4)
             {
                 int explosionID = 0;
-                if(type == ProjectileID.Bullet)
+                if (type == ProjectileID.Bullet)
                 {
                     explosionID = ModContent.ProjectileType<PositronRifle_PlasmaBurst>();
                     type = ModContent.ProjectileType<PositronRifle_PlasmaShot>();
@@ -194,10 +194,10 @@ namespace EBF.Items.Ranged.Guns
         public override void AI()
         {
             //Run every other frame
-            if(Main.GameUpdateCount % 4 == 0)
+            if (Main.GameUpdateCount % 4 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame > Main.projFrames[Projectile.type])
+                if (Projectile.frame > Main.projFrames[Projectile.type])
                 {
                     Projectile.Kill();
                 }

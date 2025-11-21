@@ -11,7 +11,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -496,6 +495,10 @@ namespace EBF.NPCs.Bosses.Godcat
         private NPC Owner => Main.npc[(int)Projectile.ai[0]];
         private Vector2 OwnerBarrelPos => Owner.Center + new Vector2(80 * Owner.direction, -16);
         protected override Vector3 LightColor => Color.White.ToVector3();
+        public override void SetDefaultsSafe()
+        {
+            Projectile.hostile = true;
+        }
         public override void AISafe()
         {
             if (Owner == null || !Owner.active)
@@ -720,7 +723,7 @@ namespace EBF.NPCs.Bosses.Godcat
             foreach (var ball in balls)
                 if (ball.rect.Intersects(targetHitbox))
                     return true;
-            
+
             return false;
         }
         public override bool PreDraw(ref Color lightColor)

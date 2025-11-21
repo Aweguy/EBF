@@ -1,14 +1,15 @@
 ﻿using EBF.EbfUtils;
 using EBF.Items.Materials;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
@@ -20,7 +21,7 @@ namespace EBF.NPCs.Machines
         private Rectangle baseRect;
         private Vector2 originOffset = Vector2.UnitX * 12; // Adjusts the pivot point, so the turret rotates around the attachment and not its center.
         protected bool IsShooting { get => NPC.ai[0] == 1; set => NPC.ai[0] = value.ToInt(); } // This value is read by Neon Valkyrie so she won't jump.
-        
+
         public virtual void SetStaticDefaultsSafe() { }
         public virtual void SetDefaultsSafe() { }
         public virtual void AISafe() { }
@@ -32,6 +33,10 @@ namespace EBF.NPCs.Machines
         }
         public sealed override void SetDefaults()
         {
+            NPC.damage = NPC.GetContactDamage();
+            NPC.defense = 18;
+            NPC.lifeMax = 2000;
+
             NPC.value = 100;
             NPC.noGravity = true;
             NPC.HitSound = SoundID.NPCHit4;
@@ -103,7 +108,7 @@ namespace EBF.NPCs.Machines
 
             for (int i = 0; i < 2; i++)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"TurretBase_Gore0").Type, NPC.scale);
-            
+
             OnKillSafe();
         }
         public sealed override void ModifyNPCLoot(NPCLoot npcLoot)

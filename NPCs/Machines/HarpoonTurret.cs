@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
@@ -28,9 +29,6 @@ namespace EBF.NPCs.Machines
         {
             NPC.width = 108;
             NPC.height = 54;
-            NPC.damage = 50;
-            NPC.defense = 18;
-            NPC.lifeMax = 2000;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -45,14 +43,14 @@ namespace EBF.NPCs.Machines
             LerpRotationToTarget(player, 0.1f);
 
             Timer++;
-            if(Timer == 210)
+            if (Timer == 210)
             {
                 IsShooting = true;
                 Shoot();
             }
 
             //Reset when hook is destroyed (fully retracted)
-            if(IsShooting && (hook == null || !hook.active))
+            if (IsShooting && (hook == null || !hook.active))
             {
                 IsShooting = false;
                 Timer = 0;
@@ -70,9 +68,9 @@ namespace EBF.NPCs.Machines
         {
             for (int i = 0; i < 2; i++)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore{i}").Type, NPC.scale);
-        
+
             // Create hook gore if it is on the cannon
-            if(!IsShooting)
+            if (!IsShooting)
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, (-Vector2.UnitY * 4).RotatedByRandom(1f) + NPC.velocity, Mod.Find<ModGore>($"{Name}_Gore2").Type, NPC.scale);
         }
 
@@ -81,7 +79,7 @@ namespace EBF.NPCs.Machines
             var speed = 22;
             var vel = NPC.rotation.ToRotationVector2() * speed + new Vector2(0, -1);
             var type = ModContent.ProjectileType<HarpoonTurret_Projectile>();
-            hook = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3f, -1, NPC.whoAmI);
+            hook = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.GetProjectileDamage(type), 3f, -1, NPC.whoAmI);
 
             SoundEngine.PlaySound(SoundID.Item11, NPC.position);
         }
@@ -116,7 +114,7 @@ namespace EBF.NPCs.Machines
         }
         public override void AI()
         {
-            if(Parent == null || !Parent.active)
+            if (Parent == null || !Parent.active)
             {
                 Projectile.Kill();
             }
@@ -126,7 +124,7 @@ namespace EBF.NPCs.Machines
                 Projectile.velocity = Projectile.DirectionTo(ParentFront) * RetractionSpeed;
                 Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
-                if(Vector2.Distance(Projectile.Center, ParentFront) < 16)
+                if (Vector2.Distance(Projectile.Center, ParentFront) < 16)
                 {
                     Projectile.Kill();
                 }

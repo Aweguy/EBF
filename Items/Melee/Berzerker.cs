@@ -24,7 +24,7 @@ namespace EBF.Items.Melee
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.shoot = ProjectileID.BoulderStaffOfEarth;
             Item.shootSpeed = 10;
         }

@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EBF.Dusts;
+using EBF.EbfUtils;
+using EBF.Items.Materials;
+using EBF.Items.Placeables.Furniture.BossTrophies;
+using EBF.Items.TreasureBags;
+using EBF.NPCs.Machines;
+using EBF.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.Utilities;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
-using Terraria.Graphics.CameraModifiers;
 using Terraria.GameContent.ItemDropRules;
-using ReLogic.Content;
-using EBF.Dusts;
-using EBF.Systems;
-using EBF.EbfUtils;
-using EBF.NPCs.Machines;
-using EBF.Items.Materials;
-using EBF.Items.TreasureBags;
-using EBF.Items.Placeables.Furniture.BossTrophies;
+using Terraria.Graphics.CameraModifiers;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace EBF.NPCs.Bosses.NeonValkyrie
 {
@@ -85,7 +85,7 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         {
             NPC.width = 300;
             NPC.height = 64;
-            NPC.damage = 60;
+            NPC.damage = NPC.GetContactDamage();
             NPC.defense = 20;
             NPC.lifeMax = 40000;
 
@@ -353,7 +353,8 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
 
                 var velocity = GunTipPos.DirectionTo(player.Center) * 10;
-                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), ProjectileID.Bullet, NPC.damage / 4, 3);
+                var type = ProjectileID.Bullet;
+                Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), GunTipPos, velocity.RotatedByRandom(0.1f), type, NPC.GetProjectileDamage(type), 3);
                 proj.friendly = false;
                 proj.hostile = true;
             }

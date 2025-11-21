@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using System;
 
 namespace EBF.NPCs.Idols
 {
@@ -11,7 +11,8 @@ namespace EBF.NPCs.Idols
     {
         private const float MaxRotation = 0.15f; // In radians
         private const float SpinSpeed = 0.5f; // In radians
-        private float maxSpeed = 3f, accel = 0.1f;
+        private const int JumpHeight = 5, BigJumpHeight = 8;
+        private float maxSpeed = 2.5f, accel = 0.1f;
         private bool isSpinning = false;
         private int rotationDirection = 1;
         private int textureFrame;
@@ -22,6 +23,7 @@ namespace EBF.NPCs.Idols
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 3;
+            NPCID.Sets.DontDoHardmodeScaling[Type] = true;
         }
         public override void SetDefaults()
         {
@@ -46,7 +48,7 @@ namespace EBF.NPCs.Idols
             NPC.spriteDirection = NPC.direction;
 
             // Rotation
-            NPC.rotation = isSpinning 
+            NPC.rotation = isSpinning
                 ? NPC.rotation + SpinSpeed * NPC.direction
                 : MathHelper.Clamp(NPC.rotation + 0.01f * rotationDirection, -MaxRotation, MaxRotation);
 
@@ -58,7 +60,7 @@ namespace EBF.NPCs.Idols
             Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.ai[0], ref NPC.ai[1]);
             if (NPC.collideY && NPC.oldVelocity.Y >= 0)
             {
-                NPC.velocity.Y = Main.rand.NextBool(5) ? -10 : -5;
+                NPC.velocity.Y = Main.rand.NextBool(5) ? -BigJumpHeight : -JumpHeight;
                 if (!isSpinning)
                     rotationDirection = -rotationDirection;
             }

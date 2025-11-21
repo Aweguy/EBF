@@ -1,6 +1,5 @@
 using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -109,7 +108,7 @@ namespace EBF.Items.Magic
             //Increase tentacle curve
             Projectile.ai[0] *= 1.05f;
             Projectile.ai[1] *= 1.05f;
-            
+
             //Spawn dusts
             if (Projectile.scale <= 1f)
             {

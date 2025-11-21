@@ -1,9 +1,9 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Idols
 {
@@ -15,9 +15,9 @@ namespace EBF.NPCs.Idols
         {
             base.SetDefaults();
 
-            NPC.lifeMax = 95;
-            NPC.damage = 16;
-            NPC.defense = 5;
+            NPC.lifeMax = 35;
+            NPC.damage = 8;
+            NPC.defense = 2;
             NPC.lifeRegen = 4;
             NPC.value = 10;
             goreCount = 2;
@@ -46,7 +46,7 @@ namespace EBF.NPCs.Idols
             Player player = Main.player[spawnInfo.Player.whoAmI];
             if (PlayerIsInForest(player) && Main.dayTime && !spawnInfo.Invasion)
                 return 0.1f;
-            
+
             return 0f;
         }
 

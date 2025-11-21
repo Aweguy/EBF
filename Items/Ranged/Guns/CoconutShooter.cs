@@ -1,7 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

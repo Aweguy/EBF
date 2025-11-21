@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
-using Microsoft.Xna.Framework;
 using Terraria.ID;
 
 namespace EBF.EbfUtils
@@ -60,7 +60,7 @@ namespace EBF.EbfUtils
             }
             //Handles targeting logic, loops through each NPC to check if it is valid.
             //The minimum distance and target selected are updated so that only the closest valid NPC is selected.
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
                 float distance = (npc.Center - position).Length();
                 if (distance < maxDistance && npc.active && npc.chaseable && !npc.dontTakeDamage && !npc.friendly && npc.lifeMax > 5 && !npc.immortal && (Collision.CanHit(position, 0, 0, npc.Center, 0, 0) || ignoreTiles) && specialCondition(npc))
@@ -93,7 +93,7 @@ namespace EBF.EbfUtils
             projectile.velocity += Vector2.Normalize(towardsTarget) * strength;
 
             //Limit speed if a valid speed is set.
-            if(maxSpeed < 100 && projectile.velocity.Length() > maxSpeed)
+            if (maxSpeed < 100 && projectile.velocity.Length() > maxSpeed)
             {
                 projectile.velocity = Vector2.Normalize(projectile.velocity) * maxSpeed;
             }
@@ -170,7 +170,7 @@ namespace EBF.EbfUtils
                 }
                 projectile.Kill();
             }
-            
+
             //Handle homing
             if (autoHomes || (player.lifeMagnet && projectile.timeLeft < timeCheck))
             {

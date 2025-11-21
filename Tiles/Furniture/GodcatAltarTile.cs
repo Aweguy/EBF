@@ -1,11 +1,11 @@
-﻿using Terraria.ID;
-using Terraria.ObjectData;
-using Terraria;
-using Terraria.ModLoader;
+﻿using EBF.Items.BossSummons;
 using Microsoft.Xna.Framework;
 using System.Linq;
-using EBF.Items.BossSummons;
+using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ObjectData;
 
 namespace EBF.Tiles.Furniture
 {

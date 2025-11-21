@@ -57,7 +57,7 @@ namespace EBF.Items.Ranged.Guns
                 type = ModContent.ProjectileType<HeavyClawSidearm>();
             }
         }
-       
+
         //Dropped by skeletron prime vice at 25% chance
     }
     public class HeavyClawLauncher : EBFLauncher

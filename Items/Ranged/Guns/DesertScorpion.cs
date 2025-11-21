@@ -1,12 +1,12 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -90,13 +90,13 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new();
-            if (EBFUtils.ClosestNPC(ref target, 500, Projectile.Center, ignoreTiles: true))
+            if (EBFUtils.ClosestNPC(ref target, 700, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
                 Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<SandDuneSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<SandDuneSpell>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             }
         }
     }
@@ -161,7 +161,7 @@ namespace EBF.Items.Ranged.Guns
             if (Main.GameUpdateCount % 6 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame >= 10)
+                if (Projectile.frame >= 10)
                 {
                     Projectile.Kill();
                 }

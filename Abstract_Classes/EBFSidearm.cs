@@ -58,7 +58,7 @@ namespace EBF.Abstract_Classes
 
             //Handle player arm rotation
             player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
-            
+
             return PreAISafe();
         }
         private void HandleTransform(Player player)
@@ -71,7 +71,7 @@ namespace EBF.Abstract_Classes
 
             Projectile.position += Vector2.Normalize(Projectile.velocity) * Projectile.width / 2;
         }
-        private void HandleShoot(Player player) 
+        private void HandleShoot(Player player)
         {
             //Identify bullet type
             if (player.PickAmmo(player.HeldItem, out int type, out _, out _, out _, out _, true))
@@ -90,7 +90,7 @@ namespace EBF.Abstract_Classes
         }
         private void HandleTimeLeft(Player player)
         {
-            if(ActiveTime != 0)
+            if (ActiveTime != 0)
             {
                 ActiveTime--;
 

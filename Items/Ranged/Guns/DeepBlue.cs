@@ -1,12 +1,12 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -95,7 +95,7 @@ namespace EBF.Items.Ranged.Guns
                 Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<GeyserSpell>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             }
         }
     }

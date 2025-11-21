@@ -1,9 +1,9 @@
 using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 
 namespace EBF.Items.Magic
 {
@@ -70,12 +70,12 @@ namespace EBF.Items.Magic
         {
             //Slow over time
             Projectile.velocity *= 0.95f;
-            
+
             //Animate
-            if(Main.GameUpdateCount % 6 == 0)
+            if (Main.GameUpdateCount % 6 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame > 4)
+                if (Projectile.frame > 4)
                 {
                     Projectile.frame = 0;
                 }
@@ -87,7 +87,7 @@ namespace EBF.Items.Magic
             {
                 Vector2 position = (Projectile.Center - Vector2.UnitY * 600) + Vector2.UnitX * Main.rand.Next(-100, 100);
                 Vector2 velocity = position.DirectionTo(Projectile.position).RotatedByRandom(0.2f) * 12;
-                
+
                 Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), position, velocity, ProjectileID.MartianTurretBolt, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 p.friendly = true;
                 p.hostile = false;
@@ -95,7 +95,7 @@ namespace EBF.Items.Magic
                 p.timeLeft = 70;
                 p.penetrate = 2;
                 p.extraUpdates = 2;
-                
+
                 Dust.NewDust(position, 0, 0, DustID.Electric);
             }
         }

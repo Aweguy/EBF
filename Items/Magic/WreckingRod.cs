@@ -1,13 +1,13 @@
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+using EBF.Abstract_Classes;
 using EBF.EbfUtils;
 using EBF.Items.Materials;
 using EBF.Items.Ranged.Guns;
-using EBF.Abstract_Classes;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {

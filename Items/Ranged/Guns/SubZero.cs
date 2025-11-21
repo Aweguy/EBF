@@ -3,10 +3,10 @@ using EBF.Buffs.Cooldowns;
 using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -90,13 +90,13 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (EBFUtils.ClosestNPC(ref target, 500, Projectile.Center, ignoreTiles: true))
+            if (EBFUtils.ClosestNPC(ref target, 700, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
                 Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<IcebergSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<IcebergSpell>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             }
         }
     }
@@ -157,7 +157,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
-            if(Main.GameUpdateCount % 4 == 0)
+            if (Main.GameUpdateCount % 4 == 0)
             {
                 //Handle animation
                 Projectile.frame++;
@@ -173,7 +173,7 @@ namespace EBF.Items.Ranged.Guns
 
             for (int i = 0; i < 20; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, SpeedX: 0, SpeedY: 0, Scale: 2f); 
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, SpeedX: 0, SpeedY: 0, Scale: 2f);
             }
         }
     }

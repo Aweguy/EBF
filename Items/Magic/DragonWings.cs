@@ -1,13 +1,13 @@
+using EBF.Abstract_Classes;
 using EBF.EbfUtils;
-﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.GameContent;
 using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
@@ -32,7 +32,7 @@ namespace EBF.Items.Magic
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.shoot = ModContent.ProjectileType<DragonWings_Projectile>();
             Item.shootSpeed = 8f;
         }
@@ -55,7 +55,7 @@ namespace EBF.Items.Magic
     public class DragonWings_Projectile : ModProjectile
     {
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.DD2BetsyFireball}";
-        
+
         private NPC target = null;
 
         public override void SetStaticDefaults()
@@ -92,7 +92,7 @@ namespace EBF.Items.Magic
             SetTarget();
 
             //If there's a valid target, home towards it
-            if(target != null)
+            if (target != null)
             {
                 Projectile.HomeTowards(target, maxSpeed: 12, strength: 2);
 
@@ -116,7 +116,7 @@ namespace EBF.Items.Magic
 
             if (Main.rand.NextBool(2))
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch); 
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch);
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
@@ -152,7 +152,7 @@ namespace EBF.Items.Magic
             if (Projectile.localAI[0] > 50)
             {
                 Projectile.localAI[0] = 30;
-                if(EBFUtils.ClosestNPC(ref target, 400, Projectile.position))
+                if (EBFUtils.ClosestNPC(ref target, 400, Projectile.position))
                 {
                     return;
                 }

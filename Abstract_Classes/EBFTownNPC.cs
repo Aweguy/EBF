@@ -35,7 +35,7 @@ namespace EBF.Abstract_Classes
             NPCID.Sets.ShimmerTownTransform[Type] = true; // Makes this NPC transform when touching shimmer liquid, instead of becoming invisible.
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new() { Velocity = 1f }; //Draws the npc walking in the bestiary.
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifiers);
-            
+
             SetStaticDefaultsSafe();
         }
         public sealed override void SetDefaults()

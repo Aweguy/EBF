@@ -144,7 +144,7 @@ namespace EBF.Items.Melee
             //Advance frames every third tick
             if (Main.GameUpdateCount % 3 != 0)
                 return;
-            
+
             Projectile.frame++;
             switch (Projectile.frame)
             {

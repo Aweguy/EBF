@@ -1,10 +1,10 @@
-﻿using Terraria.GameContent.Drawing;
+﻿using EBF.Buffs;
+using EBF.NPCs;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using EBF.Buffs;
-using EBF.NPCs;
-using Terraria.Audio;
 
 namespace EBF.Abstract_Classes
 {
@@ -14,7 +14,7 @@ namespace EBF.Abstract_Classes
         /// How far away from the player the shortsword is held.
         /// </summary>
         protected int ProjOffset { get; set; }
-        
+
         /// <summary>
         /// How many ticks the bonus minion will be boosted by this cat toy stab projectile. If set to 0, the minion will not be boosted.
         /// <para>Defaults to 180.</para>

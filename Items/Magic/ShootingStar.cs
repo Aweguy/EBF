@@ -1,5 +1,4 @@
-using EBF.EbfUtils;
-﻿using EBF.Abstract_Classes;
+using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -18,7 +17,7 @@ namespace EBF.Items.Magic
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 30;//Item's base damage value
+            Item.damage = 45;//Item's base damage value
             Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 8;//The amount of mana this item consumes on use
 
@@ -30,7 +29,7 @@ namespace EBF.Items.Magic
             Item.UseSound = SoundID.Item43;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
-            
+
             Item.shoot = ModContent.ProjectileType<CrystalStaff_Projectile>();
             Item.shootSpeed = 0.1f;
         }
