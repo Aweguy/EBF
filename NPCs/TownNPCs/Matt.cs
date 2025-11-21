@@ -1,13 +1,13 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using EBF.Abstract_Classes;
+using EBF.Items.Melee;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.Personalities;
+using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Personalities;
+using Terraria.ID;
 using Terraria.Localization;
-using EBF.Abstract_Classes;
-using EBF.Items.Melee;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.TownNPCs
 {

@@ -15,7 +15,7 @@ namespace EBF
         public override void ModifyHurt(ref Player.HurtModifiers modifiers) => modifiers.ModifyHurtInfo += ModifyHurtInfo;
         private void ModifyHurtInfo(ref Player.HurtInfo info)
         {
-            if(tetrominoEquipped && info.Damage % 10 == 4)
+            if (tetrominoEquipped && info.Damage % 10 == 4)
             {
                 info.Damage = 4;
             }

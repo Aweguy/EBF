@@ -65,7 +65,7 @@ namespace EBF.Items.Magic
                 var offset = new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(64, 128));
                 var dust = Dust.NewDustPerfect(pos + offset, DustID.Obsidian);
                 dust.noGravity = true;
-                
+
                 dust = Dust.NewDustPerfect(pos - offset, DustID.Obsidian);
                 dust.noGravity = true;
             }

@@ -90,7 +90,7 @@ namespace EBF.Items.Ranged.Bows
 
         public override void OnKill(int timeLeft)
         {
-            if(FullyCharged)
+            if (FullyCharged)
             {
                 SoundEngine.PlaySound(SoundID.Item17, Projectile.position);
                 for (int i = 0; i < 3; i++)

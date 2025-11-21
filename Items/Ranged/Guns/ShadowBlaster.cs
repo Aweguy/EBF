@@ -1,12 +1,10 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -149,7 +147,7 @@ namespace EBF.Items.Ranged.Guns
             }
 
             //Use small explosion if no ID was provided
-            if((int)Projectile.ai[0] == 0)
+            if ((int)Projectile.ai[0] == 0)
             {
                 Projectile.ai[0] = ModContent.ProjectileType<ShadowBlaster_DarkExplosionSmall>();
             }

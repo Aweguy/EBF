@@ -1,16 +1,16 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria.Graphics.CameraModifiers;
-using System.Linq;
-using EBF.Systems;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
 {
@@ -47,7 +47,7 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void SetDefaults()
         {
-            NPC.damage = 70;
+            NPC.damage = NPC.GetContactDamage();
             NPC.defense = 50;
             NPC.lifeMax = 300000;
             NPC.noGravity = true;
@@ -90,7 +90,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
             // Zenith deals significantly less damage
-            if(projectile.type == ProjectileID.FinalFractal)
+            if (projectile.type == ProjectileID.FinalFractal)
                 modifiers.FinalDamage *= 0.1f;
         }
         public override void OnSpawn(IEntitySource source)
@@ -131,11 +131,11 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 NPC.velocity = new Vector2(-NPC.direction * 0.1f, 0);
             }
-            
+
             if (isTransitioningOut)
             {
                 NPC.velocity.X *= 1.1f;
-                if(NPC.Distance(player.Center) > 3000)
+                if (NPC.Distance(player.Center) > 3000)
                 {
                     BeginNextPhase(player);
                     NPC.active = false;
@@ -177,7 +177,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 //Kill all crystals
                 foreach (var npc in Main.npc)
-                    if(npc.active && npc.type != Type && npc.ModNPC is Godcat_CrystalNPC)
+                    if (npc.active && npc.type != Type && npc.ModNPC is Godcat_CrystalNPC)
                         npc.StrikeInstantKill();
             }
             else
@@ -208,7 +208,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 StateTimer = 0;
                 //var index = Main.rand.Next(1, stateDurations.Count);
-                if(currentState == State.Idle)
+                if (currentState == State.Idle)
                 {
                     var index = attackManager.Next();
                     currentState = stateDurations.ElementAt(index).Key;
@@ -217,7 +217,7 @@ namespace EBF.NPCs.Bosses.Godcat
                 {
                     currentState = State.Idle;
                 }
-                
+
             }
         }
         private bool TryFindOtherVehicle(out NPC otherVehicle)
@@ -241,7 +241,7 @@ namespace EBF.NPCs.Bosses.Godcat
             else
                 FramesOverPunishDistance = 0;
 
-            if(FramesOverPunishDistance > PunishFrameThreshold)
+            if (FramesOverPunishDistance > PunishFrameThreshold)
             {
                 var position = NPC.Center + Vector2.UnitX.RotatedByRandom(MathHelper.Pi) * 64;
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(1f) * 20f;

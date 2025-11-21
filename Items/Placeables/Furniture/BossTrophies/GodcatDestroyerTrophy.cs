@@ -1,7 +1,7 @@
-﻿using Terraria;
+﻿using EBF.Tiles.Furniture.BossTrophies;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using EBF.Tiles.Furniture.BossTrophies;
 
 namespace EBF.Items.Placeables.Furniture.BossTrophies
 {

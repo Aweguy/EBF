@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Melee.Throwable
 {
@@ -147,7 +147,7 @@ namespace EBF.Items.Melee.Throwable
                 //Slow down over time
                 Projectile.velocity *= 0.9f;
             }
-           
+
             if (FindTarget(out Vector2 move) == true)
             {
                 isChasing = true;

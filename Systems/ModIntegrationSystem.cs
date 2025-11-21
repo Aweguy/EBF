@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System;
-using Terraria.ModLoader;
+﻿using EBF.Items.BossSummons;
+using EBF.Items.Materials;
+using EBF.Items.Placeables.Furniture;
 using EBF.Items.Placeables.Furniture.BossRelics;
 using EBF.Items.Placeables.Furniture.BossTrophies;
-using EBF.NPCs.Bosses.Godcat;
-using EBF.Items.BossSummons;
-using EBF.Items.Placeables.Furniture;
-using EBF.Items.Materials;
 using EBF.Items.TreasureBags;
+using EBF.NPCs.Bosses.Godcat;
 using EBF.NPCs.Bosses.NeonValkyrie;
+using System;
+using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Systems
 {

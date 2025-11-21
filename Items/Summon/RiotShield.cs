@@ -1,15 +1,15 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using EBF.Abstract_Classes;
+using EBF.EbfUtils;
+using EBF.Items.Materials;
+using EBF.NPCs.Machines;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using EBF.EbfUtils;
-using EBF.NPCs.Machines;
-using EBF.Items.Materials;
-using EBF.Abstract_Classes;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Summon
 {
@@ -156,7 +156,7 @@ namespace EBF.Items.Summon
                 Projectile.Kill();
             }
 
-            if(recoilOffset.Length() > 0)
+            if (recoilOffset.Length() > 0)
             {
                 recoilOffset *= 0.9f;
             }

@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using EBF.Systems;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -25,9 +25,6 @@ namespace EBF.NPCs.Machines
         {
             NPC.width = 104;
             NPC.height = 46;
-            NPC.damage = 30;
-            NPC.defense = 18;
-            NPC.lifeMax = 2000;
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
@@ -43,7 +40,7 @@ namespace EBF.NPCs.Machines
 
             LerpRotationToTarget(player, 0.1f);
 
-            if(Timer > 240)
+            if (Timer > 240)
             {
                 IsShooting = true;
                 Shoot();
@@ -63,7 +60,7 @@ namespace EBF.NPCs.Machines
                 var speed = 24;
                 var vel = NPC.rotation.ToRotationVector2() * speed;
                 var type = ProjectileID.CannonballHostile;
-                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.damage / 2, 3);
+                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, vel, type, NPC.GetProjectileDamage(type), 3);
                 proj.timeLeft = 40;
                 proj.light = 0.8f;
 

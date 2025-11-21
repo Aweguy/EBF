@@ -1,12 +1,12 @@
 using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using System.Collections.Generic;
-using System;
 
 namespace EBF.Items.Magic
 {
@@ -86,7 +86,7 @@ namespace EBF.Items.Magic
             }
 
             //Vine spawns
-            if(Projectile.timeLeft < 40 && Main.GameUpdateCount % 10 == 0 && vineRotationOffset < 1.5f)
+            if (Projectile.timeLeft < 40 && Main.GameUpdateCount % 10 == 0 && vineRotationOffset < 1.5f)
             {
                 SoundEngine.PlaySound(SoundID.Item17);
 

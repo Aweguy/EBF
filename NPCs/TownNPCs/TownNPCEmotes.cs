@@ -11,7 +11,7 @@ namespace EBF.NPCs.TownNPCs
         {
             AddToCategory(EmoteID.Category.Town);
         }
-        
+
         //The size of the rectangle is very finnicky. I don't think the numbers can be adjusted without breaking where the sprite is drawn inside the emote bubble.
         public override Rectangle? GetFrame() => new(EmoteBubble.frame * 34, 28 * Row, 34, 28);
         public override Rectangle? GetFrameInEmoteMenu(int frame, int frameCounter) => new(frame * 34, 28 * Row, 34, 28);

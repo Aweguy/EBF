@@ -23,7 +23,7 @@ namespace EBF.Items.Melee.Spears
             Item.useAnimation = 25;
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 9, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;
-            
+
             Item.shoot = ModContent.ProjectileType<GiantSlayer_Projectile>();
             Item.shootSpeed = 7.5f;
             Item.noMelee = true; // Important, the spear is a projectile instead of an item. This prevents the melee hitbox of this item.

@@ -108,10 +108,10 @@ namespace EBF.Items.Ranged.Guns
         public override void WhileShoot(Vector2 barrelEnd, int type)
         {
             //Shoot twice
-            if(Projectile.frameCounter == 0 || Projectile.frameCounter == 4)
+            if (Projectile.frameCounter == 0 || Projectile.frameCounter == 4)
             {
                 int explosionID = 0;
-                if(type == ProjectileID.Bullet)
+                if (type == ProjectileID.Bullet)
                 {
                     explosionID = ModContent.ProjectileType<PositronRifle_PlasmaBurst>();
                     type = ModContent.ProjectileType<PositronRifle_PlasmaShot>();
@@ -194,10 +194,10 @@ namespace EBF.Items.Ranged.Guns
         public override void AI()
         {
             //Run every other frame
-            if(Main.GameUpdateCount % 4 == 0)
+            if (Main.GameUpdateCount % 4 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame > Main.projFrames[Projectile.type])
+                if (Projectile.frame > Main.projFrames[Projectile.type])
                 {
                     Projectile.Kill();
                 }

@@ -1,8 +1,8 @@
-﻿using Terraria.ID;
+﻿using EBF.Items.Ranged.Guns;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
-using EBF.Items.Ranged.Guns;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items
 {

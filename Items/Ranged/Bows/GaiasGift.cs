@@ -89,7 +89,7 @@ namespace EBF.Items.Ranged.Bows
                 //Spawn Gaia seed
                 Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaiaSeed>(), 1, 0, Projectile.owner);
                 proj.scale = 2f;
-                
+
                 //Temporary firework explosion until we care to make our own
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ProjectileID.RocketFireworksBoxGreen, Projectile.damage, 0, Projectile.owner);
             }

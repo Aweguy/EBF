@@ -2,10 +2,9 @@
 using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using EBF.EbfUtils;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -167,7 +166,7 @@ namespace EBF.Items.Ranged.Guns
         {
             target.AddBuff(BuffID.Poisoned, 60 * 5);
             target.AddBuff(BuffID.Stinky, 60 * 5);
-            
+
             //Add extra debuffs if specified
             if (Projectile.ai[1] != 0)
             {
