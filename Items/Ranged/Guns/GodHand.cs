@@ -52,7 +52,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 20);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 1); // 20
                 type = ModContent.ProjectileType<GodHandLauncher>();
             }
             else
@@ -93,7 +93,7 @@ namespace EBF.Items.Ranged.Guns
             Player player = Main.player[Projectile.owner];
             if (player.HasBuff<Charged>())
             {
-                ActiveTime = 60;
+                ActiveTime = 90;
                 ShootSound = SoundID.Item163;
             }
             else
@@ -108,26 +108,12 @@ namespace EBF.Items.Ranged.Guns
             if (player.HasBuff<Charged>())
             {
                 player.ClearBuff(ModContent.BuffType<Charged>());
+                var laserType = ModContent.ProjectileType<GodHandLaser>();
+                Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, laserType, Projectile.damage * 5, Projectile.knockBack, Projectile.owner);
             }
             else
             {
                 player.AddBuff(ModContent.BuffType<Charged>(), 60 * 120);
-            }
-        }
-        public override void WhileShoot(Vector2 barrelEnd, int type)
-        {
-            Player player = Main.player[Projectile.owner];
-            if (!player.HasBuff<Charged>()) //We check false instead of true because WhileShoot() runs after OnShoot() has cleared the buff.
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    //Randomize 
-                    Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * Main.rand.NextFloatDirection() * beamWidth;
-                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity, ProjectileID.LaserMachinegunLaser, Projectile.damage / 4, Projectile.knockBack, Projectile.owner);
-                    proj.friendly = true;
-                    proj.penetrate = -1;
-                    proj.timeLeft = 120;
-                }
             }
         }
     }
@@ -150,6 +136,27 @@ namespace EBF.Items.Ranged.Guns
                 Vector2 verticalOffset = (Projectile.Center - barrelEnd).RotatedBy(MathHelper.PiOver2) * i;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd + verticalOffset, Projectile.velocity * Main.rand.NextFloat(0.9f, 1.1f), type, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
+        }
+    }
+
+    public class GodHandLaser : EBFDeathRay
+    {
+        private Entity Owner => Main.player[Projectile.owner];
+        public override string Texture => "EBF/NPCs/Bosses/Godcat/Creator_HolyDeathray";
+        protected override Vector3 LightColor => Color.White.ToVector3();
+        public override void SetDefaultsSafe()
+        {
+            scaleFactor = 1.2f;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.tileCollide = false;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 4;
+        }
+        public override void AISafe()
+        {
+            Projectile.velocity = Owner.DirectionTo(Main.MouseWorld);
+            Projectile.Center = Owner.Center + Projectile.velocity * 88;
         }
     }
 }

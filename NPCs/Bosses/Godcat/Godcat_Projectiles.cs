@@ -495,6 +495,10 @@ namespace EBF.NPCs.Bosses.Godcat
         private NPC Owner => Main.npc[(int)Projectile.ai[0]];
         private Vector2 OwnerBarrelPos => Owner.Center + new Vector2(80 * Owner.direction, -16);
         protected override Vector3 LightColor => Color.White.ToVector3();
+        public override void SetDefaultsSafe()
+        {
+            Projectile.hostile = true;
+        }
         public override void AISafe()
         {
             if (Owner == null || !Owner.active)

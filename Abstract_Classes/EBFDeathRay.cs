@@ -19,7 +19,8 @@ namespace EBF.Abstract_Classes
         private Texture2D beamTexture;
         private float timer = 0f;
         private float beamLength = 0f;
-        protected float hitboxModifier = 1f;
+        private const float hitboxWidthMultiplier = 1f;
+        protected float scaleFactor = 1f;
         protected int drawDistance = 3000;
         protected int maxTime = 90;
         protected virtual Vector3 LightColor => Vector3.One;
@@ -38,7 +39,6 @@ namespace EBF.Abstract_Classes
         {
             Projectile.width = 48;
             Projectile.height = 48;
-            Projectile.hostile = true;
             Projectile.alpha = 0;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false; //only beam start has the hitbox, rest don't care
@@ -55,7 +55,7 @@ namespace EBF.Abstract_Classes
         {
             // Enter and exit scale effect
             timer += 1f;
-            Projectile.scale = Math.Min(MathF.Sin(timer * MathF.PI / maxTime) * 3f, 1);
+            Projectile.scale = Math.Min(MathF.Sin(timer * MathF.PI / maxTime) * 3f, 1) * scaleFactor;
 
             // Align beam to velocity
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
@@ -134,7 +134,7 @@ namespace EBF.Abstract_Classes
             if (projHitbox.Intersects(targetHitbox))
                 return true;
 
-            var lineWidth = beamTexture.Width * 0.66f * Projectile.scale * hitboxModifier;
+            var lineWidth = beamTexture.Width * 0.66f * Projectile.scale * hitboxWidthMultiplier;
             var _ = 0f;
             if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, BeamEnd, lineWidth, ref _))
                 return true;
