@@ -90,13 +90,13 @@ namespace EBF.Items.Ranged.Guns
         {
             //Find a nearby target
             NPC target = new NPC();
-            if (EBFUtils.ClosestNPC(ref target, 500, Projectile.Center, ignoreTiles: true))
+            if (EBFUtils.ClosestNPC(ref target, 700, Projectile.Center, ignoreTiles: true))
             {
                 //Get ground below target
                 Vector2 position = target.Center.ToGroundPosition();
 
                 //Spawn projectile
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<IcebergSpell>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, ModContent.ProjectileType<IcebergSpell>(), Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
             }
         }
     }

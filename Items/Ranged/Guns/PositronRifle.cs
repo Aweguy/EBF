@@ -21,7 +21,7 @@ namespace EBF.Items.Ranged.Guns
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 44;
+            Item.damage = 32;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 40, gold: 2, platinum: 0);
@@ -51,7 +51,7 @@ namespace EBF.Items.Ranged.Guns
         {
             if (player.altFunctionUse == 2)
             {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 10);
+                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 8);
                 type = ModContent.ProjectileType<PositronRifleLauncher>();
             }
             else
