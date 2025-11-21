@@ -1,11 +1,11 @@
+using EBF.Abstract_Classes;
 using EBF.EbfUtils;
-﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
@@ -29,7 +29,7 @@ namespace EBF.Items.Magic
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
             Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-            
+
             Item.shoot = ModContent.ProjectileType<Tribolt_Projectile>();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -77,7 +77,7 @@ namespace EBF.Items.Magic
             Vector2 newPos;
 
             //Set projectile position within range limit
-            if(Vector2.Distance(Projectile.Center, Main.MouseWorld) < maxDistance)
+            if (Vector2.Distance(Projectile.Center, Main.MouseWorld) < maxDistance)
             {
                 newPos = Main.MouseWorld;
             }
@@ -112,7 +112,7 @@ namespace EBF.Items.Magic
                 b = Projectile.Center + Projectile.Center.DirectionTo(target.Center).RotatedByRandom(1.5) * 64,
                 c = target.Center + target.Center.DirectionTo(Projectile.Center).RotatedByRandom(1.5) * 64,
                 d = target.Center;
-            
+
             Dust dust;
 
             if (Vector2.Distance(a, d) > 128)

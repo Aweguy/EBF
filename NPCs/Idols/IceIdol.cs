@@ -1,9 +1,9 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Idols
 {
@@ -15,8 +15,8 @@ namespace EBF.NPCs.Idols
         {
             base.SetDefaults();
 
-            NPC.lifeMax = 95;
-            NPC.damage = 17;
+            NPC.lifeMax = 45;
+            NPC.damage = 10;
             NPC.defense = 3;
             NPC.lifeRegen = 4;
             NPC.value = 10;
@@ -44,7 +44,7 @@ namespace EBF.NPCs.Idols
         {
             if (spawnInfo.Player.ZoneSnow && !spawnInfo.Invasion)
                 return 0.02f;
-            
+
             return 0f;
         }
     }

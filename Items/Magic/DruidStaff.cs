@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
 
 namespace EBF.Items.Magic
 {
@@ -120,7 +119,7 @@ namespace EBF.Items.Magic
         public override void AI()
         {
             Projectile.scale -= 0.025f;
-            if(Projectile.scale <= 0)
+            if (Projectile.scale <= 0)
             {
                 Projectile.Kill();
             }

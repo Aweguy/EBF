@@ -1,9 +1,9 @@
-﻿using Terraria.ID;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.Audio;
-using EBF.Items.Materials;
+﻿using EBF.Items.Materials;
 using EBF.NPCs.Bosses.NeonValkyrie;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.BossSummons
 {

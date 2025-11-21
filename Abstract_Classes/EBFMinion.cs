@@ -1,10 +1,10 @@
-﻿using System;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
-using EBF.EbfUtils;
+using System;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Abstract_Classes
 {
@@ -64,7 +64,7 @@ namespace EBF.Abstract_Classes
         /// <para>Defaults to 0.</para>
         /// </summary>
         public int BoostTime { get; set; } = 0;
-        
+
         /// <summary>
         /// A quick access check to see if the minion has a boost effect from its cat toy.
         /// </summary>
@@ -119,7 +119,7 @@ namespace EBF.Abstract_Classes
         }
         public sealed override void AI()
         {
-            if(BoostTime > 0)
+            if (BoostTime > 0)
             {
                 BoostTime--;
             }
@@ -192,7 +192,7 @@ namespace EBF.Abstract_Classes
             if ((target.Center - Projectile.Center).Length() < AttackRange)
             {
                 InAttackRange = true;
-                
+
                 attackTimer--;
                 if (attackTimer <= 0)
                 {
@@ -210,7 +210,7 @@ namespace EBF.Abstract_Classes
                     Projectile.velocity.X *= 0.95f;
                 }
             }
-            else 
+            else
             {
                 //Move towards enemy
                 if (isFlying)
@@ -232,7 +232,7 @@ namespace EBF.Abstract_Classes
             float distanceToIdlePosition = vectorToIdlePosition.Length();
 
             //Attempt jump
-            if(!isFlying && vectorToIdlePosition.Y < -200f)
+            if (!isFlying && vectorToIdlePosition.Y < -200f)
             {
                 JumpTo(idlePosition);
             }

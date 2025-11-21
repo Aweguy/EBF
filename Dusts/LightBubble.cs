@@ -16,7 +16,7 @@ namespace EBF.Dusts
         // Write a bit of code that sets the Start X position at the start of the AI.
         public int startX = 0;
 
-       
+
         public override void OnSpawn(Dust dust)
         {
             UpdateType = 226;

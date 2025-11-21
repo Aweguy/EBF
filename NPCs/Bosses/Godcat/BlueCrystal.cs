@@ -1,4 +1,5 @@
 ﻿using EBF.Items.Magic;
+using EBF.Systems;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader;
@@ -17,7 +18,7 @@ namespace EBF.NPCs.Bosses.Godcat
         protected override void Attack(Player player)
         {
             var type = ModContent.ProjectileType<ArcticTrident_Icecicle>();
-            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * 8f, type, NPC.damage / 2, 3f);
+            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * 8f, type, NPC.GetProjectileDamage(type), 3f);
             proj.friendly = false;
             proj.hostile = true;
         }

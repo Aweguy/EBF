@@ -1,6 +1,5 @@
-﻿using EBF.NPCs.Machines;
+﻿using EBF.Systems;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,7 +24,7 @@ namespace EBF.NPCs.Bosses.Godcat
             NPC.height = 62;
             NPC.lifeMax = 16000;
             NPC.defense = 35;
-            NPC.damage = 70;
+            NPC.damage = NPC.GetContactDamage();
             NPC.knockBackResist = 0.5f;
             NPC.noTileCollide = true;
             NPC.noGravity = true;

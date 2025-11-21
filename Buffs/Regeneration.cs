@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace EBF.Buffs
 {
-    public class Regeneration: ModBuff
+    public class Regeneration : ModBuff
     {
         public override void Update(Player player, ref int buffIndex)
         {

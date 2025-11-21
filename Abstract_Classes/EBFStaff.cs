@@ -17,7 +17,7 @@ namespace EBF.Abstract_Classes
             {
                 Player player = Main.LocalPlayer;
                 Vector2 dir = player.DirectionTo(Main.MouseWorld) * (Item.width / 4);
-                
+
                 //player.direction updates a frame late
                 int sign = dir.X <= 0 ? 1 : -1;
 

@@ -2,12 +2,10 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.GameContent.Drawing;
 using Terraria.DataStructures;
-using EBF.Buffs;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Summon
 {
@@ -97,7 +95,7 @@ namespace EBF.Items.Summon
             var velocity = Projectile.Center.DirectionTo(target.Top) * 8;
             var type = ModContent.ProjectileType<IcecreamSandwich_WaferProjectile>();
             var damage = Projectile.damage;
-            
+
             if (IsBoosted)
             {
                 velocity *= 2;
@@ -130,20 +128,20 @@ namespace EBF.Items.Summon
                 Projectile.frame++;
 
                 //Idle animation
-                if(Projectile.frameCounter == 0 && Projectile.frame > 1)
+                if (Projectile.frameCounter == 0 && Projectile.frame > 1)
                 {
                     Projectile.frame = 0;
                 }
 
                 //Attacking animation, initial frame set in OnAttack()
-                if(Projectile.frameCounter == 1 && Projectile.frame > 4)
+                if (Projectile.frameCounter == 1 && Projectile.frame > 4)
                 {
                     Projectile.frame = 0;
                     Projectile.frameCounter = 0;
                 }
             }
         }
-        
+
         private void BoostedEffect()
         {
             //Spawn dust in circle

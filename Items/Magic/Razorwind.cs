@@ -1,13 +1,13 @@
 using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using System;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace EBF.Items.Magic
 {
@@ -94,7 +94,7 @@ namespace EBF.Items.Magic
             //Slow down and rotate based on velocity
             Projectile.velocity *= 0.95f;
             Projectile.rotation = Projectile.velocity.X / 2;
-            
+
             //Spawn dust
             if (Main.rand.NextBool(5))
             {

@@ -1,12 +1,12 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs.Cooldowns;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -161,7 +161,7 @@ namespace EBF.Items.Ranged.Guns
             if (Main.GameUpdateCount % 6 == 0)
             {
                 Projectile.frame++;
-                if(Projectile.frame >= 10)
+                if (Projectile.frame >= 10)
                 {
                     Projectile.Kill();
                 }

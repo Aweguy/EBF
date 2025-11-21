@@ -1,10 +1,11 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+﻿using EBF.Systems;
 using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.NPCs.Machines
 {
@@ -40,7 +41,7 @@ namespace EBF.NPCs.Machines
             for (int i = 0; i < 2; i++)
                 cannonOffsets[i] *= 0.9f;
         }
-        
+
         private void Shoot(Player player)
         {
             SoundEngine.PlaySound(SoundID.Item85, NPC.position);
@@ -48,7 +49,7 @@ namespace EBF.NPCs.Machines
             //Create projectile
             var velocity = NPC.DirectionTo(player.position) * Main.rand.NextFloat(11, 13);
             var type = ModContent.ProjectileType<BlueFlybot_Bubble>();
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.damage / 4, 3);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3);
 
             //Recoil
             CannonIndexToUse = CannonIndexToUse == 0 ? 1 : 0;

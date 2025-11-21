@@ -1,12 +1,10 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs;
 using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 

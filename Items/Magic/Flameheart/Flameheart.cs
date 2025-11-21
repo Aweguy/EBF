@@ -176,7 +176,7 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 64;
             Projectile.height = 64;
-            SetEverythingElse();   
+            SetEverythingElse();
         }
     }
 

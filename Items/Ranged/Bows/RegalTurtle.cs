@@ -1,7 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 

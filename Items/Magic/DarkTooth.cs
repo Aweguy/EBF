@@ -4,11 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.GameContent;
-using EBF.EbfUtils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Magic
 {
@@ -61,6 +60,7 @@ namespace EBF.Items.Magic
         public override void AddRecipes()
         {
             CreateRecipe()
+                .AddIngredient<ObsidianStaff>(stack: 1)
                 .AddIngredient(ItemID.SpectreBar, stack: 30)
                 .AddIngredient(ItemID.Ruby, stack: 5)
                 .AddIngredient(ItemID.SoulofNight, stack: 15)
@@ -228,7 +228,7 @@ namespace EBF.Items.Magic
         private void MoveTowardsCursor() //Movement of the black hole
         {
             //Gradually build up speed
-            if(currentSpeed < maxSpeed)
+            if (currentSpeed < maxSpeed)
             {
                 currentSpeed += 0.1f;
             }

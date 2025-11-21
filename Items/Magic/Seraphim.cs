@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -282,7 +281,7 @@ namespace EBF.Items.Magic
             for (LaserHeight = beamEdgeOffset; LaserHeight <= maxHeight; LaserHeight += 16f)
             {
                 Vector2 bodyPosition = Position + Up * LaserHeight;
-                if (!Collision.CanHit(Position, 1, 1, bodyPosition , 1, 1))
+                if (!Collision.CanHit(Position, 1, 1, bodyPosition, 1, 1))
                 {
                     LaserHeight -= 16f + beamEdgeOffset;
                     break;

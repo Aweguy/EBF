@@ -1,13 +1,13 @@
-﻿using Terraria.ID;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Microsoft.Xna.Framework;
+using Terraria.ID;
 
 namespace EBF.EbfUtils
 {
     public static partial class EBFUtils
     {
         public enum ExplosionSize { Small, Medium, Large, Huge, Nuclear }
-        
+
         /// <summary>
         /// Creates a bunch of dust and gore to simulate a medium sized explosion effect.
         /// <br>Has an overload that supports various sizes when supplied with an ExplosionSize enum.</br>
@@ -32,7 +32,7 @@ namespace EBF.EbfUtils
                 ExplosionSize.Medium => (2, 20, 8, 3, 6),
                 ExplosionSize.Large => (3, 50, 20, 4, 8),
                 ExplosionSize.Huge => (4, 200, 60, 8, 10),
-                ExplosionSize.Nuclear => (5, 800, 120, 20, 12), 
+                ExplosionSize.Nuclear => (5, 800, 120, 20, 12),
                 _ => throw new System.NotImplementedException(),
             };
 

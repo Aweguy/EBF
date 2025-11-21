@@ -3,10 +3,10 @@ using EBF.Buffs.Cooldowns;
 using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.Audio;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
@@ -157,7 +157,7 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
-            if(Main.GameUpdateCount % 4 == 0)
+            if (Main.GameUpdateCount % 4 == 0)
             {
                 //Handle animation
                 Projectile.frame++;
@@ -173,7 +173,7 @@ namespace EBF.Items.Ranged.Guns
 
             for (int i = 0; i < 20; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, SpeedX: 0, SpeedY: 0, Scale: 2f); 
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, SpeedX: 0, SpeedY: 0, Scale: 2f);
             }
         }
     }
