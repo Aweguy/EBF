@@ -444,6 +444,47 @@ Items: {
 		DisplayName: Godcat Destroyer Trophy
 		Tooltip: ""
 	}
+
+	Placeables: {
+		Furniture: {
+			Paintings: {
+				WelcomeToEbfMod: {
+					Tooltip: ""
+					DisplayName: Welcome To Ebf Mod
+				}
+
+				UnhingedCompany: {
+					Tooltip: ""
+					DisplayName: Unhinged Company
+				}
+
+				HeavyImpracticalBows: {
+					Tooltip: ""
+					DisplayName: Heavy Impractical Bows
+				}
+
+				EpicMergingOfWorlds: {
+					Tooltip: ""
+					DisplayName: Epic Merging Of Worlds
+				}
+
+				BlastersAndLaunchers: {
+					Tooltip: ""
+					DisplayName: Blasters And Launchers
+				}
+
+				AddictedToPower: {
+					Tooltip: ""
+					DisplayName: Addicted To Power
+				}
+
+				DoggyScreamer: {
+					Tooltip: ""
+					DisplayName: Doggy Screamer
+				}
+			}
+		}
+	}
 }
 
 Emotes: {
