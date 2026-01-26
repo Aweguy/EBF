@@ -68,7 +68,7 @@ namespace EBF.Items.Summon
             Projectile.width = 64;
             Projectile.height = 40;
             Projectile.friendly = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             UseHoverAI = true;
             AttackRange = 40;
             AttackTime = 40;

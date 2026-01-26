@@ -82,6 +82,7 @@ namespace EBF.Items.Summon
             AttackTime = 20;
             MoveSpeed = 5f;
             UseHoverAI = true;
+            Projectile.tileCollide = false;
         }
         public override void OnSpawnSafe(IEntitySource source)
         {
