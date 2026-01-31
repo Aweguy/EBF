@@ -198,13 +198,22 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             NPC.velocity.Y = Math.Clamp(NPC.velocity.Y + 0.1f, 0f, 4f);
 
+            // Check if we've reached or passed the ground this frame
             Vector2 groundPos = NPC.Bottom.ToGroundPosition(false);
-            if (NPC.Bottom.Distance(groundPos) <= 8)
+            if (NPC.Bottom.Y >= groundPos.Y - 8f)
             {
-                NPC.velocity.Y = 0;
+                NPC.velocity.Y = 0f;
                 NPC.Bottom = groundPos;
                 currentState = State.InGround;
                 PhaseTimer = 0;
+            }
+
+            // Fallback distance check from player in case ground detection fails somehow
+            Player player = Main.player[NPC.target];
+            if (NPC.Distance(player.Center) > 2500)
+            {
+                SummonVehicle(player);
+                NPC.active = false;
             }
         }
     }
