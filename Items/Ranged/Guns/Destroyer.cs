@@ -62,7 +62,7 @@ namespace EBF.Items.Ranged.Guns
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.BeeWax, stack: 12)
                 .AddIngredient(ItemID.JungleSpores, stack: 8)
-                .AddIngredient(ItemID.VilePowder, stack: 20)
+                .AddRecipeGroup("EvilPowder", stack: 20)
                 .AddTile(TileID.Anvils)
                 .Register();
         }
