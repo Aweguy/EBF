@@ -38,8 +38,7 @@ namespace EBF.Items.Summon
         public override void HoldItemSafe(Player player)
         {
             player.statDefense += 10;
-            player.velocity.X = MathHelper.Clamp(player.velocity.X, -5.5f, 5.5f);
-            player.velocity.Y = MathHelper.Clamp(player.velocity.Y, -8f, 12f);
+            // Slowdown happens in EBFPlayer class
         }
         public override void AddRecipes()
         {

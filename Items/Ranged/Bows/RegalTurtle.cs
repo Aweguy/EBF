@@ -87,16 +87,9 @@ namespace EBF.Items.Ranged.Bows
         }
         public override void PreAISafe()
         {
-            if (!IsReleased)
+            //Emit dust on flight
+            if (IsReleased && Main.rand.NextBool(2))
             {
-                //Reduce player movement speed
-                Player player = Main.player[Projectile.owner];
-                player.velocity.X = MathHelper.Clamp(player.velocity.X, -4f, 4f);
-                player.velocity.Y = MathHelper.Clamp(player.velocity.Y, -6f, 6f);
-            }
-            else if (Main.rand.NextBool(2))
-            {
-                //Emit dust on flight
                 Dust.NewDust(Projectile.Center, 0, 0, DustID.GoldCoin);
             }
         }
