@@ -14,12 +14,12 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 46;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 12;//Item's base damage value
+            Item.damage = 13;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 26;//How fast the item is used
+            Item.useAnimation = 26;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -33,21 +33,17 @@ namespace EBF.Items.Ranged.Bows
             Item.channel = true;
             Item.noMelee = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        }
+        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
+        
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)
-            {
                 type = ModContent.ProjectileType<IronTooth_Arrow>();
-            }
         }
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.PlatinumBar, stack: 20)
+                .AddIngredient(ItemID.PlatinumBar, stack: 10)
                 .AddIngredient(ItemID.Grenade, stack: 5)
                 .AddTile(TileID.Anvils)
                 .Register();
@@ -69,7 +65,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 90;
+            MaximumDrawTime = 80;
             MinimumDrawTime = 20;
 
             DamageScale = 1.25f;
