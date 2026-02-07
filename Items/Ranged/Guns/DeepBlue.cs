@@ -18,8 +18,8 @@ namespace EBF.Items.Ranged.Guns
             Item.width = 80;
             Item.height = 30;
 
-            Item.useTime = 28;
-            Item.useAnimation = 28;
+            Item.useTime = 25;
+            Item.useAnimation = 25;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
             Item.damage = 21;
@@ -36,17 +36,10 @@ namespace EBF.Items.Ranged.Guns
             Item.channel = true;
             Item.noUseGraphic = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                return player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>());
-            }
-            else
-            {
-                return player.HasAmmo(Item);
-            }
-        }
+        public override bool CanUseItem(Player player) => player.altFunctionUse == 2
+            ? player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>())
+            : player.HasAmmo(Item);
+
         public override bool AltFunctionUse(Player player) => true;
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
