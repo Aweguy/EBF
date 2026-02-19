@@ -9,10 +9,9 @@ namespace EBF.Systems
     {
         public override void AddRecipeGroups()
         {
-            RecipeGroup anyTitanium = new(() => Language.GetTextValue("LegacyMisc.37") + " Titanium Bar", [ItemID.TitaniumBar, ItemID.AdamantiteBar]);
-            RecipeGroup.RegisterGroup("TitaniumBar", anyTitanium);
-            RecipeGroup anyEvilPowder = new(() => Language.GetTextValue("LegacyMisc.37") + " Vile Powder", [ItemID.VilePowder, ItemID.ViciousPowder]);
-            RecipeGroup.RegisterGroup("EvilPowder", anyEvilPowder);
+            RecipeGroup.RegisterGroup("EvilPowder", new(() => Language.GetTextValue("LegacyMisc.37") + " Vile Powder", [ItemID.VilePowder, ItemID.ViciousPowder]));
+            RecipeGroup.RegisterGroup("MythrilBar", new(() => Language.GetTextValue("LegacyMisc.37") + " Mythril Bar", [ItemID.MythrilBar, ItemID.OrichalcumBar]));
+            RecipeGroup.RegisterGroup("TitaniumBar", new(() => Language.GetTextValue("LegacyMisc.37") + " Titanium Bar", [ItemID.TitaniumBar, ItemID.AdamantiteBar]));
         }
     }
 }
