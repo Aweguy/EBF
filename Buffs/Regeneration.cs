@@ -5,10 +5,10 @@ namespace EBF.Buffs
 {
     public class Regeneration : ModBuff
     {
+        private const int healInterval = 60 * 2;
         public override void Update(Player player, ref int buffIndex)
         {
-            //Run code once every 120 updates
-            if (Main.GameUpdateCount % 120 == 0)
+            if (Main.GameUpdateCount % healInterval == 0 && player.statLife < player.statLifeMax2)
             {
                 int regen = player.statLifeMax2 / 100 * 5;
                 player.Heal(regen);
