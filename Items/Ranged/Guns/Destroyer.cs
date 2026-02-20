@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -7,55 +6,28 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class Destroyer : ModItem, ILocalizedModType
+    public class Destroyer : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            sidearmType = ModContent.ProjectileType<DestroyerSidearm>();
+            launcherType = ModContent.ProjectileType<DestroyerLauncher>();
+            overheatTime = 60 * 12;
+
             Item.width = 40;
             Item.height = 24;
 
             Item.useTime = 24;
             Item.useAnimation = 24;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 32;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 80, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Orange;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
-        }
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                return player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>());
-            }
-            else
-            {
-                return player.HasAmmo(Item);
-            }
-        }
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 12);
-                type = ModContent.ProjectileType<DestroyerLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<DestroyerSidearm>();
-            }
         }
         public override void AddRecipes()
         {

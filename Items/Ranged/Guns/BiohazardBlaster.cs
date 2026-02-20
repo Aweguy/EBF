@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -8,55 +7,28 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class BiohazardBlaster : ModItem, ILocalizedModType
+    public class BiohazardBlaster : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            launcherType = ModContent.ProjectileType<BiohazardBlasterLauncher>();
+            sidearmType = ModContent.ProjectileType<BiohazardBlasterSidearm>();
+            overheatTime = 60 * 12;
+
             Item.width = 50;
             Item.height = 28;
 
             Item.useTime = 14;
             Item.useAnimation = 14;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 86;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 5, platinum: 0);
             Item.rare = ItemRarityID.Lime;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
-        }
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                return player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>());
-            }
-            else
-            {
-                return player.HasAmmo(Item);
-            }
-        }
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 12);
-                type = ModContent.ProjectileType<BiohazardBlasterLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<BiohazardBlasterSidearm>();
-            }
         }
         public override void AddRecipes()
         {

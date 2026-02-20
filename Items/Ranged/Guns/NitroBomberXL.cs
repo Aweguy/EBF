@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs.Cooldowns;
 using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -8,57 +7,29 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class NitroBomberXL : ModItem, ILocalizedModType
+    public class NitroBomberXL : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            launcherType = ModContent.ProjectileType<NitroBomberXLLauncher>();
+            sidearmType = ModContent.ProjectileType<NitroBomberXLSidearm>();
+            overheatTime = 60 * 8;
+
             Item.width = 88;
             Item.height = 50;
 
             Item.useTime = 34;
             Item.useAnimation = 34;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 78;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 10, platinum: 0);
             Item.rare = ItemRarityID.Pink;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                return player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>());
-            }
-            else
-            {
-                return player.HasAmmo(Item);
-            }
-        }
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 8);
-                type = ModContent.ProjectileType<NitroBomberXLLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<NitroBomberXLSidearm>();
-            }
-        }
-
         public override void AddRecipes()
         {
             CreateRecipe()
