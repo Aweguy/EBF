@@ -82,8 +82,8 @@ namespace EBF.Items.Ranged.Bows
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    var velocity = Projectile.velocity.RotatedByRandom(0.2d);
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.HornetStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                   Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    proj.DamageType = DamageClass.Ranged;
                 }
             }
         }
