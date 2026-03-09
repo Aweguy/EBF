@@ -1,5 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Items.Magic;
+using EBF.Items.Placeables.Furniture.Paintings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -79,6 +80,14 @@ namespace EBF.NPCs.TownNPCs
                 .Add(ItemID.GreatWave, Condition.MoonPhasesQuarter1)
                 .Add(ItemID.TrioSuperHeroes, Condition.MoonPhasesQuarter2)
                 .Add(ItemID.ThePersistencyofEyes, Condition.MoonPhasesQuarter3)
+
+                .Add(ModContent.ItemType<WelcomeToEbfMod>(), Condition.EclipseOrBloodMoon)
+                .Add(ModContent.ItemType<HeavyImpracticalBows>(), Condition.EclipseOrBloodMoon)
+                .Add(ModContent.ItemType<BlastersAndLaunchers>(), Condition.EclipseOrBloodMoon)
+                .Add(ModContent.ItemType<EpicMergingOfWorlds>(), Condition.EclipseOrBloodMoon)
+                .Add(ModContent.ItemType<AddictedToPower>(), Condition.EclipseOrBloodMoon)
+                .Add(ModContent.ItemType<UnhingedCompany>(), Condition.EclipseOrBloodMoon)
+                .Add(ModContent.ItemType<DoggyScreamer>(), Condition.EclipseOrBloodMoon)
             .Register();
         }
         public override bool CanGoToStatue(bool toKingStatue) => !toKingStatue;

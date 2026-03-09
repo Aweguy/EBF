@@ -189,10 +189,13 @@ namespace EBF.Abstract_Classes
         private void HandleTargetLogic(NPC target)
         {
             //Attack enemy in range
-            if ((target.Center - Projectile.Center).Length() < AttackRange)
+            bool isInRange = (target.Center - Projectile.Center).Length() < AttackRange;
+            bool isInSight = Collision.CanHitLine(Projectile.Center, 1, 1, target.Center, 1, 1);
+            if (isInRange && isInSight)
             {
                 InAttackRange = true;
-
+                
+                // Attack loop
                 attackTimer--;
                 if (attackTimer <= 0)
                 {
@@ -216,6 +219,13 @@ namespace EBF.Abstract_Classes
                 if (isFlying)
                 {
                     Projectile.velocity += Projectile.Center.DirectionTo(target.Center) * 0.33f * (1 + MoveSpeed * 0.05f);
+
+                    // Limit speed
+                    if (Projectile.velocity.Length() > MoveSpeed)
+                    {
+                        Projectile.velocity.Normalize();
+                        Projectile.velocity *= MoveSpeed;
+                    }
                 }
                 else
                 {

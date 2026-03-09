@@ -14,7 +14,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 51;//Item's base damage value
+            Item.damage = 61;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -33,10 +33,7 @@ namespace EBF.Items.Ranged.Bows
             Item.channel = true;
             Item.noMelee = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        }
+        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)

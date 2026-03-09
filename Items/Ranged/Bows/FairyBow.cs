@@ -33,10 +33,7 @@ namespace EBF.Items.Ranged.Bows
             Item.channel = true;
             Item.noMelee = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        }
+        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)
@@ -71,7 +68,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 100;
+            MaximumDrawTime = 90;
             MinimumDrawTime = 20;
 
             DamageScale = 1.0f;

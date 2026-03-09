@@ -39,6 +39,7 @@ V1.6.x Various improvements (21/11/2025)
 - Added Idol foes and 4 new weapons.
 - Added bestiary entries and integrated boss checklist.
 - Improved boss fight balance.
+- Reworked npc damage scaling
 
 Update details are listed in the changelog on our discord server.
 If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf

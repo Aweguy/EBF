@@ -43,27 +43,10 @@ namespace EBF.NPCs.Idols
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            Player player = Main.player[spawnInfo.Player.whoAmI];
-            if (PlayerIsInForest(player) && Main.dayTime && !spawnInfo.Invasion)
+            if (Main.dayTime && !spawnInfo.PlayerSafe && !spawnInfo.Invasion && spawnInfo.Player.ZoneForest)
                 return 0.1f;
 
             return 0f;
-        }
-
-        private static bool PlayerIsInForest(Player player)
-        {
-            return !player.ZoneJungle
-                && !player.ZoneDungeon
-                && !player.ZoneCorrupt
-                && !player.ZoneCrimson
-                && !player.ZoneHallow
-                && !player.ZoneSnow
-                && !player.ZoneDesert
-                && !player.ZoneUndergroundDesert
-                && !player.ZoneGlowshroom
-                && !player.ZoneMeteor
-                && !player.ZoneBeach
-                && player.ZoneOverworldHeight;
         }
     }
 }

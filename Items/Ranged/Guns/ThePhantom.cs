@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -7,55 +6,28 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class ThePhantom : ModItem, ILocalizedModType
+    public class ThePhantom : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            launcherType = ModContent.ProjectileType<ThePhantomLauncher>();
+            sidearmType = ModContent.ProjectileType<ThePhantomSidearm>();
+            overheatTime = 60 * 12;
+
             Item.width = 48;
             Item.height = 22;
 
             Item.useTime = 14;
             Item.useAnimation = 14;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 230;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 90, gold: 10, platinum: 0);
             Item.rare = ItemRarityID.Red;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
-        }
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                return player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>());
-            }
-            else
-            {
-                return player.HasAmmo(Item);
-            }
-        }
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 12);
-                type = ModContent.ProjectileType<ThePhantomLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<ThePhantomSidearm>();
-            }
         }
         public override void AddRecipes()
         {

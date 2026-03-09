@@ -1,5 +1,4 @@
 ﻿using EBF.Abstract_Classes;
-using EBF.Buffs.Cooldowns;
 using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -10,55 +9,28 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class DesertScorpion : ModItem, ILocalizedModType
+    public class DesertScorpion : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            launcherType = ModContent.ProjectileType<DesertScorpionLauncher>();
+            sidearmType = ModContent.ProjectileType<DesertScorpionSidearm>();
+            overheatTime = 60 * 6;
+
             Item.width = 48;
             Item.height = 36;
 
             Item.useTime = 20;
             Item.useAnimation = 20;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 74;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 8, platinum: 0);
             Item.rare = ItemRarityID.Pink;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
-        }
-        public override bool CanUseItem(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                return player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>());
-            }
-            else
-            {
-                return player.HasAmmo(Item);
-            }
-        }
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 6);
-                type = ModContent.ProjectileType<DesertScorpionLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<DesertScorpionSidearm>();
-            }
         }
         public override void AddRecipes()
         {

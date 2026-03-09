@@ -42,7 +42,7 @@ namespace EBF.NPCs.Idols
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneUnderworldHeight && !spawnInfo.Invasion)
+            if (!spawnInfo.PlayerSafe && !spawnInfo.Invasion && spawnInfo.Player.ZoneUnderworldHeight)
                 return 0.08f;
 
             return 0f;

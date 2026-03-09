@@ -1,6 +1,5 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs;
-using EBF.Buffs.Cooldowns;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -9,48 +8,28 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class CrystalWing : ModItem, ILocalizedModType
+    public class CrystalWing : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            launcherType = ModContent.ProjectileType<CrystalWingLauncher>();
+            sidearmType = ModContent.ProjectileType<CrystalWingSidearm>();
+            overheatTime = 60 * 20;
+
             Item.width = 46;
             Item.height = 30;
 
             Item.useTime = 20;
             Item.useAnimation = 20;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 70;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 8, platinum: 0);
             Item.rare = ItemRarityID.Cyan;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
-        }
-        public override bool CanUseItem(Player player) => player.altFunctionUse == 2 
-            ? player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>()) 
-            : player.HasAmmo(Item);
-
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 20);
-                type = ModContent.ProjectileType<CrystalWingLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<CrystalWingSidearm>();
-            }
         }
         public override void AddRecipes()
         {
