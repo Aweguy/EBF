@@ -70,8 +70,8 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 120;
-            MinimumDrawTime = 20;
+            MaximumDrawTime = 80;
+            MinimumDrawTime = 30;
 
             DamageScale = 1.66f;
             VelocityScale = 2f;
@@ -113,7 +113,7 @@ namespace EBF.Items.Ranged.Bows
                 {
                     //Choose random arrow
                     int projectile = arrows[Main.rand.Next(arrows.Count)];
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.15d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
         }

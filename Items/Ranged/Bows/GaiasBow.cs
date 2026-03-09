@@ -62,7 +62,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 80;
+            MaximumDrawTime = 60;
             MinimumDrawTime = 15;
 
             DamageScale = 1.5f;
