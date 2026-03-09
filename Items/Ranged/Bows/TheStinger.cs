@@ -33,10 +33,7 @@ namespace EBF.Items.Ranged.Bows
             Item.channel = true;
             Item.noMelee = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        }
+        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)
@@ -87,7 +84,8 @@ namespace EBF.Items.Ranged.Bows
                 Projectile.Kill();
                 for (int i = 0; i < 3; i++)
                 {
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    proj.DamageType = DamageClass.Ranged;
                 }
             }
         }

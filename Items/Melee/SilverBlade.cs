@@ -39,9 +39,9 @@ namespace EBF.Items.Melee
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.SilverBar, stack: 12)
-                .AddIngredient(ItemID.Feather, stack: 8)
-                .AddIngredient(ItemID.Sapphire, stack: 4)
+                .AddIngredient(ItemID.SilverBar, stack: 8)
+                .AddIngredient(ItemID.Feather, stack: 4)
+                .AddIngredient(ItemID.Sapphire, stack: 2)
                 .AddTile(TileID.Anvils)
                 .Register();
         }

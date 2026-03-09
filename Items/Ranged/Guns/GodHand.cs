@@ -1,6 +1,5 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.Buffs;
-using EBF.Buffs.Cooldowns;
 using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -10,48 +9,28 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Guns
 {
-    public class GodHand : ModItem, ILocalizedModType
+    public class GodHand : EBFGun, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Guns";
         public override void SetDefaults()
         {
+            base.SetDefaults();
+            launcherType = ModContent.ProjectileType<GodHandLauncher>();
+            sidearmType = ModContent.ProjectileType<GodHandSidearm>();
+            overheatTime = 60 * 20;
+
             Item.width = 46;
             Item.height = 30;
 
             Item.useTime = 14;
             Item.useAnimation = 14;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
             Item.damage = 140;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 16, platinum: 0);
             Item.rare = ItemRarityID.Red;
-            Item.autoReuse = true;
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8f;
-            Item.noMelee = true;
-            Item.channel = true;
-            Item.noUseGraphic = true;
-        }
-        public override bool CanUseItem(Player player) => player.altFunctionUse == 2
-            ? player.HasAmmo(Item) && !player.HasBuff(ModContent.BuffType<Overheated>())
-            : player.HasAmmo(Item);
-
-        public override bool AltFunctionUse(Player player) => true;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.AddBuff(ModContent.BuffType<Overheated>(), 60 * 20);
-                type = ModContent.ProjectileType<GodHandLauncher>();
-            }
-            else
-            {
-                type = ModContent.ProjectileType<GodHandSidearm>();
-            }
         }
         public override void AddRecipes()
         {

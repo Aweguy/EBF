@@ -34,10 +34,7 @@ namespace EBF.Items.Ranged.Bows
             Item.channel = true;
             Item.noMelee = true;
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        }
+        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)
@@ -58,7 +55,7 @@ namespace EBF.Items.Ranged.Bows
 
     public class AlchemistBow_Arrow : EBFChargeableArrow
     {
-        private List<int> arrows = new List<int>();
+        private readonly List<int> arrows = [];
 
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
@@ -73,8 +70,8 @@ namespace EBF.Items.Ranged.Bows
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 120;
-            MinimumDrawTime = 20;
+            MaximumDrawTime = 80;
+            MinimumDrawTime = 30;
 
             DamageScale = 1.66f;
             VelocityScale = 2f;
@@ -97,7 +94,7 @@ namespace EBF.Items.Ranged.Bows
                 //Go through every projectile
                 for (int i = 0; i < ProjectileID.Count; i++)
                 {
-                    Projectile proj = new Projectile();
+                    Projectile proj = new();
                     proj.SetDefaults(i);
 
                     //Store each arrow
@@ -116,7 +113,7 @@ namespace EBF.Items.Ranged.Bows
                 {
                     //Choose random arrow
                     int projectile = arrows[Main.rand.Next(arrows.Count)];
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.15d), projectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 }
             }
         }
