@@ -110,7 +110,7 @@ namespace EBF.Items.Ranged.Guns
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.position.Y -= Projectile.height / 2;
-            SoundStyle attackSound = SoundID.DeerclopsIceAttack with { Volume = 1.2f };
+            SoundStyle attackSound = SoundID.DeerclopsIceAttack with { Volume = 0.7f };
             SoundEngine.PlaySound(attackSound, Projectile.Center);
 
             for (int i = 0; i < 15; i++)
