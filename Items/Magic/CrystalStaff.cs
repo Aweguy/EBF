@@ -19,7 +19,7 @@ namespace EBF.Items.Magic
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 26;//Item's base damage value
+            Item.damage = 30;//Item's base damage value
             Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 3;//The amount of mana this item consumes on use
 
@@ -33,7 +33,7 @@ namespace EBF.Items.Magic
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<CrystalStaff_Projectile>();
-            Item.shootSpeed = 0.2f;
+            Item.shootSpeed = 0.5f;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
