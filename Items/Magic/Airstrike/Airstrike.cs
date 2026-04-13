@@ -96,7 +96,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.HallowedBar, stack: 12)
-                .AddIngredient(ItemID.SoulofMight, stack: 8)
+                .AddIngredient(ItemID.SoulofFright, stack: 8)
                 .AddIngredient(ItemID.Bomb, stack: 30)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
