@@ -39,10 +39,7 @@ namespace EBF.Items.Magic.Airstrike
             Item.shootSpeed = 20f; //This line only exists so the stats show up correctly
             Item.noMelee = true;
         }
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
+        public override bool AltFunctionUse(Player player) => true;
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -114,11 +111,7 @@ namespace EBF.Items.Magic.Airstrike
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
         private bool inGround = false;
 
-        /// <summary>
-        /// Sets the variables that are share identical values between all missiles types.
-        /// <para>If one of these variables should differ between missiles, then move the variable into each subclass.</para>
-        /// </summary>
-        protected void SetEverythingElse()
+        public override void SetDefaults()
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
@@ -236,7 +229,7 @@ namespace EBF.Items.Magic.Airstrike
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
 
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 
@@ -253,7 +246,7 @@ namespace EBF.Items.Magic.Airstrike
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
 
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 }
