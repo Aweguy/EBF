@@ -1,4 +1,5 @@
 using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -59,20 +60,23 @@ namespace EBF.Items.Magic
         private const float ShrinkSpeed = 0.02f; // scale per frame
         private const float GrowSpeed = 0.02f; // scale per frame
         private bool isShrinking = false;
+        private Vector2 clickPos; // stored to enable tile collision later
+
         public override string Texture => "EBF/Items/Magic/Star";
         public override void SetDefaults()
         {
             Projectile.width = 32;
             Projectile.height = 32;
             Projectile.friendly = true;
-            Projectile.stopsDealingDamageAfterPenetrateHits = true;
+            Projectile.stopsDealingDamageAfterPenetrateHits = true; // Becomes harmless on hit, but doesn't die immediately
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 240;
         }
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.scale = 0;
+            clickPos = Main.MouseWorld;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -96,11 +100,10 @@ namespace EBF.Items.Magic
         public override void AI()
         {
             var vel = Projectile.velocity;
-            var velLength = vel.Length();
-
-            //Handle shrinking & despawning
+            
             if (isShrinking)
             {
+                //Handle shrinking & despawning
                 vel.X = MathHelper.Clamp(vel.X * 0.9f, -MaxVelocity, MaxVelocity);
                 vel.Y = MathHelper.Clamp(vel.Y * 0.9f, -MaxVelocity, 0);
                 Projectile.scale -= ShrinkSpeed;
@@ -111,29 +114,36 @@ namespace EBF.Items.Magic
             }
             else
             {
-                vel *= 1.1f;
+                Projectile.HandleTileEnable(clickPos, offset: 64); // Enable tile collision near the initial click position
 
-                if (velLength > 2)
+                if (vel.Length() < MaxVelocity)
+                {
+                    vel *= 1.1f;
+                }
+
+                if (vel.Length() > 2)
                 {
                     SpawnDusts(1);
-                    if (velLength > MaxVelocity)
-                    {
-                        vel = Vector2.Normalize(vel) * MaxVelocity;
-                    }
                 }
 
                 if (Projectile.scale < 1)
                 {
                     Projectile.scale += GrowSpeed;
                 }
-                else
-                {
-                    Projectile.tileCollide = true;
-                }
+
+                // Rotate velocity slightly towards the cursor
+                var toCursor = Vector2.Normalize(Main.MouseWorld - Projectile.Center);
+                vel = Vector2.Lerp(vel, toCursor * vel.Length(), 0.02f);
             }
 
-            Projectile.rotation += vel.Length() * 0.1f;
+            Projectile.rotation += vel.Length() * 0.1f; // Spin faster at higher speeds
             Projectile.velocity = vel;
+
+            // Sync infrequently for performance
+            if (Main.GameUpdateCount % 10 == 0)
+            {
+                Projectile.netUpdate = true;
+            }
         }
         public override void OnKill(int timeLeft)
         {
