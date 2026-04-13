@@ -104,8 +104,9 @@ namespace EBF.Items.Magic.Airstrike
     {
         protected Texture2D glowmaskTexture;
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
-        protected int explosionSize; //The hitbox size of the explosion
         protected int glowmaskOpacity = 0;
+        protected int explosionHitboxSize; //The hitbox size of the explosion
+        protected EBFUtils.ExplosionSize explosionEffectSize;
 
         private Vector2 clickPosition; //Used to let the projectile pass through tiles above the cursor
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
@@ -191,8 +192,8 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.localAI[0] = 1;
 
             //Explode
-            Projectile.Resize(explosionSize, explosionSize);
-            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
+            Projectile.Resize(explosionHitboxSize, explosionHitboxSize);
+            Projectile.CreateExplosionEffect(explosionEffectSize);
             Projectile.Damage();
 
             // Play explosion sound
@@ -224,7 +225,8 @@ namespace EBF.Items.Magic.Airstrike
             DrawOffsetX = -13;
             DrawOriginOffsetY = -4;
 
-            explosionSize = 200; //The hitbox size of the explosion
+            explosionHitboxSize = 200;
+            explosionEffectSize = EBFUtils.ExplosionSize.Large;
             diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
@@ -241,7 +243,8 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.height = 16;
             DrawOffsetX = -25;
 
-            explosionSize = 100; //The hitbox size of the explosion
+            explosionHitboxSize = 100;
+            explosionEffectSize = EBFUtils.ExplosionSize.Medium;
             diggingDepth = 24; //How far the missile is placed into the ground upon hitting it
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
