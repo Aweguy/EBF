@@ -1,5 +1,5 @@
 EBF Mod seeks to adapt content from the Epic Battle Fantasy flash game series by Matt Roszak.
-As of version 1.6.4, the mod adds a lot of content, including:
+As of version 1.6.5, the mod adds a lot of content, including:
 - 82 weapons
 - 9 accessories
 - 5 town npcs
