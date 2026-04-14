@@ -151,9 +151,10 @@ namespace EBF.Items.Summon
         }
         public override void AI()
         {
-            if (!Parent.Projectile.active || Parent.Type != ModContent.ProjectileType<RedFlybotMinion>())
+            if (Parent is null || !Parent.Projectile.active || Parent.Type != ModContent.ProjectileType<RedFlybotMinion>())
             {
                 Projectile.Kill();
+                return;
             }
 
             if (recoilOffset.Length() > 0)
