@@ -42,6 +42,8 @@ namespace EBF.Items.Summon
                 .AddTile(TileID.Bookcases)
                 .Register();
         }
+
+        // Also sold by NoLegs
     }
 
     public class GodlyBookStab : EBFToyStab

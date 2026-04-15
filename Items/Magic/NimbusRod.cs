@@ -49,6 +49,8 @@ namespace EBF.Items.Magic
                 .AddTile(TileID.Anvils)
                 .Register();
         }
+
+        // Also sold by Natalie
     }
 
     public class NimbusRod_Bubble : ModProjectile
