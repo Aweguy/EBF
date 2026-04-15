@@ -102,9 +102,7 @@ namespace EBF.Abstract_Classes
         public sealed override void OnSpawn(IEntitySource source)
         {
             if (Main.netMode == NetmodeID.Server)
-            {
                 return;
-            }
 
             //Consume ammo
             Player player = Main.player[Projectile.owner];
@@ -122,18 +120,15 @@ namespace EBF.Abstract_Classes
                 Projectile.tileCollide = false;
             }
 
-            //Prevent arrow from being in the wrong place on the first frame
-            HandleArrow(player);
-
-            //Allow further customization
-            OnSpawnSafe();
+            HandleArrow(player); //Prevent arrow from being in the wrong place on the first frame
+            OnSpawnSafe(); //Allow further customization
         }
+
         public override sealed bool PreAI()
         {
             if (Main.netMode == NetmodeID.Server)
-            {
                 return false;
-            }
+            
             if (isReleased) //Removing this will cause already fired arrows to return to the bow. Idk why, it's probably a reference type thing.
             {
                 PreAISafe(); //Allow further customization
@@ -144,31 +139,26 @@ namespace EBF.Abstract_Classes
             bool isHolding = player.channel || drawTime < MinimumDrawTime;
 
             if (FullyCharged && AutoRelease)
-            {
                 isHolding = false;
-            }
-
+            
             if (isHolding)
             {
                 HandleArrow(player);
                 HandlePlayer(player);
                 HandleDrawTime(player);
             }
-            else
+            else if (Projectile.localAI[0] == 0)
             {
-                //Run only once
-                if (Projectile.localAI[0] == 0)
-                {
-                    Projectile.localAI[0]++;
-                    ReleaseProjectile(); //Return arrow stats & boost by drawtime
-                }
+                Projectile.localAI[0]++; //Run only once
+                ReleaseProjectile(); //Return arrow stats & boost by drawtime
+                OnProjectileRelease(); //Allow further customization
             }
-
-            //Allow further customization
-            PreAISafe();
+            
+            PreAISafe(); //Allow further customization
 
             return false;
         }
+
         private void HandleArrow(Player player)
         {
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
@@ -180,9 +170,7 @@ namespace EBF.Abstract_Classes
 
                 //Truncate decimals to reduce net update frequency
                 if (oldVelocity.ToPoint() != Projectile.velocity.ToPoint())
-                {
                     Projectile.netUpdate = true;
-                }
             }
 
             var magnitude = 40 - (8f * drawTime / MaximumDrawTime);
@@ -191,34 +179,31 @@ namespace EBF.Abstract_Classes
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
             Projectile.timeLeft += Projectile.extraUpdates + 1;
         }
+
         private void HandlePlayer(Player player)
         {
             player.ChangeDir(Projectile.direction);
 
-            //These checks exists so the arrow doesn't remove the bow's usetime
+            // Keep bow active while holding the arrow
             if (player.itemTime < 2)
-            {
                 player.itemTime = 2;
-            }
+            
             if (player.itemAnimation < 2)
-            {
                 player.itemAnimation = 2;
-            }
-
-            //Using the projectile's rotation instead of velocity will break the player's hands, even if the bow sprite is correct.
+            
+            // Using the projectile's rotation instead of velocity will break the player's hands, even if the bow sprite is correct.
             player.itemRotation = MathF.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
         }
+
         private void HandleDrawTime(Player player)
         {
             if (drawTime < MaximumDrawTime)
             {
                 drawTime++;
-                if ((int)drawTime == MaximumDrawTime && !AutoRelease) //cast to eliminate possible float precision error
-                {
+                if (drawTime >= MaximumDrawTime && !AutoRelease)
                     SoundEngine.PlaySound(SoundID.MaxMana, player.position);
-                }
             }
-            else
+            else if (!AutoRelease)
             {
                 //Light the tip of the arrow
                 var magnitude = 8 - DrawOriginOffsetY;
@@ -227,6 +212,7 @@ namespace EBF.Abstract_Classes
                 dust.noGravity = true;
             }
         }
+
         private void ReleaseProjectile()
         {
             isReleased = true;
@@ -245,12 +231,7 @@ namespace EBF.Abstract_Classes
             Projectile.aiStyle = baseAiStyle;
 
             if (giveTileCollision)
-            {
                 Projectile.tileCollide = true;
-            }
-
-            //Allow further customization
-            OnProjectileRelease();
         }
     }
 }
