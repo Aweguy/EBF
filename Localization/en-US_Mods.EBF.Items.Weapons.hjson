@@ -206,7 +206,7 @@ Magic: {
 	Flameheart: {
 		Tooltip:
 			'''
-			Every third use summons a firestorm.
+			Every fifth use summons a firestorm.
 			'A staff of twisted crystal meant to scorch and torch foes.'
 			'''
 		DisplayName: Flameheart
