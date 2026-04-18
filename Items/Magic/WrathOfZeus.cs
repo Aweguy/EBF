@@ -16,7 +16,7 @@ namespace EBF.Items.Magic
             Item.width = 54;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 54;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 54;//Item's base damage value
+            Item.damage = 48;//Item's base damage value
             Item.knockBack = 2;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 14;//The amount of mana this item consumes on use
 
@@ -34,7 +34,7 @@ namespace EBF.Items.Magic
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             //Spawn the projecile
-            velocity = (Main.MouseWorld - StaffHead) * 0.055f;
+            velocity = (Main.MouseWorld - StaffHead) * 0.065f;
             Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI, 0f);
             return false;
         }
@@ -59,7 +59,7 @@ namespace EBF.Items.Magic
         {
             Projectile.width = 32;
             Projectile.height = 32;
-            Projectile.timeLeft = 70;
+            Projectile.timeLeft = 65;
 
             Projectile.DamageType = DamageClass.Magic;
             Projectile.friendly = true;
@@ -87,14 +87,12 @@ namespace EBF.Items.Magic
             {
                 Projectile.frame++;
                 if (Projectile.frame > 4)
-                {
                     Projectile.frame = 0;
-                }
             }
 
             //Timer to lightning
             Projectile.localAI[0]++;
-            if (Projectile.localAI[0] > 40)
+            if (Projectile.localAI[0] > 35)
             {
                 Vector2 position = (Projectile.Center - Vector2.UnitY * 600) + Vector2.UnitX * Main.rand.Next(-100, 100);
                 Vector2 velocity = position.DirectionTo(Projectile.position).RotatedByRandom(0.2f) * 12;
@@ -113,9 +111,7 @@ namespace EBF.Items.Magic
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
-            {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Electric);
-            }
         }
     }
 }
