@@ -16,7 +16,7 @@ namespace EBF.NPCs.Idols
             base.SetDefaults();
 
             NPC.lifeMax = 60;
-            NPC.damage = 10;
+            NPC.damage = 9;
             NPC.defense = 4;
             NPC.lifeRegen = 4;
             NPC.value = 10;
@@ -38,12 +38,12 @@ namespace EBF.NPCs.Idols
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ItemID.StoneBlock, 1, 2, 4));
+            npcLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 1, 2, 4));
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (Main.dayTime && !spawnInfo.PlayerSafe && !spawnInfo.Invasion && spawnInfo.Player.ZoneBeach)
+            if (Main.dayTime && !spawnInfo.PlayerSafe && !spawnInfo.Invasion && (spawnInfo.Player.ZoneDesert || spawnInfo.Player.ZoneUndergroundDesert))
                 return 0.2f;
 
             return 0f;
