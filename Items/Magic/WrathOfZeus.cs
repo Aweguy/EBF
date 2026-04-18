@@ -66,10 +66,21 @@ namespace EBF.Items.Magic
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
         }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            //Bounce
+            if (Projectile.velocity.X != oldVelocity.X)
+                Projectile.velocity.X = -oldVelocity.X * 0.8f;
+            
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y * 0.8f;
+            
+            return false;
+        }
         public override void AI()
         {
             //Slow over time
-            Projectile.velocity *= 0.95f;
+            Projectile.velocity *= 0.94f;
 
             //Animate
             if (Main.GameUpdateCount % 6 == 0)
