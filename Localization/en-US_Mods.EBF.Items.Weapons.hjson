@@ -383,7 +383,7 @@ Ranged: {
 			DisplayName: Eagle Eye
 			Tooltip:
 				'''
-				Wooden arrows turn into chargeable, piercing arrows.
+				Wooden arrows turn into chargeable, high velocity piercing arrows that bounce once.
 				Giving a new meaning to 'Got you in my sights.'
 				'''
 		}
@@ -401,7 +401,7 @@ Ranged: {
 			DisplayName: Sharanga
 			Tooltip:
 				'''
-				Wooden arrows turn into chargeable energy arrows with high pierce and velocity.
+				Wooden arrows turn into chargeable, high velocity piercing arrows that bounce twice.
 				'A cosmic bow said to have been found in a fallen star.'
 				'''
 		}

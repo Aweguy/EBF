@@ -14,7 +14,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 36;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 42;//Item's base damage value
+            Item.damage = 37;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -54,6 +54,7 @@ namespace EBF.Items.Ranged.Bows
 
     public class EagleEye_Arrow : EBFChargeableArrow
     {
+        private int bounces = 1;
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
@@ -88,6 +89,20 @@ namespace EBF.Items.Ranged.Bows
                 dust.position -= Projectile.velocity / 5f * i;
                 dust.noGravity = true;
             }
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            //Bounce
+            if (Projectile.velocity.X != oldVelocity.X)
+                Projectile.velocity.X = -oldVelocity.X * 0.8f;
+
+            if (Projectile.velocity.Y != oldVelocity.Y)
+                Projectile.velocity.Y = -oldVelocity.Y * 0.8f;
+
+            Projectile.ResetLocalNPCHitImmunity();
+
+            return bounces-- <= 0;
         }
     }
 }
