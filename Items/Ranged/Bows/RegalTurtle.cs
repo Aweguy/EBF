@@ -1,5 +1,6 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -37,9 +38,7 @@ namespace EBF.Items.Ranged.Bows
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)
-            {
                 type = ModContent.ProjectileType<RegalTurtle_Arrow>();
-            }
         }
         public override void HoldItem(Player player)
         {
@@ -49,7 +48,7 @@ namespace EBF.Items.Ranged.Bows
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.HallowedBar, stack: 12)
-                .AddIngredient(ItemID.TurtleShell, stack: 2)
+                .AddIngredient(ItemID.TurtleShell, stack: 1)
                 .AddIngredient(ItemID.Ruby, stack: 5)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
@@ -58,6 +57,7 @@ namespace EBF.Items.Ranged.Bows
 
     public class RegalTurtle_Arrow : EBFChargeableArrow
     {
+        private Player Owner => Main.player[Projectile.owner];
         public override void SetDefaults()
         {
             Projectile.width = 20;
@@ -85,21 +85,21 @@ namespace EBF.Items.Ranged.Bows
         {
             //Emit dust on flight
             if (IsReleased && Main.rand.NextBool(2))
-            {
                 Dust.NewDust(Projectile.Center, 0, 0, DustID.GoldCoin);
-            }
         }
         public override void OnProjectileRelease()
         {
+            var oldVelocity = Owner.velocity;
+
             //Recoil on player
             if (FullyCharged)
-            {
-                Main.player[Projectile.owner].velocity -= Projectile.velocity / 2;
-            }
+                Owner.velocity -= Projectile.velocity / 2;
             else
-            {
-                Main.player[Projectile.owner].velocity -= Projectile.velocity / 3;
-            }
+                Owner.velocity -= Projectile.velocity / 3;
+
+            // Prevent infinite horizontal acceleration from recoil
+            if (MathF.Abs(Owner.velocity.X) > 20 && MathF.Abs(Owner.velocity.X) > MathF.Abs(oldVelocity.X))
+                Owner.velocity.X = oldVelocity.X;
         }
     }
 }
