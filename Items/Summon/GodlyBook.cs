@@ -131,9 +131,7 @@ namespace EBF.Items.Summon
 
                 for (int i = 0; i < 5; i++)
                 {
-                    velocity = velocity.RotateRandom(0.4f);
-
-                    proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.DiamondBolt, Projectile.damage, 0);
+                    proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, velocity + Main.rand.NextVector2CircularEdge(1.5f, 1.5f), ProjectileID.DiamondBolt, Projectile.damage, 0);
                     proj.usesLocalNPCImmunity = true;
                     proj.localNPCHitCooldown = -1;
                 }
