@@ -15,6 +15,7 @@ namespace EBF.Abstract_Classes
         private int baseAiStyle; //Stores the projectile's AI for later, to be set when the held arrow is released.
         private float baseVelocity; //Stores the projectile's velocity for later, to be set when the held arrow is released.
         private float drawTime = 0;//The current charge value.
+        private int minimumDrawTime = 30; // The minimum charge required before the bow can release the arrow. Set to be the bow's usetime.
 
         /// <summary>
         /// The sound that plays once the projectile has been released.
@@ -28,13 +29,6 @@ namespace EBF.Abstract_Classes
         /// <para>Defaults to 80.</para>
         /// </summary>
         protected int MaximumDrawTime { get; set; } = 80;
-
-        /// <summary>
-        /// The minimum time it takes before an arrow can be released. Draw time starts at 0 and ticks up by 1 every update while an arrow exists.
-        /// <br>If the player releases their click earlier than this given time, the bow will keep charging until it meets this threshold, at which it will then shoot.</br>
-        /// <para>Defaults to 30.</para>
-        /// </summary>
-        protected int MinimumDrawTime { get; set; } = 30;
 
         /// <summary>
         /// True when the arrow is fully charged.
@@ -104,6 +98,11 @@ namespace EBF.Abstract_Classes
             if (Main.netMode == NetmodeID.Server)
                 return;
 
+            // Use item usetime as minimum draw time.
+            minimumDrawTime = Main.player[Projectile.owner].itemAnimation;
+            if (minimumDrawTime >= MaximumDrawTime)
+                minimumDrawTime = MaximumDrawTime - 1; // Failsafe to prevent divide by zero. Can't be certain with prefixes modifying usetime.
+
             //Consume ammo
             Player player = Main.player[Projectile.owner];
             player.PickAmmo(player.HeldItem, out _, out _, out _, out _, out _, true);
@@ -136,7 +135,7 @@ namespace EBF.Abstract_Classes
             }
 
             Player player = Main.player[Projectile.owner];
-            bool isHolding = player.channel || drawTime < MinimumDrawTime;
+            bool isHolding = player.channel || drawTime < minimumDrawTime;
 
             if (FullyCharged && AutoRelease)
                 isHolding = false;
@@ -220,8 +219,9 @@ namespace EBF.Abstract_Classes
             SoundEngine.PlaySound(ReleaseSound, Projectile.position);
 
             //Calculate boosts from the arrow's draw time.
-            float damageBoost = 1 + (damageScale - 1) * (drawTime / MaximumDrawTime);
-            float velocityBoost = 1 + (velocityScale - 1) * (drawTime / MaximumDrawTime);
+            float drawPercentage = (drawTime - minimumDrawTime) / (MaximumDrawTime - minimumDrawTime); // Begin scaling after exceeding minimum draw time
+            float damageBoost = 1 + (damageScale - 1) * drawPercentage;
+            float velocityBoost = 1 + (velocityScale - 1) * drawPercentage;
 
             Projectile.damage = (int)(Projectile.damage * damageBoost);
             Projectile.velocity *= baseVelocity * velocityBoost;

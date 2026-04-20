@@ -66,7 +66,6 @@ namespace EBF.Items.Ranged.Bows
             Projectile.tileCollide = true;
             Projectile.hide = false;
 
-            MinimumDrawTime = 10;
             MaximumDrawTime = 40;
             ReleaseSound = SoundID.DD2_FlameburstTowerShot;
 

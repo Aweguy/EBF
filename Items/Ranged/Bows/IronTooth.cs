@@ -16,12 +16,12 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 18;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 46;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 21;//Item's base damage value
+            Item.damage = 19;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
-            Item.useTime = 26;//How fast the item is used
-            Item.useAnimation = 26;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 40;//How fast the item is used
+            Item.useAnimation = 40;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -67,7 +67,6 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 80;
-            MinimumDrawTime = 30;
 
             DamageScale = 1.75f;
             VelocityScale = 1.75f;

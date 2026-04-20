@@ -70,7 +70,6 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 50;
-            MinimumDrawTime = 10;
             DamageScale = 1.25f;
             VelocityScale = 1.75f;
 

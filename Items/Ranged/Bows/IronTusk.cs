@@ -69,8 +69,6 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 70;
-            MinimumDrawTime = 10;
-
             DamageScale = 2f;
             VelocityScale = 2f;
             ReleaseSound = SoundID.Item10;
