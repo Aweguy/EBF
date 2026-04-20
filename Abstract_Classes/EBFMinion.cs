@@ -189,7 +189,8 @@ namespace EBF.Abstract_Classes
         private void HandleTargetLogic(NPC target)
         {
             //Attack enemy in range
-            bool isInRange = (target.Center - Projectile.Center).Length() < AttackRange;
+            Vector2 vectorToTarget = target.Center - Projectile.Center;
+            bool isInRange = vectorToTarget.Length() < AttackRange; // Doesn't take hitbox size into account, but keeps code simple. Use half of width for melee minions.
             bool isInSight = Collision.CanHitLine(Projectile.Center, 1, 1, target.Center, 1, 1);
             if (isInRange && isInSight)
             {
@@ -230,7 +231,21 @@ namespace EBF.Abstract_Classes
                 else
                 {
                     Projectile.velocity.X += Projectile.Center.DirectionTo(target.Center).X * 0.33f * (1 + MoveSpeed * 0.05f);
-                    JumpTo(target.Center);
+
+                    // Jump if target is above reach
+                    if (vectorToTarget.Y < -AttackRange)
+                        JumpTo(target.Center);
+
+                    // Force drop down if below platform so minion doesn't get stuck if player isn't also below the platform.
+                    if (vectorToTarget.Y > AttackRange && Collision.SolidTiles(target.BottomLeft, target.width, 2))
+                        Projectile.position.Y += 4f;
+
+                    // Limit speed, but allow minion to be faster than in idle
+                    if (Projectile.velocity.Length() > MoveSpeed * 2)
+                    {
+                        Projectile.velocity.Normalize();
+                        Projectile.velocity *= MoveSpeed * 2;
+                    }
                 }
             }
 
@@ -288,7 +303,7 @@ namespace EBF.Abstract_Classes
         {
             if (isFlying != UseHoverAI && Math.Abs(player.velocity.Y) < 2f)
             {
-                if (Collision.SolidTiles(player.BottomLeft, player.width, player.height * 2, true))
+                if (Collision.SolidTiles(player.BottomLeft, player.width, player.height * 2, true)) // Stone platforms in particular don't count, that's a tmodloader bug
                 {
                     isFlying = false;
                 }
