@@ -80,6 +80,8 @@ namespace EBF.Items.Summon
             Projectile.tileCollide = true;
             UseHoverAI = false;
             Projectile.localNPCHitCooldown = 15;
+
+            AttackRange = 25; // Half of width
         }
         public override void OnSpawnSafe(IEntitySource source)
         {
@@ -123,11 +125,13 @@ namespace EBF.Items.Summon
             {
                 Projectile.ai[0] = 1;
                 Projectile.frame = 4;
+                Projectile.netUpdate = true;
             }
             else if (Math.Abs(Projectile.velocity.X) < 1f && Projectile.ai[0] == 1)
             {
                 Projectile.ai[0] = 0;
                 Projectile.frame = 0;
+                Projectile.netUpdate = true;
             }
 
             Projectile.friendly = Target != null;
@@ -159,6 +163,7 @@ namespace EBF.Items.Summon
                         {
                             Projectile.frame = 0;
                             Projectile.ai[0] = 0;
+                            Projectile.netUpdate = true;
                         }
                         break;
 
