@@ -1,6 +1,8 @@
 ﻿using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,10 +13,10 @@ namespace EBF.Items.Ranged.Bows
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         public override void SetDefaults()
         {
-            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.width = 18;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 46;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 13;//Item's base damage value
+            Item.damage = 21;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -65,9 +67,9 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 80;
-            MinimumDrawTime = 20;
+            MinimumDrawTime = 30;
 
-            DamageScale = 1.25f;
+            DamageScale = 1.75f;
             VelocityScale = 1.75f;
             ReleaseSound = SoundID.Item10;
 
@@ -89,9 +91,13 @@ namespace EBF.Items.Ranged.Bows
         {
             if (FullyCharged)
             {
-                //Generate explosion
-                Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.HellfireArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                proj.Kill();
+                //Explode
+                Projectile.Resize(56, 56);
+                Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Small);
+                Projectile.Damage();
+
+                // Play explosion sound
+                SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             }
         }
     }

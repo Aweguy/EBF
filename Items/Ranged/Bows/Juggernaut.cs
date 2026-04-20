@@ -1,6 +1,8 @@
 ﻿using EBF.Abstract_Classes;
+using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,7 +16,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 28;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 58;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 24;//Item's base damage value
+            Item.damage = 32;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
@@ -37,9 +39,7 @@ namespace EBF.Items.Ranged.Bows
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (type == ProjectileID.WoodenArrowFriendly)
-            {
                 type = ModContent.ProjectileType<Juggernaut_Arrow>();
-            }
         }
         public override void AddRecipes()
         {
@@ -67,9 +67,9 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
 
             MaximumDrawTime = 75;
-            MinimumDrawTime = 15;
+            MinimumDrawTime = 20;
 
-            DamageScale = 1.5f;
+            DamageScale = 2f;
             VelocityScale = 2f;
             ReleaseSound = SoundID.Item10;
 
@@ -89,9 +89,13 @@ namespace EBF.Items.Ranged.Bows
         }
         public override void OnKill(int timeLeft)
         {
-            //Generate explosion
-            Projectile proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.HellfireArrow, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            proj.Kill();
+            //Explode
+            Projectile.Resize(64, 64);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Small);
+            Projectile.Damage();
+
+            // Play explosion sound
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
         }
     }
 }
