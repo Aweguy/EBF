@@ -84,11 +84,12 @@ namespace EBF.Abstract_Classes
         /// </summary>
         /// <param name="source"></param>
         /// <param name="position"></param>
+        /// <param name="type"></param>
         /// <param name="velocity">Projectile velocity after draw boost is applied.</param>
         /// <param name="damage">Projectile damage after draw boost is applied.</param>
-        protected virtual void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int damage)
+        protected virtual void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage)
         {
-	        Projectile.NewProjectile(source, position, velocity, ArrowType, damage, Projectile.knockBack, Projectile.owner);
+	        Projectile.NewProjectile(source, position, velocity, type, damage, Projectile.knockBack, Projectile.owner);
         }
         
         public override void SetStaticDefaults() {
@@ -134,24 +135,26 @@ namespace EBF.Abstract_Classes
         
         public override bool PreDraw(ref Color lightColor)
         {
-	        var player = Main.player[Projectile.owner];
+	        // Draw wooden or specified arrow
+	        var arrowTexture = ArrowType == ProjectileID.None 
+		        ? TextureAssets.Projectile[ProjectileID.WoodenArrowFriendly].Value
+		        : TextureAssets.Projectile[ArrowType].Value;
+
+	        // In case player uses a different arrow, draw that one instead
+	        if ((int)Projectile.ai[0] != ProjectileID.WoodenArrowFriendly)
+		        arrowTexture = TextureAssets.Projectile[(int)Projectile.ai[0]].Value;
 	        
 	        // Draw arrow
 	        var drawPercentage = drawTime / MaximumDrawTime;
 	        var drawOffset = 16 - (8f * drawPercentage);
-	        
-	        var arrowTexture = ArrowType == ProjectileID.None 
-		        ? TextureAssets.Projectile[ProjectileID.WoodenArrowFriendly].Value // Fallback if no arrow is specified in subclass
-		        : TextureAssets.Projectile[ArrowType].Value;
-	        
 	        var position = Projectile.Center - Main.screenPosition + Vector2.Normalize(Projectile.velocity) * drawOffset;
 	        var sourceRect = arrowTexture.Frame();
 	        var origin = sourceRect.Size() / 2f;
 	        var rotationOffset = MathHelper.PiOver2 * Projectile.spriteDirection; // Account for arrow sprite facing up
-	        var rotation = player.itemRotation + rotationOffset;
+	        var rotation = Main.player[Projectile.owner].itemRotation + rotationOffset;
 	        
 	        Main.EntitySpriteDraw(arrowTexture, position, sourceRect, Color.White,rotation, 
-		        origin, 1, SpriteEffects.None);
+		        origin, Projectile.scale, SpriteEffects.None);
 	        
 	        // Draw bow
 	        return true;
@@ -160,16 +163,23 @@ namespace EBF.Abstract_Classes
         private void Shoot(Player player, Vector2 playerCenter, Vector2 holdoutOffset)
         {
 	        var heldItem = player.HeldItem;
-	        var ammoConsumed = player.PickAmmo(heldItem, out var _, out var _, out var _, out var _, out var usedAmmoItemId);
+	        var ammoConsumed = player.PickAmmo(heldItem, out var projToShoot, out var speed, out var damage, out var knockback, out var usedAmmoItemId);
 
 	        if (!ammoConsumed)
 		        return;
 	        
-			// Spawn projectile
+			// Set up arguments for shot
 	        var source = player.GetSource_ItemUse_WithPotentialAmmo(heldItem, usedAmmoItemId);
-	        var (damage, velocity) = GetBoostedStats();
+	        var (boostedDamage, boostedVelocity) = GetBoostedStats();
+	        var type = ArrowType == ProjectileID.None ? projToShoot : ArrowType;
 			var position = playerCenter + (holdoutOffset / 2);
-	        OnShoot(source, position, velocity * heldItem.shootSpeed, damage);
+			
+			// Shoot
+			if (projToShoot == ProjectileID.WoodenArrowFriendly)
+				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage);
+			else
+				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, projToShoot, boostedDamage, knockback, Projectile.owner);
+			
 			SoundEngine.PlaySound(ReleaseSound, Projectile.position);
         }
 
