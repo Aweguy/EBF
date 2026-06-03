@@ -224,6 +224,7 @@ Projectiles: {
 	EBFBow.DisplayName: E B F Bow
 	EBFTestHoldoutBow.DisplayName: E B F Test Holdout Bow
 	TestHoldoutBow.DisplayName: Test Holdout Bow
+	AlchemistBow_HoldoutProjectile.DisplayName: Alchemist Bow_ Holdout Projectile
 }
 
 Items: {
