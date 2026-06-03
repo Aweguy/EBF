@@ -128,7 +128,7 @@ namespace EBF.Abstract_Classes
             if (Main.netMode == NetmodeID.Server)
                 return false;
             
-            if (isReleased) //Removing this will cause already fired arrows to return to the bow. Idk why, it's probably a reference type thing.
+            if (isReleased) // Prevent released projectiles from running charge and hold logic
             {
                 PreAISafe(); //Allow further customization
                 return true; //Use the projectile's actual AI.

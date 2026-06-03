@@ -221,6 +221,9 @@ Projectiles: {
 	ObsidianStaff_DarkPulse.DisplayName: Obsidian Staff_ Dark Pulse
 	CrystalWingLaser.DisplayName: Crystal Wing Laser
 	GodHandLaser.DisplayName: God Hand Laser
+	EBFBow.DisplayName: E B F Bow
+	EBFTestHoldoutBow.DisplayName: E B F Test Holdout Bow
+	TestHoldoutBow.DisplayName: Test Holdout Bow
 }
 
 Items: {
@@ -484,6 +487,11 @@ Items: {
 				}
 			}
 		}
+	}
+
+	TestBow: {
+		DisplayName: Test Bow
+		Tooltip: ""
 	}
 }
 
