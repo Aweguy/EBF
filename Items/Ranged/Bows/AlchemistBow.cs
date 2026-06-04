@@ -77,7 +77,7 @@ namespace EBF.Items.Ranged.Bows
             }
         }
 
-        protected override void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage)
+        protected override void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0, float ai1, float ai2)
         {
             if (FullyCharged)
             {
@@ -85,7 +85,7 @@ namespace EBF.Items.Ranged.Bows
                 {
                     //Choose random arrow
                     var projectile = arrows[Main.rand.Next(arrows.Count)];
-                    var proj = Projectile.NewProjectileDirect(source, position, velocity.RotatedByRandom(0.15d), projectile, damage, Projectile.knockBack, Projectile.owner);
+                    var proj = Projectile.NewProjectileDirect(source, position, velocity.RotatedByRandom(0.15d), projectile, damage, knockback, owner);
                     proj.localNPCHitCooldown = -1;
                     proj.usesLocalNPCImmunity = true;
 
@@ -98,7 +98,7 @@ namespace EBF.Items.Ranged.Bows
                 }
             }
             else
-                base.OnShoot(source, position, velocity, type, damage);
+                base.OnShoot(source, position, velocity, type, damage, knockback, owner);
         }
     }
 }

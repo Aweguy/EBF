@@ -82,14 +82,11 @@ namespace EBF.Abstract_Classes
         /// This method controls what happens upon shooting. By default, it spawns an instance of ArrowType.
         /// <br>Override this to change shooting logic as well as shot projectile.</br>
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="position"></param>
-        /// <param name="type"></param>
         /// <param name="velocity">Projectile velocity after draw boost is applied.</param>
         /// <param name="damage">Projectile damage after draw boost is applied.</param>
-        protected virtual void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage)
+        protected virtual void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0 = 0, float ai1 = 0, float ai2 = 0)
         {
-	        Projectile.NewProjectile(source, position, velocity, type, damage, Projectile.knockBack, Projectile.owner);
+	        Projectile.NewProjectile(source, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
         }
         
         public override void SetStaticDefaults() {
@@ -176,7 +173,7 @@ namespace EBF.Abstract_Classes
 			
 			// Shoot
 			if (projToShoot == ProjectileID.WoodenArrowFriendly)
-				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage);
+				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, FullyCharged ? 1 : 0, 0, 0);
 			else
 				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, projToShoot, boostedDamage, knockback, Projectile.owner);
 			
