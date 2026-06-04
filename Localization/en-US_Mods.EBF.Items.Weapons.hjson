@@ -509,6 +509,11 @@ Ranged: {
 				'Shower your enemies with freezing water.'
 				'''
 		}
+
+		TestBow: {
+			Tooltip: ""
+			DisplayName: Test Bow
+		}
 	}
 
 	Guns: {

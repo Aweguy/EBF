@@ -5,10 +5,9 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    
-    
-    public class TestBow : EBFBow
+    public class TestBow : EBFBow, ILocalizedModType
     {
+        public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
         protected override int HoldoutProjectile => ModContent.ProjectileType<TestHoldoutBow>();
         public override string Texture => $"Terraria/Images/Item_{ItemID.Phantasm}";
 
