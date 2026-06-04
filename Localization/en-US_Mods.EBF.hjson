@@ -226,6 +226,7 @@ Projectiles: {
 	TestHoldoutBow.DisplayName: Test Holdout Bow
 	AlchemistBow_HoldoutProjectile.DisplayName: Alchemist Bow_ Holdout Projectile
 	Aquamarine_HoldoutProjectile.DisplayName: Aquamarine_ Holdout Projectile
+	BlackWidow_HoldoutProjectile.DisplayName: Black Widow_ Holdout Projectile
 }
 
 Items: {
