@@ -56,7 +56,7 @@ namespace EBF.Items.Ranged.Bows
             
             base.SetDefaults();
         }
-
+        
         public override void AI()
         {
             //Run this code once when the bow has fully charged
@@ -70,8 +70,8 @@ namespace EBF.Items.Ranged.Bows
                     Projectile proj = new();
                     proj.SetDefaults(i);
 
-                    //Store each arrow
-                    if (proj.arrow && proj.ModProjectile == null)
+                    //Store each vanilla arrow (excluding phantasm arrows cuz their homing has no target)
+                    if (proj.arrow && proj.ModProjectile == null && proj.type != ProjectileID.PhantasmArrow)
                         arrows.Add(i);
                 }
             }
@@ -88,6 +88,13 @@ namespace EBF.Items.Ranged.Bows
                     var proj = Projectile.NewProjectileDirect(source, position, velocity.RotatedByRandom(0.15d), projectile, damage, Projectile.knockBack, Projectile.owner);
                     proj.localNPCHitCooldown = -1;
                     proj.usesLocalNPCImmunity = true;
+
+                    // Hellwing bats are a bit weird, they have to be tweaked
+                    if (proj.type == ProjectileID.Hellwing)
+                    {
+                        proj.velocity *= 1.5f;
+                        proj.timeLeft = 180;
+                    }
                 }
             }
             else
