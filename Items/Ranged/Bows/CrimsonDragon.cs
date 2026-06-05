@@ -66,8 +66,6 @@ namespace EBF.Items.Ranged.Bows
             Projectile.friendly = true;
             Projectile.penetrate = 1;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.tileCollide = true;
-            Projectile.hide = false;
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
