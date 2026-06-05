@@ -63,8 +63,6 @@ namespace EBF.Items.Ranged.Bows
             Projectile.extraUpdates = 1; //Don't forget that extra updates also increases perceived velocity
             Projectile.penetrate = -1;
             Projectile.friendly = true;
-            Projectile.tileCollide = true;
-            Projectile.hide = false;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
