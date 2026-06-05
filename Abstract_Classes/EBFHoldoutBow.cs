@@ -23,6 +23,12 @@ namespace EBF.Abstract_Classes
 	    /// <para>Defaults to 10 pixels.</para>
 	    /// </summary>
 	    protected int HoldoutDistance { get; set; } = 10;
+
+	    /// <summary>
+	    /// How far away the arrow should be drawn. Higher values means the arrow will be drawn closer to the bow.
+	    /// <para>Defaults to 0 pixels.</para>
+	    /// </summary>
+	    protected int ArrowDrawOffset { get; set; } = 0;
 	    
 	    /// <summary>
 	    /// The sound that plays once the projectile has been released.
@@ -143,7 +149,7 @@ namespace EBF.Abstract_Classes
 	        
 	        // Draw arrow
 	        var drawPercentage = drawTime / MaximumDrawTime;
-	        var drawOffset = 16 - (8f * drawPercentage);
+	        var drawOffset = 16 - ArrowDrawOffset - (8f * drawPercentage);
 	        var position = Projectile.Center - Main.screenPosition + Vector2.Normalize(Projectile.velocity) * drawOffset;
 	        var sourceRect = arrowTexture.Frame();
 	        var origin = sourceRect.Size() / 2f;
