@@ -230,6 +230,7 @@ Projectiles: {
 	CrimsonDragon_HoldoutProjectile.DisplayName: Crimson Dragon_ Holdout Projectile
 	EagleEye_HoldoutProjectile.DisplayName: Eagle Eye_ Holdout Projectile
 	FairyBow_HoldoutProjectile.DisplayName: Fairy Bow_ Holdout Projectile
+	GaiasBow_HoldoutProjectile.DisplayName: Gaias Bow_ Holdout Projectile
 }
 
 Items: {
