@@ -18,6 +18,7 @@ namespace EBF.Abstract_Classes
             Item.useTurn = false;
             Item.noUseGraphic = true;
             Item.useAmmo = AmmoID.Arrow;
+            Item.UseSound = SoundID.Item32; // Wing flap sound
             Item.channel = true;
             Item.noMelee = true;
             Item.shoot = HoldoutProjectile;

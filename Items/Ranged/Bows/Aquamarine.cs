@@ -28,7 +28,6 @@ namespace EBF.Items.Ranged.Bows
 
             Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item32;//The item's sound when it's used
             Item.shootSpeed = 7f;
             base.SetDefaults();
         }
