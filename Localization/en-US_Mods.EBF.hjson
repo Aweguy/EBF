@@ -236,6 +236,7 @@ Projectiles: {
 	IronTusk_HoldoutProjectile.DisplayName: Iron Tusk_ Holdout Projectile
 	Juggernaut_HoldoutProjectile.DisplayName: Juggernaut_ Holdout Projectile
 	RegalTurtle_HoldoutProjectile.DisplayName: Regal Turtle_ Holdout Projectile
+	Sharanga_HoldoutProjectile.DisplayName: Sharanga_ Holdout Projectile
 }
 
 Items: {
