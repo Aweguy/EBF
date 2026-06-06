@@ -3,14 +3,17 @@ using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class IronTooth : ModItem, ILocalizedModType
+    public class IronTooth : EBFBow, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
+        protected override int HoldoutProjectile => ModContent.ProjectileType<IronTooth_HoldoutProjectile>();
+
         public override void SetDefaults()
         {
             Item.width = 18;//Width of the hitbox of the item (usually the item's sprite width)
@@ -18,28 +21,13 @@ namespace EBF.Items.Ranged.Bows
 
             Item.damage = 19;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 40;//How fast the item is used
             Item.useAnimation = 40;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Blue;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item32;//The item's sound when it's used
-            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-
-            Item.useAmmo = AmmoID.Arrow;
-            Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 7f;
-            Item.channel = true;
-            Item.noMelee = true;
-        }
-        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (type == ProjectileID.WoodenArrowFriendly)
-                type = ModContent.ProjectileType<IronTooth_Arrow>();
+            base.SetDefaults();
         }
         public override void AddRecipes()
         {
@@ -51,53 +39,68 @@ namespace EBF.Items.Ranged.Bows
         }
     }
 
-    public class IronTooth_Arrow : EBFChargeableArrow
+    public class IronTooth_HoldoutProjectile : EBFHoldoutBow
     {
+        protected override int ArrowType => ModContent.ProjectileType<IronTooth_Arrow>();
+        public override string Texture => "EBF/Items/Ranged/Bows/IronTooth";
+
+        public override void SetDefaults()
+        {
+            Projectile.width = 18;
+            Projectile.height = 46;
+            MaximumDrawTime = 80;
+            DamageScale = 1.75f;
+            VelocityScale = 1.75f;
+            ReleaseSound = SoundID.Item10;
+            base.SetDefaults();
+        }
+    }
+    public class IronTooth_Arrow : ModProjectile
+    {
+        private bool fullyCharged;
         public override string Texture => "EBF/Items/Ranged/Bows/Juggernaut_Arrow";
         public override void SetDefaults()
         {
             Projectile.width = 10;
             Projectile.height = 10;
 
-            Projectile.friendly = false;
-            Projectile.tileCollide = true;
-            Projectile.hide = false;
+            Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
-
-            MaximumDrawTime = 80;
-
-            DamageScale = 1.75f;
-            VelocityScale = 1.75f;
-            ReleaseSound = SoundID.Item10;
-
+            
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-        public override void PreAISafe()
+
+        public override void OnSpawn(IEntitySource source)
         {
-            if (IsReleased && FullyCharged)
-            {
-                Dust dust;
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Scale: 2f);
-                dust.noGravity = true;
-                dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Scale: 2f);
-                dust.noGravity = true;
-            }
+            fullyCharged = (int)Projectile.ai[0] == 1;
+        }
+
+        public override void AI()
+        {
+            if (!fullyCharged)
+                return;
+            
+            Dust dust;
+            dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, Scale: 2f);
+            dust.noGravity = true;
+            dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Scale: 2f);
+            dust.noGravity = true;
         }
         public override void OnKill(int timeLeft)
         {
-            if (FullyCharged)
-            {
-                //Explode
-                Projectile.Resize(56, 56);
-                Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Small);
-                Projectile.Damage();
+            if (!fullyCharged)
+                return;
+            
+            //Explode
+            Projectile.Resize(56, 56);
+            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Small);
+            Projectile.Damage();
 
-                // Play explosion sound
-                SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
-            }
+            // Play explosion sound
+            SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
         }
     }
 }

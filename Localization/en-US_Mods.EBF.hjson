@@ -232,6 +232,7 @@ Projectiles: {
 	FairyBow_HoldoutProjectile.DisplayName: Fairy Bow_ Holdout Projectile
 	GaiasBow_HoldoutProjectile.DisplayName: Gaias Bow_ Holdout Projectile
 	GaiasGift_HoldoutProjectile.DisplayName: Gaias Gift_ Holdout Projectile
+	IronTooth_HoldoutProjectile.DisplayName: Iron Tooth_ Holdout Projectile
 }
 
 Items: {
