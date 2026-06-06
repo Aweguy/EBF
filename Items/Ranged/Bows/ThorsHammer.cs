@@ -4,14 +4,17 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class ThorsHammer : ModItem, ILocalizedModType
+    public class ThorsHammer : EBFBow, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
+        protected override int HoldoutProjectile => ModContent.ProjectileType<ThorsHammer_HoldoutProjectile>();
+
         public override void SetDefaults()
         {
             Item.width = 22;//Width of the hitbox of the item (usually the item's sprite width)
@@ -19,30 +22,13 @@ namespace EBF.Items.Ranged.Bows
 
             Item.damage = 41;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item32;//The item's sound when it's used
-            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-
-            Item.useAmmo = AmmoID.Arrow;
-            Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 8f;
-            Item.channel = true;
-            Item.noMelee = true;
-        }
-        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (type == ProjectileID.WoodenArrowFriendly)
-            {
-                type = ModContent.ProjectileType<ThorsHammer_Arrow>();
-            }
+            base.SetDefaults();
         }
         public override void AddRecipes()
         {
@@ -54,81 +40,102 @@ namespace EBF.Items.Ranged.Bows
         }
     }
 
-    public class ThorsHammer_Arrow : EBFChargeableArrow
+    public class ThorsHammer_HoldoutProjectile : EBFHoldoutBow
     {
+        protected override int ArrowType => ModContent.ProjectileType<ThorsHammer_Arrow>();
+        public override string Texture => "EBF/Items/Ranged/Bows/ThorsHammer";
+        public override void SetDefaults()
+        {
+            Projectile.width = 22;
+            Projectile.height = 66;
+            MaximumDrawTime = 70;
+            DamageScale = 2f;
+            VelocityScale = 2.5f;
+            base.SetDefaults();
+        }
+
+        protected override void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner,
+            float ai0 = 0, float ai1 = 0, float ai2 = 0)
+        {
+            if (FullyCharged)
+            {
+                SoundEngine.PlaySound(SoundID.Item75, Projectile.position);
+                var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, owner, ai0);
+                proj.extraUpdates = 2;
+                proj.penetrate = -1;
+            }
+            else
+                base.OnShoot(source, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
+        }
+    }
+
+    public class ThorsHammer_Arrow : ModProjectile
+    {
+        private bool fullyCharged;
         private int chainCount = 3; //How many times the projectile can choose a new target.
         private NPC target = null; //The target to chase, used to adjust arrow velocity and rotation.
-        private List<NPC> hitTargets; //A list to keep track of all targets that's been previously hit, so they don't get tracked again.
-
+        private List<NPC> hitTargets = []; //A list to keep track of all targets that's been previously hit, so they don't get tracked again.
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
         {
             Projectile.width = 10;
             Projectile.height = 10;
 
-            Projectile.friendly = false;
-            Projectile.tileCollide = true;
-            Projectile.hide = false;
+            Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 70;
-            DamageScale = 2f;
-            VelocityScale = 2.5f;
-
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-        public override void OnProjectileRelease()
+
+        public override void OnSpawn(IEntitySource source)
         {
-            if (FullyCharged)
-            {
-                SoundEngine.PlaySound(SoundID.Item75, Projectile.position);
-                hitTargets = new List<NPC>();
-                Projectile.extraUpdates = 2;
-                Projectile.penetrate = -1;
-            }
+            fullyCharged = (int)Projectile.ai[0] == 1;
         }
+
         public override void AI()
         {
-            if (IsReleased && FullyCharged)
+            if (!fullyCharged)
+                return;
+            
+            if (target != null)
             {
-                if (target != null)
-                {
-                    //Move towards target
-                    Projectile.velocity = Vector2.Normalize(target.Center - Projectile.Center) * Projectile.velocity.Length();
-                    Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
-                }
-
-                //Trail
-                Lighting.AddLight(Projectile.Center, TorchID.Yellow);
-                for (int i = 0; i < 5; i++)
-                {
-                    Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, SpeedX: 0, SpeedY: 0, Scale: 2);
-                    dust.noGravity = true;
-                }
+                //Move towards target
+                Projectile.velocity = Vector2.Normalize(target.Center - Projectile.Center) * Projectile.velocity.Length();
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; //Accounting sprite facing up
             }
+
+            CreateTrail();
         }
+        
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (FullyCharged)
+            if (!fullyCharged)
+                return;
+            
+            // Change target
+            if (chainCount > 0)
             {
-                if (chainCount > 0)
-                {
-                    chainCount--;
-                    hitTargets.Add(target);
-                    if (!EBFUtils.ClosestNPC(ref this.target, 500, Projectile.position, specialCondition: new EBFUtils.SpecialCondition(CanTarget)))
-                    {
-                        Projectile.Kill();
-                    }
-                }
-                else
-                {
+                chainCount--;
+                hitTargets.Add(target);
+                if (!EBFUtils.ClosestNPC(ref this.target, 500, Projectile.position, specialCondition: new EBFUtils.SpecialCondition(CanTarget)))
                     Projectile.Kill();
-                }
+            }
+            else
+                Projectile.Kill();
+        }
+        
+        private bool CanTarget(NPC target) => !hitTargets.Contains(target);
+        private void CreateTrail()
+        {
+            Lighting.AddLight(Projectile.Center, TorchID.Yellow);
+            for (var i = 0; i < 5; i++)
+            {
+                var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch, SpeedX: 0, SpeedY: 0, Scale: 2);
+                dust.noGravity = true;
             }
         }
-        public bool CanTarget(NPC target) => !hitTargets.Contains(target);
     }
 }

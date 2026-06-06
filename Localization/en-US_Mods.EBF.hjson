@@ -239,6 +239,7 @@ Projectiles: {
 	Sharanga_HoldoutProjectile.DisplayName: Sharanga_ Holdout Projectile
 	TheStinger_HoldoutProjectile.DisplayName: The Stinger_ Holdout Projectile
 	ThornBow_HoldoutProjectile.DisplayName: Thorn Bow_ Holdout Projectile
+	ThorsHammer_HoldoutProjectile.DisplayName: Thors Hammer_ Holdout Projectile
 }
 
 Items: {
