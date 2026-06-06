@@ -237,6 +237,7 @@ Projectiles: {
 	Juggernaut_HoldoutProjectile.DisplayName: Juggernaut_ Holdout Projectile
 	RegalTurtle_HoldoutProjectile.DisplayName: Regal Turtle_ Holdout Projectile
 	Sharanga_HoldoutProjectile.DisplayName: Sharanga_ Holdout Projectile
+	TheStinger_HoldoutProjectile.DisplayName: The Stinger_ Holdout Projectile
 }
 
 Items: {
