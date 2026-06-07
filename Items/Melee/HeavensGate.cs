@@ -88,24 +88,24 @@ namespace EBF.Items.Melee
         public override bool ShouldUpdatePosition() => Projectile.frame == 4;
         public override void OnSpawn(IEntitySource source)
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            Projectile.spriteDirection = Projectile.direction;
-
             //Offset the spawned position back and store position for distance checks
             Projectile.position -= Vector2.Normalize(Projectile.velocity) * SpawnPositionOffset;
             spawnedPosition = Projectile.position;
-            Projectile.netUpdate = true;
         }
         public override void AI()
         {
+            // Net sync only works in AI
+            if (Projectile.localAI[1]++ == 0)
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                Projectile.spriteDirection = Projectile.direction;
+                Projectile.netUpdate = true;
+            }
+            
             if (animate)
-            {
                 Animate();
-            }
             else if (Vector2.Distance(spawnedPosition, Projectile.position) >= SpawnPositionOffset * 2)
-            {
                 animate = true;
-            }
 
             //Create dust
             if (Main.rand.NextBool(3))

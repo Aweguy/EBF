@@ -179,7 +179,7 @@ namespace EBF.Items.Magic.Airstrike
         public override void OnKill(int timeLeft)
         {
             //Prevent this code from happening twice because it has extra updates
-            if ((int)Projectile.localAI[0]++ == 1)
+            if ((int)Projectile.localAI[0]++ > 0)
                 return;
 
             //Explode

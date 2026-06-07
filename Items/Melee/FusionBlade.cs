@@ -75,13 +75,15 @@ namespace EBF.Items.Melee
         {
             Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
         }
-        public override void OnSpawn(IEntitySource source)
-        {
-            Direction = Projectile.velocity.ToRotation();
-            Projectile.rotation = Direction + MathHelper.PiOver2;
-        }
         public override void AI()
         {
+            // Net sync only works in AI
+            if (Projectile.localAI[0]++ == 0)
+            {
+                Direction = Projectile.velocity.ToRotation();
+                Projectile.rotation = Direction + MathHelper.PiOver2;
+            }
+            
             Projectile.frameCounter++;
             if (Projectile.frameCounter == waitingFrames)
             {
