@@ -56,7 +56,8 @@ namespace EBF.Items.Magic.Airstrike
                 Item.shoot = ModContent.ProjectileType<Airstrike_Bomb>();
                 Item.shootSpeed = 16f;
             }
-            return base.CanUseItem(player);
+            
+            return true;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -116,7 +117,6 @@ namespace EBF.Items.Magic.Airstrike
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
-            Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
             Projectile.hide = true;
@@ -127,18 +127,9 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override void OnSpawn(IEntitySource source)
         {
-            //Face falling direction
-            Projectile.rotation = Projectile.velocity.ToRotation();
-
             //Store click position for tile collision
             if (Main.myPlayer == Projectile.owner)
-            {
                 clickPosition = Main.MouseWorld;
-            }
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Projectile.Kill();
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
@@ -153,8 +144,16 @@ namespace EBF.Items.Magic.Airstrike
 
             return false;
         }
-        public override bool PreAI()
+        public override void AI()
         {
+            // Net update only works in AI
+            if (Projectile.rotation == 0)
+            {
+                //Face falling direction
+                Projectile.rotation = Projectile.velocity.ToRotation();
+                Projectile.netUpdate = true;
+            }
+            
             //Tile collision
             Projectile.HandleTileEnable(clickPosition);
 
@@ -165,12 +164,8 @@ namespace EBF.Items.Magic.Airstrike
                 Shake();
 
                 if (Projectile.timeLeft < 3)
-                {
                     Projectile.Kill();
-                }
             }
-
-            return false;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
@@ -179,17 +174,13 @@ namespace EBF.Items.Magic.Airstrike
         public override void PostDraw(Color lightColor)
         {
             if (inGround)
-            {
-                Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, glowmaskTexture.Width, glowmaskTexture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            }
+                Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, glowmaskTexture.Frame(), Color.White * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
         }
         public override void OnKill(int timeLeft)
         {
             //Prevent this code from happening twice because it has extra updates
-            if (Projectile.localAI[0] == 1)
+            if ((int)Projectile.localAI[0]++ == 1)
                 return;
-
-            Projectile.localAI[0] = 1;
 
             //Explode
             Projectile.Resize(explosionHitboxSize, explosionHitboxSize);
@@ -203,14 +194,10 @@ namespace EBF.Items.Magic.Airstrike
         {
             //Using frame counter instead of gameupdate because of extra updates
             Projectile.frameCounter++;
-            if (Projectile.frameCounter <= 1)
+            if (Projectile.frameCounter % 2 == 0)
             {
                 Projectile.Center += shakeDirection;
                 shakeDirection.X = -shakeDirection.X;
-            }
-            else
-            {
-                Projectile.frameCounter = 0;
             }
         }
     }
