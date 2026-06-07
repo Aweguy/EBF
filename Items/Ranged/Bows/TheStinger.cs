@@ -39,7 +39,6 @@ namespace EBF.Items.Ranged.Bows
 
     public class TheStinger_HoldoutProjectile : EBFHoldoutBow
     {
-        protected override int ArrowType => ProjectileID.WoodenArrowFriendly;
         public override string Texture => "EBF/Items/Ranged/Bows/TheStinger";
         public override void SetDefaults()
         {

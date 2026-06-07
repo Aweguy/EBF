@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -14,9 +15,16 @@ namespace EBF.Abstract_Classes
     /// </summary>
     public abstract class EBFHoldoutBow : ModProjectile
     {
+	    private Vector2 ownerMouseWorld; // For net sync
 	    private float drawTime;//The current charge value.
 	    private const int MinimumDrawTime = 30; // The minimum charge required before the bow can release the arrow. Set to be the bow's usetime.
-	    protected virtual int ArrowType => ProjectileID.None;
+	    private int ConsumedArrowType => (int)Projectile.ai[0]; // Which arrow item was consumed upon use. Sent by EBFBow.
+	    
+	    /// <summary>
+	    /// Determines what arrow to shoot.
+	    /// <para>Defaults to Wooden Arrow.</para>
+	    /// </summary>
+	    protected virtual int ArrowType => ProjectileID.WoodenArrowFriendly;
 
 	    /// <summary>
 	    /// Determines held item's distance from the player center, and where the projectile is spawned.
@@ -43,10 +51,7 @@ namespace EBF.Abstract_Classes
         /// </summary>
         protected int MaximumDrawTime { get; set; } = 80;
 
-        /// <summary>
-        /// True when the arrow is fully charged.
-        /// </summary>
-        protected bool FullyCharged => (int)drawTime == MaximumDrawTime;
+        protected bool FullyCharged => (int)drawTime >= MaximumDrawTime;
 
         /// <summary>
         /// Automatically release arrows that are fully charged.
@@ -61,11 +66,7 @@ namespace EBF.Abstract_Classes
         protected float DamageScale
         {
             get => damageScale;
-            set
-            {
-                if (value < 1) damageScale = 1;
-                else damageScale = value;
-            }
+            set => damageScale = value < 1 ? 1 : value;
         }
         private float damageScale = 2;
 
@@ -76,17 +77,14 @@ namespace EBF.Abstract_Classes
         protected float VelocityScale
         {
             get => velocityScale;
-            set
-            {
-                if (value < 1) velocityScale = 1;
-                else velocityScale = value;
-            }
+            set => velocityScale = value < 1 ? 1 : value;
         }
         private float velocityScale = 2;
 
         /// <summary>
-        /// This method controls what happens upon shooting. By default, it spawns an instance of ArrowType.
-        /// <br>Override this to change shooting logic as well as shot projectile.</br>
+        /// This method controls what happens upon shooting a wooden arrow.
+        /// Override this to change shooting logic as well as shot projectile.
+        /// <para>By default, it spawns an instance of ArrowType, or wooden arrow if ArrowType isn't set.</para>
         /// </summary>
         /// <param name="velocity">Projectile velocity after draw boost is applied.</param>
         /// <param name="damage">Projectile damage after draw boost is applied.</param>
@@ -114,23 +112,28 @@ namespace EBF.Abstract_Classes
         {
 			var player = Main.player[Projectile.owner];
 			var playerCenter = player.RotatedRelativePoint(player.MountedCenter);
-	        var canShoot = drawTime >= MinimumDrawTime && !CanUse(player) || FullyCharged && AutoRelease;
+			
+			// Get mouse input only from owner
+			if (Main.myPlayer == Projectile.owner)
+				ownerMouseWorld = Main.MouseWorld;
 			
 			// Update holding direction
-			var holdoutOffset = HoldoutDistance * Vector2.Normalize(Main.MouseWorld - playerCenter);
+			var holdoutOffset = HoldoutDistance * Vector2.Normalize(ownerMouseWorld - playerCenter);
 			
 	        // Net sync
 			if (holdoutOffset != Projectile.velocity) 
 				Projectile.netUpdate = true;
 			Projectile.velocity = holdoutOffset;
 			
-			HandleDrawTime(player);
-			UpdatePlayer(player, playerCenter);
+			HandleChargeup(player);
+			UpdatePlayerVisuals(player, playerCenter);
+			ForceItemStay(player);
 	        
 			// Shoot logic
-			if (canShoot && Main.myPlayer == Projectile.owner) {
+			if (CanShoot(player)) {
 				Shoot(player, playerCenter, holdoutOffset);
 				Projectile.Kill();
+				return false;
 			}
 
 			return true;
@@ -138,14 +141,10 @@ namespace EBF.Abstract_Classes
         
         public override bool PreDraw(ref Color lightColor)
         {
-	        // Draw wooden or specified arrow
-	        var arrowTexture = ArrowType == ProjectileID.None 
-		        ? TextureAssets.Projectile[ProjectileID.WoodenArrowFriendly].Value
-		        : TextureAssets.Projectile[ArrowType].Value;
-
-	        // In case player uses a different arrow, draw that one instead
-	        if ((int)Projectile.ai[0] != ProjectileID.WoodenArrowFriendly)
-		        arrowTexture = TextureAssets.Projectile[(int)Projectile.ai[0]].Value;
+	        // Choose texture based on consumed arrow
+	        var arrowTexture = ConsumedArrowType == ProjectileID.WoodenArrowFriendly 
+		        ? TextureAssets.Projectile[ArrowType].Value 
+		        : TextureAssets.Projectile[ConsumedArrowType].Value;
 	        
 	        // Draw arrow
 	        var drawPercentage = drawTime / MaximumDrawTime;
@@ -174,14 +173,14 @@ namespace EBF.Abstract_Classes
 			// Set up arguments for shot
 	        var source = player.GetSource_ItemUse_WithPotentialAmmo(heldItem, usedAmmoItemId);
 	        var (boostedDamage, boostedVelocity) = GetBoostedStats();
-	        var type = ArrowType == ProjectileID.None ? projToShoot : ArrowType;
-			var position = playerCenter + (holdoutOffset / 2);
+	        var type = ArrowType == ProjectileID.WoodenArrowFriendly ? projToShoot : ArrowType;
+			var position = playerCenter + (holdoutOffset / 2); // the /2 is to prevent arrow from spawning past walls
 			
 			// Shoot
-			if (projToShoot == ProjectileID.WoodenArrowFriendly)
+			if (type == ProjectileID.WoodenArrowFriendly)
 				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, FullyCharged ? 1 : 0);
 			else
-				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, projToShoot, boostedDamage, knockback, Projectile.owner);
+				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner);
 			
 			SoundEngine.PlaySound(ShootSound, Projectile.position);
         }
@@ -202,15 +201,16 @@ namespace EBF.Abstract_Classes
 	        return (newDamage, newVelocity);
         }
         
-		private void HandleDrawTime(Player player)
+		private void HandleChargeup(Player player)
 		{
-			if (drawTime < MaximumDrawTime)
+			// Only increment drawTime on owner, as other clients will read from ExtraAI
+			if (Projectile.owner == Main.myPlayer && !FullyCharged)
 			{
 				drawTime++;
-				if (drawTime >= MaximumDrawTime && !AutoRelease)
+				if (FullyCharged && !AutoRelease)
 					SoundEngine.PlaySound(SoundID.MaxMana, player.position);
 			}
-			else if (!AutoRelease)
+			else if (FullyCharged && !AutoRelease)
 			{
 				//Light the tip of the arrow
 				var magnitude = 8 - DrawOriginOffsetY;
@@ -220,24 +220,41 @@ namespace EBF.Abstract_Classes
 			}
 		}
 		
-        private void UpdatePlayer(Player player, Vector2 playerCenter)
+        private void UpdatePlayerVisuals(Player player, Vector2 playerCenter)
         {
-	        // Make player acts as if the holdout projectile is their item
 	        Projectile.direction = Projectile.velocity.X < 0 ? -1 : 1;
 	        Projectile.spriteDirection = Projectile.direction;
 	        player.ChangeDir(Projectile.direction);
 	        player.heldProj = Projectile.whoAmI;
-	        player.SetDummyItemTime(2);
 	        Projectile.Center = playerCenter;
 	        var rotationOffset = Projectile.spriteDirection == -1 ? MathHelper.Pi : 0;
 	        Projectile.rotation = Projectile.velocity.ToRotation() + rotationOffset;
 	        player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+        }
+
+        private void ForceItemStay(Player player)
+        {
+	        player.SetDummyItemTime(2);
 	        Projectile.timeLeft = 2;
         }
         
         private static bool CanUse(Player player, bool mustChannel = true) 
 	        => player is { active: true, dead: false, CCed: false, noItems: false } && (!mustChannel || player.channel);
 
+        private bool CanShoot(Player player) => Main.myPlayer == Projectile.owner 
+	        && drawTime >= MinimumDrawTime && !CanUse(player) || FullyCharged && AutoRelease;
+        
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+	        writer.Write(drawTime);
+	        writer.WritePackedVector2(ownerMouseWorld);
+        }
+        
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+	        drawTime = reader.ReadSingle();
+	        ownerMouseWorld = reader.ReadPackedVector2();
+        }
     }
 }
 

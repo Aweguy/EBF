@@ -33,7 +33,6 @@ namespace EBF.Items.Ranged.Bows
     public class TestHoldoutBow : EBFHoldoutBow
     {
         public override string Texture => $"Terraria/Images/Item_{ItemID.Phantasm}";
-        protected override int ArrowType => ProjectileID.WoodenArrowFriendly;
         public override void SetDefaults()
         {
             Projectile.width = 36;

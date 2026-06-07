@@ -40,7 +40,6 @@ namespace EBF.Items.Ranged.Bows
 
     public class FairyBow_HoldoutProjectile : EBFHoldoutBow
     {
-        protected override int ArrowType => ModContent.ProjectileType<FairyBow_Arrow>();
         public override string Texture => "EBF/Items/Ranged/Bows/FairyBow";
         public override void SetDefaults()
         {
@@ -63,23 +62,6 @@ namespace EBF.Items.Ranged.Bows
                         Projectile.knockBack, Projectile.owner);
             
             base.OnShoot(source, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
-        }
-    }
-
-    public class FairyBow_Arrow : ModProjectile
-    {
-        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
-        public override void SetDefaults()
-        {
-            Projectile.width = 10;
-            Projectile.height = 10;
-
-            Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Ranged;
-            Projectile.aiStyle = ProjAIStyleID.Arrow;
-            Projectile.ignoreWater = true;
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
         }
     }
 }

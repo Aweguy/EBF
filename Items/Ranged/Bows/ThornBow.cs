@@ -40,7 +40,6 @@ namespace EBF.Items.Ranged.Bows
 
     public class ThornBow_HoldoutProjectile : EBFHoldoutBow
     {
-        protected override int ArrowType => ProjectileID.WoodenArrowFriendly;
         public override string Texture => "EBF/Items/Ranged/Bows/ThornBow";
         public override void SetDefaults()
         {
