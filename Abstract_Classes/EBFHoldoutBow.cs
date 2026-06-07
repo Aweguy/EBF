@@ -188,14 +188,17 @@ namespace EBF.Abstract_Classes
 
         private (int damage, Vector2 velocity) GetBoostedStats()
         {
-	        // Calculate boosts from the arrow's draw time.
-	        var drawPercentage = (drawTime - MinimumDrawTime) / (MaximumDrawTime - MinimumDrawTime); // Begin scaling after exceeding minimum draw time
+	        // Get boosting percentage
+	        var range = MaximumDrawTime - MinimumDrawTime; // Begin scaling after exceeding minimum draw time
+	        var drawPercentage = range <= 0 ? 1f : (drawTime - MinimumDrawTime) / range; // Condition handles /0 edge case
+	        
+	        // Apply boosts
 	        var damageBoost = 1 + (damageScale - 1) * drawPercentage;
 	        var velocityBoost = 1 + (velocityScale - 1) * drawPercentage;
 	        
+	        // Return boosted values
 	        var newDamage = (int)(Projectile.damage * damageBoost);
 	        var newVelocity = Vector2.Normalize(Projectile.velocity) * velocityBoost;
-
 	        return (newDamage, newVelocity);
         }
         
