@@ -51,7 +51,7 @@ namespace EBF.Items.Ranged.Bows
             MaximumDrawTime = 80;
             DamageScale = 1.75f;
             VelocityScale = 1.75f;
-            ReleaseSound = SoundID.Item10;
+            ShootSound = SoundID.Item10;
             base.SetDefaults();
         }
     }

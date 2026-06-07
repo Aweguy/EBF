@@ -14,7 +14,7 @@ namespace EBF.Abstract_Classes
     /// </summary>
     public abstract class EBFHoldoutBow : ModProjectile
     {
-	    private float drawTime = 0;//The current charge value.
+	    private float drawTime;//The current charge value.
 	    private const int MinimumDrawTime = 30; // The minimum charge required before the bow can release the arrow. Set to be the bow's usetime.
 	    protected virtual int ArrowType => ProjectileID.None;
 
@@ -28,13 +28,13 @@ namespace EBF.Abstract_Classes
 	    /// How far away the arrow should be drawn. Higher values means the arrow will be drawn closer to the bow.
 	    /// <para>Defaults to 0 pixels.</para>
 	    /// </summary>
-	    protected int ArrowDrawOffset { get; set; } = 0;
+	    protected int ArrowDrawOffset { get; set; }
 	    
 	    /// <summary>
 	    /// The sound that plays once the projectile has been released.
 	    /// <para>Defaults to Item5 (bow shoot sound).</para>
 	    /// </summary>
-	    protected SoundStyle ReleaseSound { get; set; } = SoundID.Item5;
+	    protected SoundStyle ShootSound { get; set; } = SoundID.Item5;
 	    
 	    /// <summary>
         /// The maximum amount of charge an arrow can have, at which point draw time will stop increasing. Draw time starts at 0 and ticks up by 1 every update while an arrow exists.
@@ -110,7 +110,7 @@ namespace EBF.Abstract_Classes
         
         public override bool? CanDamage() => false;
 
-        public override bool PreAI()
+        public sealed override bool PreAI()
         {
 			var player = Main.player[Projectile.owner];
 			var playerCenter = player.RotatedRelativePoint(player.MountedCenter);
@@ -166,7 +166,7 @@ namespace EBF.Abstract_Classes
         private void Shoot(Player player, Vector2 playerCenter, Vector2 holdoutOffset)
         {
 	        var heldItem = player.HeldItem;
-	        var ammoConsumed = player.PickAmmo(heldItem, out var projToShoot, out var speed, out var damage, out var knockback, out var usedAmmoItemId);
+	        var ammoConsumed = player.PickAmmo(heldItem, out var projToShoot, out _, out _, out var knockback, out var usedAmmoItemId);
 
 	        if (!ammoConsumed)
 		        return;
@@ -179,11 +179,11 @@ namespace EBF.Abstract_Classes
 			
 			// Shoot
 			if (projToShoot == ProjectileID.WoodenArrowFriendly)
-				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, FullyCharged ? 1 : 0, 0, 0);
+				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, FullyCharged ? 1 : 0);
 			else
 				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, projToShoot, boostedDamage, knockback, Projectile.owner);
 			
-			SoundEngine.PlaySound(ReleaseSound, Projectile.position);
+			SoundEngine.PlaySound(ShootSound, Projectile.position);
         }
 
         private (int damage, Vector2 velocity) GetBoostedStats()

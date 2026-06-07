@@ -51,7 +51,7 @@ namespace EBF.Items.Ranged.Bows
         {
             Projectile.width = 26;
             Projectile.height = 66;
-            ReleaseSound = SoundID.Item92;
+            ShootSound = SoundID.Item92;
             DamageScale = 2.25f;
             VelocityScale = 2f;
             base.SetDefaults();

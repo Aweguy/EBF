@@ -47,7 +47,7 @@ namespace EBF.Items.Ranged.Bows
             Projectile.width = 26;
             Projectile.height = 70;
             MaximumDrawTime = 40;
-            ReleaseSound = SoundID.DD2_FlameburstTowerShot;
+            ShootSound = SoundID.DD2_FlameburstTowerShot;
             DamageScale = 2.5f;
             VelocityScale = 1.5f;
             base.SetDefaults();
