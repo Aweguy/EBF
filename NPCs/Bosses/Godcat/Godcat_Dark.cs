@@ -1,6 +1,7 @@
 ﻿using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,6 +14,8 @@ namespace EBF.NPCs.Bosses.Godcat
     [AutoloadBossHead]
     public class Godcat_Dark : GodcatNPC
     {
+        protected override int DustType => DustID.RedTorch;
+        
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -122,16 +125,15 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             // Server handles npc creation
             if (Main.netMode == NetmodeID.MultiplayerClient)
-                return; 
+                return;
+
+            List<int> spawnedNpcs = [];
             
             // Spawn vehicle
             var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
             var type = ModContent.NPCType<Godcat_Destroyer>();
-            var npc = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
-            
-            // Server must sync npc to clients
-            if (Main.netMode == NetmodeID.Server)
-                NetMessage.SendData(MessageID.SyncNPC, number: npc);
+            var vehicle = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            spawnedNpcs.Add(vehicle);
 
             // Spawn crystals
             type = ModContent.NPCType<RedCrystal>();
@@ -139,22 +141,17 @@ namespace EBF.NPCs.Bosses.Godcat
             for (var i = 0; i < amount; i++)
             {
                 var crystal = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
-                
-                // Server must sync npc to clients
-                if (Main.netMode == NetmodeID.Server)
-                    NetMessage.SendData(MessageID.SyncNPC, number: crystal);
+                spawnedNpcs.Add(crystal);
             }
+            
+            // Server must sync npcs to clients
+            if (Main.netMode == NetmodeID.Server)
+                foreach (var npcID in spawnedNpcs)
+                    NetMessage.SendData(MessageID.SyncNPC, number: npcID);
 
             //Dialogue
             var text = Phase == 0 ? "You cannot escape my wrath." : "No one who dares spite me can be permitted to stand!";
             Main.NewText(text, Color.Red);
-        }
-        protected override void SpawnDust()
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch);
-            }
         }
         private void CreateDarkStormSeiken(Player player)
         {

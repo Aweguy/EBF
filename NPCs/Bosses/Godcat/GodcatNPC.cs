@@ -29,6 +29,9 @@ namespace EBF.NPCs.Bosses.Godcat
         private const int FinalPhaseDuration = 60 * 10; // How long the godcats stick around before finishing the fight
         protected ref float Phase => ref NPC.ai[0];
         private ref float PhaseTimer => ref NPC.ai[1];
+        
+        //Other
+        protected virtual int DustType => 0;
 
         public override void SetStaticDefaults()
         {
@@ -138,7 +141,11 @@ namespace EBF.NPCs.Bosses.Godcat
         protected abstract void Move(Player player);
         protected abstract void HandleAttacks(Player player);
         protected abstract void SummonVehicle(Player player);
-        protected abstract void SpawnDust();
+        protected void SpawnDust()
+        {
+            for (var i = 0; i < 20; i++)
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustType);
+        }
         private void HandleStateChange()
         {
             StateTimer++;
@@ -160,17 +167,13 @@ namespace EBF.NPCs.Bosses.Godcat
         private void HandleDodging()
         {
             isDodging = Main.GameUpdateCount % 60 > 10;
-            if (isDodging)
-            {
-                Rectangle npcBox = NPC.Hitbox;
-                foreach (var proj in Main.projectile)
-                {
-                    if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
-                    {
-                        hasDodged = true;
-                    }
-                }
-            }
+            if (!isDodging)
+                return;
+            
+            var npcBox = NPC.Hitbox;
+            foreach (var proj in Main.projectile)
+                if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
+                    hasDodged = true;
         }
         private void HandlePhaseStuff(Player player)
         {

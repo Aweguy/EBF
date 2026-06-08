@@ -5,6 +5,7 @@ using EBF.Items.TreasureBags;
 using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -18,6 +19,8 @@ namespace EBF.NPCs.Bosses.Godcat
     [AutoloadBossHead]
     public class Godcat_Light : GodcatNPC
     {
+        protected override int DustType => DustID.AncientLight;
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -110,9 +113,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             //Don't attack in final phase
             if (Phase == 2)
-            {
                 return;
-            }
 
             switch (currentState)
             {
@@ -138,9 +139,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     if (StateTimer <= 120)
                     {
                         if (StateTimer % 40 == 0)
-                        {
                             CreateDiamondWall(NPC.DirectionTo(player.Center) * 10f, 6, 50, 1.0f);
-                        }
                         else if (StateTimer % 40 == 20)
                         {
                             CreateDiamondWall(NPC.DirectionTo(player.Center).RotatedBy(0.33f) * 10f, 6, 50, 1.0f);
@@ -148,9 +147,7 @@ namespace EBF.NPCs.Bosses.Godcat
                         }
                     }
                     else if (StateTimer == 169)
-                    {
                         CreateDiamondWall(NPC.DirectionTo(player.Center) * 8f, 12, 180, 2.0f);
-                    }
                     break;
             }
         }
@@ -160,14 +157,13 @@ namespace EBF.NPCs.Bosses.Godcat
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return; 
             
+            List<int> spawnedNpcs = [];
+            
             // Spawn vehicle
             var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
             var type = ModContent.NPCType<Godcat_Creator>();
-            var npc = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
-            
-            // Server must sync npc to clients
-            if (Main.netMode == NetmodeID.Server)
-                NetMessage.SendData(MessageID.SyncNPC, number: npc);
+            var vehicle = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            spawnedNpcs.Add(vehicle);
 
             // Spawn crystals
             type = ModContent.NPCType<BlueCrystal>();
@@ -175,22 +171,17 @@ namespace EBF.NPCs.Bosses.Godcat
             for (var i = 0; i < amount; i++)
             {
                 var crystal = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
-                
-                // Server must sync npc to clients
-                if (Main.netMode == NetmodeID.Server)
-                    NetMessage.SendData(MessageID.SyncNPC, number: crystal);
+                spawnedNpcs.Add(crystal);
             }
+            
+            // Server must sync npcs to clients
+            if (Main.netMode == NetmodeID.Server)
+                foreach (var npcID in spawnedNpcs)
+                    NetMessage.SendData(MessageID.SyncNPC, number: npcID);
 
             //Dialogue
             var text = Phase == 0 ? "I pass my infallible judgement upon you." : "This ends now.";
             Main.NewText(text, Color.LightCyan);
-        }
-        protected override void SpawnDust()
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.AncientLight);
-            }
         }
         private void CreateJudgementWave(Player player)
         {
