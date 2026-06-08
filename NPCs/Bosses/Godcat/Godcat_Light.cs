@@ -61,6 +61,8 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
+            
             //Dialogue
             string text = Phase switch
             {
@@ -154,14 +156,30 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected override void SummonVehicle(Player player)
         {
+            // Server handles npc creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
+            // Spawn vehicle
             var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
             var type = ModContent.NPCType<Godcat_Creator>();
-            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            var npc = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            
+            // Server must sync npc to clients
+            if (Main.netMode == NetmodeID.Server)
+                NetMessage.SendData(MessageID.SyncNPC, number: npc);
 
+            // Spawn crystals
             type = ModContent.NPCType<BlueCrystal>();
             var amount = Phase == 0 ? 2 : 1;
             for (var i = 0; i < amount; i++)
-                NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+            {
+                var crystal = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+                
+                // Server must sync npc to clients
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.SyncNPC, number: crystal);
+            }
 
             //Dialogue
             var text = Phase == 0 ? "I pass my infallible judgement upon you." : "This ends now.";
@@ -176,6 +194,10 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateJudgementWave(Player player)
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             // Big ol' wave of judgement lasers
             CreateJudgementAt(player.Bottom);
 
@@ -206,27 +228,39 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         private void CreateStormSeiken(Player player)
         {
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var position = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
             var velocity = Vector2.Normalize(player.Center - position).RotatedByRandom(0.33f) * 14f;
             var type = ModContent.ProjectileType<Godcat_LightBlade>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, NPC.target);
-
-            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateSeikenRing(int amount, int speed)
         {
+            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
             {
                 var type = ModContent.ProjectileType<Godcat_LightBlade>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.GetProjectileDamage(type), 3f, -1, NPC.target);
             }
-
-            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
         }
         private void CreateDiamondWall(Vector2 velocity, int amount, float spread, float scale)
         {
             SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
 
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var type = ModContent.ProjectileType<Godcat_LightDiamond>();
             var rightAngleVector = new Vector2(-velocity.Y, velocity.X);
             rightAngleVector.Normalize();

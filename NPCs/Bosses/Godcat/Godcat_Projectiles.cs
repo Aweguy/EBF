@@ -221,6 +221,9 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void AI()
         {
+            if (Owner == null || Owner.active == false)
+                Projectile.Kill();
+            
             if (IsMiniVariant)
             {
                 if (Main.rand.NextBool(2))
@@ -229,11 +232,10 @@ namespace EBF.NPCs.Bosses.Godcat
                     dust.noGravity = true;
                 }
 
-                Projectile.HomeTowards(Owner, 0.33f, 12f);
                 if (Projectile.Distance(Owner.Center) < 32)
-                {
                     Projectile.Kill();
-                }
+                
+                Projectile.HomeTowards(Owner, 0.33f, 12f);
             }
             else
             {

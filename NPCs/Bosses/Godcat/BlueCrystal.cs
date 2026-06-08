@@ -2,6 +2,7 @@
 using EBF.Systems;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace EBF.NPCs.Bosses.Godcat
@@ -17,6 +18,10 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected override void Attack(Player player)
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var type = ModContent.ProjectileType<ArcticTrident_Icecicle>();
             var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * 8f, type, NPC.GetProjectileDamage(type), 3f);
             proj.friendly = false;

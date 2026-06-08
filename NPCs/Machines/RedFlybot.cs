@@ -45,7 +45,11 @@ namespace EBF.NPCs.Machines
         private void Shoot(Player player)
         {
             SoundEngine.PlaySound(SoundID.Item158, NPC.Center);
-
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             //Create projectile
             var velocity = NPC.DirectionTo(player.position) * 14;
             var type = ModContent.ProjectileType<RedFlybot_Laser>();

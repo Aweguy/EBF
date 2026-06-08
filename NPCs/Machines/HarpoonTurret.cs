@@ -76,6 +76,10 @@ namespace EBF.NPCs.Machines
 
         private void Shoot()
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var speed = 22;
             var vel = NPC.rotation.ToRotationVector2() * speed + new Vector2(0, -1);
             var type = ModContent.ProjectileType<HarpoonTurret_Projectile>();

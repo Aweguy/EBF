@@ -101,19 +101,35 @@ namespace EBF.NPCs.Bosses.Godcat
                 NPC.life = NPC.lifeMax / 2;
             }
         }
+        private void EnsureOtherVehicleSynced()
+        {
+            // Server handles this
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            
+            if (Phase != 0 && !hasSearchedForOther && TryFindOtherVehicle(out NPC foundVehicle))
+            {
+                otherVehicle = foundVehicle;
+                hasSearchedForOther = true;
+        
+                // Sync to clients
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
+            }
+        }
         public override void AI()
         {
+            // Sync state occasionally
+            if (Main.netMode == NetmodeID.Server && Main.GameUpdateCount % 60 == 0)
+                NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
+            
             // Locate other vehicle when both are alive at once
-            if (Phase != 0 && !hasSearchedForOther && TryFindOtherVehicle(out NPC otherVehicle))
-            {
-                this.otherVehicle = otherVehicle;
-                hasSearchedForOther = true;
-            }
+            EnsureOtherVehicleSynced();
 
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
-            Player player = Main.player[NPC.target];
 
+            var player = Main.player[NPC.target];
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
@@ -207,19 +223,10 @@ namespace EBF.NPCs.Bosses.Godcat
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                //var index = Main.rand.Next(1, stateDurations.Count);
-                if (currentState == State.Idle)
-                {
-                    var index = attackManager.Next();
-                    currentState = stateDurations.ElementAt(index).Key;
-                }
-                else
-                {
-                    currentState = State.Idle;
-                }
-
+                currentState = currentState != State.Idle ? State.Idle : GetNextAttackState();
             }
         }
+        private State GetNextAttackState() => stateDurations.ElementAt(attackManager.Next()).Key;
         private bool TryFindOtherVehicle(out NPC otherVehicle)
         {
             foreach (var npc in Main.npc)
@@ -243,6 +250,13 @@ namespace EBF.NPCs.Bosses.Godcat
 
             if (FramesOverPunishDistance > PunishFrameThreshold)
             {
+                if (Main.GameUpdateCount % 5 == 0)
+                    SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 var position = NPC.Center + Vector2.UnitX.RotatedByRandom(MathHelper.Pi) * 64;
                 var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(1f) * 20f;
 
@@ -254,10 +268,31 @@ namespace EBF.NPCs.Bosses.Godcat
                     type = ModContent.ProjectileType<Godcat_LightBlade>();
 
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity, type, NPC.damage, 3f);
-
-                if (Main.GameUpdateCount % 5 == 0)
-                    SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
+        }
+        
+        public override void SendExtraAI(System.IO.BinaryWriter writer)
+        {
+            writer.Write((byte)currentState);
+            writer.Write(StateTimer);
+            writer.Write(Phase);
+            writer.Write(isTransitioningOut);
+            writer.Write(hasSearchedForOther);
+            writer.Write(FramesOverPunishDistance);
+        }
+
+        public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+        {
+            currentState = (State)reader.ReadByte();
+            StateTimer = reader.ReadSingle();
+            Phase = reader.ReadSingle();
+            isTransitioningOut = reader.ReadBoolean();
+            hasSearchedForOther = reader.ReadBoolean();
+            FramesOverPunishDistance = reader.ReadSingle();
+    
+            // Re-find other vehicle on clients if needed
+            if (Phase != 0 && !hasSearchedForOther)
+                TryFindOtherVehicle(out otherVehicle);
         }
     }
 }

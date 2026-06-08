@@ -44,6 +44,10 @@ namespace EBF.NPCs.Machines
 
         private void Shoot(Player player)
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             SoundEngine.PlaySound(SoundID.Item85, NPC.position);
 
             //Create projectile
