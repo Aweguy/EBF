@@ -25,14 +25,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.defense = 12;
+            Item.defense = 20;
 
             Item.shoot = ModContent.ProjectileType<StarHammerStab>();
             BonusMinion = ModContent.ProjectileType<StarHammerMinion>();
         }
         public override void HoldItemSafe(Player player)
         {
-            player.statDefense += 12;
+            player.statDefense += 20;
         }
         public override void AddRecipes()
         {
