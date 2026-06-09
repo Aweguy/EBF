@@ -25,7 +25,7 @@ namespace EBF.Items.Accessories.Flairs
         {
             CreateRecipe(amount: 1)
                 .AddIngredient<TargetBadge>(stack: 1)
-                .AddIngredient(ItemID.AdamantiteBar, stack: 10)
+                .AddRecipeGroup("TitaniumBar", stack: 10)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

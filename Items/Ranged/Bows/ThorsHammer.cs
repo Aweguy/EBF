@@ -33,7 +33,7 @@ namespace EBF.Items.Ranged.Bows
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.AdamantiteBar, stack: 20)
+                .AddRecipeGroup("TitaniumBar", stack: 20)
                 .AddIngredient(ItemID.SoulofLight, stack: 15)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
