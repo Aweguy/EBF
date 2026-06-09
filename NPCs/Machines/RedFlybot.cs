@@ -77,17 +77,21 @@ namespace EBF.NPCs.Machines
             Projectile.height = 10;
             Projectile.friendly = true;
         }
-        public override void OnSpawn(IEntitySource source)
+        public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            // Net sync must happen in AI
+            if (Projectile.localAI[0]++ == 0)
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                Projectile.netUpdate = true;
+            }
         }
+
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item89, Projectile.Center);
             for (int i = 0; i < 8; i++)
-            {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworkFountain_Red);
-            }
         }
     }
 }
