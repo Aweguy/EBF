@@ -36,7 +36,7 @@ namespace EBF.Items.Magic
                 .AddIngredient(ItemID.Obsidian, stack: 30)
                 .AddIngredient(ItemID.Ruby, stack: 10)
                 .AddIngredient(ItemID.SoulofNight, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }

@@ -32,7 +32,7 @@ namespace EBF.Items.Melee
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.SoulofNight, stack: 10)
                 .AddIngredient<Avenger>(stack: 1)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
         public override void MeleeEffects(Player player, Rectangle hitbox)

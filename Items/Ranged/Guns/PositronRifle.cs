@@ -37,7 +37,7 @@ namespace EBF.Items.Ranged.Guns
                 .AddIngredient(ItemID.ClockworkAssaultRifle, stack: 1)
                 .AddIngredient(ItemID.CrystalShard, stack: 15)
                 .AddIngredient(ItemID.Amethyst, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }

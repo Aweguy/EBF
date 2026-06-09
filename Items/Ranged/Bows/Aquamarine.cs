@@ -37,7 +37,7 @@ namespace EBF.Items.Ranged.Bows
                 .AddIngredient(ItemID.Coral, stack: 16)
                 .AddIngredient(ItemID.Sapphire, stack: 10)
                 .AddIngredient(ItemID.SoulofLight, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }
