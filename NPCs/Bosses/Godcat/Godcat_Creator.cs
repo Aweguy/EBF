@@ -67,6 +67,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void AI()
         {
             base.AI();
+            
             switch (currentState)
             {
                 case State.TurningBallCircle:
@@ -110,9 +111,17 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected override void BeginNextPhase(Player player)
         {
+            // Server handles npc creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var type = ModContent.NPCType<Godcat_Dark>();
             var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
-            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            var npc = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            
+            // Server must sync npc to clients
+            if (Main.netMode == NetmodeID.Server)
+                NetMessage.SendData(MessageID.SyncNPC, number: npc);
         }
         protected override void CreateHalfHealthHurtEffect()
         {
@@ -123,6 +132,12 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             if (Main.GameUpdateCount % 30 == 0)
             {
+                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 var amount = 12;
                 var speed = 5;
                 var type = ModContent.ProjectileType<Godcat_TurningBall>();
@@ -135,8 +150,6 @@ namespace EBF.NPCs.Bosses.Godcat
                     if (IsAlone)
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, damage, 3f, -1, (float)GodcatBallTypes.LightBig, 0.005f);
                 }
-
-                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
         }
         private void CreateTurningBallSpiral()
@@ -144,16 +157,26 @@ namespace EBF.NPCs.Bosses.Godcat
             var shootDelay = IsAlone ? 2 : 4;
             if (Main.GameUpdateCount % shootDelay == 0)
             {
-                var speed = 4;
-                var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
-                var type = ModContent.ProjectileType<Godcat_TurningBall>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
-
                 SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+                
+                // Server handles npc projectile creation
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    var speed = 4;
+                    var velocity = (Main.GameUpdateCount * 0.2f).ToRotationVector2() * speed;
+                    var type = ModContent.ProjectileType<Godcat_TurningBall>();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, (float)GodcatBallTypes.LightBig, -0.005f);
+                }
             }
 
             if (IsAlone && Main.GameUpdateCount % 60 == 0)
             {
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 var amount = 12;
                 var speed = 6;
                 var type = ModContent.ProjectileType<Godcat_LightDiamond>();
@@ -163,8 +186,6 @@ namespace EBF.NPCs.Bosses.Godcat
                     var velocity = Vector2.UnitX.RotatedBy(theta) * speed;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 3f);
                 }
-
-                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
             }
         }
         private void CreateThunderBalls()
@@ -174,6 +195,10 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 //Form a ring of thunder balls
                 var amount = IsAlone ? 16 : 10;
                 if (Main.expertMode) amount += 4;
@@ -187,11 +212,8 @@ namespace EBF.NPCs.Bosses.Godcat
                     velocity.Y *= 0.4f;
 
                     //Some balls should draw behind creator, we send that info via ai[1]
-                    var drawBehind = 0;
-                    if (theta > MathF.PI) // ">" because theta goes clockwise for some reason?
-                    {
-                        drawBehind = 1;
-                    }
+                    // ">" because radians goes clockwise for some reason?
+                    var drawBehind = theta > MathF.PI ? 1 : 0;
 
                     //ai[0] is how long it takes before the balls launch
                     //ai[2] is the owner, real owner must be -1 for dmg to work, owner is used to keep balls attached until they launch
@@ -205,6 +227,10 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 SoundEngine.PlaySound(SoundID.Item8, NPC.position);
 
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 //Form a ring of thunder balls
                 var amount = IsAlone ? 6 : 4;
                 if (Main.expertMode) amount += 2;
@@ -218,11 +244,8 @@ namespace EBF.NPCs.Bosses.Godcat
                     velocity.Y *= 0.4f;
 
                     //Some balls should draw behind creator, we send that info via ai[1]
-                    var drawBehind = 0;
-                    if (theta > MathF.PI) // ">" because theta goes clockwise for some reason?
-                    {
-                        drawBehind = 1;
-                    }
+                    // ">" because radians goes clockwise for some reason?
+                    var drawBehind = theta > MathF.PI ? 1 : 0;
 
                     //ai[0] is how long it takes before the balls launch
                     //ai[2] is the owner, real owner must be -1 for dmg to work, owner is used to keep balls attached until they launch
@@ -234,9 +257,7 @@ namespace EBF.NPCs.Bosses.Godcat
         private void CreateHolyDeathray()
         {
             if (StateTimer == 0)
-            {
                 SoundEngine.PlaySound(SoundID.NPCDeath58, NPC.Center);
-            }
 
             if (StateTimer < 150)
             {
@@ -248,16 +269,20 @@ namespace EBF.NPCs.Bosses.Godcat
             }
             else if (StateTimer == 150)
             {
-                // Shoot laser
-                var velocity = new Vector2(NPC.direction, 0);
-                var type = ModContent.ProjectileType<Creator_HolyDeathray>();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3, -1, NPC.whoAmI);
-
                 var sound = SoundID.Zombie104; // Moon Lord deathray sound
                 sound.Pitch = 1.4f;
                 sound.Volume = 0.3f;
                 SoundEngine.PlaySound(sound, NPC.Center);
-
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
+                // Shoot laser
+                var velocity = new Vector2(NPC.direction, 0);
+                var type = ModContent.ProjectileType<Creator_HolyDeathray>();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3, -1, NPC.whoAmI);
+                
                 // Create arc of diamonds
                 if (!IsAlone)
                     return;

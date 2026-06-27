@@ -23,7 +23,7 @@ namespace EBF.Items.Ranged.Guns
 
             Item.useTime = 30;
             Item.useAnimation = 30;
-            Item.damage = 32;
+            Item.damage = 44;
             Item.knockBack = 3;
 
             Item.value = Item.sellPrice(copper: 0, silver: 40, gold: 2, platinum: 0);
@@ -37,7 +37,7 @@ namespace EBF.Items.Ranged.Guns
                 .AddIngredient(ItemID.ClockworkAssaultRifle, stack: 1)
                 .AddIngredient(ItemID.CrystalShard, stack: 15)
                 .AddIngredient(ItemID.Amethyst, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }
@@ -83,14 +83,16 @@ namespace EBF.Items.Ranged.Guns
             if (Projectile.frameCounter == 0 || Projectile.frameCounter == 4)
             {
                 int explosionID = 0;
+                float damage = Projectile.damage;
                 if (type == ProjectileID.Bullet)
                 {
                     explosionID = ModContent.ProjectileType<PositronRifle_PlasmaBurst>();
                     type = ModContent.ProjectileType<PositronRifle_PlasmaShot>();
+                    damage *= 1.25f;
                 }
 
                 SoundEngine.PlaySound(ShootSound, Projectile.position);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner, explosionID);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), barrelEnd, Projectile.velocity, type, (int)damage, Projectile.knockBack, Projectile.owner, explosionID);
             }
 
             Projectile.frameCounter++;
@@ -123,14 +125,18 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
+            // Animate
             if (Main.GameUpdateCount % 4 == 0)
             {
                 Projectile.frame++;
                 if (Projectile.frame >= 2)
-                {
                     Projectile.frame = 0;
-                }
             }
+        }
+
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            modifiers.FinalDamage *= 0;
         }
 
         public override void OnKill(int timeLeft)
@@ -165,14 +171,12 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
-            //Run every other frame
+            // Animate without loop
             if (Main.GameUpdateCount % 4 == 0)
             {
                 Projectile.frame++;
                 if (Projectile.frame > Main.projFrames[Projectile.type])
-                {
                     Projectile.Kill();
-                }
             }
         }
     }
@@ -203,9 +207,9 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AI()
         {
-            //Run every other frame
             if (Main.GameUpdateCount % 2 == 0)
             {
+                // Spawn explosion in a random position near the wave
                 int type = ModContent.ProjectileType<PositronRifle_PlasmaBurst>();
                 Vector2 position = Projectile.position + new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-0.5f, 0.5f)) * 128;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, type, Projectile.damage, 0, Projectile.owner);

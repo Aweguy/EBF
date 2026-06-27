@@ -1,4 +1,5 @@
-﻿using EBF.EbfUtils;
+﻿using System.IO;
+using EBF.EbfUtils;
 using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -47,10 +48,10 @@ namespace EBF.Items.Melee
     public class FusionBlade_BulletBob : ModProjectile
     {
         private NPC target;
-        private float direction;
         private const float speed = 15;
         private const int homingRange = 800;
         private const int waitingFrames = 30;
+        private ref float Direction => ref Projectile.ai[0];
 
         public override void SetStaticDefaults()
         {
@@ -74,13 +75,15 @@ namespace EBF.Items.Melee
         {
             Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
         }
-        public override void OnSpawn(IEntitySource source)
+        public override void AI()
         {
-            direction = Projectile.velocity.ToRotation();
-            Projectile.rotation = direction + MathHelper.PiOver2;
-        }
-        public override bool PreAI()
-        {
+            // Net sync only works in AI
+            if (Projectile.localAI[0]++ == 0)
+            {
+                Direction = Projectile.velocity.ToRotation();
+                Projectile.rotation = Direction + MathHelper.PiOver2;
+            }
+            
             Projectile.frameCounter++;
             if (Projectile.frameCounter == waitingFrames)
             {
@@ -94,9 +97,7 @@ namespace EBF.Items.Melee
                 //Animate sprite
                 Projectile.frame++;
                 if (Projectile.frame > 2)
-                {
                     Projectile.frame = 1;
-                }
 
                 //Trail
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Flare);
@@ -105,13 +106,11 @@ namespace EBF.Items.Melee
                 //Homing
                 if (EBFUtils.ClosestNPC(ref target, homingRange, Projectile.Center))
                 {
-                    direction = EBFUtils.SlowRotation(direction, Projectile.AngleTo(target.Center), 3f);
-                    Projectile.velocity = direction.ToRotationVector2() * speed;
-                    Projectile.rotation = direction + MathHelper.PiOver2;
+                    Direction = EBFUtils.SlowRotation(Direction, Projectile.AngleTo(target.Center), 3f);
+                    Projectile.velocity = Direction.ToRotationVector2() * speed;
+                    Projectile.rotation = Direction + MathHelper.PiOver2;
                 }
             }
-
-            return false;
         }
     }
 }

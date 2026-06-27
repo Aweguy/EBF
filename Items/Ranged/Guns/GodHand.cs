@@ -1,4 +1,5 @@
-﻿using EBF.Abstract_Classes;
+﻿using System.IO;
+using EBF.Abstract_Classes;
 using EBF.Buffs;
 using EBF.Items.Materials;
 using Microsoft.Xna.Framework;
@@ -113,6 +114,7 @@ namespace EBF.Items.Ranged.Guns
 
     public class GodHandLaser : EBFDeathRay
     {
+        private Vector2 ownerMousePos;
         private Entity Owner => Main.player[Projectile.owner];
         public override string Texture => "EBF/NPCs/Bosses/Godcat/Creator_HolyDeathray";
         protected override Vector3 LightColor => Color.White.ToVector3();
@@ -127,8 +129,14 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AISafe()
         {
-            Projectile.velocity = Owner.DirectionTo(Main.MouseWorld);
+            if (Projectile.owner == Main.myPlayer)
+                ownerMousePos = Main.MouseWorld;
+            
+            Projectile.velocity = Owner.DirectionTo(ownerMousePos);
             Projectile.Center = Owner.Center + Projectile.velocity * 88;
         }
+        
+        public override void SendExtraAI(BinaryWriter writer) => writer.WritePackedVector2(ownerMousePos);
+        public override void ReceiveExtraAI(BinaryReader reader) => ownerMousePos = reader.ReadPackedVector2();
     }
 }

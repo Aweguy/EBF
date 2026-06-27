@@ -29,6 +29,7 @@ namespace EBF.NPCs.Idols
         {
             NPC.width = 48;
             NPC.height = 48;
+            NPC.value = 30;
 
             if (!Main.dedServ)
                 NPC.HitSound = IdolHitSound;

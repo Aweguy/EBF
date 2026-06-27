@@ -1,6 +1,7 @@
 ﻿using EBF.Systems;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,6 +14,8 @@ namespace EBF.NPCs.Bosses.Godcat
     [AutoloadBossHead]
     public class Godcat_Dark : GodcatNPC
     {
+        protected override int DustType => DustID.RedTorch;
+        
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -56,6 +59,8 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
+            
             //Dialogue
             string text = Phase switch
             {
@@ -82,9 +87,6 @@ namespace EBF.NPCs.Bosses.Godcat
 
             switch (currentState)
             {
-                case State.Idle:
-                    break;
-
                 case State.SeikenStorm:
                     if (StateTimer % 4 == 0)
                         CreateDarkStormSeiken(player);
@@ -121,64 +123,94 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected override void SummonVehicle(Player player)
         {
+            // Server handles npc creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+
+            List<int> spawnedNpcs = [];
+            
+            // Spawn vehicle
             var pos = player.position.ToPoint() + new Point(-NPC.direction * 1600, 0);
             var type = ModContent.NPCType<Godcat_Destroyer>();
-            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            var vehicle = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase);
+            spawnedNpcs.Add(vehicle);
 
+            // Spawn crystals
             type = ModContent.NPCType<RedCrystal>();
             var amount = Phase == 0 ? 2 : 1;
             for (var i = 0; i < amount; i++)
-                NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+            {
+                var crystal = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
+                spawnedNpcs.Add(crystal);
+            }
+            
+            // Server must sync npcs to clients
+            if (Main.netMode == NetmodeID.Server)
+                foreach (var npcID in spawnedNpcs)
+                    NetMessage.SendData(MessageID.SyncNPC, number: npcID);
 
             //Dialogue
             var text = Phase == 0 ? "You cannot escape my wrath." : "No one who dares spite me can be permitted to stand!";
             Main.NewText(text, Color.Red);
         }
-        protected override void SpawnDust()
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch);
-            }
-        }
         private void CreateDarkStormSeiken(Player player)
         {
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var position = NPC.Center + Main.rand.NextVector2CircularEdge(64, 64);
             var velocity = Vector2.Normalize(player.Center - position) * 14f;
             var type = ModContent.ProjectileType<Godcat_DarkBlade>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), position, velocity.RotatedByRandom(0.33f), type, NPC.GetProjectileDamage(type), 3f, -1, NPC.target);
-
-            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateDarkSeikenRing(int amount, int speed)
         {
+            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             for (float theta = 0; theta < MathF.Tau; theta += MathF.Tau / amount)
             {
                 var type = ModContent.ProjectileType<Godcat_DarkBlade>();
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(theta) * speed, type, NPC.GetProjectileDamage(type), 3f, -1, NPC.target);
             }
-
-            SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
         }
         private void CreateDarkStreamBall(Player player, float speed, float deviation)
         {
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var multiplier = 0.5f + (StateTimer / stateDurations[State.DarkBallStream]);
             var velocity = NPC.DirectionTo(player.Center).RotatedByRandom(deviation) * speed * multiplier + player.velocity * 0.1f;
             var type = ModContent.ProjectileType<Godcat_BallProjectile>();
             var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3f, -1, (int)GodcatBallTypes.DarkBig);
             proj.scale = Main.rand.NextFloat(0.9f, 1.1f) * multiplier;
-
-            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateDarkReturnBall(Player player, float speed)
         {
+            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+            
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var type = ModContent.ProjectileType<Godcat_ReturnBall>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * speed, type, NPC.GetProjectileDamage(type), 3f, -1, (float)GodcatBallTypes.DarkBig, NPC.whoAmI);
-
-            SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
         }
         private void CreateDarkBallArc(Player player, float spread, int amount, float speed)
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var type = ModContent.ProjectileType<Godcat_BallProjectile>();
             for (float theta = -spread; theta < spread; theta += 2 * spread / amount)
             {

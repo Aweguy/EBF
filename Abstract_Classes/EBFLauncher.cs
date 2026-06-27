@@ -1,6 +1,7 @@
 ﻿using EBF.EbfUtils;
 using Microsoft.Xna.Framework;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -16,6 +17,10 @@ namespace EBF.Abstract_Classes
     public abstract class EBFLauncher : ModProjectile
     {
         private int charge;
+
+        // Netsync stuff
+        private Vector2 ownerMousePos;
+        private float lastSyncedRotation;
 
         /// <summary>
         /// How many ticks it takes from charging the shot to shooting the shot.
@@ -67,14 +72,17 @@ namespace EBF.Abstract_Classes
         /// <br>Overriding this does not prevent the weapon from shooting or updating its position and rotation.</br>
         /// </summary>
         /// <returns>Whether or not to stop other AI.</returns>
-        public virtual bool PreAISafe() { return false; }
+        public virtual bool PreAISafe() => false;
 
         public override sealed bool ShouldUpdatePosition() => false;
         public override sealed bool PreAI()
         {
             Player player = Main.player[Projectile.owner];
             if (player.dead)
+            {
+                Projectile.Kill();
                 return false;
+            }
 
             HandleTransform(player);
             HandleCharge(player);
@@ -86,12 +94,42 @@ namespace EBF.Abstract_Classes
 
             return PreAISafe();
         }
+
+        // Sync aim direction
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(ownerMousePos.X);
+            writer.Write(ownerMousePos.Y);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            ownerMousePos.X = reader.ReadSingle();
+            ownerMousePos.Y = reader.ReadSingle();
+        }
+
         private void HandleTransform(Player player)
         {
             Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter, true);
             Projectile.position = playerCenter - Projectile.Size * 0.5f;
 
-            Projectile.LookAt(Main.MouseWorld);
+            // I really hope this syncs properly
+            if (Projectile.owner == Main.myPlayer)
+            {
+                ownerMousePos = Main.MouseWorld;
+                Projectile.LookAt(Main.MouseWorld);
+
+                // Limit sync frequency for performance
+                if (MathF.Abs(lastSyncedRotation - Projectile.rotation) > 0.01f)
+                {
+                    lastSyncedRotation = Projectile.rotation;
+                    Projectile.netUpdate = true;
+                }
+            }
+            else
+            {
+                Projectile.LookAt(ownerMousePos);
+            }
+
             Main.player[Projectile.owner].ChangeDir(Projectile.direction);
         }
         private void HandleCharge(Player player)

@@ -30,14 +30,14 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.defense = 10;
+            Item.defense = 15;
 
             Item.shoot = ModContent.ProjectileType<RiotShieldStab>();
             BonusMinion = ModContent.ProjectileType<RedFlybotMinion>();
         }
         public override void HoldItemSafe(Player player)
         {
-            player.statDefense += 10;
+            player.statDefense += 15;
             // Slowdown happens in EBFPlayer class
         }
         public override void AddRecipes()
@@ -151,9 +151,10 @@ namespace EBF.Items.Summon
         }
         public override void AI()
         {
-            if (!Parent.Projectile.active || Parent.Type != ModContent.ProjectileType<RedFlybotMinion>())
+            if (Parent is null || !Parent.Projectile.active || Parent.Type != ModContent.ProjectileType<RedFlybotMinion>())
             {
                 Projectile.Kill();
+                return;
             }
 
             if (recoilOffset.Length() > 0)

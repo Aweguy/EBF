@@ -110,6 +110,10 @@ namespace EBF.NPCs.Machines
         }
         private void Launch()
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var type = (int)NPC.ai[0]; // Nuke type is given by the npc that created the stand.
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - new Vector2(0, 2), Vector2.Zero, type, NPC.GetProjectileDamage(type), 5f);
         }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -28,6 +29,9 @@ namespace EBF.NPCs.Bosses.Godcat
         private const int FinalPhaseDuration = 60 * 10; // How long the godcats stick around before finishing the fight
         protected ref float Phase => ref NPC.ai[0];
         private ref float PhaseTimer => ref NPC.ai[1];
+        
+        //Other
+        protected virtual int DustType => 0;
 
         public override void SetStaticDefaults()
         {
@@ -98,13 +102,20 @@ namespace EBF.NPCs.Bosses.Godcat
             }
             NPC.frame.Y = (int)NPC.frameCounter * frameHeight;
         }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            // Sync initial state
+            if (Main.netMode == NetmodeID.Server)
+                NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
+        }
+
         public override void AI()
         {
             NPC.TargetClosest();
             NPC.spriteDirection = NPC.direction;
-
-            Player player = Main.player[NPC.target];
-
+            
+            var player = Main.player[NPC.target];
             if (player.dead)
             {
                 NPC.EncourageDespawn(10); // Despawns in 10 ticks
@@ -130,42 +141,48 @@ namespace EBF.NPCs.Bosses.Godcat
         protected abstract void Move(Player player);
         protected abstract void HandleAttacks(Player player);
         protected abstract void SummonVehicle(Player player);
-        protected abstract void SpawnDust();
+        protected void SpawnDust()
+        {
+            for (var i = 0; i < 20; i++)
+                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustType);
+        }
         private void HandleStateChange()
         {
             StateTimer++;
+            
+            // Only server should handle state changes
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
-                if (currentState == State.Idle)
-                {
-                    var index = attackManager.Next();
-                    currentState = stateDurations.ElementAt(index).Key;
-                }
-                else
-                {
-                    currentState = State.Idle;
-                }
+                currentState = currentState != State.Idle ? State.Idle : GetNextAttackState();
+                
+                // Sync state change
+                NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
             }
         }
+        private State GetNextAttackState() => stateDurations.ElementAt(attackManager.Next()).Key;
         private void HandleDodging()
         {
             isDodging = Main.GameUpdateCount % 60 > 10;
-            if (isDodging)
-            {
-                Rectangle npcBox = NPC.Hitbox;
-                foreach (var proj in Main.projectile)
-                {
-                    if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
-                    {
-                        hasDodged = true;
-                    }
-                }
-            }
+            if (!isDodging)
+                return;
+            
+            var npcBox = NPC.Hitbox;
+            foreach (var proj in Main.projectile)
+                if (proj.active && proj.friendly && !proj.minion && npcBox.Intersects(proj.Hitbox))
+                    hasDodged = true;
         }
         private void HandlePhaseStuff(Player player)
         {
             PhaseTimer++;
+            
+            // Only server should handle phase transitions
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            
             if (Phase < 2 && PhaseTimer > PhaseDuration && currentState == State.Idle)
             {
                 //Poof away or head to the ground
@@ -174,24 +191,36 @@ namespace EBF.NPCs.Bosses.Godcat
                 {
                     currentState = State.GoingTowardsGround;
                     PhaseTimer = 0;
+                    
+                    // Sync state change
+                    NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
                 }
                 else
                 {
                     SpawnDust();
                     SummonVehicle(player);
                     NPC.active = false;
+                    
+                    // Sync despawn
+                    NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
                 }
             }
             else if (Phase == 2 && PhaseTimer > FinalPhaseDuration)
             {
                 SpawnDust();
                 NPC.StrikeInstantKill();
+                
+                // Sync death
+                NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
             }
 
             if (currentState == State.InGround && PhaseTimer > 120)
             {
                 SummonVehicle(player);
                 NPC.active = false;
+                
+                // Sync despawn
+                NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
             }
         }
         private void DropToGround()
@@ -215,6 +244,26 @@ namespace EBF.NPCs.Bosses.Godcat
                 SummonVehicle(player);
                 NPC.active = false;
             }
+        }
+        
+        public override void SendExtraAI(System.IO.BinaryWriter writer)
+        {
+            writer.Write((byte)currentState);
+            writer.Write(StateTimer);
+            writer.Write(Phase);
+            writer.Write(PhaseTimer);
+            writer.Write(isDodging);
+            writer.Write(hasDodged);
+        }
+
+        public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+        {
+            currentState = (State)reader.ReadByte();
+            StateTimer = reader.ReadSingle();
+            Phase = reader.ReadSingle();
+            PhaseTimer = reader.ReadSingle();
+            isDodging = reader.ReadBoolean();
+            hasDodged = reader.ReadBoolean();
         }
     }
 }

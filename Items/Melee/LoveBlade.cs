@@ -17,11 +17,11 @@ namespace EBF.Items.Melee
             Item.height = 64;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 95;//Item's base damage value
-            Item.knockBack = 5f;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 6f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.DamageType = DamageClass.Melee;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
             Item.useStyle = ItemUseStyleID.Swing;//The animation of the item when used
-            Item.useTime = 22;//How fast the item is used
-            Item.useAnimation = 22;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 20;//How fast the item is used
+            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.buyPrice(copper: 0, silver: 0, gold: 40, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Lime;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -34,12 +34,12 @@ namespace EBF.Items.Melee
             playSound = true;
 
             //Spawn an aura on every nearby enemy if you do damage to something other than a target dummy
-            if (!target.immortal && GetNearbyTargets(target, range: 200, out NPC[] nearbyTargets))
+            if (!target.immortal && GetNearbyTargets(target, range: 200, false, out NPC[] nearbyTargets))
             {
                 foreach (NPC npc in nearbyTargets)
                 {
                     //Only use some of them
-                    if (Main.rand.NextBool(4))
+                    if (Main.rand.NextBool(3))
                     {
                         //Don't play multiple sounds
                         if (playSound)
@@ -54,18 +54,16 @@ namespace EBF.Items.Melee
                 }
             }
         }
-        private static bool GetNearbyTargets(NPC hitTarget, float range, out NPC[] nearbyTargets)
+        private static bool GetNearbyTargets(NPC hitTarget, float range, bool ignoreSelf, out NPC[] nearbyTargets)
         {
-            List<NPC> targetsList = new List<NPC>();
+            List<NPC> targetsList = [];
             foreach (NPC npc in Main.npc)
             {
-                if (npc == hitTarget)
+                if (ignoreSelf && npc == hitTarget)
                     continue;
 
                 if (!npc.friendly && npc.active && !npc.dontTakeDamage && npc.lifeMax > 5 && npc.WithinRange(hitTarget.position, range))
-                {
                     targetsList.Add(npc);
-                }
             }
 
             nearbyTargets = targetsList.ToArray();

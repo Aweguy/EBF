@@ -28,7 +28,7 @@ namespace EBF.Items.Summon
             Item.rare = ItemRarityID.Lime;//Item's name colour, this is hardcoded by the modder and should be based on progression
             Item.UseSound = SoundID.Item1;//The item's sound when it's used
             Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.defense = 4;
+            Item.defense = 13;
 
             Item.shoot = ModContent.ProjectileType<PowerPawPunch>();
             BonusMinion = ModContent.ProjectileType<GunslingerMinion>();
@@ -41,7 +41,7 @@ namespace EBF.Items.Summon
         }
         public override void HoldItemSafe(Player player)
         {
-            player.statDefense += 6;
+            player.statDefense += 13;
         }
         //Bought by Arms Dealer after defeating plantera
     }

@@ -48,7 +48,7 @@ namespace EBF.Items.Magic
                 .AddIngredient<ArcticWind>(stack: 1)
                 .AddIngredient(ItemID.IceBlock, stack: 40)
                 .AddIngredient(ItemID.SoulofLight, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }

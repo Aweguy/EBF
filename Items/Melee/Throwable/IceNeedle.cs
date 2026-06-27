@@ -54,7 +54,6 @@ namespace EBF.Items.Melee.Throwable
             Projectile.width = 26;
             Projectile.height = 26;
 
-            Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             Projectile.aiStyle = -1;
@@ -137,26 +136,19 @@ namespace EBF.Items.Melee.Throwable
         }
         public override bool PreAI()
         {
-            if (isChasing)
-            {
-                //Don't drain projectile lifetime
-                Projectile.timeLeft = Projectile.timeLeft;
-            }
-            else
-            {
-                //Slow down over time
-                Projectile.velocity *= 0.9f;
-            }
+            if (isChasing) 
+                Projectile.timeLeft = Projectile.timeLeft; //Don't drain projectile lifetime
+            else 
+                Projectile.velocity *= 0.9f; //Slow down over time
 
+            // Find target
             if (FindTarget(out Vector2 move) == true)
             {
                 isChasing = true;
                 Projectile.velocity += move;
             }
             else
-            {
                 isChasing = false;
-            }
 
             return false;
         }
@@ -167,6 +159,15 @@ namespace EBF.Items.Melee.Throwable
             //Get all valid npcs to target using the following criteria (reduces search size for homing)
             validNPCs = Main.npc.ToList().FindAll(x => x.active && !x.dontTakeDamage && !x.friendly && x.lifeMax > 5);
         }
+
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
+
+            for (int i = 0; i <= 6; i++)
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.IceTorch, Projectile.oldVelocity.X, Projectile.oldVelocity.Y);
+        }
+
         private bool FindTarget(out Vector2 move)
         {
             move = Vector2.Zero; //default case
@@ -177,9 +178,7 @@ namespace EBF.Items.Melee.Throwable
             {
                 //Ignore dead npcs
                 if (npc.life <= 0)
-                {
                     continue;
-                }
 
                 Vector2 towardsNPC = npc.Center - Projectile.Center;
                 float distanceTo = towardsNPC.Length();
@@ -191,15 +190,6 @@ namespace EBF.Items.Melee.Throwable
                 }
             }
             return foundTarget;
-        }
-        public override void OnKill(int timeLeft)
-        {
-            SoundEngine.PlaySound(SoundID.Item27, Projectile.position);
-
-            for (int i = 0; i <= 6; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.IceTorch, Projectile.oldVelocity.X, Projectile.oldVelocity.Y);
-            }
         }
     }
 }

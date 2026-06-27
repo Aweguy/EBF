@@ -11,38 +11,25 @@ using Terraria.ModLoader;
 
 namespace EBF.Items.Ranged.Bows
 {
-    public class Aquamarine : ModItem, ILocalizedModType
+    public class Aquamarine : EBFBow, ILocalizedModType
     {
         public new string LocalizationCategory => "Items.Weapons.Ranged.Bows";
+        protected override int HoldoutProjectile => ModContent.ProjectileType<Aquamarine_HoldoutProjectile>();
+
         public override void SetDefaults()
         {
-            Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 46;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 28;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 70;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 42;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.DamageType = DamageClass.Ranged;//Item's damage type, Melee, Ranged, Magic and Summon. Custom damage are also a thing
-            Item.useStyle = ItemUseStyleID.Shoot;//The animation of the item when used
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 10, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
-            Item.UseSound = SoundID.Item32;//The item's sound when it's used
-            Item.autoReuse = true;//Boolean, if the item auto reuses if the use button is held
-            Item.useTurn = false;//Boolean, if the player's direction can change while using the item
-
-            Item.useAmmo = AmmoID.Arrow;
-            Item.shoot = ProjectileID.WoodenArrowFriendly;
             Item.shootSpeed = 7f;
-            Item.channel = true;
-            Item.noMelee = true;
-        }
-        public override bool CanUseItem(Player player) => player.HasAmmo(player.HeldItem) && !player.noItems && !player.CCed;
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (type == ProjectileID.WoodenArrowFriendly)
-                type = ModContent.ProjectileType<Aquamarine_Arrow>();
+            base.SetDefaults();
         }
         public override void AddRecipes()
         {
@@ -50,39 +37,57 @@ namespace EBF.Items.Ranged.Bows
                 .AddIngredient(ItemID.Coral, stack: 16)
                 .AddIngredient(ItemID.Sapphire, stack: 10)
                 .AddIngredient(ItemID.SoulofLight, stack: 10)
-                .AddTile(TileID.MythrilAnvil)
+                .AddTile(TileID.Anvils)
                 .Register();
         }
     }
 
-    public class Aquamarine_Arrow : EBFChargeableArrow
+    public class Aquamarine_HoldoutProjectile : EBFHoldoutBow
+    {
+        protected override int ArrowType => ModContent.ProjectileType<Aquamarine_Arrow>();
+        public override string Texture => "EBF/Items/Ranged/Bows/Aquamarine";
+        public override void SetDefaults()
+        {
+            Projectile.width = 28;
+            Projectile.height = 70;
+            MaximumDrawTime = 50;
+            DamageScale = 1.25f;
+            VelocityScale = 1.75f;
+            base.SetDefaults();
+        }
+    }
+
+    public class Aquamarine_Arrow : ModProjectile
     {
         private float baseSpeed;
         private bool inBubble = false;
+        private bool fullyCharged = false;
         public override void SetDefaults()
         {
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.penetrate = 2;
+            Projectile.penetrate = 5;
+            Projectile.stopsDealingDamageAfterPenetrateHits = true;
+            Projectile.friendly = true;
 
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
 
-            MaximumDrawTime = 50;
-            MinimumDrawTime = 10;
-            DamageScale = 1.25f;
-            VelocityScale = 1.75f;
-
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            if ((int)Projectile.ai[0] == 1)
+                fullyCharged = true; // Stored as separate field in OnSpawn because aiStyle overwrites ai
+            
+            baseSpeed = Projectile.velocity.Length();
+        }
+
         public override void AI()
         {
-            // Run only once
-            if (Projectile.localAI[1]++ == 0)
-                baseSpeed = Projectile.velocity.Length();
-
             if (inBubble)
             {
                 Projectile.localAI[2]--;
@@ -94,17 +99,9 @@ namespace EBF.Items.Ranged.Bows
                 }
             }
         }
-        public override void OnProjectileRelease()
-        {
-            if (FullyCharged)
-            {
-                Projectile.penetrate = 5;
-                Projectile.stopsDealingDamageAfterPenetrateHits = true;
-            }
-        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (FullyCharged)
+            if (fullyCharged)
             {
                 Projectile.aiStyle = 0;
                 Projectile.velocity = Vector2.Normalize(Projectile.velocity);

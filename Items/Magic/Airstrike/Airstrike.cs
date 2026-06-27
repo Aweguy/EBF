@@ -39,10 +39,7 @@ namespace EBF.Items.Magic.Airstrike
             Item.shootSpeed = 20f; //This line only exists so the stats show up correctly
             Item.noMelee = true;
         }
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
+        public override bool AltFunctionUse(Player player) => true;
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -59,7 +56,8 @@ namespace EBF.Items.Magic.Airstrike
                 Item.shoot = ModContent.ProjectileType<Airstrike_Bomb>();
                 Item.shootSpeed = 16f;
             }
-            return base.CanUseItem(player);
+            
+            return true;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -96,7 +94,7 @@ namespace EBF.Items.Magic.Airstrike
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.HallowedBar, stack: 12)
-                .AddIngredient(ItemID.SoulofMight, stack: 8)
+                .AddIngredient(ItemID.SoulofFright, stack: 8)
                 .AddIngredient(ItemID.Bomb, stack: 30)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
@@ -107,22 +105,18 @@ namespace EBF.Items.Magic.Airstrike
     {
         protected Texture2D glowmaskTexture;
         protected float diggingDepth; //How far the missile is placed into the ground upon hitting it
-        protected int explosionSize; //The hitbox size of the explosion
         protected int glowmaskOpacity = 0;
+        protected int explosionHitboxSize; //The hitbox size of the explosion
+        protected EBFUtils.ExplosionSize explosionEffectSize;
 
         private Vector2 clickPosition; //Used to let the projectile pass through tiles above the cursor
         private Vector2 shakeDirection = Vector2.UnitX * 3; //Increase the multiplier to make the shaking more intense
         private bool inGround = false;
 
-        /// <summary>
-        /// Sets the variables that are share identical values between all missiles types.
-        /// <para>If one of these variables should differ between missiles, then move the variable into each subclass.</para>
-        /// </summary>
-        protected void SetEverythingElse()
+        public override void SetDefaults()
         {
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
-            Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
             Projectile.hide = true;
@@ -133,18 +127,9 @@ namespace EBF.Items.Magic.Airstrike
         }
         public override void OnSpawn(IEntitySource source)
         {
-            //Face falling direction
-            Projectile.rotation = Projectile.velocity.ToRotation();
-
             //Store click position for tile collision
             if (Main.myPlayer == Projectile.owner)
-            {
                 clickPosition = Main.MouseWorld;
-            }
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            Projectile.Kill();
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
@@ -159,8 +144,16 @@ namespace EBF.Items.Magic.Airstrike
 
             return false;
         }
-        public override bool PreAI()
+        public override void AI()
         {
+            // Net update only works in AI
+            if (Projectile.rotation == 0)
+            {
+                //Face falling direction
+                Projectile.rotation = Projectile.velocity.ToRotation();
+                Projectile.netUpdate = true;
+            }
+            
             //Tile collision
             Projectile.HandleTileEnable(clickPosition);
 
@@ -171,12 +164,8 @@ namespace EBF.Items.Magic.Airstrike
                 Shake();
 
                 if (Projectile.timeLeft < 3)
-                {
                     Projectile.Kill();
-                }
             }
-
-            return false;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
@@ -185,21 +174,17 @@ namespace EBF.Items.Magic.Airstrike
         public override void PostDraw(Color lightColor)
         {
             if (inGround)
-            {
-                Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, glowmaskTexture.Width, glowmaskTexture.Height), new Color(255, 255, 255) * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            }
+                Main.spriteBatch.Draw(glowmaskTexture, Projectile.Center - Main.screenPosition, glowmaskTexture.Frame(), Color.White * (glowmaskOpacity / 255f), Projectile.rotation, glowmaskTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
         }
         public override void OnKill(int timeLeft)
         {
             //Prevent this code from happening twice because it has extra updates
-            if (Projectile.localAI[0] == 1)
+            if ((int)Projectile.localAI[0]++ > 0)
                 return;
 
-            Projectile.localAI[0] = 1;
-
             //Explode
-            Projectile.Resize(explosionSize, explosionSize);
-            Projectile.CreateExplosionEffect(EBFUtils.ExplosionSize.Large);
+            Projectile.Resize(explosionHitboxSize, explosionHitboxSize);
+            Projectile.CreateExplosionEffect(explosionEffectSize);
             Projectile.Damage();
 
             // Play explosion sound
@@ -209,14 +194,10 @@ namespace EBF.Items.Magic.Airstrike
         {
             //Using frame counter instead of gameupdate because of extra updates
             Projectile.frameCounter++;
-            if (Projectile.frameCounter <= 1)
+            if (Projectile.frameCounter % 2 == 0)
             {
                 Projectile.Center += shakeDirection;
                 shakeDirection.X = -shakeDirection.X;
-            }
-            else
-            {
-                Projectile.frameCounter = 0;
             }
         }
     }
@@ -231,12 +212,13 @@ namespace EBF.Items.Magic.Airstrike
             DrawOffsetX = -13;
             DrawOriginOffsetY = -4;
 
-            explosionSize = 200; //The hitbox size of the explosion
+            explosionHitboxSize = 200;
+            explosionEffectSize = EBFUtils.ExplosionSize.Large;
             diggingDepth = 15; //How far the missile is placed into the ground upon hitting it
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_Bomb_Glowmask").Value;
 
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 
@@ -248,12 +230,13 @@ namespace EBF.Items.Magic.Airstrike
             Projectile.height = 16;
             DrawOffsetX = -25;
 
-            explosionSize = 100; //The hitbox size of the explosion
+            explosionHitboxSize = 100;
+            explosionEffectSize = EBFUtils.ExplosionSize.Medium;
             diggingDepth = 24; //How far the missile is placed into the ground upon hitting it
 
             glowmaskTexture = ModContent.Request<Texture2D>("EBF/Items/Magic/Airstrike/Airstrike_SmallBomb_Glowmask").Value;
 
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 }

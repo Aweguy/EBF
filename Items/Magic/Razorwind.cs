@@ -2,6 +2,7 @@ using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -24,8 +25,8 @@ namespace EBF.Items.Magic
             Item.knockBack = 4;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 9;//The amount of mana this item consumes on use
 
-            Item.useTime = 60;//How fast the item is used
-            Item.useAnimation = 60;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 30;//How fast the item is used
+            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 80, gold: 8, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Red;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -43,7 +44,8 @@ namespace EBF.Items.Magic
 
             //Spawn the projecile
             SoundEngine.PlaySound(SoundID.Item9, player.Center);
-            Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI, 0f);
+            var proj = Projectile.NewProjectile(source, StaffHead, velocity, type, damage, knockback, player.whoAmI, 0f);
+
             return false;
         }
         public override void AddRecipes()
@@ -73,23 +75,20 @@ namespace EBF.Items.Magic
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Magic;
+            Projectile.timeLeft = 150;
         }
         public override void OnSpawn(IEntitySource source)
         {
             //Spawn dust
             for (int i = 0; i < 3; i++)
-            {
                 Dust.NewDust(Projectile.Center, 0, 0, DustID.Ice);
-            }
         }
         public override void AI()
         {
             //Move down for a bit
             Projectile.localAI[0]++;
             if (Projectile.localAI[0] < 30)
-            {
                 Projectile.velocity.Y += 0.75f;
-            }
 
             //Slow down and rotate based on velocity
             Projectile.velocity *= 0.95f;
@@ -104,9 +103,7 @@ namespace EBF.Items.Magic
             //Handle mouse release
             Player player = Main.player[Projectile.owner];
             if (!player.channel)
-            {
                 Projectile.Kill();
-            }
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -130,9 +127,7 @@ namespace EBF.Items.Magic
 
             //Spawn dust
             for (int i = 0; i < 5; i++)
-            {
                 Dust.NewDust(Projectile.Center, 0, 0, DustID.Ice);
-            }
 
             //Spawn a ring of icecicles
             int projectileCount = 6;
