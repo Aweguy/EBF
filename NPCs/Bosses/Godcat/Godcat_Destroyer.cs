@@ -115,15 +115,26 @@ namespace EBF.NPCs.Bosses.Godcat
         }
         protected override void BeginNextPhase(Player player)
         {
+            // Server handles npc creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             //Spawn light godcat
             var type = ModContent.NPCType<Godcat_Light>();
             var pos = player.Center.ToPoint() + new Point(NPC.direction * 1600, 0);
-            NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase + 1);
+            var lightCat = NPC.NewNPC(NPC.GetSource_FromAI(), pos.X, pos.Y, type, 0, Phase + 1);
 
             //Spawn dark godcat
             var type2 = ModContent.NPCType<Godcat_Dark>();
             var pos2 = player.Center.ToPoint() + new Point(-NPC.direction * 1600, 0);
-            NPC.NewNPC(NPC.GetSource_FromAI(), pos2.X, pos2.Y, type2, 0, Phase + 1);
+            var darkCat = NPC.NewNPC(NPC.GetSource_FromAI(), pos2.X, pos2.Y, type2, 0, Phase + 1);
+            
+            // Server must sync npcs for clients
+            if (Main.netMode == NetmodeID.Server)
+            {
+                NetMessage.SendData(MessageID.SyncNPC, number: darkCat);
+                NetMessage.SendData(MessageID.SyncNPC, number: lightCat);
+            }
         }
         protected override void CreateHalfHealthHurtEffect()
         {
@@ -134,6 +145,12 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             if (Main.GameUpdateCount % 30 == 0)
             {
+                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 var amount = 12;
                 var speed = 5;
                 var type = ModContent.ProjectileType<Godcat_TurningBall>();
@@ -146,8 +163,6 @@ namespace EBF.NPCs.Bosses.Godcat
                     if (IsAlone)
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity * 0.9f, type, damage, 3f, -1, (float)GodcatBallTypes.DarkBig, 0.005f);
                 }
-
-                SoundEngine.PlaySound(SoundID.Item39, NPC.position); //Razorpine sound
             }
         }
         private void CreateMassiveBallBurst(Player player)
@@ -159,6 +174,12 @@ namespace EBF.NPCs.Bosses.Godcat
             //Shoot projectiles
             else if (StateTimer == 9)
             {
+                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 var spread = 0.2f;
                 var speed = 8f;
                 var speedRange = 0.2f;
@@ -171,9 +192,7 @@ namespace EBF.NPCs.Bosses.Godcat
                     var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 3f, -1, (float)GodcatBallTypes.DarkBig);
                     proj.scale = Main.rand.NextFloat(0.5f, 1.5f);
                 }
-
-                SoundEngine.PlaySound(SoundID.Item72, NPC.position); //Shadowbeam sound
-
+                
                 //Additional arc of projectiles
                 if (IsAlone)
                 {

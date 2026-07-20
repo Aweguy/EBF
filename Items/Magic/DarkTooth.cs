@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -15,7 +16,8 @@ namespace EBF.Items.Magic
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
-        int manaDrainTimer; //Used to reduce how often mana is drained
+        private int manaDrainTimer; //Used to reduce how often mana is drained
+        private const int activeManaCost = 4; // How much mana is drained while channeling.
         public override void SetDefaultsSafe()
         {
             Item.width = 54;//Width of the hitbox of the item (usually the item's sprite width)
@@ -43,20 +45,14 @@ namespace EBF.Items.Magic
         }
         public override void HoldItem(Player player)
         {
-            Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
-
             if (player.channel)
             {
+                var drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
                 Dust.NewDustDirect(player.position, player.width, player.height, DustID.Terragrim, newColor: drawColor, Scale: 1f);
-
                 DrainMana(player);
             }
         }
-        public override bool CanUseItem(Player player)
-        {
-            //Cannot use if the player's old black hole exists
-            return player.ownedProjectileCounts[ModContent.ProjectileType<DarkTooth_BlackHole>()] < 1;
-        }
+        public override bool CanUseItem(Player player) => player.ownedProjectileCounts[ModContent.ProjectileType<DarkTooth_BlackHole>()] < 1;
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -73,17 +69,13 @@ namespace EBF.Items.Magic
             if (manaDrainTimer > 10)
             {
                 manaDrainTimer = 0;
-
-                int manaCost = 4;
-                if (player.statMana >= manaCost)
+                if (player.statMana >= activeManaCost)
                 {
-                    player.statMana -= manaCost;
+                    player.statMana -= activeManaCost;
                     player.manaRegenDelay = 60; //Reset mana regen
                 }
                 else
-                {
                     player.channel = false; //Stop channeling if out of mana
-                }
             }
         }
     }
@@ -136,22 +128,18 @@ namespace EBF.Items.Magic
 
                 //Loop animation
                 if (Projectile.frame >= 19)
-                {
                     Projectile.frame = 10;
-                }
 
                 //Rotate randomly
                 if (Projectile.frame > 9)
-                {
                     Projectile.rotation = Main.rand.NextFloat(0, (float)Math.Tau);
-                }
             }
 
             //While active
             if (Projectile.frame >= 10)
             {
                 //Spawn dust passively
-                Color drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
+                var drawColor = Main.rand.NextBool(2) ? Color.Black : Color.Red;
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, newColor: drawColor);
 
                 // Mouse position can vary in multiplayer, so this code must only run on the client
@@ -161,7 +149,7 @@ namespace EBF.Items.Magic
                     MoveTowardsCursor();//The movement of the black hole
 
                     //This check only works if item.channel is true for the weapon.
-                    Player player = Main.player[Projectile.owner];
+                    var player = Main.player[Projectile.owner];
                     if (player.channel)
                     {
                         IncreaseScale();
@@ -170,9 +158,7 @@ namespace EBF.Items.Magic
                         SuckDust(suckRange, suckingStrength: 20);
                     }
                     else
-                    {
                         Explode();
-                    }
                 }
             }
             return false;
@@ -182,27 +168,27 @@ namespace EBF.Items.Magic
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
             //scale goes from 1 up to maxSize / 128
-            for (int i = 0; i < endingDust * Projectile.scale; i++)
+            for (var i = 0; i < endingDust * Projectile.scale; i++)
             {
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Smoke, 1f, 1f, newColor: Main.rand.NextBool(2) ? Color.Red : Color.Black, Scale: Projectile.scale);
+                var dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Smoke, 1f, 1f, newColor: Main.rand.NextBool(2) ? Color.Red : Color.Black, Scale: Projectile.scale);
                 dust.velocity = Vector2.Normalize(dust.position - Projectile.Center) * 10;
                 dust.noGravity = true;
             }
         }
         public override bool PreDraw(ref Color lightColor) //Code for making the Projectile animate while its position is centered
         {
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+            var texture = TextureAssets.Projectile[Projectile.type].Value;
 
-            int frameCount = Main.projFrames[Projectile.type];
-            int frameWidth = texture.Width / 2;
-            int frameHeight = texture.Height / frameCount;
+            var frameCount = Main.projFrames[Projectile.type];
+            var frameWidth = texture.Width / 2;
+            var frameHeight = texture.Height / frameCount;
 
             //This here is some mysterious shit
-            int frameX = Projectile.frame / frameCount * frameWidth;
-            int frameY = Projectile.frame % frameCount * frameHeight;
+            var frameX = Projectile.frame / frameCount * frameWidth;
+            var frameY = Projectile.frame % frameCount * frameHeight;
 
-            Rectangle frame = new Rectangle(frameX, frameY, frameWidth, frameHeight);
-            Vector2 origin = frame.Size() / 2;
+            var frame = new Rectangle(frameX, frameY, frameWidth, frameHeight);
+            var origin = frame.Size() / 2;
 
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, frame, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
             return false;
@@ -213,15 +199,15 @@ namespace EBF.Items.Magic
         }
         private void CreateSpawningDust()
         {
-            for (int i = 0; i < spawningDust; i++)
+            for (var i = 0; i < spawningDust; i++)
             {
-                float rot = Main.rand.NextFloat(0, (float)Math.Tau); //random angle
-                float speed = Main.rand.NextFloat(3f, 10f);
+                var rot = Main.rand.NextFloat(0, MathF.Tau); //random angle
+                var speed = Main.rand.NextFloat(3f, 10f);
 
-                Vector2 position = Projectile.Center + new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot)) * dustBoost * 20f;
-                Vector2 velocity = new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot)) * speed;
+                var position = Projectile.Center + new Vector2(MathF.Cos(rot), MathF.Sin(rot)) * dustBoost * 20f;
+                var velocity = new Vector2(MathF.Cos(rot), MathF.Sin(rot)) * speed;
 
-                Dust dust = Dust.NewDustPerfect(position, 31, velocity, 0, new Color(255, 255, 255), 1f);
+                var dust = Dust.NewDustPerfect(position, 31, velocity, 0, Color.White, 1f);
                 dust.noGravity = true;
             }
         }
@@ -229,83 +215,75 @@ namespace EBF.Items.Magic
         {
             //Gradually build up speed
             if (currentSpeed < maxSpeed)
-            {
                 currentSpeed += 0.1f;
-            }
 
             //Set direction
-            Vector2 newVelocity = Main.MouseWorld - Projectile.Center;
+            var newVelocity = Main.MouseWorld - Projectile.Center;
             if (newVelocity.Length() > currentSpeed)
-            {
                 newVelocity = Vector2.Normalize(newVelocity) * currentSpeed;
-            }
 
             //Limit how often velocity syncs in multiplayer by truncating the decimals
             if (newVelocity.ToPoint() != Projectile.velocity.ToPoint())
-            {
                 Projectile.netUpdate = true;
-            }
 
             Projectile.velocity = newVelocity;
         }
         private void IncreaseScale() //The growth rate of the black hole
         {
-            if (Projectile.width < maxSize)
-            {
-                Projectile.scale += 0.01f;
-                suckRange = defaultSuckRange * Projectile.scale;
-                int newWidth = (int)(baseWidth * Projectile.scale);
-                int newHeight = (int)(baseHeight * Projectile.scale);
-                Projectile.Resize(newWidth, newHeight);
-            }
+            if (Projectile.width >= maxSize)
+                return;
+            
+            Projectile.scale += 0.01f;
+            suckRange = defaultSuckRange * Projectile.scale;
+            int newWidth = (int)(baseWidth * Projectile.scale);
+            int newHeight = (int)(baseHeight * Projectile.scale);
+            Projectile.Resize(newWidth, newHeight);
+            
+            // Limit net sync frequency
+            if (Projectile.owner == Main.myPlayer && Main.GameUpdateCount % 4 == 0)
+                Projectile.netUpdate = true;
         }
         private void SuckNPCs(float suckingRange, float suckingStrength = 20)
         {
-            foreach (NPC npc in Main.npc)
+            foreach (var npc in Main.npc)
             {
                 if (!npc.active || npc.boss || npc.immortal || npc.dontTakeDamage) //immortal is target dummy
-                {
                     continue;
-                }
 
-                float dist = Vector2.Distance(Projectile.Center, npc.Center);
+                var dist = Vector2.Distance(Projectile.Center, npc.Center);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); //Won't divide by 0 :)
+                    var gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); //Won't divide by 0 :)
                     npc.velocity += npc.DirectionTo(Projectile.Center) * gravityMagnitude;
                 }
             }
         }
         private void SuckGore(float suckingRange, float suckingStrength = 20)
         {
-            foreach (Gore gore in Main.gore)
+            foreach (var gore in Main.gore)
             {
                 if (!gore.active)
-                {
                     continue;
-                }
 
-                float dist = Vector2.Distance(Projectile.Center, gore.position);
+                var dist = Vector2.Distance(Projectile.Center, gore.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); // Won't divide by 0 :)
+                    var gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); // Won't divide by 0 :)
                     gore.velocity += Vector2.Normalize(Projectile.Center - gore.position) * gravityMagnitude;
                 }
             }
         }
         private void SuckDust(float suckingRange, float suckingStrength = 20)
         {
-            foreach (Dust dust in Main.dust)
+            foreach (var dust in Main.dust)
             {
                 if (!dust.active)
-                {
                     continue;
-                }
 
-                float dist = Vector2.Distance(Projectile.Center, dust.position);
+                var dist = Vector2.Distance(Projectile.Center, dust.position);
                 if (dist <= suckingRange)
                 {
-                    float gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); //Won't divide by 0 :)
+                    var gravityMagnitude = Projectile.scale * suckingStrength / (dist * 0.5f + 10f); //Won't divide by 0 :)
                     dust.velocity += Vector2.Normalize(Projectile.Center - dust.position) * gravityMagnitude;
                 }
             }
@@ -314,9 +292,9 @@ namespace EBF.Items.Magic
         {
             //Change hitbox size and damage
             Projectile.Resize((int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f));
-            int explosionDamage = Projectile.damage + Projectile.width;
+            var explosionDamage = Projectile.damage + Projectile.width;
 
-            foreach (NPC npc in Main.npc)
+            foreach (var npc in Main.npc)
             {
                 //Find any valid npc inside the hitbox
                 if (npc.active && !npc.friendly && !npc.dontTakeDamage && npc.Hitbox.Intersects(Projectile.Hitbox))
@@ -333,9 +311,21 @@ namespace EBF.Items.Magic
         private void HandleAudioLoop()
         {
             if (Main.GameUpdateCount % 40 == 0)
-            {
                 SoundEngine.PlaySound(SoundID.Item15 with { Pitch = -0.95f }, Projectile.position);
-            }
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Projectile.width);
+            writer.Write(Projectile.height);
+            writer.Write(Projectile.scale);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Projectile.width = reader.ReadInt32();
+            Projectile.height = reader.ReadInt32();
+            Projectile.scale = reader.ReadSingle();
         }
     }
 }

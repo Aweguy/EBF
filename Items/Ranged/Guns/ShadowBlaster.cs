@@ -41,6 +41,8 @@ namespace EBF.Items.Ranged.Guns
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
+
+        // Also sold by Lance
     }
     public class ShadowBlasterLauncher : EBFLauncher
     {

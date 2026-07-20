@@ -40,6 +40,13 @@ namespace EBF.Items.Melee
                 .AddIngredient(ItemID.HallowedBar, stack: 12)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
+            
+            CreateRecipe()
+                .AddIngredient<SilverBlade>(stack: 1)
+                .AddIngredient(ItemID.SoulofFlight, stack: 20)
+                .AddIngredient(ItemID.HallowedBar, stack: 12)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

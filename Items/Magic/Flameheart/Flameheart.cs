@@ -17,12 +17,12 @@ namespace EBF.Items.Magic.Flameheart
             Item.width = 62;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 60;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 36;//Item's base damage value
+            Item.damage = 35;//Item's base damage value
             Item.knockBack = 2f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 16;//The amount of mana this item consumes on use
 
-            Item.useTime = 20;//How fast the item is used
-            Item.useAnimation = 20;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 22;//How fast the item is used
+            Item.useAnimation = 22;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 2, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -35,7 +35,7 @@ namespace EBF.Items.Magic.Flameheart
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             chargeStacks++;
-            if (chargeStacks >= 3)
+            if (chargeStacks >= 5)
             {
                 type = ModContent.ProjectileType<Flameheart_Firestorm>();
                 chargeStacks = 0;
@@ -55,6 +55,12 @@ namespace EBF.Items.Magic.Flameheart
 
     public class Flameheart_Firestorm : ModProjectile
     {
+        // Used for randomizing fireball size
+        private static readonly int[] fireballTypes = [
+            ModContent.ProjectileType<Flameheart_FireballSmall>(),
+            ModContent.ProjectileType<Flameheart_FireballMed>(),
+            ModContent.ProjectileType<Flameheart_Fireball>()
+        ];
         public override bool ShouldUpdatePosition() => false;
         public override void SetStaticDefaults()
         {
@@ -62,8 +68,8 @@ namespace EBF.Items.Magic.Flameheart
         }
         public override void SetDefaults()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 64;
+            Projectile.height = 64;
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
 
@@ -78,32 +84,18 @@ namespace EBF.Items.Magic.Flameheart
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(10))
-            {
                 target.AddBuff(BuffID.OnFire, 300, false);
-            }
         }
         public override void AI()
         {
-            //Run every 5 game updates
-            if (Main.GameUpdateCount % 5 == 0)
+            // Spawn fireballs
+            if (Projectile.timeLeft > 20 && Main.GameUpdateCount % 3 == 0)
             {
                 //Randomize projectile
-                int chosenProjectile = 0;
-                switch (Main.rand.Next(3))
-                {
-                    case 0:
-                        chosenProjectile = ModContent.ProjectileType<Flameheart_FireballSmall>();
-                        break;
-                    case 1:
-                        chosenProjectile = ModContent.ProjectileType<Flameheart_FireballMed>();
-                        break;
-                    case 2:
-                        chosenProjectile = ModContent.ProjectileType<Flameheart_Fireball>();
-                        break;
-                }
+                int chosenProjectile = fireballTypes[Main.rand.Next(3)];
 
                 //Spawn projectile
-                Vector2 position = Projectile.Center + Main.rand.NextVector2Square(-100f, 100f);
+                Vector2 position = Projectile.Center + Main.rand.NextVector2Square(-90f, 90f);
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), position, Vector2.Zero, chosenProjectile, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
         }
@@ -120,11 +112,7 @@ namespace EBF.Items.Magic.Flameheart
     {
         public override bool ShouldUpdatePosition() => false;
 
-        /// <summary>
-        /// Sets the variables that are shared between all fireball sizes.
-        /// <para>If one of these variables should differ between fireballs, then move the variable into each subclass.</para>
-        /// </summary>
-        protected void SetEverythingElse()
+        public override void SetDefaults()
         {
             Projectile.aiStyle = -1;
 
@@ -139,29 +127,25 @@ namespace EBF.Items.Magic.Flameheart
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Main.rand.NextBool(3))
-            {
                 target.AddBuff(BuffID.OnFire, 300, false);
-            }
         }
+
         public override void AI()
         {
             //Spawn dust
             if (Main.rand.NextBool(3))
-            {
-                Dust.NewDustDirect(Projectile.Center, Projectile.width, Projectile.height, DustID.Pixie, 0, -2, 0, new Color(255, 251, 0), 1.25f);
-            }
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Pixie, 0, -2, 0, new Color(255, 251, 0), 1.1f);
 
             //Animate
             if (Main.GameUpdateCount % 3 == 0)
             {
                 Projectile.frame++;
                 if (Projectile.frame >= 14)
-                {
                     Projectile.Kill();
-                }
             }
         }
     }
@@ -176,7 +160,7 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 64;
             Projectile.height = 64;
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 
@@ -190,7 +174,7 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 32;
             Projectile.height = 32;
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 
@@ -204,7 +188,7 @@ namespace EBF.Items.Magic.Flameheart
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            SetEverythingElse();
+            base.SetDefaults();
         }
     }
 }

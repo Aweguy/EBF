@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -65,8 +67,8 @@ namespace EBF.NPCs.Bosses.Godcat
     {
         private const float turnSpeed = 0.5f;
         private bool animate = true;
-        private float speed;
         private Player Target => Main.player[(int)Projectile.ai[0]];
+        private ref float Speed => ref Projectile.ai[1];
         protected virtual int DustType => DustID.AncientLight;
         public override void SetStaticDefaults()
         {
@@ -87,27 +89,26 @@ namespace EBF.NPCs.Bosses.Godcat
         public override bool ShouldUpdatePosition() => !animate;
         public override void OnSpawn(IEntitySource source)
         {
-            speed = Projectile.velocity.Length();
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Speed = Projectile.velocity.Length();
         }
         public override void AI()
         {
-            if (animate)
+            if (Projectile.localAI[0]++ == 0)
             {
-                Animate();
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                Projectile.netUpdate = true;
             }
-            else if (Projectile.timeLeft < 60)
-            {
-                animate = true;
-            }
+            
+            if (animate) Animate();
+            else if (Projectile.timeLeft < 60) animate = true;
             else if (Target != null)
             {
-                speed *= 1.01f;
+                Speed *= 1.01f;
 
                 //Slight homing behavior while flying
                 var angleToTarget = Projectile.AngleTo(Target.Center) + MathHelper.PiOver2;
                 Projectile.rotation = EBFUtils.SlowRotation(Projectile.rotation, angleToTarget, turnSpeed);
-                Projectile.velocity = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * speed;
+                Projectile.velocity = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2() * Speed;
             }
 
             //Create dust
@@ -170,9 +171,16 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.width = 10;
             Projectile.height = 10;
         }
-        public override void OnSpawn(IEntitySource source)
+        public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            base.AI();
+            
+            // Net sync must happen in AI
+            if (Projectile.localAI[0]++ == 0)
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+                Projectile.netUpdate = true;
+            }
         }
     }
 
@@ -205,22 +213,20 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.frame = (int)Projectile.ai[0];
-            if (Projectile.frame == 1 || Projectile.frame == 3)
-            {
+            if (Projectile.frame is 1 or 3)
                 Projectile.Resize(32, 32);
-            }
+            
             if (Projectile.frame > 1)
-            {
                 dustType = DustID.RedTorch;
-            }
-
+            
             if (IsMiniVariant)
-            {
                 Projectile.timeLeft = 200;
-            }
         }
         public override void AI()
         {
+            if (Owner == null || Owner.active == false)
+                Projectile.Kill();
+            
             if (IsMiniVariant)
             {
                 if (Main.rand.NextBool(2))
@@ -229,11 +235,10 @@ namespace EBF.NPCs.Bosses.Godcat
                     dust.noGravity = true;
                 }
 
-                Projectile.HomeTowards(Owner, 0.33f, 12f);
                 if (Projectile.Distance(Owner.Center) < 32)
-                {
                     Projectile.Kill();
-                }
+                
+                Projectile.HomeTowards(Owner, 0.33f, 12f);
             }
             else
             {
@@ -258,9 +263,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
             //Create dust
             for (int i = 0; i < 20; i++)
-            {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType);
-            }
         }
     }
 
@@ -291,14 +294,11 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.frame = (int)Projectile.ai[0];
-            if (Projectile.frame == 1 || Projectile.frame == 3)
-            {
+            if (Projectile.frame is 1 or 3)
                 Projectile.Resize(32, 32);
-            }
+            
             if (Projectile.frame > 1)
-            {
                 dustType = DustID.RedTorch;
-            }
         }
         public override void AI()
         {
@@ -313,9 +313,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 10; i++)
-            {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType, Projectile.oldVelocity.X, Projectile.oldVelocity.Y);
-            }
         }
     }
 
@@ -344,14 +342,11 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.frame = (int)Projectile.ai[0];
-            if (Projectile.frame == 1 || Projectile.frame == 3)
-            {
+            if (Projectile.frame is 1 or 3)
                 Projectile.Resize(32, 32);
-            }
+            
             if (Projectile.frame > 1)
-            {
                 dustType = DustID.RedTorch;
-            }
         }
         public override void AI()
         {
@@ -366,9 +361,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 20; i++)
-            {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType);
-            }
         }
     }
 
@@ -396,18 +389,19 @@ namespace EBF.NPCs.Bosses.Godcat
             Projectile.hide = true;
         }
         public override bool ShouldUpdatePosition() => Projectile.frameCounter >= ActivationTime;
-        public override void OnSpawn(IEntitySource source)
-        {
-            positionalOffset = Projectile.velocity * 128;
-        }
         public override void AI()
         {
+            // Net sync
+            if (Projectile.localAI[0]++ == 0)
+            {
+                positionalOffset = Projectile.velocity * 128;
+                Projectile.netUpdate = true;
+            }
+            
             //Behavior
             Projectile.frameCounter++;
             if (Projectile.frameCounter < ActivationTime)
-            {
                 Projectile.Center = Vector2.Lerp(Projectile.Center, PreferredPosition, 0.1f);
-            }
             else if (Projectile.frameCounter == ActivationTime)
             {
                 Launch();
@@ -429,13 +423,9 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             if (DrawsBehindNpcs)
-            {
                 behindNPCs.Add(index);
-            }
             else
-            {
                 overPlayers.Add(index);
-            }
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
@@ -457,10 +447,12 @@ namespace EBF.NPCs.Bosses.Godcat
 
             SoundEngine.PlaySound(SoundID.Item39, Projectile.position);
             for (int i = 0; i < 10; i++)
-            {
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.YellowTorch);
-            }
         }
+
+        public override void SendExtraAI(BinaryWriter writer) => writer.WritePackedVector2(positionalOffset);
+        public override void ReceiveExtraAI(BinaryReader reader) => positionalOffset = reader.ReadPackedVector2();
+        
     }
 
     public class Creator_HugeThunderball : Creator_Thunderball
@@ -531,9 +523,7 @@ namespace EBF.NPCs.Bosses.Godcat
             //Homing
             var success = Projectile.HomeTowards(homingTarget, 0.4f, 11f);
             if (!success)
-            {
                 Projectile.Kill();
-            }
 
             //Dust
             var dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
@@ -555,9 +545,7 @@ namespace EBF.NPCs.Bosses.Godcat
             //Extra effects
             SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
             for (int i = 0; i < 30; i++)
-            {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.RedTorch);
-            }
         }
     }
 
@@ -591,9 +579,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
                 //Expand hitbox until max size
                 if (Projectile.width < MaxSize)
-                {
                     Projectile.Resize(Projectile.width + 4, Projectile.height + 4);
-                }
             }
         }
         private void SpawnGore()
@@ -648,9 +634,7 @@ namespace EBF.NPCs.Bosses.Godcat
 
             //Default in case no ai is provided
             if (Amount == 0)
-            {
                 Amount = 10;
-            }
 
             balls = new BallInfo[(int)Amount];
         }
@@ -666,18 +650,14 @@ namespace EBF.NPCs.Bosses.Godcat
             //Rotation
             rotationOffset += 0.02f + EasingTimer * 0.01f;
             if (rotationOffset > MathF.Tau)
-            {
                 rotationOffset = 0;
-            }
 
             //Sprite animation
             if (Main.GameUpdateCount % 4 == 0)
             {
                 Projectile.frameCounter++;
                 if (Projectile.frameCounter > 3)
-                {
                     Projectile.frameCounter = 0;
-                }
             }
 
             //Stick to owner for a while
@@ -685,9 +665,7 @@ namespace EBF.NPCs.Bosses.Godcat
             if (owner != null && owner.active)
             {
                 if (StickTimer < 60)
-                {
                     Projectile.Center = owner.Center;
-                }
                 else if (StickTimer == 60)
                 {
                     var player = Main.player[owner.target];
@@ -695,14 +673,10 @@ namespace EBF.NPCs.Bosses.Godcat
                     Projectile.velocity += player.velocity * 0.3f;
                 }
                 else
-                {
                     Projectile.velocity *= 1.01f;
-                }
             }
             else
-            {
                 Projectile.velocity *= 1.01f;
-            }
 
             //Update ball information
             balls = UpdateBalls();
@@ -718,14 +692,9 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             target.AddBuff(BuffID.OnFire3, 60 * 2);
         }
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
-            foreach (var ball in balls)
-                if (ball.rect.Intersects(targetHitbox))
-                    return true;
-
-            return false;
-        }
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) 
+            => balls.Any(ball => ball.rect.Intersects(targetHitbox));
+        
         public override bool PreDraw(ref Color lightColor)
         {
             if (!texture.IsLoaded)
@@ -754,7 +723,7 @@ namespace EBF.NPCs.Bosses.Godcat
             {
                 balls[i].center = Projectile.Center + theta.ToRotationVector2() * radius;
                 balls[i].position = balls[i].center - BallInfo.origin;
-                balls[i].rect = new((int)balls[i].position.X, (int)balls[i].position.Y, BallInfo.size, BallInfo.size);
+                balls[i].rect = new Rectangle((int)balls[i].position.X, (int)balls[i].position.Y, BallInfo.size, BallInfo.size);
                 i++;
             }
 

@@ -16,7 +16,7 @@ namespace EBF.Items.Magic
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 28;//Item's base damage value
+            Item.damage = 30;//Item's base damage value
             Item.knockBack = 4;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 5;//The amount of mana this item consumes on use
 
@@ -49,7 +49,7 @@ namespace EBF.Items.Magic
         public override void AddRecipes()
         {
             CreateRecipe(amount: 1)
-                .AddIngredient(ItemID.CrimtaneBar, stack: 16)
+                .AddIngredient(ItemID.HellstoneBar, stack: 10)
                 .AddIngredient(ItemID.AshWood, stack: 30)
                 .AddTile(TileID.Anvils)
                 .Register();

@@ -171,13 +171,18 @@ namespace EBF.Items.Ranged.Guns
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
         }
-        public override void OnSpawn(IEntitySource source)
+        public override void AI()
         {
-            //Face direction
-            float velRotation = Projectile.velocity.ToRotation();
-            Projectile.rotation = velRotation + MathHelper.ToRadians(90f);
-            Projectile.spriteDirection = Projectile.direction;
+            // Net sync must be done in AI
+            if (Projectile.localAI[0]++ == 0)
+            {
+                //Face direction
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                Projectile.spriteDirection = Projectile.direction;
+                Projectile.netUpdate = true;
+            }
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             //Spawn gas cloud

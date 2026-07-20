@@ -1,4 +1,5 @@
-﻿using EBF.Abstract_Classes;
+﻿using System.IO;
+using EBF.Abstract_Classes;
 using EBF.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -106,6 +107,7 @@ namespace EBF.Items.Ranged.Guns
 
     public class CrystalWingLaser : EBFDeathRay
     {
+        private Vector2 ownerMousePos;
         private Entity Owner => Main.player[(int)Projectile.owner];
         public override string Texture => "EBF/NPCs/Bosses/Godcat/Creator_HolyDeathray";
         protected override Vector3 LightColor => Color.White.ToVector3();
@@ -120,8 +122,14 @@ namespace EBF.Items.Ranged.Guns
         }
         public override void AISafe()
         {
-            Projectile.velocity = Owner.DirectionTo(Main.MouseWorld);
+            if (Projectile.owner == Main.myPlayer)
+                ownerMousePos = Main.MouseWorld;
+            
+            Projectile.velocity = Owner.DirectionTo(ownerMousePos);
             Projectile.Center = Owner.Center + Projectile.velocity * 48;
         }
+
+        public override void SendExtraAI(BinaryWriter writer) => writer.WritePackedVector2(ownerMousePos);
+        public override void ReceiveExtraAI(BinaryReader reader) => ownerMousePos = reader.ReadPackedVector2();
     }
 }

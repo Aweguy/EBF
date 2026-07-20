@@ -98,6 +98,10 @@ namespace EBF.NPCs.Machines
         }
         private void ShootBalls()
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             if (Main.GameUpdateCount % 10 == 0)
             {
                 //Shoot projectile
@@ -120,6 +124,10 @@ namespace EBF.NPCs.Machines
         }
         private void ShootLaser()
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             var velocity = NPC.rotation.ToRotationVector2();
             var type = ModContent.ProjectileType<LaserTurret_Laser>();
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, NPC.GetProjectileDamage(type), 3, -1, NPC.target);

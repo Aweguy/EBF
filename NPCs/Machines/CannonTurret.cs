@@ -54,6 +54,10 @@ namespace EBF.NPCs.Machines
 
         private void Shoot()
         {
+            // Server handles npc projectile creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             if (Main.GameUpdateCount % 30 == 0)
             {
                 //Shoot projectile

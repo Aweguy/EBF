@@ -11,7 +11,7 @@ namespace EBF.Items.Magic
     {
         public new string LocalizationCategory => "Items.Weapons.Magic";
 
-        private const int Spread = 48;
+        private const int Spread = 64;
         public override void SetDefaultsSafe()
         {
             Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
@@ -19,10 +19,10 @@ namespace EBF.Items.Magic
 
             Item.damage = 45;//Item's base damage value
             Item.knockBack = 5;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.mana = 8;//The amount of mana this item consumes on use
+            Item.mana = 10;//The amount of mana this item consumes on use
 
             Item.useTime = 12;//How fast the item is used
-            Item.useAnimation = 12;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useAnimation = 24;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 0, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.LightRed;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -31,7 +31,7 @@ namespace EBF.Items.Magic
             Item.useTurn = true;//Boolean, if the player's direction can change while using the item
 
             Item.shoot = ModContent.ProjectileType<CrystalStaff_Projectile>();
-            Item.shootSpeed = 0.1f;
+            Item.shootSpeed = 0.5f;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

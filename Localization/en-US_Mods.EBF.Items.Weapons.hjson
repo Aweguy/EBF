@@ -206,7 +206,7 @@ Magic: {
 	Flameheart: {
 		Tooltip:
 			'''
-			Every third use summons a firestorm.
+			Every fifth use summons a firestorm.
 			'A staff of twisted crystal meant to scorch and torch foes.'
 			'''
 		DisplayName: Flameheart
@@ -383,7 +383,7 @@ Ranged: {
 			DisplayName: Eagle Eye
 			Tooltip:
 				'''
-				Wooden arrows turn into chargeable, piercing arrows.
+				Wooden arrows turn into chargeable, high velocity piercing arrows that bounce once.
 				Giving a new meaning to 'Got you in my sights.'
 				'''
 		}
@@ -401,7 +401,7 @@ Ranged: {
 			DisplayName: Sharanga
 			Tooltip:
 				'''
-				Wooden arrows turn into chargeable energy arrows with high pierce and velocity.
+				Wooden arrows turn into chargeable, high velocity piercing arrows that bounce twice.
 				'A cosmic bow said to have been found in a fallen star.'
 				'''
 		}
@@ -508,6 +508,11 @@ Ranged: {
 				Fully charged arrows create an exploding bubble upon hitting a foe.
 				'Shower your enemies with freezing water.'
 				'''
+		}
+
+		TestBow: {
+			Tooltip: ""
+			DisplayName: Test Bow
 		}
 	}
 

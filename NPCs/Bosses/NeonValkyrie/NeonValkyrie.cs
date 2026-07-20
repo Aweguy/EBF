@@ -351,6 +351,10 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
             if (Main.GameUpdateCount % 3 == 0)
             {
                 SoundEngine.PlaySound(SoundID.Item11, NPC.position);
+                
+                // Server handles npc projectile creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
 
                 var velocity = GunTipPos.DirectionTo(player.Center) * 10;
                 var type = ProjectileID.Bullet;
@@ -365,11 +369,19 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
 
             if (Main.GameUpdateCount % 15 == 0)
             {
+                // Server handles npc creation
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    return; 
+                
                 //Spawn bot
                 var pos = AttachmentBasePos.ToPoint();
                 var type = Main.rand.NextBool(2) ? ModContent.NPCType<RedFlybot>() : ModContent.NPCType<BlueFlybot>();
                 var npc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), pos.X, pos.Y, type);
                 npc.velocity.Y = -5;
+                
+                // Server must sync npc to clients
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.SyncNPC, number: npc.whoAmI);
 
                 //Extra flair
                 SoundEngine.PlaySound(SoundID.Item113, NPC.position);
@@ -379,6 +391,10 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
         }
         private void SummonAttachment()
         {
+            // Server handles npc creation
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return; 
+            
             //Determine attachment
             int type;
             if (InSecondPhase)
@@ -389,6 +405,10 @@ namespace EBF.NPCs.Bosses.NeonValkyrie
             //Add attachment to NV
             attachedNPC = NPC.NewNPCDirect(NPC.GetSource_FromAI(), 0, 0, type);
             attachedNPC.Bottom = AttachmentBasePos;
+            
+            // Server must sync npc to clients
+            if (Main.netMode == NetmodeID.Server)
+                NetMessage.SendData(MessageID.SyncNPC, number: attachedNPC.whoAmI);
         }
         private void TransitionToSecondStage()
         {
