@@ -43,5 +43,14 @@ V1.6.x Various improvements (21/11/2025)
 - Smarter minions.
 - Weapon balance changes.
 
+v1.6.5: Various improvements and balance patch
+- Buffs: Crystal staff, Alchemist bow, Blizzard, Shooting star, Nirvana, Razorwind, Love blade, Iron tooth, Juggernaut, Beholding eye, Eagle eye, Sharanga, Hardmode cat toys.
+- Nerfs: Flameheart, Anarchy, Positron rifle, Wrath of zeus, Godly book.
+- Changes to some weapons making them more usable
+- Changed some recipes
+- Netcode fixes
+- Big bow rework: All bows can now charge and shoot any arrow from your inventory, and the chosen arrow is properly rendered on the bow.
+- And many improvements and bug fixes
+
 Update details are listed in the changelog on our discord server.
 If you want to help with development, or just chat with fellow terrarians about the mod, then join our discord server: https://discord.gg/wRqU5nhJQf
