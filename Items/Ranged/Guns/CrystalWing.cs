@@ -108,7 +108,7 @@ namespace EBF.Items.Ranged.Guns
     public class CrystalWingLaser : EBFDeathRay
     {
         private Vector2 ownerMousePos;
-        private Entity Owner => Main.player[(int)Projectile.owner];
+        private Entity Owner => Main.player[Projectile.owner];
         public override string Texture => "EBF/NPCs/Bosses/Godcat/Creator_HolyDeathray";
         protected override Vector3 LightColor => Color.White.ToVector3();
         public override void SetDefaultsSafe()
