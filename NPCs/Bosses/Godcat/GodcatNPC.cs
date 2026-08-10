@@ -258,12 +258,23 @@ namespace EBF.NPCs.Bosses.Godcat
 
         public override void ReceiveExtraAI(System.IO.BinaryReader reader)
         {
-            currentState = (State)reader.ReadByte();
-            StateTimer = reader.ReadSingle();
-            Phase = reader.ReadSingle();
-            PhaseTimer = reader.ReadSingle();
-            isDodging = reader.ReadBoolean();
-            hasDodged = reader.ReadBoolean();
+            var newState = (State)reader.ReadByte();
+            var newStateTimer = reader.ReadSingle();
+            var newPhase = reader.ReadSingle();
+            var newPhaseTimer = reader.ReadSingle();
+            var newIsDodging = reader.ReadBoolean();
+            var newHasDodged = reader.ReadBoolean();
+    
+            // Only update if values actually changed to prevent desync
+            if (currentState != newState || Math.Abs(StateTimer - newStateTimer) > 0.1f)
+            {
+                currentState = newState;
+                StateTimer = newStateTimer;
+                Phase = newPhase;
+                PhaseTimer = newPhaseTimer;
+                isDodging = newIsDodging;
+                hasDodged = newHasDodged;
+            }
         }
     }
 }

@@ -165,22 +165,23 @@ namespace EBF.Abstract_Classes
         private void Shoot(Player player, Vector2 playerCenter, Vector2 holdoutOffset)
         {
 	        var heldItem = player.HeldItem;
-	        var ammoConsumed = player.PickAmmo(heldItem, out var projToShoot, out _, out _, out var knockback, out var usedAmmoItemId);
+	        var ammoChosen = player.PickAmmo(heldItem, out var ammoType, out _, out _, out var knockback, out var usedAmmoItemId);
 
-	        if (!ammoConsumed)
+	        if (!ammoChosen)
 		        return;
 	        
 			// Set up arguments for shot
 	        var source = player.GetSource_ItemUse_WithPotentialAmmo(heldItem, usedAmmoItemId);
 	        var (boostedDamage, boostedVelocity) = GetBoostedStats();
-	        var type = ArrowType == ProjectileID.WoodenArrowFriendly ? projToShoot : ArrowType;
+	        var type = ammoType == ProjectileID.WoodenArrowFriendly ? ArrowType : ammoType; // Spawn arrow of consumed ammo if wooden arrow wasn't consumed
 			var position = playerCenter + (holdoutOffset / 2); // the /2 is to prevent arrow from spawning past walls
+			var fullChargeFlag = FullyCharged ? 1 : 0;
 			
 			// Shoot
 			if (type == ProjectileID.WoodenArrowFriendly)
-				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, FullyCharged ? 1 : 0);
+				OnShoot(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, fullChargeFlag);
 			else
-				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner);
+				Projectile.NewProjectile(source, position, boostedVelocity * heldItem.shootSpeed, type, boostedDamage, knockback, Projectile.owner, fullChargeFlag);
 			
 			SoundEngine.PlaySound(ShootSound, Projectile.position);
         }
