@@ -20,6 +20,7 @@ namespace EBF.NPCs.Idols
             NPC.defense = 5;
             NPC.lifeRegen = 4;
             NPC.value = 10;
+            NPC.lavaImmune = true;
             goreCount = 4;
         }
 

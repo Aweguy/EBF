@@ -120,7 +120,7 @@ namespace EBF.NPCs.Bosses.Godcat
         public override void AI()
         {
             // Sync state occasionally
-            if (Main.netMode == NetmodeID.Server && Main.GameUpdateCount % 60 == 0)
+            if (Main.netMode == NetmodeID.Server && (Main.GameUpdateCount % 30 == 0 || currentState != State.Idle))
                 NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
             
             // Locate other vehicle when both are alive at once
@@ -220,10 +220,18 @@ namespace EBF.NPCs.Bosses.Godcat
         private void HandleStateChange()
         {
             StateTimer++;
+            
+            // Only server should handle state changes
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            
             if (StateTimer >= stateDurations[currentState])
             {
                 StateTimer = 0;
                 currentState = currentState != State.Idle ? State.Idle : GetNextAttackState();
+                
+                // Sync state change immediately
+                NetMessage.SendData(MessageID.SyncNPC, number: NPC.whoAmI);
             }
         }
         private State GetNextAttackState() => stateDurations.ElementAt(attackManager.Next()).Key;

@@ -32,7 +32,7 @@ namespace EBF.NPCs.Bosses.Godcat
         {
             Projectile.width = 0;
             Projectile.height = 0;
-            Projectile.timeLeft = 60; // 1 second delay by default
+            Projectile.timeLeft = 60; // 1-second delay by default
             Projectile.tileCollide = false;
         }
         public override void AI()
@@ -45,6 +45,10 @@ namespace EBF.NPCs.Bosses.Godcat
                 hostile = Projectile.hostile;
                 Projectile.friendly = false;
                 Projectile.hostile = false;
+                
+                // Sync these values to clients
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    NetMessage.SendData(MessageID.SyncProjectile, number: Projectile.whoAmI);
             }
 
             if (Projectile.timeLeft <= 1)
@@ -53,11 +57,27 @@ namespace EBF.NPCs.Bosses.Godcat
                 var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, type, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 proj.friendly = friendly;
                 proj.hostile = hostile;
+                
+                // Sync the newly created projectile
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
 
                 Projectile.Kill();
             }
         }
         public override bool PreDraw(ref Color lightColor) => false; // Don't draw this 
+        
+        public override void SendExtraAI(System.IO.BinaryWriter writer)
+        {
+            writer.Write(friendly);
+            writer.Write(hostile);
+        }
+
+        public override void ReceiveExtraAI(System.IO.BinaryReader reader)
+        {
+            friendly = reader.ReadBoolean();
+            hostile = reader.ReadBoolean();
+        }
     }
 
     /// <summary>
@@ -484,21 +504,35 @@ namespace EBF.NPCs.Bosses.Godcat
 
     public class Creator_HolyDeathray : EBFDeathRay
     {
-        private NPC Owner => Main.npc[(int)Projectile.ai[0]];
-        private Vector2 OwnerBarrelPos => Owner.Center + new Vector2(80 * Owner.direction, -16);
+        private int ownerNPCId = -1;
+        private NPC Owner => Main.npc[ownerNPCId];
         protected override Vector3 LightColor => Color.White.ToVector3();
         public override void SetDefaultsSafe()
         {
             Projectile.hostile = true;
         }
+        public override void OnSpawnSafe(IEntitySource source)
+        {
+            ownerNPCId = (int)Projectile.ai[0];
+        }
         public override void AISafe()
         {
-            if (Owner == null || !Owner.active)
+            if (ownerNPCId == -1 || Owner == null || !Owner.active)
             {
                 Projectile.Kill();
                 return;
             }
-            Projectile.Center = OwnerBarrelPos;
+            
+            var owner = Owner;
+            if (owner != null && owner.active)
+            {
+                var barrelPos = owner.Center + new Vector2(80 * owner.direction, -16);
+                Projectile.Center = barrelPos;
+            }
+            else
+            {
+                Projectile.Kill();
+            }
         }
     }
 
