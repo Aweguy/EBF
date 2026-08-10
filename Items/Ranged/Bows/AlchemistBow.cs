@@ -41,9 +41,7 @@ namespace EBF.Items.Ranged.Bows
 
     public class AlchemistBow_HoldoutProjectile : EBFHoldoutBow
     {
-        private readonly List<int> arrows = [];
         public override string Texture => "EBF/Items/Ranged/Bows/AlchemistBow";
-
         public override void SetDefaults()
         {
             Projectile.width = 26;
@@ -55,49 +53,49 @@ namespace EBF.Items.Ranged.Bows
             
             base.SetDefaults();
         }
-        
-        public override void AI()
+
+        protected override void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0, float ai1, float ai2)
         {
-            //Run this code once when the bow has fully charged
-            if (FullyCharged && Projectile.localAI[1] == 0)
+            if (!FullyCharged)
             {
-                Projectile.localAI[1]++;
+                base.OnShoot(source, position, velocity, type, damage, knockback, owner);
+                return;
+            }
+            
+            var arrows = GetAllArrows();
+            for (var i = 0; i < 3; i++)
+            {
+                // Choose random arrow
+                var projectile = arrows[Main.rand.Next(arrows.Count)];
+                var proj = Projectile.NewProjectileDirect(source, position, velocity.RotatedByRandom(0.15d), projectile, damage, knockback, owner);
+                proj.localNPCHitCooldown = -1;
+                proj.usesLocalNPCImmunity = true;
 
-                //Go through every projectile
-                for (var i = 0; i < ProjectileID.Count; i++)
+                // Hellwing bats are a bit weird, they have to be tweaked
+                if (proj.type == ProjectileID.Hellwing)
                 {
-                    Projectile proj = new();
-                    proj.SetDefaults(i);
-
-                    //Store each vanilla arrow (excluding phantasm arrows cuz their homing has no target)
-                    if (proj.arrow && proj.ModProjectile == null && proj.type != ProjectileID.PhantasmArrow)
-                        arrows.Add(i);
+                    proj.velocity *= 1.5f;
+                    proj.timeLeft = 180;
                 }
             }
         }
 
-        protected override void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0, float ai1, float ai2)
+        private static List<int> GetAllArrows()
         {
-            if (FullyCharged)
+            List<int> arrows = [];
+            
+            //Go through every projectile
+            for (var i = 0; i < ProjectileID.Count; i++)
             {
-                for (var i = 0; i < 3; i++)
-                {
-                    //Choose random arrow
-                    var projectile = arrows[Main.rand.Next(arrows.Count)];
-                    var proj = Projectile.NewProjectileDirect(source, position, velocity.RotatedByRandom(0.15d), projectile, damage, knockback, owner);
-                    proj.localNPCHitCooldown = -1;
-                    proj.usesLocalNPCImmunity = true;
+                Projectile proj = new();
+                proj.SetDefaults(i);
 
-                    // Hellwing bats are a bit weird, they have to be tweaked
-                    if (proj.type == ProjectileID.Hellwing)
-                    {
-                        proj.velocity *= 1.5f;
-                        proj.timeLeft = 180;
-                    }
-                }
+                //Store each vanilla arrow (excluding phantasm arrows cuz their homing has no target)
+                if (proj.arrow && proj.ModProjectile == null && proj.type != ProjectileID.PhantasmArrow)
+                    arrows.Add(i);
             }
-            else
-                base.OnShoot(source, position, velocity, type, damage, knockback, owner);
+
+            return arrows;
         }
     }
 }

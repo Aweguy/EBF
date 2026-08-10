@@ -53,20 +53,6 @@ namespace EBF.Items.Ranged.Bows
             VelocityScale = 2.5f;
             base.SetDefaults();
         }
-
-        protected override void OnShoot(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner,
-            float ai0 = 0, float ai1 = 0, float ai2 = 0)
-        {
-            if (FullyCharged)
-            {
-                SoundEngine.PlaySound(SoundID.Item75, Projectile.position);
-                var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, owner, ai0);
-                proj.extraUpdates = 2;
-                proj.penetrate = -1;
-            }
-            else
-                base.OnShoot(source, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
-        }
     }
 
     public class ThorsHammer_Arrow : ModProjectile
@@ -93,6 +79,12 @@ namespace EBF.Items.Ranged.Bows
         public override void OnSpawn(IEntitySource source)
         {
             fullyCharged = (int)Projectile.ai[0] == 1;
+            if (!fullyCharged)
+                return;
+            
+            Projectile.extraUpdates = 2;
+            Projectile.penetrate = -1;
+            SoundEngine.PlaySound(SoundID.Item75, Projectile.position);
         }
 
         public override void AI()
