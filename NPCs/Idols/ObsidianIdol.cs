@@ -41,6 +41,11 @@ namespace EBF.NPCs.Idols
             npcLoot.Add(ItemDropRule.Common(ItemID.Obsidian, 1, 2, 4));
         }
 
+        public override void PostAI()
+        {
+            if (NPC.lavaWet) NPC.velocity.Y -= 0.3f;
+        }
+
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (!spawnInfo.PlayerSafe && !spawnInfo.Invasion && spawnInfo.Player.ZoneUnderworldHeight)
