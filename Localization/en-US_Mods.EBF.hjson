@@ -368,12 +368,12 @@ Items: {
 
 		NanoFibre: {
 			DisplayName: Nano Fibre
-			Tooltip: ""
+			Tooltip: Strong cloth made using high-tech nanotechnology
 		}
 
 		RamChip: {
 			DisplayName: Ram Chip
-			Tooltip: ""
+			Tooltip: Something your computer really needs
 		}
 
 		ElixirOfLife: {

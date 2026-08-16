@@ -22,7 +22,7 @@ namespace EBF.Items.Magic
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useTime = 20;
             Item.useAnimation = 20;
-            Item.mana = 20;
+            Item.mana = 35;
             Item.rare = ItemRarityID.Green;
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 0, platinum: 0);
             Item.useTurn = true;

@@ -17,7 +17,7 @@ namespace EBF.Items.Magic
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useTime = 20;
             Item.useAnimation = 20;
-            Item.mana = 50;
+            Item.mana = 75;
             Item.value = Item.sellPrice(copper: 0, silver: 20, gold: 0, platinum: 0);
             Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item8;//The item's sound when it's used
