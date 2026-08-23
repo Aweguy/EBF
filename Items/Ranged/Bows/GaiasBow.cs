@@ -1,9 +1,11 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -47,38 +49,8 @@ namespace EBF.Items.Ranged.Bows
         }
     }
 
-    public class GaiasBow_Arrow : ModProjectile
-    {
-        private bool fullyCharged;
-        public override string Texture => "EBF/Items/Ranged/Bows/GaiasGift_Arrow";
-        public override void SetDefaults()
-        {
-            Projectile.width = 10;
-            Projectile.height = 10;
-
-            Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Ranged;
-            Projectile.aiStyle = ProjAIStyleID.Arrow;
-            Projectile.ignoreWater = true;
-            Projectile.localNPCHitCooldown = -1;
-            Projectile.usesLocalNPCImmunity = true;
-        }
-
-        public override void OnSpawn(IEntitySource source)
-        {
-            fullyCharged = (int)Projectile.ai[0] == 1;
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (fullyCharged)
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaiaSeed>(), 1, 0, Projectile.owner);
-        }
-    }
-
     public class GaiaSeed : ModProjectile
     {
-        private const int LifeTime = 2; //In seconds
         public override void SetDefaults()
         {
             Projectile.width = 36;
@@ -91,6 +63,32 @@ namespace EBF.Items.Ranged.Bows
             Projectile.ignoreWater = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
+            Projectile.alpha = 255;
+
+        }
+        public override void AI()
+        {
+            Projectile.ai[0] += 1f;
+
+            FadeInAndOut();
+
+            Projectile.velocity.X = Projectile.velocity.X * 0.97f;
+            Projectile.velocity.Y = Projectile.velocity.Y * 0.98f;
+
+        }
+        public void FadeInAndOut()
+        {
+            // If last less than 50 ticks — fade in, than more — fade out
+            if (Projectile.ai[0] <= 50f)
+            {
+                // Fade in
+                Projectile.alpha -= 30;
+
+                return;
+            }
+
+            // Fade out
+            Projectile.alpha += 30;
         }
 
         public override void OnSpawn(IEntitySource source)
@@ -109,12 +107,51 @@ namespace EBF.Items.Ranged.Bows
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Poisoned, 60 * 5);
+            /*Temporary firework explosion until we care to make our own
+            var proj2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity, ProjectileID.RocketFireworksBoxGreen, Projectile.damage = 0, Projectile.knockBack);
+            proj2.timeLeft = 1;*/
+        }
+
+    }
+    public class GaiasBow_Arrow : ModProjectile
+    {
+        private const int gaiaSpawnRate = 6; //How often a projectile is spawned per second
+        public override string Texture => "EBF/Items/Ranged/Bows/GaiasGift_Arrow";
+        private bool fullyCharged;
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.penetrate = 3;
+
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.aiStyle = ProjAIStyleID.Arrow;
+            Projectile.ignoreWater = true;
+            Projectile.localNPCHitCooldown = -1;
+            Projectile.usesLocalNPCImmunity = true;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            fullyCharged = (int)Projectile.ai[0] == 1;
         }
         public override void AI()
         {
-            Projectile.alpha += 255 / (60 * LifeTime); // takes 1 * lifetime seconds
-            if (Projectile.alpha >= 254)
-                Projectile.Kill();
+            //Prevent sub-projectiles from being spawned by other players' arrows.
+            if (Main.myPlayer != Projectile.owner)
+                return;
+
+            //Run this code x times per second
+            if (Main.GameUpdateCount % (60 / (gaiaSpawnRate)) == 0 && (fullyCharged)) 
+                {
+                    var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), Projectile.damage, Projectile.knockBack);
+                    proj.timeLeft = 100;
+                }
+            else if (Main.GameUpdateCount % (60 / gaiaSpawnRate*2) == 0 && (!fullyCharged))
+                {
+                    var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), Projectile.damage, Projectile.knockBack);
+                    proj.timeLeft = 100;
+                }
         }
     }
 }

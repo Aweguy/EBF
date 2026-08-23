@@ -1,6 +1,8 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -52,14 +54,16 @@ namespace EBF.Items.Ranged.Bows
             base.SetDefaults();
         }
     }
-    
+
     public class GaiasGift_Arrow : ModProjectile
     {
+        private const int gaiaSpawnRate = 12; //How often a projectile is spawned per second
         private bool fullyCharged;
         public override void SetDefaults()
         {
             Projectile.width = 10;
             Projectile.height = 10;
+            Projectile.penetrate = 5;
 
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
@@ -68,26 +72,29 @@ namespace EBF.Items.Ranged.Bows
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnSpawn(IEntitySource source)
         {
             fullyCharged = (int)Projectile.ai[0] == 1;
         }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void AI()
         {
-            if (!fullyCharged)
+            //Prevent sub-projectiles from being spawned by other players' arrows.
+            if (Main.myPlayer != Projectile.owner)
                 return;
-            
-            var player = Main.player[Projectile.owner];
-            player.Heal(hit.Damage / 15);
 
-            //Spawn Gaia seed
-            var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaiaSeed>(), 1, 0, Projectile.owner);
-            proj.scale = 2f;
-
-            //Temporary firework explosion until we care to make our own
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ProjectileID.RocketFireworksBoxGreen, Projectile.damage, 0, Projectile.owner);
+            //Run this code x times per second
+            if (Main.GameUpdateCount % (60 / (gaiaSpawnRate)) == 0 && (fullyCharged))
+            {
+                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), Projectile.damage, Projectile.knockBack);
+                proj.timeLeft = 100;
+            }
+            else if (Main.GameUpdateCount % (60 / gaiaSpawnRate * 2) == 0 && (!fullyCharged))
+            {
+                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), Projectile.damage, Projectile.knockBack);
+                proj.timeLeft = 100;
+            }
         }
     }
 }
+
+
