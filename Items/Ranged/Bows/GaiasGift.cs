@@ -19,10 +19,10 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 61;//Item's base damage value
+            Item.damage = 62;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 35;//How fast the item is used
+            Item.useAnimation = 35;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 50, gold: 12, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -85,12 +85,12 @@ namespace EBF.Items.Ranged.Bows
             //Run this code x times per second
             if (Main.GameUpdateCount % (60 / (gaiaSpawnRate)) == 0 && (fullyCharged))
             {
-                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), Projectile.damage, Projectile.knockBack);
+                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), (Projectile.damage / 3) * 2, Projectile.knockBack);
                 proj.timeLeft = 100;
             }
             else if (Main.GameUpdateCount % (60 / gaiaSpawnRate * 2) == 0 && (!fullyCharged))
             {
-                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), Projectile.damage, Projectile.knockBack);
+                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), (Projectile.damage /3) * 2, Projectile.knockBack);
                 proj.timeLeft = 100;
             }
         }
