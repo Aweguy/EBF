@@ -1,6 +1,8 @@
 ﻿using EBF.Abstract_Classes;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,10 +19,10 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 26;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 66;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 61;//Item's base damage value
+            Item.damage = 62;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 35;//How fast the item is used
+            Item.useAnimation = 35;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 50, gold: 12, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Pink;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -52,14 +54,16 @@ namespace EBF.Items.Ranged.Bows
             base.SetDefaults();
         }
     }
-    
+
     public class GaiasGift_Arrow : ModProjectile
     {
+        private const int gaiaSpawnRate = 12; //How often a projectile is spawned per second
         private bool fullyCharged;
         public override void SetDefaults()
         {
             Projectile.width = 10;
             Projectile.height = 10;
+            Projectile.penetrate = 5;
 
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
@@ -68,26 +72,29 @@ namespace EBF.Items.Ranged.Bows
             Projectile.localNPCHitCooldown = -1;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnSpawn(IEntitySource source)
         {
             fullyCharged = (int)Projectile.ai[0] == 1;
         }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void AI()
         {
-            if (!fullyCharged)
+            //Prevent sub-projectiles from being spawned by other players' arrows.
+            if (Main.myPlayer != Projectile.owner)
                 return;
-            
-            var player = Main.player[Projectile.owner];
-            player.Heal(hit.Damage / 15);
 
-            //Spawn Gaia seed
-            var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaiaSeed>(), 1, 0, Projectile.owner);
-            proj.scale = 2f;
-
-            //Temporary firework explosion until we care to make our own
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ProjectileID.RocketFireworksBoxGreen, Projectile.damage, 0, Projectile.owner);
+            //Run this code x times per second
+            if (Main.GameUpdateCount % (60 / (gaiaSpawnRate)) == 0 && (fullyCharged))
+            {
+                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), (Projectile.damage / 3) * 2, Projectile.knockBack);
+                proj.timeLeft = 100;
+            }
+            else if (Main.GameUpdateCount % (60 / gaiaSpawnRate * 2) == 0 && (!fullyCharged))
+            {
+                var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, Projectile.velocity / 2 + Main.rand.NextVector2Unit(), ModContent.ProjectileType<GaiaSeed>(), (Projectile.damage /3) * 2, Projectile.knockBack);
+                proj.timeLeft = 100;
+            }
         }
     }
 }
+
+

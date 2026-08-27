@@ -56,10 +56,13 @@ namespace EBF.Items.Ranged.Bows
             if (FullyCharged)
             {
                 Projectile.Kill();
-                for (var i = 0; i < 3; i++)
+                for (var i = 0; i < 4; i++)
                 {
                     var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(0.2d), ProjectileID.HornetStinger, Projectile.damage, Projectile.knockBack, Projectile.owner);
                     proj.DamageType = DamageClass.Ranged;
+                    proj.penetrate = 2;
+                    proj.localNPCHitCooldown = -1;
+                    proj.usesLocalNPCImmunity = true;
                 }
             }
             else
