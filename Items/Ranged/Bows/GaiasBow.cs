@@ -31,7 +31,7 @@ namespace EBF.Items.Ranged.Bows
             Item.shootSpeed = 7f;
             base.SetDefaults();
         }
-        //Sold by Witch Doctor
+        //Sold by Anna
     }
 
     public class GaiasBow_HoldoutProjectile : EBFHoldoutBow
