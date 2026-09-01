@@ -366,17 +366,53 @@ Magic: {
 			'A moment of weightlessness.'
 			'''
 	}
+
+	PaperFan: {
+		DisplayName: Paper Fan
+		Tooltip:
+			'''
+			Rapidly fires close-range gusts of wind.
+			'Keep cool while foes fry.'
+			'''
+	}
+
+	PaperFan_Blue: {
+		DisplayName: Bubble Paper Fan
+		Tooltip:
+			'''
+			Rapidly fires close-range gusts of wind.
+			'Keep cool while foes fry.'
+			'''
+	}
+
+	PaperFan_Black: {
+		DisplayName: Ninja Paper Fan
+		Tooltip:
+			'''
+			Rapidly fires close-range gusts of wind.
+			'Keep cool while foes fry.'
+			'''
+	}
+
+	PaperFan_Red: {
+		DisplayName: Summer Paper Fan
+		Tooltip:
+			'''
+			Rapidly fires close-range gusts of wind.
+			'Keep cool while foes fry.'
+			'''
+	}
 }
 
 Ranged: {
 	Bows: {
 		CrimsonDragon: {
+			DisplayName: Crimson Dragon
 			Tooltip:
 				'''
 				Converts wooden arrows into Dragon arrows that spew flaming bats.
 				'Incredibly ornate, but houses unimaginable heat all the same.'
 				'''
-			DisplayName: Crimson Dragon
 		}
 
 		EagleEye: {
