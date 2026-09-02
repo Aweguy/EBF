@@ -14,8 +14,8 @@ namespace EBF.Items.Magic
     {
         public override void SetDefaultsSafe()
         {
-            Item.width = 40;//Width of the hitbox of the item (usually the item's sprite width)
-            Item.height = 40;//Height of the hitbox of the item (usually the item's sprite height)
+            Item.width = 32;//Width of the hitbox of the item (usually the item's sprite width)
+            Item.height = 32;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 8;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
@@ -44,8 +44,8 @@ namespace EBF.Items.Magic
         {
             public override void SetDefaults()
             {
-                Projectile.width = 20;
-                Projectile.height = 20;
+                Projectile.width = 32;
+                Projectile.height = 32;
                 Projectile.friendly = true;
                 Projectile.DamageType = DamageClass.Magic;
                 Projectile.tileCollide = true;
