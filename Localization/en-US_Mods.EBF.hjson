@@ -240,6 +240,7 @@ Projectiles: {
 	TheStinger_HoldoutProjectile.DisplayName: The Stinger_ Holdout Projectile
 	ThornBow_HoldoutProjectile.DisplayName: Thorn Bow_ Holdout Projectile
 	ThorsHammer_HoldoutProjectile.DisplayName: Thors Hammer_ Holdout Projectile
+	PaperFan_Gale.DisplayName: Paper Fan_ Gale
 }
 
 Items: {
@@ -503,6 +504,31 @@ Items: {
 				}
 			}
 		}
+	}
+
+	PaperFan: {
+		DisplayName: Paper Fan
+		Tooltip: ""
+	}
+
+	PaperFan_Red: {
+		DisplayName: Paper Fan_ Red
+		Tooltip: ""
+	}
+
+	PaperFan_Blue: {
+		Tooltip: ""
+		DisplayName: Paper Fan_ Blue
+	}
+
+	PaperFan_Black: {
+		Tooltip: ""
+		DisplayName: Paper Fan_ Black
+	}
+
+	PaperFanBlue: {
+		Tooltip: ""
+		DisplayName: Paper Fan Blue
 	}
 }
 
