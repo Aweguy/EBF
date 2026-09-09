@@ -437,7 +437,7 @@ Ranged: {
 			DisplayName: Gaias Gift
 			Tooltip:
 				'''
-				Fully charged wooden arrows drain health and spawn a Gaia Bloom on hit that poisons foes.
+				Wooden arrows spawn gaia seeds as it travels, fully charged arrows makes more gaia seeds.
 				'A gift from Gaia to her Ores, dotted with peridot and emerald.'
 				'''
 		}
@@ -478,7 +478,7 @@ Ranged: {
 			DisplayName: Gaias Bow
 			Tooltip:
 				'''
-				Fully charged wooden arrows spawn a poisonous gaia seed on hit foes.
+				Wooden arrows spawn gaia seeds as it travels, fully charged arrows makes more gaia seeds.
 				'Forged from mud and blessed by nature.'
 				'''
 		}

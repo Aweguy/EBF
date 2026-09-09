@@ -19,8 +19,8 @@ namespace EBF.Items.Ranged.Bows
 
             Item.damage = 16;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.useTime = 26;//How fast the item is used
-            Item.useAnimation = 26;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 21;//How fast the item is used
+            Item.useAnimation = 21;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 55, gold: 0, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Orange;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -63,8 +63,8 @@ namespace EBF.Items.Ranged.Bows
                     proj.DamageType = DamageClass.Ranged;
                 }
             }
-            
-            base.OnShoot(source, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
+            else
+                base.OnShoot(source, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
         }
     }
 }
