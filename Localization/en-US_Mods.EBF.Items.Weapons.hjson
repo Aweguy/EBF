@@ -514,6 +514,15 @@ Ranged: {
 			Tooltip: ""
 			DisplayName: Test Bow
 		}
+
+		HeavensVoice: {
+			DisplayName: Heavens Voice
+			Tooltip:
+				'''
+				Placeholder
+				'I guess I'm a spoony bard now! I have a harp and everything!' - Anna
+				'''
+		}
 	}
 
 	Guns: {

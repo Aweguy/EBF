@@ -240,6 +240,8 @@ Projectiles: {
 	TheStinger_HoldoutProjectile.DisplayName: The Stinger_ Holdout Projectile
 	ThornBow_HoldoutProjectile.DisplayName: Thorn Bow_ Holdout Projectile
 	ThorsHammer_HoldoutProjectile.DisplayName: Thors Hammer_ Holdout Projectile
+	HeavensVoice_HoldoutProjectile.DisplayName: Heavens Voice_ Holdout Projectile
+	HeavensVoice_Arrow.DisplayName: Heavens Voice_ Arrow
 }
 
 Items: {
