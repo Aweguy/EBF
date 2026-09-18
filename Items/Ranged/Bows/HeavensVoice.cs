@@ -1,6 +1,7 @@
 ﻿using EBF.Abstract_Classes;
 using EBF.EbfUtils;
 using Microsoft.Build.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -21,7 +22,7 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 46;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 50;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 41;//Item's base damage value
+            Item.damage = 50;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.useTime = 30;//How fast the item is used
             Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
@@ -62,7 +63,7 @@ namespace EBF.Items.Ranged.Bows
     public class HeavensVoice_Arrow : ModProjectile
     {
         private bool fullyCharged;
-        private int chainCount = 9; //How many times the projectile can choose a new target.
+        private int ChainCount = 9; //How many times the projectile can choose a new target.
         private NPC target = null; //The target to chase, used to adjust arrow velocity and rotation.
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
@@ -87,21 +88,24 @@ namespace EBF.Items.Ranged.Bows
                 return;
 
             Projectile.tileCollide = false;
-
             Projectile.extraUpdates = 10;
             Projectile.penetrate = -1;
-
 
         }
         public override bool PreAI()
         {
-            CreateTrail();
             SetTarget();
-
+            CreateTrail();
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-
-            if (target == null)
+            Projectile.localAI[0]++;
+            //If there's a valid target, home towards it
+            if (target != null)
             {
+                Projectile.HomeTowards(target, maxSpeed: 10, strength: 1);
+            }
+            else
+            {
+                //Otherwise, use gravity
                 Projectile.velocity += Vector2.UnitY * 0.08f;
             }
 
@@ -113,11 +117,21 @@ namespace EBF.Items.Ranged.Bows
                 return;
 
             // Change target
-            if (chainCount > 0)
+            if (ChainCount > 0) 
             {
-                chainCount--;
-                if (!EBFUtils.ClosestNPC(ref this.target, 2000, Projectile.position))
-                        Projectile.velocity = Projectile.velocity * 2;    
+                if (Projectile.localAI[0] > 200)
+                {
+
+                    Projectile.HomeTowards(target, maxSpeed: 0, strength: 0);
+
+                }
+                if (Projectile.localAI[0] < 200)
+                {
+                        Projectile.localAI[0] = 0;
+                        Projectile.velocity = Projectile.velocity * 2;
+                        Projectile.HomeTowards(target, maxSpeed: +10, strength: +1);
+                        ChainCount--;
+                }
             }
             else
                 Projectile.Kill();
@@ -125,20 +139,19 @@ namespace EBF.Items.Ranged.Bows
 
         private void SetTarget()
         {
-
-
+            Projectile.localAI[0]++;
             //Limit how often we search for targets for performance
             //And delay beginning check for extra flair
-            if (Projectile.ai[0] > 50)
+            if (Projectile.localAI[0] > 20)
             {
-                    if (EBFUtils.ClosestNPC(ref target, 2000, Projectile.position))
-                    {
-                        Projectile.HomeTowards(target, maxSpeed: 10, strength: 1);
-                    }
-                    else
-                    {
-                        target = null;
-                    }
+                if (EBFUtils.ClosestNPC(ref target, 2000, Projectile.position))
+                {
+                    return;
+                }
+                else
+                {
+                    target = null;
+                }
             }
         }
         private void CreateTrail()
