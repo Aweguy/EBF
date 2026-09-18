@@ -94,16 +94,12 @@ namespace EBF.Items.Ranged.Bows
         }
         public override bool PreAI()
         {
+            //If there's a valid target, home towards it
             SetTarget();
             CreateTrail();
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            Projectile.localAI[0]++;
-            //If there's a valid target, home towards it
-            if (target != null)
-            {
-                Projectile.HomeTowards(target, maxSpeed: 10, strength: 1);
-            }
-            else
+
+            if (target == null)
             {
                 //Otherwise, use gravity
                 Projectile.velocity += Vector2.UnitY * 0.08f;
@@ -119,13 +115,13 @@ namespace EBF.Items.Ranged.Bows
             // Change target
             if (ChainCount > 0) 
             {
-                if (Projectile.localAI[0] > 200)
+                if (Projectile.localAI[0] < 2000)
                 {
 
                     Projectile.HomeTowards(target, maxSpeed: 0, strength: 0);
 
                 }
-                if (Projectile.localAI[0] < 200)
+                if (Projectile.localAI[0] > 2000)
                 {
                         Projectile.localAI[0] = 0;
                         Projectile.velocity = Projectile.velocity * 2;
@@ -146,7 +142,7 @@ namespace EBF.Items.Ranged.Bows
             {
                 if (EBFUtils.ClosestNPC(ref target, 2000, Projectile.position))
                 {
-                    return;
+                    Projectile.HomeTowards(target, maxSpeed: 10, strength: 1);
                 }
                 else
                 {
