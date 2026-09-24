@@ -100,13 +100,7 @@ namespace EBF.Items.Ranged.Bows
                         //If there's a valid target, home towards it
                         Projectile.HomeTowards(target, maxSpeed: 10, strength: 1 );
                     }
-                    if (Projectile.localAI[0] < 25)
-                    {
-                        //Briefly stops the projectile from homing when it hits a target
-                        Projectile.HomeTowards(target, maxSpeed: 0, strength: 0);
-                    }
             }
-
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
