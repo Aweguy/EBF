@@ -34,8 +34,7 @@ namespace EBF.Items.Magic
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            for (int i = 0; i < 1; i++)
-                Projectile.NewProjectile(source, position, velocity + Main.rand.NextVector2Square(-2f, 2f), type, damage, knockback);
+            Projectile.NewProjectile(source, position, velocity + Main.rand.NextVector2Square(-2f, 2f), type, damage, knockback);
 
             return false;
         }
@@ -74,16 +73,14 @@ namespace EBF.Items.Magic
             public override string Texture => "EBF/Items/Magic/Gale";
             public override void AI()
             {
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // projectile sprite faces up
+                FadeOut();
 
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // projectile sprite faces up
                 Projectile.ai[0] += 1f;
 
-                FadeOut();
-                {
-                    Projectile.velocity.X = Projectile.velocity.X * 0.92f;
-                    Projectile.velocity.Y = Projectile.velocity.Y * 0.92f;
-                    
-                }
+                Projectile.velocity.X *= 0.92f;
+                Projectile.velocity.Y *= 0.92f;
+
             }
             public void FadeOut()
             {
@@ -93,19 +90,6 @@ namespace EBF.Items.Magic
                     Projectile.alpha += 19;
 
             }
-        }
-    }
-    public class PaperFan : FanWeapon, ILocalizedModType
-    {
-        public new string LocalizationCategory => "Items.Weapons.Magic";
-
-        public override void AddRecipes()
-        {
-            CreateRecipe(amount: 1)
-            .AddIngredient(ItemID.Cobweb, stack: 20)
-            .AddIngredient(ItemID.Wood, stack: 10)
-            .AddTile(TileID.WorkBenches)
-            .Register();
         }
     }
 }
