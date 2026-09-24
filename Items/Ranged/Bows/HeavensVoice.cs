@@ -22,10 +22,10 @@ namespace EBF.Items.Ranged.Bows
             Item.width = 46;//Width of the hitbox of the item (usually the item's sprite width)
             Item.height = 50;//Height of the hitbox of the item (usually the item's sprite height)
 
-            Item.damage = 50;//Item's base damage value
+            Item.damage = 30;//Item's base damage value
             Item.knockBack = 3;//Float, the item's knockback value. How far the enemy is launched when hit
-            Item.useTime = 30;//How fast the item is used
-            Item.useAnimation = 30;//How long the animation lasts. For swords it should stay the same as UseTime
+            Item.useTime = 45;//How fast the item is used
+            Item.useAnimation = 45;//How long the animation lasts. For swords it should stay the same as UseTime
 
             Item.value = Item.sellPrice(copper: 0, silver: 75, gold: 3, platinum: 0);//Item's value when sold
             Item.rare = ItemRarityID.Yellow;//Item's name colour, this is hardcoded by the modder and should be based on progression
@@ -37,14 +37,13 @@ namespace EBF.Items.Ranged.Bows
             CreateRecipe(amount: 1)
                 .AddIngredient<ThorsHammer>(stack: 1)
                 .AddIngredient(ItemID.Harp, stack: 1)
-                .AddIngredient(ItemID.PixieDust, stack: 20)
-                .AddIngredient(ItemID.HallowedBar, stack: 20)
-                .AddIngredient(ItemID.BeetleHusk, stack: 20)
+                .AddIngredient(ItemID.PixieDust, stack: 10)
+                .AddIngredient(ItemID.HallowedBar, stack: 10)
+                .AddIngredient(ItemID.BeetleHusk, stack: 5)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }
-
     public class HeavensVoice_HoldoutProjectile : EBFHoldoutBow
     {
         protected override int ArrowType => ModContent.ProjectileType<HeavensVoice_Arrow>();
@@ -59,11 +58,9 @@ namespace EBF.Items.Ranged.Bows
             base.SetDefaults();
         }
     }
-
     public class HeavensVoice_Arrow : ModProjectile
     {
         private bool fullyCharged;
-        private int ChainCount = 9; //How many times the projectile can choose a new target.
         private NPC target = null; //The target to chase, used to adjust arrow velocity and rotation.
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.WoodenArrowFriendly}";
         public override void SetDefaults()
@@ -75,11 +72,9 @@ namespace EBF.Items.Ranged.Bows
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.aiStyle = ProjAIStyleID.Arrow;
             Projectile.ignoreWater = true;
-
-            Projectile.localNPCHitCooldown = 250;
+            Projectile.localNPCHitCooldown = 25;
             Projectile.usesLocalNPCImmunity = true;
         }
-
         public override void OnSpawn(IEntitySource source)
         {
             fullyCharged = (int)Projectile.ai[0] == 1;
@@ -87,62 +82,49 @@ namespace EBF.Items.Ranged.Bows
             if (!fullyCharged)
                 return;
 
-            Projectile.tileCollide = false;
-            Projectile.extraUpdates = 10;
-            Projectile.penetrate = -1;
-
+                Projectile.tileCollide = false;
+                Projectile.extraUpdates = 5;
+                Projectile.penetrate = 10;
         }
-        public override bool PreAI()
+        public override void AI()
         {
-            //If there's a valid target, home towards it
-            SetTarget();
             CreateTrail();
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            SetTarget();
 
-            if (target == null)
+            Projectile.localAI[0]++;
+
+            if (target != null)
             {
-                //Otherwise, use gravity
-                Projectile.velocity += Vector2.UnitY * 0.08f;
+                    if (Projectile.localAI[0] > 25)
+                    {
+                        //If there's a valid target, home towards it
+                        Projectile.HomeTowards(target, maxSpeed: 10, strength: 1 );
+                    }
+                    if (Projectile.localAI[0] < 25)
+                    {
+                        //Briefly stops the projectile from homing when it hits a target
+                        Projectile.HomeTowards(target, maxSpeed: 0, strength: 0);
+                    }
             }
 
-            return false;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (!fullyCharged)
                 return;
-
-            // Change target
-            if (ChainCount > 0) 
-            {
-                if (Projectile.localAI[0] < 2000)
-                {
-
-                    Projectile.HomeTowards(target, maxSpeed: 0, strength: 0);
-
-                }
-                if (Projectile.localAI[0] > 2000)
-                {
-                        Projectile.localAI[0] = 0;
-                        Projectile.velocity = Projectile.velocity * 2;
-                        Projectile.HomeTowards(target, maxSpeed: +10, strength: +1);
-                        ChainCount--;
-                }
-            }
-            else
-                Projectile.Kill();
+           
+            Projectile.localAI[0] = 1;
+            Projectile.velocity = Projectile.velocity * 2;
         }
-
         private void SetTarget()
         {
-            Projectile.localAI[0]++;
             //Limit how often we search for targets for performance
-            //And delay beginning check for extra flair
-            if (Projectile.localAI[0] > 20)
+            if (Projectile.localAI[0] > 25)
             {
-                if (EBFUtils.ClosestNPC(ref target, 2000, Projectile.position))
+                if (EBFUtils.ClosestNPC(ref target, 3000, Projectile.position))
                 {
-                    Projectile.HomeTowards(target, maxSpeed: 10, strength: 1);
+                    return;
                 }
                 else
                 {
