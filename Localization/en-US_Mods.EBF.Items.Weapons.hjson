@@ -514,6 +514,15 @@ Ranged: {
 			Tooltip: ""
 			DisplayName: Test Bow
 		}
+
+		HeavensVoice: {
+			DisplayName: Heavens Voice
+			Tooltip:
+				'''
+				Wooden arrows home into targets, fully charged wooden arrows dance around targets multiple times.
+				'I guess I'm a spoony bard now! I have a harp and everything!' - Anna
+				'''
+		}
 	}
 
 	Guns: {
