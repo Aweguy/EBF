@@ -22,7 +22,7 @@ namespace EBF.NPCs.Idols
             NPC.defense = 5;
             NPC.lifeRegen = 4;
             NPC.value = 10;
-            goreCount = 0;
+            goreCount = 4;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
