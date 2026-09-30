@@ -41,7 +41,7 @@ namespace EBF.Items.Melee
         {
             CreateRecipe(amount: 1)
                 .AddIngredient(ItemID.TungstenBar, stack: 8)
-                .AddIngredient(ItemID.Feather, stack: 4)
+                .AddIngredient(ItemID.SunplateBlock, stack: 10)
                 .AddIngredient(ItemID.Emerald, stack: 2)
                 .AddTile(TileID.Anvils)
                 .Register();
