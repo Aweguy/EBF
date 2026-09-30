@@ -242,6 +242,7 @@ Projectiles: {
 	ThorsHammer_HoldoutProjectile.DisplayName: Thors Hammer_ Holdout Projectile
 	HeavensVoice_HoldoutProjectile.DisplayName: Heavens Voice_ Holdout Projectile
 	HeavensVoice_Arrow.DisplayName: Heavens Voice_ Arrow
+	PaperFan_Gale.DisplayName: Paper Fan_ Gale
 }
 
 Items: {

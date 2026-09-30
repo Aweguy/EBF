@@ -24,7 +24,7 @@ namespace EBF.Items.Magic
             Item.height = 54;//Height of the hitbox of the item (usually the item's sprite height)
 
             Item.damage = 40;//Item's base damage value
-            Item.knockBack = 0;//Float, the item's knockback value. How far the enemy is launched when hit
+            Item.knockBack = 0f;//Float, the item's knockback value. How far the enemy is launched when hit
             Item.mana = 40;//The amount of mana this item consumes on use
 
             Item.useTime = 50;//How fast the item is used
